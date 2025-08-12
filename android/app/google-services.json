@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "105246988762",
+    "project_id": "capty-app",
+    "storage_bucket": "capty-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105246988762:android:cef040dd8ed4ecf3ffc8e3",
+        "android_client_info": {
+          "package_name": "com.discgolf.capty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105246988762-27aedpphm9vs1e128koge6pv0o71r5qh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.discgolf.capty",
+            "certificate_hash": "64702de71d2d21d3919bea2a09a7120b33c110c4"
+          }
+        },
+        {
+          "client_id": "105246988762-3ue27jmj2smb83inp0ng7fbv3oukfs9n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.discgolf.capty",
+            "certificate_hash": "d218756cdae2fca9ceaf0065da1a6a1eee0544a8"
+          }
+        },
+        {
+          "client_id": "105246988762-9j2mdu7vpiolkmud4ddf4tp9c5obc9i1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.discgolf.capty",
+            "certificate_hash": "c4e3be390f2711bca6eaadc35761e639758ab359"
+          }
+        },
+        {
+          "client_id": "105246988762-hs977jmq1sm1kiadntsu3gil38hmg013.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_HOmpYSyt6D98ISE1tZU4hAl8xOcrMgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105246988762-hs977jmq1sm1kiadntsu3gil38hmg013.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "105246988762-4q751690ac4obja617gv9edi46knt4tm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.discgolf.capty",
+                "app_store_id": "6744384772"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

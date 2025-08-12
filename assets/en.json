@@ -1,0 +1,32 @@
+{
+  "you_already_vote_on_this_feature": "You already vote on this feature.",
+  "search_by_club_name": "Search by club name",
+  "bag_deleted_successfully": "Bag deleted successfully",
+  "you_already_have_a_bag_with_this_name": "You already have a bag with this name.",
+  "are_you_sure_you_want_to_delete_the_bag": "Are you sure you want to delete the bag",
+  "you_must_write_your_full_name": "You must write your full name",
+  "message_not_found": "Message not found",
+  "we_are_in_beta_mode": "We are in BETA mode!",
+  "you_have_installed_the_first_version_of_the_app_thank_you_for_your_help_testing":
+  "You have installed the first version of the app. Thank you for your help testing!",
+  "we_expect_to_switch_from_beta_mode_to_normal_user_mode_between_august_and_september_2025":
+  "We expect to switch from beta mode to normal user mode between august and September 2025.",
+  "please_do_not_add_all_your_discs_at_this_point_but_send_us_as_much_feedback_as_possible":
+  "Please do not add all your discs at this point, but send us as much feedback as possible. Please do not share the app yet!",
+  "okay_i_understand": "Okay, I Understand!",
+  "the_capty_app_is_live": "The CAPTY app is live!",
+  "you_have_installed_the_first_version_of_the_app": "You have installed the first version of the app.",
+  "as_we_are_a_new_app_we_really_need_your_feedback": "As we are a new app, we really need your feedback!",
+  "use_the_button_below_to_go_to_the_feedback_page_and_send_us_your_feedback":
+  "Use the button below to go to the feedback page, and send us your feedback.",
+  "go_to_feedback_page": "Go To Feedback page",
+  "pdga_number_already_used_please_try_your_unique_pdga_number": "Pdga number already used. Please try your unique pdga number.",
+  "shipping": "Shipping",
+  "i_want_to_offer_shipping": "I want to offer shipping",
+  "these_are_places_where_your_paths_cross": "These are places where your paths cross",
+  "you_are_both_members_of_these_clubs": "You are both members of these clubs",
+  "you_will_both_attend": "You will both attend",
+  "the_seller_pick_up_points": "The seller pick up points",
+  "this_seller_offers_shipping": "This seller offers shipping.",
+  "this_seller_does_not_offers_shipping": "This seller doen not offers shipping."
+}

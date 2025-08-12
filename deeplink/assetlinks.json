@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.discgolf.capty",
+      "sha256_cert_fingerprints":
+      ["F3:55:A0:F9:F2:B8:1E:B5:09:0F:A4:4E:67:B8:A5:BB:EC:FB:10:44:5C:B9:CC:B4:12:4F:82:0E:C7:1B:52:D0"]
+    }
+  }
+]

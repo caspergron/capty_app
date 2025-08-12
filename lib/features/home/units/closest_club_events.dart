@@ -1,0 +1,162 @@
+import 'package:flutter/material.dart';
+
+import 'package:app/animations/tween_list_item.dart';
+import 'package:app/components/buttons/elevate_button.dart';
+import 'package:app/constants/date_formats.dart';
+import 'package:app/extensions/flutter_ext.dart';
+import 'package:app/extensions/number_ext.dart';
+import 'package:app/extensions/string_ext.dart';
+import 'package:app/helpers/enums.dart';
+import 'package:app/libraries/formatters.dart';
+import 'package:app/models/club/event.dart';
+import 'package:app/preferences/user_preferences.dart';
+import 'package:app/services/routes.dart';
+import 'package:app/themes/colors.dart';
+import 'package:app/themes/text_styles.dart';
+import 'package:app/utils/assets.dart';
+import 'package:app/utils/dimensions.dart';
+import 'package:app/widgets/core/stack_images.dart';
+import 'package:app/widgets/library/svg_image.dart';
+import 'package:app/widgets/view/share_location_view.dart';
+
+class ClosestClubEvents extends StatelessWidget {
+  final List<Event> events;
+  final Function(Event)? onTap;
+  final Function()? onShareLocation;
+
+  const ClosestClubEvents({this.events = const [], this.onTap, this.onShareLocation});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: _sectionList);
+  }
+
+  List<Widget> get _sectionList {
+    var isTitle = !UserPreferences.coordinates.is_coordinate || events.isNotEmpty;
+    var gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    // var style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
+    var label = Text('club_events_close_to_you'.recast, style: TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54));
+    return [if (isTitle) Padding(padding: gap, child: label), if (isTitle) const SizedBox(height: 08), _eventSection];
+  }
+
+  Widget get _eventSection {
+    if (!UserPreferences.coordinates.is_coordinate) {
+      return SizedBox(height: 128 + 12, child: _eventsList);
+    } else if (events.isEmpty) {
+      return const SizedBox.shrink();
+    } else {
+      var bottom = const EdgeInsets.only(bottom: 12);
+      return Padding(padding: bottom, child: ShareLocationView(margin: Dimensions.screen_padding, onShare: onShareLocation));
+    }
+  }
+
+  Widget get _eventsList {
+    return ListView.builder(
+      shrinkWrap: true,
+      clipBehavior: Clip.antiAlias,
+      itemCount: events.length,
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.only(bottom: 12),
+      itemBuilder: _closestClubEventItemCard,
+    );
+  }
+
+  Widget _closestClubEventItemCard(BuildContext context, int index) {
+    var item = events[index];
+    var gap = Dimensions.screen_padding;
+    return InkWell(
+      onTap: item.club == null ? null : Routes.user.club(club: item.club!).push,
+      child: TweenListItem(
+        index: index,
+        twinAnim: TwinAnim.right_to_left,
+        child: Container(
+          width: 48.width,
+          key: Key('index_$index'),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 08),
+          margin: EdgeInsets.only(left: index == 0 ? gap : 0, right: index == events.length - 1 ? gap : 08),
+          decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(12)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Singapore Club ',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyles.text14_700.copyWith(color: lightBlue),
+                    ),
+                  ),
+                  const SizedBox(width: 06),
+                  const StackImages(
+                    boxSize: 14,
+                    borderWidth: 0,
+                    // imageList: item.,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 04),
+              Row(
+                children: [
+                  SvgImage(image: Assets.svg1.calendar, height: 14, color: skyBlue),
+                  const SizedBox(width: 04),
+                  Expanded(
+                    child: Text(
+                      Formatters.formatDate(DATE_FORMAT_19, '$currentDate'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyles.text10_400.copyWith(color: skyBlue, fontSize: 11),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 02),
+              Row(
+                children: [
+                  SvgImage(image: Assets.svg1.clock, height: 14, color: skyBlue),
+                  const SizedBox(width: 04),
+                  Expanded(
+                    child: Text(
+                      Formatters.formatDate(TIME_FORMAT_1, '$currentDate'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyles.text10_400.copyWith(color: skyBlue, fontSize: 11),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 02),
+              Row(
+                children: [
+                  SvgImage(image: Assets.svg1.map_pin, height: 14, color: skyBlue),
+                  const SizedBox(width: 04),
+                  Expanded(
+                    child: Text(
+                      'Riverside Disk Golf Course',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyles.text10_400.copyWith(color: skyBlue, fontSize: 11),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 06),
+              ElevateButton(
+                height: 24,
+                radius: 04,
+                width: double.infinity,
+                background: mediumBlue,
+                label: 'open_event'.recast.toUpper,
+                icon: SvgImage(image: Assets.svg1.comment, height: 14, color: white),
+                textStyle: TextStyles.text12_700.copyWith(color: white, fontSize: 11, height: 1),
+                onTap: Routes.user.club_event(event: Event()).push,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

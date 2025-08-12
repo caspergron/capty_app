@@ -1,0 +1,20 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "FSDUKX3L35.com.discgolf.capty"
+        ],
+        "paths": [
+          "*"
+        ]
+      }
+    ],
+    "components": []
+  },
+  "webcredentials": {
+    "apps": [
+       "FSDUKX3L35.com.discgolf.capty"
+    ]
+  }
+}

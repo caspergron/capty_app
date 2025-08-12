@@ -1,0 +1,565 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:app/animations/fade_animation.dart';
+import 'package:app/animations/tween_list_item.dart';
+import 'package:app/components/buttons/elevate_button.dart';
+import 'package:app/components/dialogs/image_rotate_dialog.dart';
+import 'package:app/components/loaders/screen_loader.dart';
+import 'package:app/components/menus/back_menu.dart';
+import 'package:app/components/menus/label_suffix.dart';
+import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/constants/data_constants.dart';
+import 'package:app/di.dart';
+import 'package:app/extensions/flutter_ext.dart';
+import 'package:app/extensions/number_ext.dart';
+import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/discs/units/disc_speciality_list.dart';
+import 'package:app/features/discs/view_models/create_sales_ad_view_model.dart';
+import 'package:app/helpers/file_helper.dart';
+import 'package:app/libraries/flush_popup.dart';
+import 'package:app/models/common/tag.dart';
+import 'package:app/models/disc/user_disc.dart';
+import 'package:app/models/plastic/plastic.dart';
+import 'package:app/preferences/app_preferences.dart';
+import 'package:app/preferences/user_preferences.dart';
+import 'package:app/services/app_analytics.dart';
+import 'package:app/services/input_formatters.dart';
+import 'package:app/services/routes.dart';
+import 'package:app/themes/colors.dart';
+import 'package:app/themes/fonts.dart';
+import 'package:app/themes/gradients.dart';
+import 'package:app/themes/shadows.dart';
+import 'package:app/themes/text_styles.dart';
+import 'package:app/utils/assets.dart';
+import 'package:app/utils/dimensions.dart';
+import 'package:app/utils/size_config.dart';
+import 'package:app/widgets/core/animated_radio.dart';
+import 'package:app/widgets/core/flutter_switch.dart';
+import 'package:app/widgets/core/input_field.dart';
+import 'package:app/widgets/core/linear_progressbar.dart';
+import 'package:app/widgets/core/memory_image.dart';
+import 'package:app/widgets/core/pop_scope_navigator.dart';
+import 'package:app/widgets/exception/error_upload_image.dart';
+import 'package:app/widgets/library/dropdown_flutter.dart';
+import 'package:app/widgets/library/svg_image.dart';
+import 'package:app/widgets/ui/character_counter.dart';
+import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+class CreateSalesAdScreen extends StatefulWidget {
+  final int tabIndex;
+  final UserDisc userDisc;
+  const CreateSalesAdScreen({required this.tabIndex, required this.userDisc});
+
+  @override
+  State<CreateSalesAdScreen> createState() => _CreateSalesAdScreenState();
+}
+
+class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
+  var _viewModel = CreateSalesAdViewModel();
+  var _modelData = CreateSalesAdViewModel();
+  var _weight = TextEditingController();
+  var _comment = TextEditingController();
+  var _price = TextEditingController();
+  var _focusNodes = [FocusNode(), FocusNode(), FocusNode()];
+
+  @override
+  void initState() {
+    _setInitialStates();
+    sl<AppAnalytics>().screenView('create-sales-ad-screen');
+    _focusNodes.forEach((item) => item.addListener(() => setState(() {})));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel(widget.userDisc));
+    super.initState();
+  }
+
+  void _setInitialStates() {
+    var userDisc = widget.userDisc;
+    _comment.text = userDisc.description ?? '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    _viewModel = Provider.of<CreateSalesAdViewModel>(context, listen: false);
+    _modelData = Provider.of<CreateSalesAdViewModel>(context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var loader = _modelData.loader.loader;
+    return PopScopeNavigator(
+      canPop: false,
+      onPop: _onBack,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          leading: BackMenu(onTap: _onBack),
+          title: Text('create_sales_ad'.recast),
+          automaticallyImplyLeading: false,
+        ),
+        body: Container(
+          width: SizeConfig.width,
+          height: SizeConfig.height,
+          decoration: BoxDecoration(gradient: BACKGROUND_GRADIENT),
+          child: Stack(children: [_screenView(context), if (loader) const ScreenLoader()]),
+        ),
+        bottomNavigationBar: NavButtonBox(loader: loader, childHeight: 42, child: _navbarButton(context)),
+      ),
+    );
+  }
+
+  Widget _navbarButton(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: ElevateButton(
+            radius: 04,
+            height: 42,
+            background: skyBlue,
+            onTap: _onBack,
+            label: _modelData.step == 1 ? 'cancel'.recast.toUpper : 'back'.recast.toUpper,
+            textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
+          ),
+        ),
+        const SizedBox(width: 08),
+        Expanded(
+          child: ElevateButton(
+            radius: 04,
+            height: 42,
+            onTap: _onNext,
+            label: _modelData.step < 4 ? 'next'.recast.toUpper : 'confirm'.recast.toUpper,
+            textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _screenView(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 02),
+        LinearProgressbar(total: _modelData.step.toDouble(), separator: 2, valueColor: primary, height: 10, radius: 0),
+        const SizedBox(height: 12),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
+          child: Text('${'step'.recast.toUpper} - ${_modelData.step.formatInt}', style: TextStyles.text20_500.copyWith(color: dark)),
+        ),
+        const SizedBox(height: 24),
+        Expanded(
+          child: TweenListItem(
+            index: _modelData.step,
+            child: ListView(
+              shrinkWrap: true,
+              clipBehavior: Clip.antiAlias,
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
+              children: _modelData.step == 2 ? _stepTwoView : _stepOneView,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> get _stepOneView {
+    var userDisc = widget.userDisc;
+    var isPlastics = _modelData.plastics.isNotEmpty;
+    var addressInfo = '${_modelData.address.formatted_address}\n${_modelData.address.formatted_state_country}';
+    var intIndex = _modelData.usedValue.toInt();
+    var conditionIndex = intIndex > 10 ? 10 : intIndex;
+    var discSpecialities = AppPreferences.specialTags;
+    var selectedItems = _modelData.selectedDiscSpecialities;
+    return [
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 08),
+        decoration: BoxDecoration(
+          color: lightBlue,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(width: 0.50, color: primary),
+          boxShadow: const [SHADOW_1],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const SizedBox(width: 20),
+                Expanded(child: Text('disc_name'.recast, style: TextStyles.text12_600.copyWith(color: dark))),
+                const SizedBox(width: 08),
+                Expanded(child: Text('manufacture'.recast, style: TextStyles.text12_600.copyWith(color: dark))),
+                const SizedBox(width: 08),
+                Expanded(child: Text('disc_type'.recast, style: TextStyles.text12_600.copyWith(color: dark))),
+                const SizedBox(width: 20),
+              ],
+            ),
+            const SizedBox(height: 08),
+            const Divider(height: 1, color: primary, thickness: 0.5),
+            const SizedBox(height: 07),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Text(
+                    userDisc.parentDisc?.name ?? 'n/a'.recast,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.text12_600.copyWith(color: dark, fontWeight: w400),
+                  ),
+                ),
+                const SizedBox(width: 08),
+                Expanded(
+                  child: Text(
+                    userDisc.parentDisc?.brand?.name ?? 'n/a'.recast,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.text12_600.copyWith(color: dark, fontWeight: w400),
+                  ),
+                ),
+                const SizedBox(width: 08),
+                Expanded(
+                  child: Text(
+                    userDisc.parentDisc?.type ?? 'n/a'.recast,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.text12_600.copyWith(color: dark, fontWeight: w400),
+                  ),
+                ),
+                const SizedBox(width: 20),
+              ],
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 12),
+      Text('address'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+      const SizedBox(height: 04),
+      InkWell(
+        onTap: () => Routes.user.addresses(onItem: (item) => setState(() => _modelData.address = item)).push(),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 08, horizontal: 16),
+          decoration: BoxDecoration(
+            color: lightBlue,
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(width: 0.50, color: primary),
+            boxShadow: const [SHADOW_1],
+          ),
+          child: Row(
+            children: [
+              SvgImage(image: Assets.svg1.map_pin, height: 16, color: primary),
+              const SizedBox(width: 08),
+              Expanded(
+                child: Text(
+                  _modelData.address.id == null ? 'please_add_your_address'.recast : addressInfo,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.text12_600.copyWith(color: dark),
+                ),
+              ),
+              const SizedBox(width: 08),
+              SvgImage(image: Assets.svg1.caret_right, height: 14, color: primary),
+            ],
+          ),
+        ),
+      ),
+      const SizedBox(height: 12),
+      Text('shipping'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+      const SizedBox(height: 04),
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 08, horizontal: 16),
+        decoration: BoxDecoration(
+          color: lightBlue,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(width: 0.50, color: primary),
+          boxShadow: const [SHADOW_1],
+        ),
+        child: Row(
+          children: [
+            SvgImage(image: Assets.svg1.truck, height: 17, color: primary),
+            const SizedBox(width: 08),
+            Expanded(
+              child: Text(
+                'i_want_to_offer_shipping'.recast,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyles.text12_400.copyWith(color: dark, fontSize: 13),
+              ),
+            ),
+            const SizedBox(width: 08),
+            FlutterSwitch(
+              width: 40,
+              height: 20,
+              inactiveColor: mediumBlue.colorOpacity(0.5),
+              activeColor: mediumBlue,
+              activeToggleColor: lightBlue,
+              inactiveToggleColor: skyBlue,
+              value: _modelData.isShipping,
+              onToggle: _viewModel.onShipping,
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(height: 12),
+      if (isPlastics) ...[
+        Text('plastic'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+        const SizedBox(height: 04),
+        DropdownFlutter<Plastic>(
+          height: 40,
+          borderColor: transparent,
+          items: _modelData.plastics,
+          hint: 'select_plastic'.recast,
+          value: _modelData.plastic.id == null ? null : _modelData.plastic,
+          hintLabel: _modelData.plastic.id == null ? null : _modelData.plastics.firstWhere((item) => item == item).label,
+          onChanged: (v) => setState(() => _modelData.plastic = v!),
+        ),
+        const SizedBox(height: 12),
+      ],
+      Row(
+        children: [
+          Expanded(child: Text('weight'.recast, style: TextStyles.text14_600.copyWith(color: dark))),
+          const SizedBox(width: 14),
+          Expanded(child: Text('price'.recast, style: TextStyles.text14_600.copyWith(color: dark))),
+        ],
+      ),
+      const SizedBox(height: 04),
+      Row(
+        children: [
+          Expanded(
+            child: InputField(
+              fontSize: 12,
+              controller: _weight,
+              hintText: '${'ex'.recast}: 125',
+              focusNode: _focusNodes[0],
+              keyboardType: TextInputType.number,
+              enabledBorder: lightBlue,
+              focusedBorder: lightBlue,
+              borderRadius: BorderRadius.circular(04),
+              suffixIcon: LabelSuffix(label: 'gram'.recast),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: InputField(
+              fontSize: 12,
+              controller: _price,
+              hintText: '${'ex'.recast}: 20',
+              focusNode: _focusNodes[2],
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
+              enabledBorder: lightBlue,
+              focusedBorder: lightBlue,
+              borderRadius: BorderRadius.circular(04),
+              suffixIcon: LabelSuffix(label: UserPreferences.currencyCode),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 12),
+      Text('disc_condition'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+      const SizedBox(height: 04),
+      Slider(
+        min: 1,
+        max: 10,
+        divisions: 9,
+        inactiveColor: skyBlue,
+        activeColor: orange,
+        value: 11 - _modelData.usedValue,
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        onChanged: (value) => setState(() => _modelData.usedValue = 11 - value),
+      ),
+      const SizedBox(height: 04),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 04),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(10, (index) => Text('${10 - index}', style: TextStyles.text12_600.copyWith(color: primary))),
+        ),
+      ),
+      const SizedBox(height: 06),
+      Text(USED_DISC_INFO[conditionIndex - 1].recast, style: TextStyles.text14_600.copyWith(color: primary, fontWeight: w500, height: 1.3)),
+      const SizedBox(height: 16),
+      if (discSpecialities.isNotEmpty) ...[
+        Text('disc_special_features'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+        const SizedBox(height: 08),
+        DiscSpecialityList(specialities: discSpecialities, selectedSpecialities: selectedItems, onSelect: _onSelectDiscSpeciality)
+      ],
+      const SizedBox(height: 16),
+      Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('disc_image'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+                const SizedBox(height: 08),
+                AnimatedRadio(label: 'upload_image'.recast, value: true),
+                const SizedBox(height: 04),
+                Text(
+                  '* ${'mandatory_to_upload_image_for_sales_ads'.recast}',
+                  textAlign: TextAlign.start,
+                  style: TextStyles.text10_400.copyWith(color: error, fontSize: 11, fontWeight: w500),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 04),
+          FadeAnimation(
+            fadeKey: 'true',
+            duration: DURATION_700,
+            child: ImageMemory(
+              radius: 04,
+              width: 70,
+              height: 70,
+              imagePath: _modelData.discFile.unit8List,
+              onTap: () => imageOptionSheet(onFile: _onImage, cropType: 'circle_clip'),
+              error: ErrorUploadImage(color: lightBlue, discImage: widget.userDisc.media?.url),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 12),
+      Text('sales_ad_notes'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+      const SizedBox(height: 08),
+      InputField(
+        fontSize: 12,
+        minLines: 06,
+        maxLines: 12,
+        counterText: '',
+        maxLength: 150,
+        controller: _comment,
+        hintText: 'write_notes_here'.recast,
+        focusNode: _focusNodes[1],
+        enabledBorder: lightBlue,
+        focusedBorder: lightBlue,
+        onChanged: (v) => setState(() {}),
+        borderRadius: BorderRadius.circular(04),
+      ),
+      if (_comment.text.isNotEmpty) ...[
+        const SizedBox(height: 06),
+        CharacterCounter(count: _comment.text.length, total: 150, color: dark),
+      ],
+      SizedBox(height: BOTTOM_GAP),
+    ];
+  }
+
+  void _onSelectDiscSpeciality(Tag item) {
+    var selectedItems = _modelData.selectedDiscSpecialities;
+    if (selectedItems.isEmpty) return setState(() => _modelData.selectedDiscSpecialities.add(item));
+    var index = selectedItems.indexWhere((element) => element.id == item.id);
+    if (index < 0) return setState(() => _modelData.selectedDiscSpecialities.add(item));
+    setState(() => _modelData.selectedDiscSpecialities.removeAt(index));
+  }
+
+  List<Widget> get _stepTwoView {
+    var userDisc = widget.userDisc;
+    var parentDisc = userDisc.parentDisc;
+    var weight = _weight.text;
+    var price = _price.text.isEmpty ? 'n/a'.recast : '${_price.text} ${UserPreferences.currencyCode}';
+    var intIndex = _modelData.usedValue.toInt();
+    var conditionIndex = intIndex > 10 ? 10 : intIndex;
+    return [
+      Row(
+        children: [
+          Expanded(child: _detailsInfo(label: 'disc_name'.recast, value: parentDisc?.name ?? 'n/a'.recast)),
+          const SizedBox(width: 08),
+          Expanded(child: _detailsInfo(label: 'manufacture'.recast, value: parentDisc?.brand?.name ?? 'n/a'.recast)),
+        ],
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
+      Row(
+        children: [
+          Expanded(child: _detailsInfo(label: 'disc_type'.recast, value: parentDisc?.type ?? 'n/a'.recast)),
+          const SizedBox(width: 08),
+          Expanded(child: _detailsInfo(label: 'plastic'.recast, value: _modelData.plastic.label ?? 'n/a'.recast)),
+        ],
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
+      Row(
+        children: [
+          Expanded(child: _detailsInfo(label: 'weight'.recast, value: weight.isEmpty ? 'n/a'.recast : '$weight ${'gram'.recast}')),
+          const SizedBox(width: 08),
+          Expanded(child: _detailsInfo(label: 'price'.recast, value: price)),
+        ],
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
+      _detailsInfo(label: 'disc_condition'.recast, value: USED_DISC_INFO[conditionIndex - 1].recast),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
+      _detailsInfo(
+        label: 'speciality'.recast,
+        value: _modelData.selectedDiscSpecialities.isEmpty
+            ? 'n/a'.recast
+            : _modelData.selectedDiscSpecialities.map((item) => item.displayName ?? '').join(', '),
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
+      _detailsInfo(label: 'sales_ad_notes'.recast, value: _comment.text.isEmpty ? 'n/a'.recast : _comment.text),
+      if (_modelData.discFile.file != null || widget.userDisc.media?.url != null) ...[
+        const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
+        Text('disc_image'.recast, style: TextStyles.text13_600.copyWith(color: primary.colorOpacity(0.6))),
+        const SizedBox(height: 06),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: ImageMemory(
+            radius: 04,
+            width: 70,
+            height: 70,
+            imagePath: _modelData.discFile.unit8List,
+            error: ErrorUploadImage(color: lightBlue, discImage: widget.userDisc.media?.url),
+          ),
+        ),
+      ],
+      SizedBox(height: BOTTOM_GAP),
+    ];
+  }
+
+  Widget _detailsInfo({String label = '', String value = ''}) {
+    var title = Text(label, style: TextStyles.text13_600.copyWith(color: primary.colorOpacity(0.6)));
+    var subtitle = Text(value, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyles.text14_600.copyWith(color: primary));
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [title, const SizedBox(height: 04), subtitle]);
+  }
+
+  void _onBack() {
+    if (_modelData.step == 1) return backToPrevious();
+    setState(() => _modelData.step--);
+  }
+
+  void _onNext() {
+    var userDisc = widget.userDisc;
+    var parentDisc = userDisc.parentDisc;
+    Map<String, dynamic> params = {
+      'speed': userDisc.speed ?? parentDisc?.speed ?? 1,
+      'glide': userDisc.glide ?? parentDisc?.glide ?? 0,
+      'turn': userDisc.turn ?? parentDisc?.turn ?? 0,
+      'fade': userDisc.fade ?? parentDisc?.fade ?? 0,
+      'price': _price.text,
+      'notes': _comment.text,
+      'weight': _weight.text.isEmpty ? 0 : _weight.text,
+    };
+    if (_modelData.step == 2) _viewModel.onCreateSalesAd(params, widget.userDisc.media?.id);
+    if (_modelData.step == 2) return;
+    if (_modelData.step == 1) {
+      if (_modelData.address.id == null) return FlushPopup.onWarning(message: 'please_add_your_address'.recast);
+      if (_price.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_price_of_your_disc'.recast);
+      var invalidImage = _modelData.discFile.file == null && widget.userDisc.media?.id == null;
+      if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
+    }
+    setState(() => _modelData.step++);
+  }
+
+  Future<void> _onImage(File fileImage) async {
+    setState(() => _modelData.loader.common = true);
+    var docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
+    if (docFiles.isEmpty) return setState(() => _modelData.loader.common = false);
+    _modelData.discFile = docFiles.first;
+    if (_modelData.discFile.unit8List == null) return setState(() => _modelData.loader.common = false);
+    if (Platform.isIOS) await imageRotateDialog(file: _modelData.discFile.file!, onChanged: (v) => setState(() => _modelData.discFile = v));
+    setState(() => _modelData.loader.common = false);
+  }
+}

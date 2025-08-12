@@ -1,0 +1,117 @@
+name: app
+description: "Disk Golf Application"
+
+publish_to: 'none'
+
+version: 1.0.0+10 # android: 1.0.0+11, ios: 1.0.1+3
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  lottie: ^3.3.1
+  flutter_svg: ^2.2.0
+  cached_network_image: ^3.4.1
+  pin_code_fields: ^8.0.1
+  fluttertoast: ^8.2.12
+  another_flushbar: ^1.12.30
+  convex_bottom_bar: ^3.2.0
+  flutter_typeahead: ^5.2.0
+  dropdown_button2: ^2.3.9
+  readmore: ^3.0.0
+
+  flutter_udid: ^4.0.0
+  # new_version_plus: ^0.0.12
+  device_info_plus: ^11.5.0
+  package_info_plus: ^8.3.0
+  get_storage: ^2.1.1
+  table_calendar: ^3.2.0
+  animate_do: ^4.2.0
+  share_plus: ^11.0.0
+  device_marketing_names: ^1.1.2
+  app_links: ^6.4.0
+
+  clipboard: ^2.0.2
+  flutter_colorpicker: ^1.1.0
+  image_picker: ^1.1.2
+  image_cropper: ^9.1.0
+  flutter_image_compress: ^2.4.0
+  crop_your_image: ^2.0.0
+  custom_image_crop: ^0.1.1
+  url_launcher: ^6.3.2
+  google_maps_flutter: ^2.12.3
+  geocoding: ^4.0.0
+  dotted_border: ^3.1.0
+  sentry_flutter: ^9.6.0
+  image: ^4.5.4
+
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  webview_flutter: ^4.13.0
+  google_sign_in: ^6.3.0
+  sign_in_with_apple: ^7.0.1
+
+  timeago: ^3.7.1
+  intl: ^0.20.2
+  http: ^1.4.0
+  get_it: ^8.2.0
+  provider: ^6.1.5
+  fl_chart: ^1.0.0
+  location: ^8.0.1
+  scroll_to_index: ^3.0.1
+  pusher_channels_flutter: ^2.5.0
+  upgrader: ^11.4.0
+  permission_handler: ^12.0.1
+
+  firebase_core: ^3.15.2
+  firebase_messaging: ^15.2.10
+  firebase_analytics: ^11.6.0
+  flutter_local_notifications: ^19.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  import_sorter: ^4.6.0
+  flutter_lints: ^6.0.0
+
+import_sorter:
+  emojis: true
+  comments: false
+  ignored_files:
+    - \/test\/*
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/animations/
+    - assets/app_icons/
+    - assets/flags/
+    - assets/fonts/
+    - assets/png_images/
+    - assets/svg_icons_1/
+    - assets/svg_icons_2/
+    - assets/svg_icons_3/
+    - assets/svg_images/
+
+  fonts:
+    - family: roboto
+      fonts:
+        - asset: assets/fonts/roboto-black.ttf
+          weight: 900
+        - asset: assets/fonts/roboto-bold.ttf
+          weight: 700
+        - asset: assets/fonts/roboto-medium.ttf
+          weight: 500
+        - asset: assets/fonts/roboto-regular.ttf
+          weight: 400
+        - asset: assets/fonts/roboto-light.ttf
+          weight: 300
+        - asset: assets/fonts/roboto-thin.ttf
+          weight: 100

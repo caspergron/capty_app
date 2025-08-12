@@ -1,0 +1,117 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+
+import 'package:app/components/dialogs/countries_dialog.dart';
+import 'package:app/constants/app_keys.dart';
+import 'package:app/di.dart';
+import 'package:app/extensions/flutter_ext.dart';
+import 'package:app/features/address/view_models/addresses_view_model.dart';
+import 'package:app/libraries/locations.dart';
+import 'package:app/models/address/address.dart';
+import 'package:app/models/map/coordinates.dart';
+import 'package:app/models/public/country.dart';
+import 'package:app/preferences/user_preferences.dart';
+import 'package:app/repository/address_repo.dart';
+import 'package:app/repository/google_repo.dart';
+
+class AddAddressViewModel with ChangeNotifier {
+  var loader = false;
+  var country = Country();
+  var addressInfo = null as Map<String, dynamic>?;
+  var suggestions = <dynamic>[];
+  var markers = <Marker>{};
+  var centerLocation = Coordinates(lat: 23.622857, lng: 90.499010);
+
+  Future<void> initViewModel(Address? item) async {
+    var google = sl<GoogleRepository>();
+    if (item == null) {
+      country = UserPreferences.user.country_item;
+      notifyListeners();
+      await countriesDialog(country: country, onChanged: _onCountry);
+      var position = await sl<Locations>().fetchLocationPermission();
+      var coordinates = position.is_coordinate ? position : await google.coordinatesOfACountry(countryCode: country.code!);
+      if (coordinates?.is_coordinate == true) centerLocation = coordinates!;
+      notifyListeners();
+    } else {
+      addressInfo = {
+        'address': item.addressLine1,
+        'city': item.city,
+        'coordinates': item.coordinates,
+        'state': item.state,
+        'postal_code': item.zipCode
+      };
+      country = item.country?.id == null ? UserPreferences.user.country_item : item.country!;
+      var coordinates = item.is_coordinate ? item.coordinates : await google.coordinatesOfACountry(countryCode: country.code!);
+      if (coordinates?.is_coordinate == true) centerLocation = coordinates!;
+      notifyListeners();
+    }
+  }
+
+  void disposeViewModel() {
+    loader = false;
+    country = Country();
+    addressInfo = null;
+    suggestions.clear();
+    markers.clear();
+    centerLocation = Coordinates(lat: 23.622857, lng: 90.499010);
+  }
+
+  void _onCountry(Country item) {
+    country = item;
+    notifyListeners();
+  }
+
+  Future<void> fetchAddressPredictions(String input, Coordinates coordinates) async {
+    suggestions.clear();
+    var response = await sl<GoogleRepository>().fetchPredictions(input, coordinates, country.code!);
+    if (response.isEmpty) return;
+    suggestions = response;
+    notifyListeners();
+  }
+
+  Future<Map<String, dynamic>?> fetchAddressInfoByPlaceId(String input) async {
+    var response = await sl<GoogleRepository>().addressInfoByPlaceId(input);
+    if (response != null) suggestions.clear();
+    if (response != null) addressInfo = response;
+    notifyListeners();
+    return response;
+  }
+
+  Future<Map<String, dynamic>?> fetchAddressInfoByCoordinates(Coordinates coordinates) async {
+    var response = await sl<GoogleRepository>().addressInfoByCoordinates(coordinates);
+    if (response != null) suggestions.clear();
+    if (response != null) addressInfo = response;
+    notifyListeners();
+    return response;
+  }
+
+  Future<void> onCreateOrUpdateAddress(Address? item) async {
+    loader = true;
+    notifyListeners();
+    var isAdd = item == null;
+    var context = navigatorKey.currentState!.context;
+    var coordinates = addressInfo?['coordinates'] as Coordinates;
+    var body = {
+      'address_line_1': addressInfo?['address'],
+      'city': addressInfo?['city'],
+      'latitude': coordinates.lat,
+      'longitude': coordinates.lng,
+      'state': addressInfo?['city'],
+      'zip_code': addressInfo?['city'],
+      'country_id': country.id,
+    };
+    var repo = sl<AddressRepository>();
+    var response = isAdd ? await repo.createAddress(body) : await repo.updateAddress(body, item);
+    if (response != null) {
+      var addressModel = Provider.of<AddressesViewModel>(context, listen: false);
+      addressModel.updateAddressItem(address: response, isAdd: isAdd);
+      backToPrevious();
+    }
+    loader = false;
+    notifyListeners();
+  }
+}

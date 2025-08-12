@@ -1,0 +1,29 @@
+
+Alias: capty_key
+
+-First name & Last name: Casper Gronbjerg
+-Organization unit: Development
+-Organization name: ACEMAKERS DEVELOPMENT PTE. LTD
+-City: Singapore
+-State: Singapore
+-Country Code: SG
+
+-Key Password: casper_capty_dk_2025
+-Store Password: casper_capty_dk_2025
+
+Production Fingerprints:
+SHA1: 64:70:2D:E7:1D:2D:21:D3:91:9B:EA:2A:09:A7:12:0B:33:C1:10:C4
+SHA256: AF:85:42:3E:02:68:C5:79:B4:29:96:EF:17:D3:E5:93:DF:5C:1D:68:BF:56:70:3E:54:3E:4A:BA:0A:97:2A:E2
+
+Signature algorithm name:
+Subject Public Key Algorithm:
+Version:
+
+Debug Fingerprints:
+SHA1: C4:E3:BE:39:0F:27:11:BC:A6:EA:AD:C3:57:61:E6:39:75:8A:B3:59
+SHA256: A2:FD:79:F9:C0:93:E7:35:F7:B5:93:01:C9:FC:AC:01:CF:DC:70:FA:21:D9:9F:1C:3B:35:BD:D2:90:FC:EC:C5
+
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 2048-bit RSA key
+Version: 1
+
