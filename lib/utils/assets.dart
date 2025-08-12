@@ -42,6 +42,7 @@ class _SvgIcons1 {
   String affiliate = '$_SVG_ICONS_1/affiliate.svg';
   String arrow_down = '$_SVG_ICONS_1/arrow_down.svg';
   String arrow_left = '$_SVG_ICONS_1/arrow_left.svg';
+  String arrow_right = '$_SVG_ICONS_1/arrow_right.svg';
   String arrow_up = '$_SVG_ICONS_1/arrow_up.svg';
   String award = '$_SVG_ICONS_1/award.svg';
   String bag = '$_SVG_ICONS_1/bag.svg';

@@ -20,6 +20,8 @@ class User {
   String? phone;
   int? mediaId;
   int? isActive;
+  int? isShipping;
+  int? isDefault;
   String? googleId;
   String? facebookId;
   String? appleId;
@@ -39,6 +41,7 @@ class User {
   String get first_name => name == null ? '' : name!.split(' ').first.firstLetterCapital;
   String get name_initial => name == null ? '' : name!.name_initial;
 
+  bool get is_shipping => isShipping != null && isShipping == 1;
   String get pdga_rating => pdgaRating.formatInt;
   int get pdga_improvement => pdgaImprovement ?? 0;
   bool get is_social_login => googleId != null || appleId != null || facebookId != null;
@@ -57,6 +60,8 @@ class User {
     this.phone,
     this.mediaId,
     this.isActive,
+    this.isShipping,
+    this.isDefault,
     this.googleId,
     this.facebookId,
     this.appleId,
@@ -85,6 +90,8 @@ class User {
     phone = json['phone'];
     mediaId = json['media_id'];
     isActive = json['is_active'];
+    isShipping = json['is_shipping'];
+    isDefault = json['is_default'];
     googleId = json['google_id'];
     facebookId = json['facebook_id'];
     appleId = json['apple_id'];
@@ -114,6 +121,8 @@ class User {
     map['phone'] = phone;
     map['media_id'] = mediaId;
     map['is_active'] = isActive;
+    map['is_shipping'] = isShipping;
+    map['is_default'] = isDefault;
     map['google_id'] = googleId;
     map['facebook_id'] = facebookId;
     map['apple_id'] = appleId;

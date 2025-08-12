@@ -1,16 +1,20 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/models/system/loader.dart';
+import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/address_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class AddressesViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
   var addresses = <Address>[];
+  var isShipping = false;
 
   void initViewModel() {
+    isShipping = UserPreferences.user.is_shipping;
+    notifyListeners();
+    fetchShippingInfo();
     fetchAllAddresses();
   }
 
@@ -37,5 +41,22 @@ class AddressesViewModel with ChangeNotifier {
     if (isAdd) return notifyListeners();
     var index = addresses.indexWhere((element) => element.id == address.id);
     if (index >= 0) addresses[index] = address;
+  }
+
+  Future<void> fetchShippingInfo() async {
+    var userId = UserPreferences.user.id;
+    if (userId == null) return;
+    var response = await sl<AddressRepository>().fetchShippingInfo(userId);
+    if (response != null) isShipping = response;
+    notifyListeners();
+  }
+
+  Future<void> onUpdateShippingInfo(bool value) async {
+    loader.common = true;
+    notifyListeners();
+    var response = await sl<AddressRepository>().updateShippingInfo(value);
+    if (response != null) isShipping = response;
+    loader.common = false;
+    notifyListeners();
   }
 }

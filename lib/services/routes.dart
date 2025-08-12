@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/features/address/screens/add_address_screen.dart';
 import 'package:app/features/address/screens/addresses_screen.dart';
 import 'package:app/features/auth/screens/otp_screen.dart';
@@ -57,6 +55,7 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/settings/settings.dart';
 import 'package:app/models/user/user.dart';
+import 'package:flutter/material.dart';
 
 class Routes {
   static _AuthRoutes auth = _AuthRoutes();
@@ -91,7 +90,7 @@ class _UserRoutes {
   Widget tournament_discs({User? player}) => TournamentBagScreen(player: player);
   Widget notification() => NotificationsScreen();
   Widget addresses({Function(Address)? onItem}) => AddressesScreen(onItem: onItem);
-  Widget add_address({Address? address}) => AddAddressScreen(address: address);
+  Widget add_address({required Address address}) => AddAddressScreen(address: address);
 
   Widget search_disc({required int index}) => SearchDiscScreen(index: index);
   Widget add_disc({required ParentDisc disc}) => AddDiscScreen(disc: disc);

@@ -117,6 +117,9 @@ class _UserApis {
   String updateAddress = '$_SERVER/user/address/update?address_id='; // 1
   String deleteAddress = '$_SERVER/user/address/delete?address_id='; // 1
 
+  String shippingInfo = '$_SERVER/user/shipping-info?user_id='; // 1
+  String updateShippingInfo = '$_SERVER/user/update-shipping-info';
+
   String uploadMultipartMedia = '$_SERVER/media/upload';
   String uploadBase64Media = '$_SERVER/media/upload-base64';
   String deleteMedia = '$_SERVER/media/delete';

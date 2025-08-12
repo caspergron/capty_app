@@ -1,14 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/components/dialogs/countries_dialog.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
+import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/view_models/addresses_view_model.dart';
 import 'package:app/libraries/locations.dart';
 import 'package:app/models/address/address.dart';
@@ -17,6 +13,9 @@ import 'package:app/models/public/country.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/address_repo.dart';
 import 'package:app/repository/google_repo.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AddAddressViewModel with ChangeNotifier {
   var loader = false;
@@ -26,9 +25,9 @@ class AddAddressViewModel with ChangeNotifier {
   var markers = <Marker>{};
   var centerLocation = Coordinates(lat: 23.622857, lng: 90.499010);
 
-  Future<void> initViewModel(Address? item) async {
+  Future<void> initViewModel(Address item) async {
     var google = sl<GoogleRepository>();
-    if (item == null) {
+    if (item.id == null) {
       country = UserPreferences.user.country_item;
       notifyListeners();
       await countriesDialog(country: country, onChanged: _onCountry);
@@ -75,7 +74,7 @@ class AddAddressViewModel with ChangeNotifier {
 
   Future<Map<String, dynamic>?> fetchAddressInfoByPlaceId(String input) async {
     var response = await sl<GoogleRepository>().addressInfoByPlaceId(input);
-    if (response != null) suggestions.clear();
+    suggestions.clear();
     if (response != null) addressInfo = response;
     notifyListeners();
     return response;
@@ -83,18 +82,19 @@ class AddAddressViewModel with ChangeNotifier {
 
   Future<Map<String, dynamic>?> fetchAddressInfoByCoordinates(Coordinates coordinates) async {
     var response = await sl<GoogleRepository>().addressInfoByCoordinates(coordinates);
-    if (response != null) suggestions.clear();
+    suggestions.clear();
     if (response != null) addressInfo = response;
     notifyListeners();
     return response;
   }
 
-  Future<void> onCreateOrUpdateAddress(Address? item) async {
+  Future<void> onCreateOrUpdateAddress(Address item) async {
     loader = true;
     notifyListeners();
-    var isAdd = item == null;
+    var isAddress = item.id == null;
     var context = navigatorKey.currentState!.context;
     var coordinates = addressInfo?['coordinates'] as Coordinates;
+    var addressLabel = item.label.toKey == 'home'.toKey ? 'home' : 'other';
     var body = {
       'address_line_1': addressInfo?['address'],
       'city': addressInfo?['city'],
@@ -103,12 +103,13 @@ class AddAddressViewModel with ChangeNotifier {
       'state': addressInfo?['city'],
       'zip_code': addressInfo?['city'],
       'country_id': country.id,
+      'label': addressLabel,
     };
     var repo = sl<AddressRepository>();
-    var response = isAdd ? await repo.createAddress(body) : await repo.updateAddress(body, item);
+    var response = isAddress ? await repo.createAddress(body) : await repo.updateAddress(body, item);
     if (response != null) {
       var addressModel = Provider.of<AddressesViewModel>(context, listen: false);
-      addressModel.updateAddressItem(address: response, isAdd: isAdd);
+      addressModel.updateAddressItem(address: response, isAdd: isAddress);
       backToPrevious();
     }
     loader = false;

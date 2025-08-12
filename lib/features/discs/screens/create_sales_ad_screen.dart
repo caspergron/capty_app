@@ -35,7 +35,6 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/animated_radio.dart';
-import 'package:app/widgets/core/flutter_switch.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/linear_progressbar.dart';
 import 'package:app/widgets/core/memory_image.dart';
@@ -269,7 +268,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
         ),
       ),
       const SizedBox(height: 12),
-      Text('shipping'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+      /*Text('shipping'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
       const SizedBox(height: 04),
       Container(
         width: double.infinity,
@@ -306,7 +305,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
           ],
         ),
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 12),*/
       if (isPlastics) ...[
         Text('plastic'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
         const SizedBox(height: 04),

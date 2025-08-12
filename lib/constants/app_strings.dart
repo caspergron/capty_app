@@ -958,6 +958,24 @@ const APP_STRINGS = {
   'this_seller_does_not_offers_shipping': 'This seller doen not offers shipping.',
   // New translations
   'rotate_disc_image': 'Rotate Disc Image',
+  'add_your_home_address': 'Add your home address',
+  'home_address': 'Home address',
+  'pickup_points': 'Pickup points',
+  'add_your_pickup_points': 'Add your pickup points',
+  'add_another_pickup_point': 'Add another pickup point',
+  'okay_understood': 'Okay, Understood',
+  'address_information_not_found': 'Address information not found',
+  'address_coordinates_not_found': 'Address coordinates not found',
+  'city_not_found': 'City not found',
+  'state_not_found': 'State not found',
+  'postal_code_not_found': 'Postal code not found',
+  'do_you_want_to_offer_shipping': 'Do you want to offer shipping?',
+  'if_you_turn_this_option_on_you_are_telling_the_buyers_that_if_they_pay_you':
+      'If you turn this option on, you are telling the buyers that if they pay you for the shipping, you will manage shipping the disc to them',
+  'add_address': 'Add Address',
+  'before_you_can_create_your_first_sales_ad_please_add_your_shipping_address':
+      'Before you can create your first sales ad, please add your shipping address',
+  'go_to_seller_settings': 'Go To Seller Settings',
   '': ''
 };
 

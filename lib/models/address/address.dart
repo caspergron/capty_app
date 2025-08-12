@@ -1,3 +1,4 @@
+import 'package:app/extensions/string_ext.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/models/public/country.dart';
 
@@ -7,6 +8,7 @@ class Address {
   int? countryId;
   String? state;
   String? city;
+  String? label;
   String? addressLine1;
   String? addressLine2;
   double? latitude;
@@ -15,6 +17,7 @@ class Address {
   String? zipCode;
   Country? country;
 
+  bool get is_home => label.toKey == 'home'.toKey;
   bool get is_coordinate => latitude != null && longitude != null;
   Coordinates get coordinates => latitude == null || longitude == null ? Coordinates() : Coordinates(lat: latitude!, lng: longitude!);
 
@@ -24,6 +27,7 @@ class Address {
     this.countryId,
     this.state,
     this.city,
+    this.label,
     this.addressLine1,
     this.addressLine2,
     this.latitude,
@@ -39,6 +43,7 @@ class Address {
     countryId = json['country_id'];
     state = json['state'];
     city = json['city'];
+    label = json['label'];
     addressLine1 = json['address_line_1'];
     addressLine2 = json['address_line_2'];
     latitude = json['latitude'];
@@ -55,6 +60,7 @@ class Address {
     map['country_id'] = countryId;
     map['state'] = state;
     map['city'] = city;
+    map['label'] = label;
     map['address_line_1'] = addressLine1;
     map['address_line_2'] = addressLine2;
     map['latitude'] = latitude;

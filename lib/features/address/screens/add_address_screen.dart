@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -11,7 +7,6 @@ import 'package:app/components/menus/prefix_menu.dart';
 import 'package:app/components/menus/suffix_menu.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/view_models/add_address_view_model.dart';
-import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/themes/colors.dart';
@@ -23,10 +18,13 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/map_address_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddAddressScreen extends StatefulWidget {
-  final Address? address;
-  const AddAddressScreen({this.address});
+  final Address address;
+
+  const AddAddressScreen({required this.address});
 
   @override
   State<AddAddressScreen> createState() => _AddAddressScreenState();
@@ -43,7 +41,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     // sl<AppAnalytics>().screenView('settings-screen');
     _focusNode.addListener(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel(widget.address));
-    if (widget.address != null) _search.text = widget.address?.addressLine1 ?? '';
+    if (widget.address.id != null) _search.text = widget.address.addressLine1 ?? '';
     super.initState();
   }
 
@@ -73,7 +71,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   List<Widget> _screenView(BuildContext context) {
-    // var address = _viewModel.selectedAddress.value;
+    print(_modelData.addressInfo);
     var icon = Assets.svg1.close_2;
     return [
       SizedBox(
@@ -125,7 +123,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Future<void> _onCameraMove(Coordinates coordinates) async {
     setState(() => _viewModel.centerLocation = coordinates);
     var response = await _viewModel.fetchAddressInfoByCoordinates(coordinates);
+    print(response);
+    _search.text = '';
+    _modelData.addressInfo = null;
     if (response == null) return;
+
+    // if (response == null) return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
     _search.text = response['address'];
     FocusScope.of(context).unfocus();
     _viewModel.suggestions.clear();
@@ -143,7 +146,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     var placeId = _viewModel.suggestions[index]['place_id'];
     // FocusScope.of(context).unfocus();
     var response = await _viewModel.fetchAddressInfoByPlaceId(placeId);
-    if (response == null) return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
+    print(response);
+    _search.text = '';
+    _modelData.addressInfo = null;
+    if (response == null) return;
+    // if (response == null) return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
     var coordinates = response['coordinates'] as Coordinates;
     _viewModel.centerLocation = coordinates;
     _search.text = response['address'];
@@ -156,6 +163,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 class _GooglePlacesList extends StatelessWidget {
   final List<dynamic> suggestions;
   final Function(int)? onTap;
+
   const _GooglePlacesList({this.suggestions = const [], this.onTap});
 
   @override

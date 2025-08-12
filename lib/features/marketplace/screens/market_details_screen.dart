@@ -416,7 +416,8 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
               const SizedBox(width: 09),
               Expanded(
                 child: Text(
-                  _modelData.marketplace.is_shipping ? 'this_seller_offers_shipping'.recast : 'this_seller_does_not_offers_shipping'.recast,
+                  _modelData.isShipping ? 'this_seller_offers_shipping'.recast : 'this_seller_does_not_offers_shipping'.recast,
+                  // _modelData.marketplace.is_shipping ? 'this_seller_offers_shipping'.recast : 'this_seller_does_not_offers_shipping'.recast,
                   textAlign: TextAlign.start,
                   style: TextStyles.text12_400.copyWith(color: mediumBlue),
                 ),

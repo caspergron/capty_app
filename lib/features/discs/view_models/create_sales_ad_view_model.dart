@@ -8,7 +8,6 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
 import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
-import 'package:app/libraries/flush_popup.dart';
 import 'package:app/libraries/toasts_popups.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/models/common/sales_ad_type.dart';
@@ -41,7 +40,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
   var plastic = Plastic();
   var plastics = <Plastic>[];
   var salesAdTypeId = 1;
-  var isShipping = false;
+  // var isShipping = false;
 
   void initViewModel(UserDisc item) {
     clearStates();
@@ -67,7 +66,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
     plastic = Plastic();
     plastics.clear();
     salesAdTypeId = 1;
-    isShipping = false;
+    // isShipping = false;
   }
 
   Future<void> _fetchSalesAdTypeId() async {
@@ -102,11 +101,11 @@ class CreateSalesAdViewModel with ChangeNotifier {
     notifyListeners();
   }*/
 
-  void onShipping(bool value) {
+  /*void onShipping(bool value) {
     if (address.id == null) return FlushPopup.onWarning(message: 'please_add_your_address'.recast);
     isShipping = value;
     notifyListeners();
-  }
+  }*/
 
   Future<void> onImage(DocFile file) async {
     discFile = file;
@@ -136,7 +135,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
       'parent_disc_id': userDisc.parentDisc?.id,
       'disc_plastic_id': plastic.id,
       'currency_id': UserPreferences.currency.id,
-      'is_shipping': isShipping,
+      // 'is_shipping': isShipping,
       'shipping_method': null,
       // 'condition': discType.valueInt,
       // 'condition': USED_DISC_INFO[conditionIndex - 1],

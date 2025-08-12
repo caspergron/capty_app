@@ -8,6 +8,7 @@ import 'package:app/models/marketplace/club_tournament_info.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/preferences/user_preferences.dart';
+import 'package:app/repository/address_repo.dart';
 import 'package:app/repository/marketplace_repo.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -17,6 +18,7 @@ class MarketDetailsViewModel with ChangeNotifier {
   var discList = <SalesAd>[];
   var sellerAddresses = <Address>[];
   var clubTournament = ClubTournamentInfo();
+  var isShipping = false;
 
   Future<void> initViewModel(SalesAd infoItem, bool isDelay) async {
     if (isDelay) {
@@ -31,6 +33,7 @@ class MarketDetailsViewModel with ChangeNotifier {
     unawaited(_fetchDiscDetails());
     if (userId != sellerUserId) unawaited(_fetchMatchedWithSellerInfo());
     if (userId != sellerUserId) unawaited(_fetchSellerAddresses());
+    if (userId != sellerUserId) unawaited(_fetchSellerShippingInfo());
     unawaited(_fetchMoreMarketplaceDiscsBySeller());
   }
 
@@ -40,6 +43,7 @@ class MarketDetailsViewModel with ChangeNotifier {
     discList.clear();
     clubTournament = ClubTournamentInfo();
     sellerAddresses.clear();
+    isShipping = false;
   }
 
   Future<void> _fetchDiscDetails() async {
@@ -53,6 +57,14 @@ class MarketDetailsViewModel with ChangeNotifier {
     var sellerId = marketplace.sellerInfo?.id;
     var response = await sl<MarketplaceRepository>().fetchMatchedInfoWithSeller(sellerId!);
     if (response != null) clubTournament = response;
+    notifyListeners();
+  }
+
+  Future<void> _fetchSellerShippingInfo() async {
+    var sellerId = marketplace.sellerInfo?.id;
+    if (sellerId == null) return;
+    var response = await sl<AddressRepository>().fetchShippingInfo(sellerId);
+    if (response != null) isShipping = response;
     notifyListeners();
   }
 
