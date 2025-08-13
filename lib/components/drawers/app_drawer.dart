@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/logout_dialog.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -21,8 +25,6 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   @override

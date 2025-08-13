@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -21,7 +23,6 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/marketplace/sales_ad_api.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:provider/provider.dart';
 
 class MarketplaceRepository {
   Future<List<Tag>> fetchSpecialityDiscMenus({int isSpecial = 1}) async {
@@ -163,5 +164,12 @@ class MarketplaceRepository {
     if (apiResponse.status != 200) return [];
     var addressesApi = AddressApi.fromJson(apiResponse.response);
     return addressesApi.addresses.haveList ? addressesApi.addresses! : [];
+  }
+
+  Future<bool> storeDiscPopularity(int salesAdId) async {
+    var endpoint = ApiUrl.user.popularityCount;
+    var body = {'sales_ad_id': salesAdId};
+    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    return apiResponse.status == 200;
   }
 }

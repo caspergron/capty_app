@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
 
 class LabelWrapList extends StatelessWidget {
   final int animIndex;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/tag.dart';
+import 'package:app/models/system/data_model.dart';
 
 class MarketplaceFilter {
   List<Tag> types = [];
@@ -11,6 +12,7 @@ class MarketplaceFilter {
   RangeValues glide;
   RangeValues turn;
   RangeValues fade;
+  DataModel? sortBy;
 
   /*List<String> get brandLabels => brands.isEmpty ? <String>[] : brands.map((e) => e.name ?? '').toList();
   List<String> get typeLabels => types.isEmpty ? <String>[] : types.map((e) => e.displayName ?? '').toList();
@@ -28,6 +30,7 @@ class MarketplaceFilter {
     this.glide = const RangeValues(0, 7),
     this.turn = const RangeValues(-5, 1),
     this.fade = const RangeValues(0, 5),
+    this.sortBy,
   });
 
   Map<String, dynamic> toJson() {
@@ -39,6 +42,7 @@ class MarketplaceFilter {
     if (types.isNotEmpty) map['types'] = types.map((v) => v.toJson()).toList();
     if (tags.isNotEmpty) map['tags'] = tags.map((v) => v.toJson()).toList();
     if (brands.isNotEmpty) map['brands'] = brands.map((v) => v.toJson()).toList();
+    map['sort_by'] = sortBy?.toJson();
     return map;
   }
 

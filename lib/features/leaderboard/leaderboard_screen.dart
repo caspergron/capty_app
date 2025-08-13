@@ -1,3 +1,8 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/app_lists/menu_horizontal_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -23,9 +28,6 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 const _TABS_LIST = ['your_club', 'your_friends'];
 

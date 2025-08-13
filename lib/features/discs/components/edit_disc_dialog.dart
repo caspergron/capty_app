@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
@@ -38,7 +40,6 @@ import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/view/color_view.dart';
-import 'package:flutter/material.dart';
 
 Future<void> editDiscDialog({required UserDisc disc, Function(UserDisc)? onSave}) async {
   var context = navigatorKey.currentState!.context;

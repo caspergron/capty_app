@@ -1,3 +1,8 @@
+import 'package:flutter/material.dart';
+
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:app/constants/app_constants.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
@@ -11,9 +16,6 @@ import 'package:app/services/lifecycle_observer.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/light_theme.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class CoachCaptyApp extends StatefulWidget {
   @override

@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
-import 'package:flutter/material.dart';
 
 // const _DURATION = Duration(milliseconds: 700);
 

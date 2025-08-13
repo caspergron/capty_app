@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -26,7 +28,6 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/memory_image.dart';
 import 'package:app/widgets/exception/error_upload_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
-import 'package:flutter/material.dart';
 
 class RequestDiscScreen extends StatefulWidget {
   @override
@@ -80,9 +81,9 @@ class _RequestDiscScreenState extends State<RequestDiscScreen> {
       padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
       children: [
         const SizedBox(height: 14),
-        Text('Please give us some info about the discs', style: TextStyles.text14_600.copyWith(color: primary)),
+        Text('please_give_us_some_info_about_the_discs'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
         const SizedBox(height: 12),
-        Text('Disc Name', style: TextStyles.text12_600.copyWith(color: primary)),
+        Text('disc_name'.recast, style: TextStyles.text12_600.copyWith(color: primary)),
         const SizedBox(height: 04),
         InputField(
           hintColor: primary,
@@ -95,7 +96,7 @@ class _RequestDiscScreenState extends State<RequestDiscScreen> {
           onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[1]),
         ),
         const SizedBox(height: 16),
-        Text('Brand', style: TextStyles.text12_600.copyWith(color: primary)),
+        Text('brand'.recast, style: TextStyles.text12_600.copyWith(color: primary)),
         const SizedBox(height: 04),
         InputField(
           hintColor: primary,
@@ -108,7 +109,7 @@ class _RequestDiscScreenState extends State<RequestDiscScreen> {
           onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[2]),
         ),
         const SizedBox(height: 16),
-        Text('Online link of the disc', style: TextStyles.text12_600.copyWith(color: primary)),
+        Text('online_link_of_the_disc'.recast, style: TextStyles.text12_600.copyWith(color: primary)),
         const SizedBox(height: 04),
         InputField(
           hintColor: primary,
@@ -118,7 +119,7 @@ class _RequestDiscScreenState extends State<RequestDiscScreen> {
           hintText: 'write_the_web_link_of_your_disc'.recast,
         ),
         const SizedBox(height: 16),
-        Text('Image of the disc', style: TextStyles.text12_600.copyWith(color: primary)),
+        Text('image_of_the_disc'.recast, style: TextStyles.text12_600.copyWith(color: primary)),
         const SizedBox(height: 05),
         Align(
           alignment: Alignment.centerLeft,

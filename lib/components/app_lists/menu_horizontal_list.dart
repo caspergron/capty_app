@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/helpers/enums.dart';
@@ -5,7 +7,6 @@ import 'package:app/models/common/tag.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
-import 'package:flutter/material.dart';
 
 class MenuHorizontalList extends StatelessWidget {
   final Tag menu;

@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:app/di.dart';
 import 'package:app/repository/pref_repo.dart';
-import 'package:flutter/foundation.dart';
 
 class ReportProblemViewModel with ChangeNotifier {
   var loader = false;

@@ -1,5 +1,4 @@
 import 'package:app/constants/data_constants.dart';
-
 import '../constants/app_constants.dart';
 
 // const String _SERVER = 'https://api.capty.com/api/v1';
@@ -111,6 +110,7 @@ class _UserApis {
   String marketplacesByUser = '$_SERVER/market-place-disc/get-all-user-sale-ads?user_id='; // 2
   String clubTournamentInfo = '$_SERVER/user/club-tournament-info';
   String matchedInfoWithSeller = '$_SERVER/user/match/info?match_with='; // 4
+  String popularityCount = '$_SERVER/market-place-disc/popularity_count';
 
   String createAddress = '$_SERVER/user/address/create';
   String addressList = '$_SERVER/user/address/list';

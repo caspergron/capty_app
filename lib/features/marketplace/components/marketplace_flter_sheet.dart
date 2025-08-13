@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -27,12 +29,12 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
-import 'package:flutter/material.dart';
 
 var _BRAND = DataModel(label: 'brand');
 var _TYPE = DataModel(label: 'type', valueInt: 2);
 var _TAGS = DataModel(label: 'tags', valueInt: 4);
 var _FLIGHT_PATH = DataModel(label: 'flight_numbers', valueInt: 6);
+// var _SORT_BY = DataModel(label: 'sort_by', valueInt: 7);
 
 Future<void> marketplaceFilterSheet({required MarketplaceFilter filterOption, Function(MarketplaceFilter, String)? onFilter}) async {
   var context = navigatorKey.currentState!.context;
@@ -63,6 +65,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   var _types = <Tag>[];
   var _brands = <Brand>[];
   var _tags = <Tag>[];
+  var _sortByList = <DataModel>[];
   var _speed = const RangeValues(1, 15);
   var _glide = const RangeValues(0, 7);
   var _turn = const RangeValues(-5, 1);
@@ -210,6 +213,8 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
           list: Column(crossAxisAlignment: CrossAxisAlignment.start, children: _flightPathSections),
         ),
         const SizedBox(height: 16),
+        // _ExpansionLabel(item: _SORT_BY, isExpanded: false, list: SortByList(selectedItems: _sortByList, onSelect: _onSelectSortBy)),
+        // const SizedBox(height: 16),
       ],
     );
   }
@@ -287,6 +292,13 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     setState(() {});
   }
 
+  /*void _onSelectSortBy(DataModel item) {
+    _sortByList = _sortByList.toList();
+    _sortByList.clear();
+    _sortByList.add(item);
+    setState(() {});
+  }*/
+
   bool get _isValidated {
     var invalidFlight1 = (_speed.start == 1 && _speed.end == 15) && (_glide.start == 0 && _glide.end == 7);
     var invalidFlight2 = (_turn.start == -5 && _turn.end == 1) && (_fade.start == 0 && _fade.end == 5);
@@ -301,9 +313,11 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
       if (widget.onFilter != null) widget.onFilter!(filter, '');
       return backToPrevious();
     }
+    var sortBy = _sortByList.isEmpty ? null : _sortByList.first;
     var typeIds = _types.isEmpty ? <int>[] : _types.map((e) => e.id.nullToInt).toList();
     var tagIds = _tags.isEmpty ? <int>[] : _tags.map((e) => e.id.nullToInt).toList();
     var brandIds = _brands.isEmpty ? <int>[] : _brands.map((e) => e.id.nullToInt).toList();
+    // var sortByParam = sortBy == null ? '' : '&sort_by=${sortBy.value}';
     var tagParam = tagIds.isEmpty ? '' : '&tag_ids=$tagIds';
     var typeParam = typeIds.isEmpty ? '' : '&type_ids=$typeIds';
     var brandParam = brandIds.isEmpty ? '' : '&brand_ids=$brandIds';
@@ -313,7 +327,16 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     var fadeParam = {'from': _fade.start.toInt(), 'to': _fade.end.toInt()};
     var flightParams = {'speed': speedParam, 'glide': glideParam, 'turn': turnParam, 'fade': fadeParam};
     var params = '&enable_custom_sort=true$tagParam$typeParam$brandParam&flight=${jsonEncode(flightParams)}'.trim();
-    var filter = MarketplaceFilter(types: _types, tags: _tags, brands: _brands, speed: _speed, glide: _glide, turn: _turn, fade: _fade);
+    var filter = MarketplaceFilter(
+      types: _types,
+      tags: _tags,
+      brands: _brands,
+      speed: _speed,
+      glide: _glide,
+      turn: _turn,
+      fade: _fade,
+      sortBy: sortBy,
+    );
     if (widget.onFilter != null) widget.onFilter!(filter, params);
     backToPrevious();
   }

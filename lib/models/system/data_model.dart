@@ -59,3 +59,9 @@ List<DataModel> CHAT_SUGGESTIONS = [
   DataModel(label: 'Can you bring it for the next tournament?', value: 'Can you bring it for the next tournament?'),
   DataModel(label: 'Can you give me a price for 2 discs?', value: 'Can you give me a price for 2 discs?'),
 ];
+
+List<DataModel> SORT_BY_LIST = [
+  DataModel(label: 'newest', value: 'newest'),
+  // DataModel( label: 'distance', value: 'distance'),
+  DataModel(label: 'popularity', value: 'popularity'),
+];

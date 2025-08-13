@@ -3,14 +3,15 @@ import 'dart:io' as io;
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
+
 import 'package:app/di.dart';
 import 'package:app/helpers/file_helper.dart';
 import 'package:app/libraries/file_compressor.dart';
 import 'package:app/libraries/image_croppers.dart';
 import 'package:app/models/system/doc_file.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
 
 class ImageService {
   Future<Uint8List?> fileToUnit8List(io.File file) async => (await file.readAsBytes()).buffer.asUint8List();

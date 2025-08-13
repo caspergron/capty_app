@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
 import 'package:app/di.dart';
 import 'package:app/libraries/app_updater.dart';
 import 'package:app/libraries/permissions.dart';
@@ -7,7 +9,6 @@ import 'package:app/models/public/app_statistics.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/preferences/app_preferences.dart';
 import 'package:app/repository/public_repo.dart';
-import 'package:flutter/material.dart';
 
 class DashboardViewModel with ChangeNotifier {
   var loader = true;

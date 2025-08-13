@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:app/extensions/string_ext.dart';
-import 'package:app/themes/colors.dart';
 import 'package:flutter/material.dart';
+
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+
+import 'package:app/extensions/string_ext.dart';
+import 'package:app/themes/colors.dart';
 
 const _RECTANGLE_RATIO = CropAspectRatio(ratioX: 600, ratioY: 380);
 const _CIRCLE_RATIO = CropAspectRatio(ratioX: 600, ratioY: 600);

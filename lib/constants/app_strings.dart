@@ -956,7 +956,6 @@ const APP_STRINGS = {
   'the_seller_pick_up_points': 'The seller pick up points',
   'this_seller_offers_shipping': 'This seller offers shipping.',
   'this_seller_does_not_offers_shipping': 'This seller doen not offers shipping.',
-  // New translations
   'rotate_disc_image': 'Rotate Disc Image',
   'add_your_home_address': 'Add your home address',
   'home_address': 'Home address',
@@ -989,6 +988,13 @@ const APP_STRINGS = {
   'search_by_tag_name': 'Search by tag name',
   'if_you_tag_your_sales_ad_it_makes_it_more': 'If you tag your sales ad, it makes it more visible to buyers',
   'country': 'Country',
+  'sort_by': 'Sort By',
+  'newest': 'Newest',
+  'popularity': 'Popularity',
+  'please_give_us_some_info_about_the_discs': 'Please give us some info about the discs',
+  'online_link_of_the_disc': 'Online link of the disc',
+  'image_of_the_disc': 'Image of the disc',
+  // New translations
   '': ''
 };
 

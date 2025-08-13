@@ -1,6 +1,12 @@
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
@@ -20,10 +26,6 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
 
 Future<void> imageRotateDialog({required File file, required Function(DocFile) onChanged}) async {
   var context = navigatorKey.currentState!.context;
@@ -165,34 +167,47 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Future<_RotateOutput> _rotateBytes(Uint8List bytes, double angleDeg, String extension) async {
-    final img.Image? decoded = img.decodeImage(bytes);
+    final decoded = img.decodeImage(bytes);
     if (decoded == null) throw Exception('Unsupported or corrupt image');
-    final img.Image rotated = img.copyRotate(decoded, angle: angleDeg);
-    late Uint8List outBytes;
+
+    final int ow = decoded.width;
+    final int oh = decoded.height;
+    final rotated = img.copyRotate(decoded, angle: angleDeg);
+    final int cx = ((rotated.width - ow) / 2).floor().clamp(0, rotated.width - 1);
+    final int cy = ((rotated.height - oh) / 2).floor().clamp(0, rotated.height - 1);
+    final int cw = ow.clamp(1, rotated.width);
+    final int ch = oh.clamp(1, rotated.height);
+    final cropped = img.copyCrop(rotated, x: cx, y: cy, width: cw, height: ch);
     final ext = extension.toLowerCase();
+
     if (ext == 'png') {
-      outBytes = Uint8List.fromList(img.encodePng(rotated));
-      return _RotateOutput(outBytes, 'png');
+      return _RotateOutput(Uint8List.fromList(img.encodePng(cropped)), 'png');
     } else {
-      outBytes = Uint8List.fromList(img.encodeJpg(rotated, quality: 95));
-      return _RotateOutput(outBytes, 'jpg');
+      return _RotateOutput(Uint8List.fromList(img.encodeJpg(cropped, quality: 95)), 'jpg');
     }
   }
 
   Future<void> _onConfirm(File original, double angleDeg) async {
-    setState(() => _loader = true);
-    final bytes = await original.readAsBytes();
-    final ext = _guessExt(original.path);
-    final _RotateOutput rotateOutput = await _rotateBytes(bytes, angleDeg, ext);
-    final dir = await getTemporaryDirectory();
-    final outPath = '${dir.path}/rotated_${currentDate.millisecondsSinceEpoch}.${rotateOutput.ext}';
-    final file = File(outPath);
-    await file.writeAsBytes(rotateOutput.bytes);
-    var compressed = await sl<FileCompressor>().compressFileImage(image: file, maxMB: 3);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([compressed]);
-    setState(() => _loader = true);
-    widget.onChanged(docFiles.first);
-    backToPrevious();
+    try {
+      setState(() => _loader = true);
+
+      final bytes = await original.readAsBytes();
+      final ext = _guessExt(original.path);
+      final out = await _rotateBytes(bytes, angleDeg, ext);
+      final dir = await getTemporaryDirectory();
+      final outPath = '${dir.path}/rotated_${DateTime.now().millisecondsSinceEpoch}.${out.ext}';
+      final file = await File(outPath).writeAsBytes(out.bytes);
+      final compressed = await sl<FileCompressor>().compressFileImage(image: file, maxMB: 3);
+      final docFiles = await sl<FileHelper>().renderFilesInModel([compressed]);
+
+      widget.onChanged(docFiles.first);
+      backToPrevious();
+    } catch (e) {
+      if (kDebugMode) print(e.toString());
+      if (mounted) setState(() => _loader = false);
+    } finally {
+      if (mounted) setState(() => _loader = false);
+    }
   }
 }
 
@@ -208,3 +223,34 @@ class _RotateOutput {
   final String ext;
   _RotateOutput(this.bytes, this.ext);
 }
+
+/*Future<_RotateOutput> _rotateBytes(Uint8List bytes, double angleDeg, String extension) async {
+    final img.Image? decoded = img.decodeImage(bytes);
+    if (decoded == null) throw Exception('Unsupported or corrupt image');
+    final img.Image rotated = img.copyRotate(decoded, angle: angleDeg);
+    late Uint8List outBytes;
+    final ext = extension.toLowerCase();
+    if (ext == 'png') {
+      outBytes = Uint8List.fromList(img.encodePng(rotated));
+      return _RotateOutput(outBytes, 'png');
+    } else {
+      outBytes = Uint8List.fromList(img.encodeJpg(rotated, quality: 95));
+      return _RotateOutput(outBytes, 'jpg');
+    }
+  }*/
+
+/*Future<void> _onConfirm(File original, double angleDeg) async {
+    setState(() => _loader = true);
+    final bytes = await original.readAsBytes();
+    final ext = _guessExt(original.path);
+    final _RotateOutput rotateOutput = await _rotateBytes(bytes, angleDeg, ext);
+    final dir = await getTemporaryDirectory();
+    final outPath = '${dir.path}/rotated_${currentDate.millisecondsSinceEpoch}.${rotateOutput.ext}';
+    final file = File(outPath);
+    await file.writeAsBytes(rotateOutput.bytes);
+    var compressed = await sl<FileCompressor>().compressFileImage(image: file, maxMB: 3);
+    var docFiles = await sl<FileHelper>().renderFilesInModel([compressed]);
+    setState(() => _loader = true);
+    widget.onChanged(docFiles.first);
+    backToPrevious();
+  }*/
