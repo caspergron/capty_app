@@ -1,5 +1,5 @@
 import 'package:app/features/address/screens/add_address_screen.dart';
-import 'package:app/features/address/screens/addresses_screen.dart';
+import 'package:app/features/address/screens/seller_settings_screen.dart';
 import 'package:app/features/auth/screens/otp_screen.dart';
 import 'package:app/features/auth/screens/set_profile_screen_1.dart';
 import 'package:app/features/auth/screens/set_profile_screen_2.dart';
@@ -89,7 +89,7 @@ class _UserRoutes {
   Widget profile() => ProfileScreen();
   Widget tournament_discs({User? player}) => TournamentBagScreen(player: player);
   Widget notification() => NotificationsScreen();
-  Widget addresses({Function(Address)? onItem}) => AddressesScreen(onItem: onItem);
+  Widget seller_settings({Function(Address)? onItem}) => SellerSettingsScreen(onItem: onItem);
   Widget add_address({required Address address}) => AddAddressScreen(address: address);
 
   Widget search_disc({required int index}) => SearchDiscScreen(index: index);

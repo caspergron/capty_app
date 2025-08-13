@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
-import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/disc_bag/disc_bag.dart';
@@ -10,6 +7,7 @@ import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class DiscBagsList extends StatelessWidget {
   final DiscBag discBag;
@@ -68,15 +66,7 @@ class DiscBagsList extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Builder(builder: (context) {
-                if (item.id == 1000001) {
-                  return Text('all'.recast, style: TextStyles.text12_600.copyWith(color: primary, height: 1));
-                } else if (item.id == 1000002) {
-                  return Text('plus_new_bag'.recast, style: TextStyles.text12_600.copyWith(color: primary, height: 1));
-                } else {
-                  return Text(item.name ?? 'n/a'.recast, style: TextStyles.text12_600.copyWith(color: primary, height: 1));
-                }
-              }),
+              Text(item.bag_menu_display_name, style: TextStyles.text12_600.copyWith(color: primary, height: 1)),
               if (!invalidDelete) const SizedBox(width: 06),
               if (!invalidDelete)
                 Padding(

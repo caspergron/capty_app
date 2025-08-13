@@ -111,6 +111,7 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
                   Center(
                     child: Builder(builder: (context) {
                       if (userDisc?.media?.url != null) {
+                        // return Image.network(userDisc!.media!.url!);
                         return CircleImage(
                           borderWidth: 0.4,
                           radius: 22.width,
@@ -417,7 +418,6 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
               Expanded(
                 child: Text(
                   _modelData.isShipping ? 'this_seller_offers_shipping'.recast : 'this_seller_does_not_offers_shipping'.recast,
-                  // _modelData.marketplace.is_shipping ? 'this_seller_offers_shipping'.recast : 'this_seller_does_not_offers_shipping'.recast,
                   textAlign: TextAlign.start,
                   style: TextStyles.text12_400.copyWith(color: mediumBlue),
                 ),

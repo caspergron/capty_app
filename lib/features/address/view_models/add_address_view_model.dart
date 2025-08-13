@@ -5,7 +5,7 @@ import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/address/view_models/addresses_view_model.dart';
+import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/libraries/locations.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/models/map/coordinates.dart';
@@ -100,16 +100,16 @@ class AddAddressViewModel with ChangeNotifier {
       'city': addressInfo?['city'],
       'latitude': coordinates.lat,
       'longitude': coordinates.lng,
-      'state': addressInfo?['city'],
-      'zip_code': addressInfo?['city'],
+      'state': addressInfo?['state'],
+      'zip_code': addressInfo?['postal_code'],
       'country_id': country.id,
       'label': addressLabel,
     };
     var repo = sl<AddressRepository>();
     var response = isAddress ? await repo.createAddress(body) : await repo.updateAddress(body, item);
     if (response != null) {
-      var addressModel = Provider.of<AddressesViewModel>(context, listen: false);
-      addressModel.updateAddressItem(address: response, isAdd: isAddress);
+      var addressModel = Provider.of<SellerSettingsViewModel>(context, listen: false);
+      addressModel.updateAddressItem(addressItem: response, isAdd: isAddress);
       backToPrevious();
     }
     loader = false;

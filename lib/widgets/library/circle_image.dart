@@ -1,10 +1,8 @@
 import 'dart:core';
 
-import 'package:flutter/material.dart';
-
-import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:app/themes/colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 
 class CircleImage extends StatelessWidget {
   final Function()? onTap;
@@ -55,7 +53,7 @@ class CircleImage extends StatelessWidget {
           height: radius * 2,
           alignment: Alignment.center,
           decoration: BoxDecoration(borderRadius: borderRadius, border: border),
-          child: Container(decoration: decoration, child: Stack(fit: StackFit.expand, children: <Widget>[_imageSection(context)])),
+          child: Container(decoration: decoration, child: _imageSection(context)),
         ),
       ),
     );

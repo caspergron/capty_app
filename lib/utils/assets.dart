@@ -104,6 +104,7 @@ class _SvgIcons1 {
   String match = '$_SVG_ICONS_1/match.svg';
   String messenger = '$_SVG_ICONS_1/messenger.svg';
   String more = '$_SVG_ICONS_1/more.svg';
+  String nut = '$_SVG_ICONS_1/nut.svg';
   String paper_plane = '$_SVG_ICONS_1/paper_plane.svg';
   String paperclip = '$_SVG_ICONS_1/paperclip.svg';
   String pay_card = '$_SVG_ICONS_1/pay_card.svg';

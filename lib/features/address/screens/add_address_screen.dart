@@ -7,6 +7,7 @@ import 'package:app/components/menus/prefix_menu.dart';
 import 'package:app/components/menus/suffix_menu.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/view_models/add_address_view_model.dart';
+import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/themes/colors.dart';
@@ -35,6 +36,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   var _modelData = AddAddressViewModel();
   var _search = TextEditingController();
   var _focusNode = FocusNode();
+  var _isFirst = true;
 
   @override
   void initState() {
@@ -71,7 +73,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   List<Widget> _screenView(BuildContext context) {
-    print(_modelData.addressInfo);
     var icon = Assets.svg1.close_2;
     return [
       SizedBox(
@@ -123,12 +124,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Future<void> _onCameraMove(Coordinates coordinates) async {
     setState(() => _viewModel.centerLocation = coordinates);
     var response = await _viewModel.fetchAddressInfoByCoordinates(coordinates);
-    print(response);
     _search.text = '';
-    _modelData.addressInfo = null;
-    if (response == null) return;
-
-    // if (response == null) return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
+    // if (response == null) return;
+    if (response == null) {
+      if (_isFirst) return setState(() => _isFirst = false);
+      return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
+    }
     _search.text = response['address'];
     FocusScope.of(context).unfocus();
     _viewModel.suggestions.clear();
@@ -146,11 +147,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     var placeId = _viewModel.suggestions[index]['place_id'];
     // FocusScope.of(context).unfocus();
     var response = await _viewModel.fetchAddressInfoByPlaceId(placeId);
-    print(response);
     _search.text = '';
-    _modelData.addressInfo = null;
-    if (response == null) return;
-    // if (response == null) return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
+    // if (response == null) return;
+    if (response == null) return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
     var coordinates = response['coordinates'] as Coordinates;
     _viewModel.centerLocation = coordinates;
     _search.text = response['address'];

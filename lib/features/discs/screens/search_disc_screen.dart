@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/menus/prefix_menu.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -21,6 +17,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // index 0: add disc & index 1: create sales add
 // const _TABS_LIST = ['search', 'pdga_disc'];
@@ -135,7 +133,7 @@ class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerPr
         const SizedBox(height: 14),
         Expanded(
           child: _modelData.searchedDisc.isEmpty
-              ? (_modelData.isSearched ? const NoDiscFound() : const SizedBox.shrink())
+              ? (_modelData.isSearched ? const SingleChildScrollView(child: NoDiscFound()) : const SizedBox.shrink())
               : SearchDiscList(
                   gap: 20,
                   bottomGap: BOTTOM_GAP,

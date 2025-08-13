@@ -22,6 +22,7 @@ const error = Color(0xFFE1380C);
 /// Other Colors
 const gold = Color(0xFFFFB42E);
 const orange = Color(0xFFFF6C00);
+const amber = Color(0xFFFFC107);
 const black = Color(0xFF000000);
 const green = Color(0xFF1BB62E);
 const silver = Color(0xFFB3B3B3);

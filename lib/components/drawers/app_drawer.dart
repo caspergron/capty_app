@@ -127,7 +127,7 @@ class AppDrawer extends StatelessWidget {
         if (authStatus) ...[
           _DrawerItem(label: 'my_profile'.recast, icon: Assets.svg1.coach, onTap: Routes.user.profile().push),
           const SizedBox(height: 10),
-          _DrawerItem(label: 'addresses'.recast, icon: Assets.svg1.map_pin, onTap: Routes.user.addresses().push),
+          _DrawerItem(label: 'seller_settings'.recast, icon: Assets.svg1.nut, onTap: Routes.user.seller_settings().push),
           const SizedBox(height: 10),
           _DrawerItem(label: 'friends_cardmates'.recast, icon: Assets.svg1.buddies, onTap: Routes.user.friends().push),
           const SizedBox(height: 10),

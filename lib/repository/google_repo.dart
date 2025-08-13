@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:app/extensions/string_ext.dart';
-import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/utils/api_url.dart';
 import 'package:http/http.dart' as http;
@@ -39,7 +37,7 @@ class GoogleRepository {
       if (types.contains('administrative_area_level_1')) state = component['long_name'];
     }
 
-    if (address == null) {
+    /*if (address == null) {
       FlushPopup.onInfo(message: 'address_information_not_found'.recast);
       return null;
     } else if (!coordinates.is_coordinate) {
@@ -56,17 +54,16 @@ class GoogleRepository {
       return null;
     } else {
       return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
-    }
+    }*/
 
-    // if (address == null || !coordinates.is_coordinate || city.isEmpty || postalCode.isEmpty) return null;
-    // return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
+    if (address == null || !coordinates.is_coordinate || city.isEmpty || postalCode.isEmpty) return null;
+    return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
   }
 
   Future<Map<String, dynamic>?> addressInfoByCoordinates(Coordinates coordinates) async {
     var headers = {'Accept': 'application/json'};
     var endpoint = '$GOOGLE_API&latlng=${coordinates.lat},${coordinates.lng}';
     var response = await http.get(Uri.parse(endpoint), headers: headers);
-    print(response.body);
     if (response.statusCode != 200) return null;
     var json = jsonDecode(response.body);
     if (json['results'] == null || json['results'].isEmpty) return null;
@@ -83,7 +80,7 @@ class GoogleRepository {
       if (types.contains('administrative_area_level_1')) state = component['long_name'];
     }
 
-    if (address == null) {
+    /*if (address == null) {
       FlushPopup.onInfo(message: 'address_information_not_found'.recast);
       return null;
     } else if (!coordinates.is_coordinate) {
@@ -100,11 +97,11 @@ class GoogleRepository {
       return null;
     } else {
       return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
-    }
+    }*/
 
     // print({'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode});
-    // if (address == null || city.isEmpty || postalCode.isEmpty || state.isEmpty) return null;
-    // return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
+    if (address == null || city.isEmpty || postalCode.isEmpty || state.isEmpty) return null;
+    return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
   }
 
   Future<Coordinates?> coordinatesOfACountry({required String countryCode}) async {

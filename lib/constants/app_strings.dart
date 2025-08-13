@@ -972,10 +972,22 @@ const APP_STRINGS = {
   'do_you_want_to_offer_shipping': 'Do you want to offer shipping?',
   'if_you_turn_this_option_on_you_are_telling_the_buyers_that_if_they_pay_you':
       'If you turn this option on, you are telling the buyers that if they pay you for the shipping, you will manage shipping the disc to them',
-  'add_address': 'Add Address',
+  'add_home_address': 'Add Home Address',
   'before_you_can_create_your_first_sales_ad_please_add_your_shipping_address':
-      'Before you can create your first sales ad, please add your shipping address',
+      'Before you can create your first sales ad, please add your shipping address.',
   'go_to_seller_settings': 'Go To Seller Settings',
+  'from_club_member': 'From club member',
+  'tournaments': 'Tournaments',
+  'tournament_bag_menu': 'Tournament Bag',
+  'backup_bag': 'Backup Bag',
+  'please_select_any_tag': 'Please select any tag',
+  'we_could_not_find_any_tags_right_now_please_try_again_later': 'We could not find any tags right now. Please try again later.',
+  'no_tag_found': 'No Tag Found',
+  'seller_settings': 'Seller Settings',
+  'please_select_your_home_address': 'Please select your home address.',
+  'select_tags': 'Select Tags',
+  'search_by_tag_name': 'Search by tag name',
+  'if_you_tag_your_sales_ad_it_makes_it_more': 'If you tag your sales ad, it makes it more visible to buyers',
   '': ''
 };
 

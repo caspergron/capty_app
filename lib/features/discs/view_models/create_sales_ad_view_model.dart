@@ -6,6 +6,7 @@ import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
+import 'package:app/features/discs/components/add_home_address_dialog.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
 import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
 import 'package:app/libraries/toasts_popups.dart';
@@ -35,7 +36,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
   var address = Address();
   // var discType = DISC_TYPES_LIST.first;
   var usedValue = 10.0;
-  var selectedDiscSpecialities = <Tag>[];
+  var specialTags = <Tag>[];
   var discFile = DocFile();
   var plastic = Plastic();
   var plastics = <Plastic>[];
@@ -60,7 +61,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
     address = Address();
     loader = DEFAULT_LOADER;
     // discType = DISC_TYPES_LIST.first;
-    selectedDiscSpecialities.clear();
+    specialTags.clear();
     usedValue = 10.0;
     discFile = DocFile();
     plastic = Plastic();
@@ -79,7 +80,16 @@ class CreateSalesAdViewModel with ChangeNotifier {
 
   Future<void> fetchAllAddresses() async {
     var response = await sl<AddressRepository>().fetchAllAddresses();
-    if (response.isNotEmpty) address = response.first;
+    if (response.isEmpty) unawaited(addHomeAddressDialog(onProceed: Routes.user.seller_settings(onItem: updateAddress).push));
+    var homeAddress = response.where((item) => item.label.toKey == 'home'.toKey).cast<Address?>().firstOrNull;
+    homeAddress != null
+        ? address = homeAddress
+        : unawaited(addHomeAddressDialog(onProceed: Routes.user.seller_settings(onItem: updateAddress).push));
+    notifyListeners();
+  }
+
+  void updateAddress(Address addressItem) {
+    address = addressItem;
     notifyListeners();
   }
 
@@ -125,7 +135,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
     var updatedMediaId = discFile.file == null ? salesAdMediaId : await _fetchMediaId();
     if (updatedMediaId == null) loader.common = false;
     if (updatedMediaId == null) notifyListeners();
-    var specialityIds = selectedDiscSpecialities.isEmpty ? <int>[] : selectedDiscSpecialities.map((e) => e.id ?? DEFAULT_ID).toList();
+    var specialityIds = specialTags.isEmpty ? <int>[] : specialTags.map((e) => e.id ?? DEFAULT_ID).toList();
     // var intIndex = usedValue.toInt();
     // var conditionIndex = intIndex > 10 ? 10 : intIndex;
     var body = {

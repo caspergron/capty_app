@@ -3,25 +3,26 @@ import 'dart:io';
 
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
+import 'package:app/components/app_lists/label_wrap_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/menus/label_suffix.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/components/sheets/special_features_sheet.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/discs/units/disc_speciality_list.dart';
+import 'package:app/features/discs/components/add_home_address_dialog.dart';
 import 'package:app/features/discs/view_models/create_sales_ad_view_model.dart';
 import 'package:app/helpers/file_helper.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/common/tag.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/plastic/plastic.dart';
-import 'package:app/preferences/app_preferences.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/input_formatters.dart';
@@ -43,6 +44,7 @@ import 'package:app/widgets/exception/error_upload_image.dart';
 import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
+import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -168,11 +170,9 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
   List<Widget> get _stepOneView {
     var userDisc = widget.userDisc;
     var isPlastics = _modelData.plastics.isNotEmpty;
-    var addressInfo = '${_modelData.address.formatted_address}\n${_modelData.address.formatted_state_country}';
     var intIndex = _modelData.usedValue.toInt();
     var conditionIndex = intIndex > 10 ? 10 : intIndex;
-    var discSpecialities = AppPreferences.specialTags;
-    var selectedItems = _modelData.selectedDiscSpecialities;
+    var specialTagLabels = _modelData.specialTags.isEmpty ? <String>[] : _modelData.specialTags.map((e) => e.displayName ?? '').toList();
     return [
       Container(
         width: double.infinity,
@@ -236,11 +236,10 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
         ),
       ),
       const SizedBox(height: 12),
-      Text('address'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
-      const SizedBox(height: 04),
-      InkWell(
-        onTap: () => Routes.user.addresses(onItem: (item) => setState(() => _modelData.address = item)).push(),
-        child: Container(
+      if (_modelData.address.is_home) Text('address'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+      if (_modelData.address.is_home) const SizedBox(height: 04),
+      if (_modelData.address.is_home)
+        Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 08, horizontal: 16),
           decoration: BoxDecoration(
@@ -255,19 +254,16 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
               const SizedBox(width: 08),
               Expanded(
                 child: Text(
-                  _modelData.address.id == null ? 'please_add_your_address'.recast : addressInfo,
+                  '${_modelData.address.formatted_address}\n${_modelData.address.formatted_state_country}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyles.text12_600.copyWith(color: dark),
                 ),
               ),
-              const SizedBox(width: 08),
-              SvgImage(image: Assets.svg1.caret_right, height: 14, color: primary),
             ],
           ),
         ),
-      ),
-      const SizedBox(height: 12),
+      if (_modelData.address.is_home) const SizedBox(height: 12),
       /*Text('shipping'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
       const SizedBox(height: 04),
       Container(
@@ -385,11 +381,22 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
       const SizedBox(height: 06),
       Text(USED_DISC_INFO[conditionIndex - 1].recast, style: TextStyles.text14_600.copyWith(color: primary, fontWeight: w500, height: 1.3)),
       const SizedBox(height: 16),
-      if (discSpecialities.isNotEmpty) ...[
-        Text('disc_special_features'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
-        const SizedBox(height: 08),
-        DiscSpecialityList(specialities: discSpecialities, selectedSpecialities: selectedItems, onSelect: _onSelectDiscSpeciality)
-      ],
+      Row(
+        children: [
+          Expanded(child: Text('disc_special_features'.recast, style: TextStyles.text14_600.copyWith(color: dark, height: 1))),
+          const SizedBox(width: 08),
+          IconBox(
+            background: primary,
+            onTap: () => specialFeaturesSheet(selectedTags: _modelData.specialTags, onChanged: _onSelectDiscSpeciality),
+            icon: SvgImage(image: Assets.svg1.plus, height: 17, color: lightBlue),
+          ),
+        ],
+      ),
+      if (specialTagLabels.isNotEmpty) const SizedBox(height: 08),
+      if (specialTagLabels.isEmpty)
+        Text('if_you_tag_your_sales_ad_it_makes_it_more'.recast, style: TextStyles.text12_400.copyWith(color: dark, fontSize: 13))
+      else
+        LabelWrapList(fontSize: 12, items: specialTagLabels, onItem: (index) => setState(() => _modelData.specialTags.removeAt(index))),
       const SizedBox(height: 16),
       Row(
         children: [
@@ -404,7 +411,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
                 Text(
                   '* ${'mandatory_to_upload_image_for_sales_ads'.recast}',
                   textAlign: TextAlign.start,
-                  style: TextStyles.text10_400.copyWith(color: error, fontSize: 11, fontWeight: w500),
+                  style: TextStyles.text10_400.copyWith(color: gold, fontSize: 12, fontWeight: w500),
                 )
               ],
             ),
@@ -449,13 +456,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
     ];
   }
 
-  void _onSelectDiscSpeciality(Tag item) {
-    var selectedItems = _modelData.selectedDiscSpecialities;
-    if (selectedItems.isEmpty) return setState(() => _modelData.selectedDiscSpecialities.add(item));
-    var index = selectedItems.indexWhere((element) => element.id == item.id);
-    if (index < 0) return setState(() => _modelData.selectedDiscSpecialities.add(item));
-    setState(() => _modelData.selectedDiscSpecialities.removeAt(index));
-  }
+  void _onSelectDiscSpeciality(List<Tag> tagItems) => setState(() => _modelData.specialTags = tagItems);
 
   List<Widget> get _stepTwoView {
     var userDisc = widget.userDisc;
@@ -493,9 +494,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
       const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
       _detailsInfo(
         label: 'speciality'.recast,
-        value: _modelData.selectedDiscSpecialities.isEmpty
-            ? 'n/a'.recast
-            : _modelData.selectedDiscSpecialities.map((item) => item.displayName ?? '').join(', '),
+        value: _modelData.specialTags.isEmpty ? 'n/a'.recast : _modelData.specialTags.map((item) => item.displayName ?? '').join(', '),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
       _detailsInfo(label: 'sales_ad_notes'.recast, value: _comment.text.isEmpty ? 'n/a'.recast : _comment.text),
@@ -544,7 +543,10 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
     if (_modelData.step == 2) _viewModel.onCreateSalesAd(params, widget.userDisc.media?.id);
     if (_modelData.step == 2) return;
     if (_modelData.step == 1) {
-      if (_modelData.address.id == null) return FlushPopup.onWarning(message: 'please_add_your_address'.recast);
+      var isHomeAddress = _modelData.address.id != null && _modelData.address.is_home;
+      if (!isHomeAddress) {
+        return unawaited(addHomeAddressDialog(onProceed: () => Routes.user.seller_settings(onItem: _modelData.updateAddress).push()));
+      }
       if (_price.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_price_of_your_disc'.recast);
       var invalidImage = _modelData.discFile.file == null && widget.userDisc.media?.id == null;
       if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);

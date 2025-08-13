@@ -4,7 +4,6 @@ import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
@@ -14,22 +13,21 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:flutter/material.dart';
 
-Future<void> addAddressDialog({bool isShipping = false, Function()? onProceed}) async {
+Future<void> addHomeAddressDialog({Function()? onProceed}) async {
   var context = navigatorKey.currentState!.context;
-  // sl<AppAnalytics>().screenView('add-address-popup');
+  // sl<AppAnalytics>().screenView('add-home-address-popup');
   await showGeneralDialog(
     context: context,
-    barrierLabel: 'Add Address Dialog',
+    barrierLabel: 'Add Home Address Dialog',
     transitionDuration: DIALOG_DURATION,
     transitionBuilder: sl<Transitions>().topToBottom,
-    pageBuilder: (buildContext, anim1, anim2) => PopScopeNavigator(canPop: false, child: Align(child: _DialogView(isShipping, onProceed))),
+    pageBuilder: (buildContext, anim1, anim2) => PopScopeNavigator(canPop: false, child: Align(child: _DialogView(onProceed))),
   );
 }
 
 class _DialogView extends StatelessWidget {
-  final bool isShipping;
   final Function()? onProceed;
-  const _DialogView(this.isShipping, this.onProceed);
+  const _DialogView(this.onProceed);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +45,7 @@ class _DialogView extends StatelessWidget {
       children: [
         const SizedBox(height: 02),
         Text(
-          'add_address'.recast,
+          'add_home_address'.recast,
           textAlign: TextAlign.center,
           style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
         ),
@@ -76,7 +74,8 @@ class _DialogView extends StatelessWidget {
   }
 
   void _onProceed() {
+    if (onProceed == null) return;
     backToPrevious();
-    Routes.user.addresses().push();
+    onProceed!();
   }
 }

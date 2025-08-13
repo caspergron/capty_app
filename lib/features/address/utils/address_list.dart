@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
-
+import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/components/delete_address_dialog.dart';
+import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class AddressList extends StatelessWidget {
   final List<Address> addressList;
@@ -32,14 +33,18 @@ class AddressList extends StatelessWidget {
     var editIcon = SvgImage(image: Assets.svg1.edit, color: warning, height: 20);
     var deleteIcon = SvgImage(image: Assets.svg1.trash, color: error, height: 20);
     return InkWell(
-      onTap: () => onItem == null ? null : onItem!(item, index),
+      onTap: () => _onSelect(item, index),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         margin: EdgeInsets.only(bottom: index == addressList.length - 1 ? 0 : 12),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(08), border: Border.all(color: primary)),
         child: Row(
           children: [
-            CircleAvatar(radius: 15, backgroundColor: mediumBlue, child: SvgImage(image: Assets.svg1.map_pin, height: 17, color: white)),
+            CircleAvatar(
+              radius: 15,
+              backgroundColor: mediumBlue,
+              child: SvgImage(image: item.address_label_icon, height: 17, color: white),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -69,8 +74,8 @@ class AddressList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (onUpdate != null) InkWell(child: editIcon, onTap: () => onUpdate == null ? null : onUpdate!(item, index)),
-                  const SizedBox(width: 12),
-                  if (onDelete != null) InkWell(child: deleteIcon, onTap: () => _onDelete(item, index)),
+                  if (!item.is_home) const SizedBox(width: 12),
+                  if (onDelete != null && !item.is_home) InkWell(child: deleteIcon, onTap: () => _onDelete(item, index)),
                 ],
               ),
           ],
@@ -80,4 +85,10 @@ class AddressList extends StatelessWidget {
   }
 
   void _onDelete(Address item, int index) => deleteAddressDialog(onDelete: () => onDelete!(item, index));
+
+  void _onSelect(Address item, int index) {
+    if (onItem == null) return;
+    if (!item.is_home) return FlushPopup.onInfo(message: 'please_select_your_home_address'.recast);
+    onItem!(item, index);
+  }
 }

@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
+import 'package:app/components/app_lists/label_wrap_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -28,6 +27,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
 
 var _BRAND = DataModel(label: 'brand');
 var _TYPE = DataModel(label: 'type', valueInt: 2);
@@ -186,7 +186,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
         ),
         if (brandLabels.isNotEmpty) const SizedBox(height: 06),
         if (brandLabels.isNotEmpty)
-          _SelectedWrapList(animIndex: 1, items: brandLabels, onItem: (index) => setState(() => _brands.removeAt(index))),
+          LabelWrapList(animIndex: 1, items: brandLabels, onItem: (index) => setState(() => _brands.removeAt(index))),
         const SizedBox(height: 16),
         _ExpansionLabel(
           item: _TYPE,
@@ -195,7 +195,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
         ),
         if (typeLabels.isNotEmpty) const SizedBox(height: 06),
         if (typeLabels.isNotEmpty)
-          _SelectedWrapList(animIndex: 3, items: typeLabels, onItem: (index) => setState(() => _types.removeAt(index))),
+          LabelWrapList(animIndex: 3, items: typeLabels, onItem: (index) => setState(() => _types.removeAt(index))),
         const SizedBox(height: 16),
         _ExpansionLabel(
           item: _TAGS,
@@ -203,7 +203,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
           list: DiscSpecialityList(specialities: tags, selectedSpecialities: _tags, onSelect: _onSelectTag),
         ),
         if (tagLabels.isNotEmpty) const SizedBox(height: 06),
-        if (_tags.isNotEmpty) _SelectedWrapList(animIndex: 5, items: tagLabels, onItem: (index) => setState(() => _tags.removeAt(index))),
+        if (_tags.isNotEmpty) LabelWrapList(animIndex: 5, items: tagLabels, onItem: (index) => setState(() => _tags.removeAt(index))),
         const SizedBox(height: 16),
         _ExpansionLabel(
           item: _FLIGHT_PATH,
@@ -427,35 +427,6 @@ class _ExpansionLabel extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _SelectedWrapList extends StatelessWidget {
-  final int animIndex;
-  final List<String> items;
-  final Function(int)? onItem;
-  const _SelectedWrapList({this.animIndex = 0, this.items = const [], this.onItem});
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenListItem(
-      index: animIndex,
-      child: Wrap(spacing: 06, runSpacing: 04, children: List.generate(items.length, _listItemCard).toList()),
-    );
-  }
-
-  Widget _listItemCard(int index) {
-    var item = items[index];
-    var label = Text(item, style: TextStyles.text14_500.copyWith(color: primary, height: 1));
-    var icon = SvgImage(image: Assets.svg1.close_2, color: primary, height: 14);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 04, vertical: 05),
-      decoration: BoxDecoration(color: lightBlue, borderRadius: BorderRadius.circular(02)),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [label, const SizedBox(width: 04), InkWell(onTap: () => onItem == null ? null : onItem!(index), child: icon)],
       ),
     );
   }

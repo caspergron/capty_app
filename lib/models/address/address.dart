@@ -1,6 +1,7 @@
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/models/public/country.dart';
+import 'package:app/utils/assets.dart';
 
 class Address {
   int? id;
@@ -70,6 +71,8 @@ class Address {
     if (country != null) map['country'] = country?.toJson();
     return map;
   }
+
+  String get address_label_icon => label.toKey == 'home'.toKey ? Assets.svg1.home : Assets.svg1.map_pin;
 
   String get formatted_address {
     var addressItems = [addressLine1, city, zipCode];

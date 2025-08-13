@@ -6,7 +6,7 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/address_repo.dart';
 import 'package:flutter/cupertino.dart';
 
-class AddressesViewModel with ChangeNotifier {
+class SellerSettingsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
   var addresses = <Address>[];
   var isShipping = false;
@@ -27,20 +27,21 @@ class AddressesViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteAddress(Address address, int index) async {
+  Future<void> deleteAddress(Address addressItem) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<AddressRepository>().deleteAddress(address);
+    var index = addresses.indexWhere((element) => element.id == addressItem.id);
+    var response = await sl<AddressRepository>().deleteAddress(addressItem);
     if (response) addresses.removeAt(index);
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }
 
-  void updateAddressItem({required Address address, required bool isAdd}) {
-    if (isAdd) addresses.add(address);
+  void updateAddressItem({required Address addressItem, required bool isAdd}) {
+    if (isAdd) addresses.add(addressItem);
     if (isAdd) return notifyListeners();
-    var index = addresses.indexWhere((element) => element.id == address.id);
-    if (index >= 0) addresses[index] = address;
+    var index = addresses.indexWhere((element) => element.id == addressItem.id);
+    if (index >= 0) addresses[index] = addressItem;
   }
 
   Future<void> fetchShippingInfo() async {

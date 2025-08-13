@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
+import 'package:flutter/material.dart';
 
 // const _DURATION = Duration(milliseconds: 700);
 
@@ -20,7 +19,7 @@ class AnimatedRadio extends StatelessWidget {
     this.label = '',
     this.size = 16,
     this.color = primary,
-    this.style = const TextStyle(fontSize: 12, color: dark, fontFamily: roboto),
+    this.style = const TextStyle(fontSize: 13, color: dark, fontFamily: roboto),
     this.mainAxisAlignment = MainAxisAlignment.center,
   });
 

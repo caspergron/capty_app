@@ -7,7 +7,6 @@ import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/marketplace/screens/add_address_dialog.dart';
 import 'package:app/features/notification/notifications_view_model.dart';
 import 'package:app/libraries/pusher.dart';
 import 'package:app/models/chat/chat_message.dart';
@@ -38,8 +37,7 @@ class LandingViewModel with ChangeNotifier {
     notifyListeners();
     sl<Pusher>().onInitPusher();
     _startOnlineTimer(isFirst: true);
-    // if (!ApiStatus.instance.betaPopup) unawaited(betaTestingDialog());
-    unawaited(addAddressDialog());
+    if (!ApiStatus.instance.betaPopup) unawaited(betaTestingDialog());
   }
 
   void updateUi() => notifyListeners();

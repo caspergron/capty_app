@@ -4,7 +4,7 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/components/shipping_update_info_dialog.dart';
 import 'package:app/features/address/utils/address_list.dart';
-import 'package:app/features/address/view_models/addresses_view_model.dart';
+import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
@@ -18,18 +18,18 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddressesScreen extends StatefulWidget {
+class SellerSettingsScreen extends StatefulWidget {
   final Function(Address)? onItem;
 
-  const AddressesScreen({this.onItem});
+  const SellerSettingsScreen({this.onItem});
 
   @override
-  State<AddressesScreen> createState() => _AddressesScreenState();
+  State<SellerSettingsScreen> createState() => _SellerSettingsScreenState();
 }
 
-class _AddressesScreenState extends State<AddressesScreen> {
-  var _viewModel = AddressesViewModel();
-  var _modelData = AddressesViewModel();
+class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
+  var _viewModel = SellerSettingsViewModel();
+  var _modelData = SellerSettingsViewModel();
 
   @override
   void initState() {
@@ -40,8 +40,8 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
   @override
   void didChangeDependencies() {
-    _viewModel = Provider.of<AddressesViewModel>(context, listen: false);
-    _modelData = Provider.of<AddressesViewModel>(context);
+    _viewModel = Provider.of<SellerSettingsViewModel>(context, listen: false);
+    _modelData = Provider.of<SellerSettingsViewModel>(context);
     super.didChangeDependencies();
   }
 
@@ -85,9 +85,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
         homeAddress == null
             ? _AddAddressOption(label: 'add_your_home_address', onTap: Routes.user.add_address(address: Address(label: 'home')).push)
             : AddressList(
-                addressList: _modelData.addresses,
+                addressList: [homeAddress],
                 onItem: (item, index) => widget.onItem == null ? null : _onSelect(item),
-                onDelete: (item, index) => _viewModel.deleteAddress(item, index),
+                onDelete: (item, index) => _viewModel.deleteAddress(item),
                 onUpdate: (item, index) => Routes.user.add_address(address: item).push(),
               ),
         const SizedBox(height: 20),
@@ -95,9 +95,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
         const SizedBox(height: 10),
         if (otherAddresses.isNotEmpty)
           AddressList(
-            addressList: _modelData.addresses,
+            addressList: otherAddresses,
             onItem: (item, index) => widget.onItem == null ? null : _onSelect(item),
-            onDelete: (item, index) => _viewModel.deleteAddress(item, index),
+            onDelete: (item, index) => _viewModel.deleteAddress(item),
             onUpdate: (item, index) => Routes.user.add_address(address: item).push(),
           ),
         if (otherAddresses.isNotEmpty) const SizedBox(height: 14),

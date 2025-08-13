@@ -1,3 +1,5 @@
+import 'package:app/extensions/string_ext.dart';
+
 class Tag {
   int? id;
   String? displayName;
@@ -49,5 +51,23 @@ class Tag {
     map['value'] = value;
     map['is_active'] = isActive;
     return map;
+  }
+
+  static List<Tag> tag_list_by_display_name(List<Tag> tagList, String key) {
+    if (tagList.isEmpty) return [];
+    if (key.isEmpty) return tagList;
+    return tagList.where((item) => item.displayName.toKey.startsWith(key.toKey)).toList();
+  }
+
+  String get marketplace_menu_display_name {
+    if (name.toKey == 'all'.toKey) {
+      return 'all'.recast;
+    } else if (name.toKey == 'club'.toKey) {
+      return 'from_club_member'.recast;
+    } else if (name.toKey == 'tournament'.toKey) {
+      return 'tournaments'.recast;
+    } else {
+      return displayName ?? 'n/a'.recast;
+    }
   }
 }

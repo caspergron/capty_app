@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
-import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/common/tag.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
+import 'package:flutter/material.dart';
 
 class MenuHorizontalList extends StatelessWidget {
   final Tag menu;
@@ -50,7 +48,7 @@ class MenuHorizontalList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             margin: EdgeInsets.only(left: index == 0 ? gap : 0, right: index == menuItems.length - 1 ? gap : 08),
             decoration: BoxDecoration(color: selected ? skyBlue : lightBlue, borderRadius: BorderRadius.circular(4), border: border),
-            child: Text(item.displayName ?? 'n/a'.recast, style: TextStyles.text12_600.copyWith(color: primary, height: 1)),
+            child: Text(item.marketplace_menu_display_name, style: TextStyles.text12_600.copyWith(color: primary, height: 1)),
           ),
         ),
       ),
