@@ -85,6 +85,9 @@ class MarketplaceViewModel with ChangeNotifier {
       params = '&page=$pageNumber$locationParams$filterParams'.trim();
     } else if (tag.name.toKey == 'all'.toKey) {
       params = '&page=$pageNumber$locationParams$filterParams'.trim();
+    } else if (tag.name.toKey == 'country'.toKey) {
+      var countryId = UserPreferences.user.countryId;
+      params = '&page=$pageNumber&sort_by=${tag.name.toKey}&country_id=$countryId$locationParams$filterParams'.trim();
     } else if (tag.name.toKey == 'club'.toKey || tag.name.toKey == 'tournament'.toKey) {
       params = '&page=$pageNumber&sort_by=${tag.name.toKey}$locationParams$filterParams'.trim();
     } else if (tag.name.toKey == 'distance'.toKey) {

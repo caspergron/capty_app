@@ -249,7 +249,7 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
 
   Widget get _discBasicInfo {
     var name = widget.salesAd.userDisc?.parentDisc?.name ?? '';
-    var price = '${widget.salesAd.price.formatDouble} ${UserPreferences.currencyCode}';
+    var price = '${widget.salesAd.price.formatDouble} ${widget.salesAd.currency_code}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 02),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(06)),

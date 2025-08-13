@@ -4,7 +4,6 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
@@ -51,6 +50,7 @@ class MarketplaceDiscList extends StatelessWidget {
     var gap = Dimensions.screen_padding;
     var userDisc = item.userDisc;
     var parentDisc = userDisc?.parentDisc;
+    var distance = item.address?.distance ?? 0;
     return InkWell(
       onTap: () => onTap == null ? null : onTap!(item),
       child: TweenListItem(
@@ -64,16 +64,17 @@ class MarketplaceDiscList extends StatelessWidget {
           decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  '${item.address?.distance.formatDouble ?? 0} ${'km'.recast}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1),
+              if (distance > 0)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    '${item.address?.distance.formatDouble ?? 0} ${'km'.recast}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 05),
+              SizedBox(height: distance > 0 ? 05 : 08),
               Builder(builder: (context) {
                 if (userDisc?.media?.url != null) {
                   // print('name: ${parentDisc?.name} -> image: ${userDisc?.media?.url} -> distance: ${item.address?.distance}');
@@ -114,7 +115,7 @@ class MarketplaceDiscList extends StatelessWidget {
               ),
               const SizedBox(height: 03),
               Text(
-                '${(item.price ?? 0).formatDouble} ${UserPreferences.currencyCode}',
+                '${(item.price ?? 0).formatDouble} ${item.currency_code}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text14_700.copyWith(color: lightBlue, height: 1.2),
@@ -126,6 +127,7 @@ class MarketplaceDiscList extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text12_400.copyWith(color: lightBlue, height: 1.1),
               ),
+              SizedBox(height: distance > 0 ? 0 : 02),
             ],
           ),
         ),

@@ -10,7 +10,6 @@ import 'package:app/models/chat/chat_buddy.dart';
 import 'package:app/models/chat/chat_content.dart';
 import 'package:app/models/chat/chat_message.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
@@ -276,7 +275,7 @@ class _DiscCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 02),
                     Text(
-                      '${salesAd.price.formatDouble} ${UserPreferences.currencyCode}',
+                      '${salesAd.price.formatDouble} ${salesAd.currency_code}',
                       style: TextStyles.text16_600.copyWith(color: warning),
                     ),
                   ],

@@ -19,6 +19,7 @@ import 'package:app/models/marketplace/marketplace_api.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/marketplace/sales_ad_api.dart';
+import 'package:app/preferences/user_preferences.dart';
 import 'package:app/utils/api_url.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,11 @@ class MarketplaceRepository {
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var tagsApi = TagsApi.fromJson(apiResponse.response);
-    return tagsApi.tags.haveList ? tagsApi.tags! : [];
+    var tagList = tagsApi.tags ?? [];
+    if (tagList.isEmpty) return [];
+    var index = tagList.indexWhere((item) => item.name.toKey == 'country'.toKey);
+    if (index >= 0) tagList[index].displayName = UserPreferences.user.country?.name ?? 'country'.recast;
+    return tagList;
   }
 
   Future<List<MarketplaceCategory>> fetchMarketplaceDiscs({String params = ''}) async {

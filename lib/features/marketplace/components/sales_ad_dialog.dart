@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
@@ -10,7 +8,6 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
@@ -23,6 +20,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 // type: sell, , sold
 Future<void> salesAdDialog({
@@ -96,7 +94,7 @@ class _DialogViewState extends State<_DialogView> {
           ],
         ),
         const SizedBox(height: 20),
-        Text('${'price'.recast} (${UserPreferences.currencyCode})', style: TextStyles.text14_600.copyWith(color: lightBlue)),
+        Text('${'price'.recast} (${widget.marketplace.currency_code})', style: TextStyles.text14_600.copyWith(color: lightBlue)),
         const SizedBox(height: 06),
         InputField(
           fontSize: 12,

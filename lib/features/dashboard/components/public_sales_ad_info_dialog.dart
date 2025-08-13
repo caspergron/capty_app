@@ -8,7 +8,6 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/discs/units/disc_speciality_list.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
@@ -191,7 +190,7 @@ class _DialogViewState extends State<_DialogView> {
 
   Widget get _discInfo {
     var name = widget.disc.userDisc?.parentDisc?.name ?? '';
-    var price = '${widget.disc.price.formatDouble} ${UserPreferences.currencyCode}';
+    var price = '${widget.disc.price.formatDouble} ${widget.disc.currency_code}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 04),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(06)),

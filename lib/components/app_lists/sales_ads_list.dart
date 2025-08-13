@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -7,13 +5,13 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class SalesAdsList extends StatelessWidget {
   final String label;
@@ -92,7 +90,7 @@ class SalesAdsList extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${(item.price ?? 0).formatDouble} ${UserPreferences.currencyCode}',
+                      '${(item.price ?? 0).formatDouble} ${item.currency_code}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.text18_700.copyWith(color: lightBlue),

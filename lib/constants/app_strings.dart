@@ -988,6 +988,7 @@ const APP_STRINGS = {
   'select_tags': 'Select Tags',
   'search_by_tag_name': 'Search by tag name',
   'if_you_tag_your_sales_ad_it_makes_it_more': 'If you tag your sales ad, it makes it more visible to buyers',
+  'country': 'Country',
   '': ''
 };
 

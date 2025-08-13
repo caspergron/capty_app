@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
@@ -13,6 +10,7 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MarketplaceGridList extends StatelessWidget {
   final double gap;
@@ -126,7 +124,7 @@ class MarketplaceGridList extends StatelessWidget {
               ),
               const SizedBox(height: 04),
               Text(
-                '${(item.price ?? 0).formatDouble} ${UserPreferences.currencyCode}',
+                '${(item.price ?? 0).formatDouble} ${item.currency_code}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text14_700.copyWith(color: lightBlue, height: 1.2),

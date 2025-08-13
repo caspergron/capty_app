@@ -34,6 +34,7 @@ class SalesAd {
   bool get is_wishListed => wishlistId != null;
   bool get is_my_disc => userDisc?.userId != null && (userDisc?.userId == UserPreferences.user.id);
   int? get condition_value => usedRange == null ? null : (usedRange == 0 ? 0 : usedRange!.toInt() - 1);
+  String get currency_code => currency?.code ?? '';
   String get condition_number => usedRange == null || usedRange == 0 ? '0' : usedRange!.toInt().formatInt;
 
   SalesAd({

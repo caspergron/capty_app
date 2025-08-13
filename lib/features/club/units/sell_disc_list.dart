@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
@@ -14,6 +11,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class SellDiscList extends StatelessWidget {
   final List<SalesAd> discs;
@@ -78,7 +76,7 @@ class SellDiscList extends StatelessWidget {
                         style: TextStyles.text10_400.copyWith(color: lightBlue),
                       ),
                       Text(
-                        '${(item.price ?? 0).formatDouble} ${UserPreferences.currencyCode}',
+                        '${(item.price ?? 0).formatDouble} ${item.currency_code}',
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
