@@ -658,7 +658,7 @@ const APP_STRINGS = {
   'discs_for_sale': 'Discs for sale',
   'camera': 'Camera',
   'gallery': 'Gallery',
-  'added_waitlist_description': 'You have been signed up for waitlist.. We will contact when you open up in your country.',
+  'added_waitlist_description': 'You have been signed up for waitlist. We will contact when you open up in your country.',
   'thank_you': 'Thank You',
   'continue': 'continue',
   'which_country_are_you_from': 'Which country you are from?',
@@ -667,7 +667,6 @@ const APP_STRINGS = {
   'please_join_our_waitlist': 'Please join our waitlist',
   'submit': 'Submit',
   'please_select_your_country': 'Please select your country',
-  // New Translations
   'continue_with_google': 'Continue with Google',
   'continue_with_aApple': 'Continue with Apple',
   'please_sign_out_from_icloud': 'You are previously signed in. Please sign out from iCloud',
@@ -943,9 +942,10 @@ const APP_STRINGS = {
   'okay_i_understand': 'Okay, I Understand!',
   'the_capty_app_is_live': 'The CAPTY app is live!',
   'you_have_installed_the_first_version_of_the_app': 'You have installed the first version of the app.',
-  'as_we_are_a_new_app_we_really_need_your_feedback': 'As we are a new app, we really need your feedback!',
-  'use_the_button_below_to_go_to_the_feedback_page_and_send_us_your_feedback':
-      'Use the button below to go to the feedback page, and send us your feedback.',
+  'the_dream_is_to_create_an_app_that_some_day_in_future':
+      'The dream is to create an app, that SOME DAY IN THE FUTURE will be the epicenter of your disc golf life.',
+  'but_to_make_the_app_better_we_need_your_inputs':
+      'But to make the app better, we need your inputs! Please send us feedback on bugs and your improvement ideas here',
   'go_to_feedback_page': 'Go To Feedback page',
   'pdga_number_already_used_please_try_your_unique_pdga_number': 'Pdga number already used. Please try your unique pdga number.',
   'shipping': 'Shipping',
@@ -994,6 +994,8 @@ const APP_STRINGS = {
   'please_give_us_some_info_about_the_discs': 'Please give us some info about the discs',
   'online_link_of_the_disc': 'Online link of the disc',
   'image_of_the_disc': 'Image of the disc',
+  'founder': 'Founder',
+  'join_waitlist': 'Join Waitlist',
   // New translations
   '': ''
 };

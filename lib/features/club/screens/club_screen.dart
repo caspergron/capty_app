@@ -231,12 +231,13 @@ class _ClubScreenState extends State<ClubScreen> {
   }
 
   List<Widget> get _salesAdDiscsSection {
+    var moreStyle = TextStyles.text14_700.copyWith(color: primary);
     return [
       Row(
         children: [
           SizedBox(width: Dimensions.screen_padding),
           Expanded(child: Text('discs_for_sale_in_this_club'.recast, style: TextStyles.text18_600.copyWith(color: dark))),
-          InkWell(onTap: _goToMarketplace, child: Text('view_more'.recast, style: TextStyles.text14_700.copyWith(color: white))),
+          if (_modelData.salesAdDiscs.length > 5) InkWell(onTap: _goToMarketplace, child: Text('view_more'.recast, style: moreStyle)),
           SizedBox(width: Dimensions.screen_padding),
         ],
       ),

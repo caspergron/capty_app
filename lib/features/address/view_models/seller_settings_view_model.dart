@@ -43,6 +43,7 @@ class SellerSettingsViewModel with ChangeNotifier {
     if (isAdd) return notifyListeners();
     var index = addresses.indexWhere((element) => element.id == addressItem.id);
     if (index >= 0) addresses[index] = addressItem;
+    notifyListeners();
   }
 
   Future<void> fetchShippingInfo() async {

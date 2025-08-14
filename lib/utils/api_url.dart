@@ -1,8 +1,9 @@
 import 'package:app/constants/data_constants.dart';
 import '../constants/app_constants.dart';
 
-// const String _SERVER = 'https://api.capty.com/api/v1';
-const String _SERVER = 'https://apitest.capty.com/api/v1';
+const String _SERVER = 'https://api.capty.com/api/v1';
+// const String _SERVER = 'https://apitest.capty.com/api/v1';
+
 const String GOOGLE_API = 'https://maps.googleapis.com/maps/api/geocode/json?key=$GOOGLE_MAP_API_KEY';
 const String GOOGLE_API_AUTOCOMPLETE = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?key=$GOOGLE_MAP_API_KEY';
 

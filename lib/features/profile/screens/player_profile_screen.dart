@@ -52,6 +52,12 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   }
 
   @override
+  void dispose() {
+    _viewModel.disposeViewModel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,

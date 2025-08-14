@@ -43,8 +43,8 @@ class CountriesList extends StatelessWidget {
             ImageNetwork(
               width: 24,
               height: 24,
-              // image: item.flag,
-              placeholder: const FadingCircle(size: 20, color: lightBlue),
+              image: item.media?.url,
+              placeholder: const FadingCircle(size: 12, color: lightBlue),
               errorWidget: SvgImage(image: Assets.svg1.image_square, color: lightBlue, height: 22),
             ),
             const SizedBox(width: 12),

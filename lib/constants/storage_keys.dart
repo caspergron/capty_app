@@ -1,4 +1,5 @@
 // Local Storage Key
+const String APP_OPEN_COUNT = 'app-open-count';
 const String ON_BOARD = 'on-board';
 const String LANGUAGE = 'language';
 const String TRANSLATIONS = 'translations';

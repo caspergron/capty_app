@@ -27,6 +27,7 @@ class _AppIcons {
 
 class _PngImages {
   String about_us = '$_PNG_IMAGES/about_us.webp';
+  String casper = '$_PNG_IMAGES/casper.png';
   String challenge = '$_PNG_IMAGES/challenge.png';
   String challenge_banner = '$_PNG_IMAGES/challenge_banner.png';
   String invite = '$_PNG_IMAGES/invite.png';

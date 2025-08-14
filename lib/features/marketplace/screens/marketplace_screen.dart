@@ -106,21 +106,21 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
               ),
             ),
             const SizedBox(width: 10),
-            // SvgImage(image: Assets.svg1.funnel, height: 24, color: primary),
-            AnimatedSize(
-              curve: Curves.easeInOut,
-              duration: const Duration(milliseconds: 400),
-              child: RowLabelPlaceholder(
-                height: 28,
-                background: skyBlue,
-                border: mediumBlue,
-                label: _tabIndex == 0 ? 'filter_in_marketplace'.recast : 'share_sales_ad'.recast,
-                icon: SvgImage(image: _tabIndex == 0 ? Assets.svg1.funnel : Assets.svg1.share, color: primary, height: 16),
-                onTap: () => _tabIndex != 0
-                    ? _viewModel.onShareSalesAd()
-                    : marketplaceFilterSheet(filterOption: _modelData.filterOption, onFilter: _viewModel.onMarketplaceFilter),
+            if (_tabIndex == 0)
+              AnimatedSize(
+                curve: Curves.easeInOut,
+                duration: const Duration(milliseconds: 400),
+                child: RowLabelPlaceholder(
+                  height: 28,
+                  background: skyBlue,
+                  border: mediumBlue,
+                  label: _tabIndex == 0 ? 'filter_in_marketplace'.recast : 'share_sales_ad'.recast,
+                  icon: SvgImage(image: _tabIndex == 0 ? Assets.svg1.funnel : Assets.svg1.share, color: primary, height: 16),
+                  onTap: () => _tabIndex != 0
+                      ? _viewModel.onShareSalesAd()
+                      : marketplaceFilterSheet(filterOption: _modelData.filterOption, onFilter: _viewModel.onMarketplaceFilter),
+                ),
               ),
-            ),
             SizedBox(width: Dimensions.screen_padding),
           ],
         ),

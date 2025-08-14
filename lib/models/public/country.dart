@@ -1,4 +1,5 @@
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/models/common/media.dart';
 import 'package:app/models/public/currency.dart';
 import 'package:app/models/public/language.dart';
 
@@ -12,6 +13,7 @@ class Country {
   String? appLanguage;
   Currency? currency;
   Language? language;
+  Media? media;
 
   Country({
     this.id,
@@ -23,6 +25,7 @@ class Country {
     this.appLanguage,
     this.currency,
     this.language,
+    this.media,
   });
 
   Country.fromJson(json) {
@@ -35,6 +38,7 @@ class Country {
     appLanguage = json['app_language'];
     currency = json['currency'] != null ? Currency.fromJson(json['currency']) : null;
     language = json['language'] != null ? Language.fromJson(json['language']) : null;
+    media = json['media'] != null ? Media.fromJson(json['media']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +52,7 @@ class Country {
     map['app_language'] = appLanguage;
     if (currency != null) map['currency'] = currency?.toJson();
     if (language != null) map['language'] = language?.toJson();
+    if (media != null) map['media'] = media?.toJson();
     return map;
   }
 

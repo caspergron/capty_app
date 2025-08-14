@@ -10,6 +10,7 @@ class ApiStatus {
   bool profile = false;
   bool notification = false;
   bool betaPopup = false;
+  bool releasePopup = false;
 
   void clearStates() {
     landing = false;

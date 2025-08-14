@@ -24,7 +24,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 
-Future<void> specialFeaturesSheet({required List<Tag> selectedTags, required Function(List<Tag>) onChanged}) async {
+Future<void> specialTagsSheet({required List<Tag> selectedTags, required Function(List<Tag>) onChanged}) async {
   var context = navigatorKey.currentState!.context;
   var padding = MediaQuery.of(context).viewInsets;
   var child = _BottomSheetView(selectedTags, onChanged);

@@ -56,8 +56,7 @@ Future<void> main() async {
   // runApp(ErrorApp(FlutterErrorDetails(exception: '')));
 }
 
-MultiProvider get _runApp =>
-    MultiProvider(providers: providers, child: !kReleaseMode ? _screenCraft : SentryScreenshotWidget(child: _screenCraft));
+get _runApp => MultiProvider(providers: providers, child: !kReleaseMode ? _screenCraft : SentryScreenshotWidget(child: _screenCraft));
 Widget get _screenCraft => ScreenCraft(builder: (context, orientation) => CoachCaptyApp());
 
 Future<void> _initCoachCaptyApp() async {

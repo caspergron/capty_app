@@ -50,7 +50,7 @@ class _DialogView extends StatelessWidget {
         LottieAnimation(animPath: Assets.anim.rocket, height: 30.width),
         const SizedBox(height: 10),
         Text(
-          '${'thank_you'.recast} $name!',
+          '${'thank_you'.recast} ${name.allFirstLetterCapital}!',
           textAlign: TextAlign.center,
           style: TextStyles.text24_600.copyWith(color: white),
         ),

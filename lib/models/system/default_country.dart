@@ -1,4 +1,5 @@
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/preferences/app_preferences.dart';
 
 class DefaultCountry {
   int id;
@@ -19,8 +20,10 @@ class DefaultCountry {
 
   static List<DefaultCountry> countries_by_name(String key) {
     var searchKey = key.toKey;
-    if (searchKey.isEmpty) return COUNTRY_LIST;
-    return COUNTRY_LIST.where((item) => item.name.toKey.startsWith(searchKey.toKey)).toList();
+    var dbCodes = AppPreferences.countries.isEmpty ? [] : AppPreferences.countries.map((item) => item.code.toKey).toList();
+    var updatedCountries = dbCodes.isEmpty ? COUNTRY_LIST : COUNTRY_LIST.where((item) => !dbCodes.contains(item.code.toKey)).toList();
+    if (searchKey.isEmpty || updatedCountries.isEmpty) return updatedCountries;
+    return updatedCountries.where((item) => item.name.toKey.startsWith(searchKey.toKey)).toList();
   }
 }
 

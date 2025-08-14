@@ -43,7 +43,8 @@ class AddAddressViewModel with ChangeNotifier {
         'city': item.city,
         'coordinates': item.coordinates,
         'state': item.state,
-        'postal_code': item.zipCode
+        'postal_code': item.zipCode,
+        'place_id': item.placeId,
       };
       country = item.country?.id == null ? UserPreferences.user.country_item : item.country!;
       var coordinates = item.is_coordinate ? item.coordinates : await google.coordinatesOfACountry(countryCode: country.code!);
@@ -98,6 +99,7 @@ class AddAddressViewModel with ChangeNotifier {
     var coordinates = addressInfo?['coordinates'] as Coordinates;
     var addressLabel = item.label.toKey == 'home'.toKey ? 'home' : 'other';
     var body = {
+      'place_id': addressInfo?['place_id'],
       'address_line_1': addressInfo?['address'],
       'city': addressInfo?['city'],
       'latitude': coordinates.lat,

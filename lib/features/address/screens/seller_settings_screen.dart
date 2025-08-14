@@ -72,6 +72,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
   }
 
   Widget _screenView(BuildContext context) {
+    if (_modelData.loader.initial) return const SizedBox.shrink();
     var addresses = _modelData.addresses;
     var homeAddress = addresses.isEmpty ? null : addresses.where((item) => item.is_home).toList().firstOrNull;
     var otherAddresses = addresses.isEmpty ? <Address>[] : addresses.where((item) => !item.is_home).toList();

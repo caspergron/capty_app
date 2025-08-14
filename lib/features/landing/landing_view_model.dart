@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 
-import 'package:app/components/dialogs/beta_testing_dialog.dart';
+import 'package:app/components/dialogs/live_app_dialog.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -20,6 +20,7 @@ import 'package:app/repository/chat_repository.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/routes.dart';
+import 'package:app/services/storage_service.dart';
 
 class LandingViewModel with ChangeNotifier {
   var index = 0;
@@ -39,7 +40,7 @@ class LandingViewModel with ChangeNotifier {
     notifyListeners();
     sl<Pusher>().onInitPusher();
     _startOnlineTimer(isFirst: true);
-    if (!ApiStatus.instance.betaPopup) unawaited(betaTestingDialog());
+    _checkAppOpenCount();
   }
 
   void updateUi() => notifyListeners();
@@ -47,6 +48,14 @@ class LandingViewModel with ChangeNotifier {
   void clearStates() {
     index = 0;
     loader = false;
+  }
+
+  void _checkAppOpenCount() {
+    if (ApiStatus.instance.releasePopup) return;
+    var count = sl<StorageService>().appOpenCount;
+    if (count + 1 < 11) liveAppDialog();
+    sl<StorageService>().setAppOpenCount(count + 1);
+    // if (!ApiStatus.instance.betaPopup) unawaited(betaTestingDialog());
   }
 
   void updateView(int value) {

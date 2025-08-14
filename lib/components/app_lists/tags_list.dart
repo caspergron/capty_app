@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:app/animations/fade_animation.dart';
-import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/models/common/tag.dart';
 import 'package:app/themes/colors.dart';
@@ -41,9 +40,9 @@ class TagsList extends StatelessWidget {
         decoration: BoxDecoration(border: index == tagItems.length - 1 ? null : border),
         child: Row(
           children: [
-            Text('${(index + 1).formatInt}.', style: TextStyles.text14_400.copyWith(color: lightBlue, height: 1.1)),
+            const Icon(Icons.circle, color: lightBlue, size: 08),
             const SizedBox(width: 12),
-            Expanded(child: Text(item.displayName ?? 'n/a'.recast, style: TextStyles.text14_400.copyWith(color: lightBlue, height: 1.1))),
+            Expanded(child: Text(item.displayName ?? 'n/a'.recast, style: TextStyles.text14_500.copyWith(color: lightBlue, height: 1.1))),
             if (selected) const SizedBox(width: 12),
             if (selected) FadeAnimation(fadeKey: item.name ?? '', duration: DURATION_1000, child: checkIcon),
           ],

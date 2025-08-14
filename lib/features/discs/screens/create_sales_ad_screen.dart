@@ -15,7 +15,7 @@ import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/menus/label_suffix.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
-import 'package:app/components/sheets/special_features_sheet.dart';
+import 'package:app/components/sheets/special_tags_sheet.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -389,7 +389,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
           const SizedBox(width: 08),
           IconBox(
             background: primary,
-            onTap: () => specialFeaturesSheet(selectedTags: _modelData.specialTags, onChanged: _onSelectDiscSpeciality),
+            onTap: () => specialTagsSheet(selectedTags: _modelData.specialTags, onChanged: _onSelectDiscSpeciality),
             icon: SvgImage(image: Assets.svg1.plus, height: 17, color: lightBlue),
           ),
         ],

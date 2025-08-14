@@ -140,7 +140,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
           radius: const Radius.circular(04),
           padding: const EdgeInsets.only(right: 02),
           scrollbarOrientation: ScrollbarOrientation.right,
-          child: _DefaultCountriesList(selectedItem: _country, onChanged: (v) => setState(() => _country = v)),
+          child: _DefaultCountriesList(countries: countries, selectedItem: _country, onChanged: (v) => setState(() => _country = v)),
         ),
         SizedBox(height: BOTTOM_GAP),
       ],
@@ -150,8 +150,9 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
 class _DefaultCountriesList extends StatelessWidget {
   final DefaultCountry? selectedItem;
+  final List<DefaultCountry> countries;
   final Function(DefaultCountry) onChanged;
-  const _DefaultCountriesList({required this.onChanged, this.selectedItem});
+  const _DefaultCountriesList({required this.onChanged, this.selectedItem, this.countries = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -159,15 +160,15 @@ class _DefaultCountriesList extends StatelessWidget {
       shrinkWrap: true,
       padding: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
-      itemCount: COUNTRY_LIST.length,
+      itemCount: countries.length,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: _countryItemCard,
     );
   }
 
   Widget _countryItemCard(BuildContext context, int index) {
-    var item = COUNTRY_LIST[index];
-    var length = COUNTRY_LIST.length;
+    var item = countries[index];
+    var length = countries.length;
     var selected = selectedItem != null && selectedItem!.id == item.id;
     var checkIcon = SvgImage(image: Assets.svg1.tick, color: lightBlue, height: 18);
     var border = const Border(bottom: BorderSide(color: lightBlue, width: 0.5));
@@ -200,7 +201,7 @@ class _NoCountryFound extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: 4.height),
-          SvgImage(image: Assets.svg3.not_found, height: 16.height, color: lightBlue),
+          SvgImage(image: Assets.svg3.not_found, height: 16.height, color: lightBlue, fit: BoxFit.cover),
           const SizedBox(height: 28),
           Text('${'no_country_found'.recast}!', textAlign: TextAlign.center, style: TextStyles.text16_600.copyWith(color: lightBlue)),
           const SizedBox(height: 04),

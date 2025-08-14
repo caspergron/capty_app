@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
-import 'package:app/components/menus/capty_menu.dart';
+import 'package:app/components/menus/back_menu.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -62,7 +62,8 @@ class _WaitlistScreenState extends State<WaitlistScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: CaptyMenu(),
+        leading: const BackMenu(),
+        title: Text('join_waitlist'.recast),
         automaticallyImplyLeading: false,
       ),
       body: Container(
@@ -81,9 +82,8 @@ class _WaitlistScreenState extends State<WaitlistScreen> {
       height: 42,
       onTap: _onSubmit,
       width: double.infinity,
-      background: skyBlue,
       label: 'submit'.recast.toUpper,
-      textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
+      textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
     );
   }
 
@@ -137,7 +137,7 @@ class _WaitlistScreenState extends State<WaitlistScreen> {
     minimizeKeyboard();
     var invalidName = sl<Validators>().name(_name.text);
     if (invalidName != null) return FlushPopup.onWarning(message: invalidName);
-    var invalidEmail = sl<Validators>().name(_email.text);
+    var invalidEmail = sl<Validators>().email(_email.text);
     if (invalidEmail != null) return FlushPopup.onWarning(message: invalidEmail);
     if (_modelData.country == null) return FlushPopup.onWarning(message: 'please_select_your_country'.recast);
     _viewModel.onSubmit(_name.text.toKey, _email.text.toKey);

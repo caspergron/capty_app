@@ -13,6 +13,9 @@ class StorageService {
   bool _hasData(String key) => _storage.hasLocalData(key: key);
   Future<void> removeData({required String key}) => _storage.removeData(key: key);
 
+  int get appOpenCount => _storage.readData(key: APP_OPEN_COUNT) ?? 0;
+  void setAppOpenCount(int data) => _storage.storeData(key: APP_OPEN_COUNT, value: data);
+
   bool get onboardStatus => _storage.readData(key: ON_BOARD) ?? false;
   void setOnboardStatus(bool status) => _storage.storeData(key: ON_BOARD, value: status);
 

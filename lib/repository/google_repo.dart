@@ -38,27 +38,9 @@ class GoogleRepository {
       if (types.contains('administrative_area_level_1')) state = component['long_name'];
     }
 
-    /*if (address == null) {
-      FlushPopup.onInfo(message: 'address_information_not_found'.recast);
-      return null;
-    } else if (!coordinates.is_coordinate) {
-      FlushPopup.onInfo(message: 'address_coordinates_not_found'.recast);
-      return null;
-    } else if (city.isEmpty) {
-      FlushPopup.onInfo(message: 'city_not_found'.recast);
-      return null;
-    } else if (state.isEmpty) {
-      FlushPopup.onInfo(message: 'state_not_found'.recast);
-      return null;
-    } else if (postalCode.isEmpty) {
-      FlushPopup.onInfo(message: 'postal_code_not_found'.recast);
-      return null;
-    } else {
-      return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
-    }*/
-
-    if (address == null || !coordinates.is_coordinate || city.isEmpty || postalCode.isEmpty) return null;
-    return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
+    // print({'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode, 'place_id': placeId});
+    if (address == null || !coordinates.is_coordinate) return null;
+    return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode, 'place_id': placeId};
   }
 
   Future<Map<String, dynamic>?> addressInfoByCoordinates(Coordinates coordinates) async {
@@ -70,6 +52,7 @@ class GoogleRepository {
     if (json['results'] == null || json['results'].isEmpty) return null;
     var addressData = json['results'][0];
     var address = addressData['formatted_address'];
+    var placeId = addressData['place_id'] ?? '';
     var components = addressData['address_components'] as List;
     var city = '';
     var postalCode = '';
@@ -80,29 +63,8 @@ class GoogleRepository {
       if (types.contains('postal_code')) postalCode = component['long_name'];
       if (types.contains('administrative_area_level_1')) state = component['long_name'];
     }
-
-    /*if (address == null) {
-      FlushPopup.onInfo(message: 'address_information_not_found'.recast);
-      return null;
-    } else if (!coordinates.is_coordinate) {
-      FlushPopup.onInfo(message: 'address_coordinates_not_found'.recast);
-      return null;
-    } else if (city.isEmpty) {
-      FlushPopup.onInfo(message: 'city_not_found'.recast);
-      return null;
-    } else if (state.isEmpty) {
-      FlushPopup.onInfo(message: 'state_not_found'.recast);
-      return null;
-    } else if (postalCode.isEmpty) {
-      FlushPopup.onInfo(message: 'postal_code_not_found'.recast);
-      return null;
-    } else {
-      return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
-    }*/
-
-    // print({'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode});
-    if (address == null || city.isEmpty || postalCode.isEmpty || state.isEmpty) return null;
-    return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
+    if (address == null) return null;
+    return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode, 'place_id': placeId};
   }
 
   Future<Coordinates?> coordinatesOfACountry({required String countryCode}) async {
@@ -127,3 +89,22 @@ class GoogleRepository {
     return LatLng(locationData['lat'], locationData['lng']);
   }*/
 }
+
+/*if (address == null) {
+      FlushPopup.onInfo(message: 'address_information_not_found'.recast);
+      return null;
+    } else if (!coordinates.is_coordinate) {
+      FlushPopup.onInfo(message: 'address_coordinates_not_found'.recast);
+      return null;
+    } else if (city.isEmpty) {
+      FlushPopup.onInfo(message: 'city_not_found'.recast);
+      return null;
+    } else if (state.isEmpty) {
+      FlushPopup.onInfo(message: 'state_not_found'.recast);
+      return null;
+    } else if (postalCode.isEmpty) {
+      FlushPopup.onInfo(message: 'postal_code_not_found'.recast);
+      return null;
+    } else {
+      return {'address': address, 'coordinates': coordinates, 'city': city, 'state': state, 'postal_code': postalCode};
+    }*/

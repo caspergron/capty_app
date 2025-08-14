@@ -10,6 +10,7 @@ class Address {
   String? state;
   String? city;
   String? label;
+  String? placeId;
   String? addressLine1;
   String? addressLine2;
   double? latitude;
@@ -29,6 +30,7 @@ class Address {
     this.state,
     this.city,
     this.label,
+    this.placeId,
     this.addressLine1,
     this.addressLine2,
     this.latitude,
@@ -45,6 +47,7 @@ class Address {
     state = json['state'];
     city = json['city'];
     label = json['label'];
+    placeId = json['place_id'];
     addressLine1 = json['address_line_1'];
     addressLine2 = json['address_line_2'];
     latitude = json['latitude'];
@@ -62,6 +65,7 @@ class Address {
     map['state'] = state;
     map['city'] = city;
     map['label'] = label;
+    map['place_id'] = placeId;
     map['address_line_1'] = addressLine1;
     map['address_line_2'] = addressLine2;
     map['latitude'] = latitude;
