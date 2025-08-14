@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/address_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class SellerSettingsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -20,6 +19,12 @@ class SellerSettingsViewModel with ChangeNotifier {
   }
 
   void disposeViewModel() {}
+
+  void clearStates() {
+    loader = DEFAULT_LOADER;
+    addresses.clear();
+    isShipping = false;
+  }
 
   Future<void> fetchAllAddresses() async {
     var response = await sl<AddressRepository>().fetchAllAddresses();

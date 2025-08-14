@@ -3,11 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:http/http.dart' as http;
-import 'package:sentry_flutter/sentry_flutter.dart';
-
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
@@ -16,6 +11,9 @@ import 'package:app/models/system/api_response.dart';
 import 'package:app/preferences/app_preferences.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _200 = 200;
 const _300 = 300;
@@ -200,8 +198,8 @@ class HttpModule implements ApiInterceptor {
 
   ApiResponse _returnResponse(http.Response response) {
     int statusCode = response.statusCode;
-    if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}');
-    // log('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body.toString()}');
+    // if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}');
+    log('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body.toString()}');
     // if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body}');
     var jsonResponse = response.bodyBytes.isEmpty || response.bodyBytes is String ? null : json.decode(utf8.decode(response.bodyBytes));
     if (statusCode >= 200 && statusCode <= 299) {

@@ -1,9 +1,8 @@
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/storage_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
+import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/features/auth/view_models/set_profile_view_model.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
@@ -19,6 +18,7 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:provider/provider.dart';
 
 class AuthService {
   bool get authStatus => sl<StorageService>().accessToken.isNotEmpty;
@@ -69,6 +69,7 @@ class AuthService {
     if (context == null) return;
     Provider.of<SetProfileViewModel>(context, listen: false).clearStates();
     Provider.of<HomeViewModel>(context, listen: false).clearStates();
+    Provider.of<SellerSettingsViewModel>(context, listen: false).clearStates();
     Provider.of<ClubViewModel>(context, listen: false).clearStates();
     Provider.of<LeaderboardViewModel>(context, listen: false).clearStates();
     Provider.of<DiscsViewModel>(context, listen: false).clearStates();

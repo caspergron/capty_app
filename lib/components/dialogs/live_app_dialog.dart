@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
@@ -17,6 +15,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 Future<void> liveAppDialog() async {
   var context = navigatorKey.currentState!.context;
@@ -109,30 +108,26 @@ class _DialogView extends StatelessWidget {
           children: [
             Image.asset(Assets.png_image.casper, height: 18.height),
             Expanded(
-              child: Stack(
-                clipBehavior: Clip.none,
+              child: Column(
                 children: [
+                  ElevateButton(
+                    radius: 04,
+                    height: 38,
+                    onTap: _onProceed,
+                    label: 'go_to_feedback_page'.recast.toUpper,
+                    textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontSize: 15, fontWeight: w600, height: 1.15),
+                  ),
+                  const SizedBox(height: 20),
                   Container(
                     width: double.infinity,
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.only(bottom: 24, right: 08),
+                    padding: const EdgeInsets.only(bottom: 28, right: 08),
                     child: Text(
                       'Casper Grønbjerg\n${'founder'.recast}',
                       textAlign: TextAlign.center,
                       style: TextStyles.text18_600.copyWith(color: lightBlue, fontStyle: FontStyle.italic, fontWeight: w500),
                     ),
                   ),
-                  Positioned(
-                    top: -54,
-                    right: 20,
-                    child: ElevateButton(
-                      radius: 04,
-                      height: 38,
-                      onTap: _onProceed,
-                      label: 'go_to_feedback_page'.recast.toUpper,
-                      textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontSize: 15, fontWeight: w600, height: 1.15),
-                    ),
-                  )
                 ],
               ),
             )

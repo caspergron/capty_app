@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
+import 'package:app/constants/app_keys.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/components/shipping_update_info_dialog.dart';
 import 'package:app/features/address/utils/address_list.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
+import 'package:app/features/discs/view_models/create_sales_ad_view_model.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
@@ -19,11 +17,12 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/flutter_switch.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SellerSettingsScreen extends StatefulWidget {
-  final Function(Address)? onItem;
-
-  const SellerSettingsScreen({this.onItem});
+  final bool isSelectable;
+  const SellerSettingsScreen({required this.isSelectable});
 
   @override
   State<SellerSettingsScreen> createState() => _SellerSettingsScreenState();
@@ -89,7 +88,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
             ? _AddAddressOption(label: 'add_your_home_address', onTap: Routes.user.add_address(address: Address(label: 'home')).push)
             : AddressList(
                 addressList: [homeAddress],
-                onItem: (item, index) => widget.onItem == null ? null : _onSelect(item),
+                onItem: (item, index) => !widget.isSelectable ? null : _onSelect(item),
                 onDelete: (item, index) => _viewModel.deleteAddress(item),
                 onUpdate: (item, index) => Routes.user.add_address(address: item).push(),
               ),
@@ -99,7 +98,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
         if (otherAddresses.isNotEmpty)
           AddressList(
             addressList: otherAddresses,
-            onItem: (item, index) => widget.onItem == null ? null : _onSelect(item),
+            onItem: (item, index) => !widget.isSelectable ? null : _onSelect(item),
             onDelete: (item, index) => _viewModel.deleteAddress(item),
             onUpdate: (item, index) => Routes.user.add_address(address: item).push(),
           ),
@@ -149,8 +148,9 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
   }
 
   void _onSelect(Address item) {
+    var context = navigatorKey.currentState!.context;
+    Provider.of<CreateSalesAdViewModel>(context, listen: false).updateAddress(item);
     backToPrevious();
-    widget.onItem!(item);
   }
 }
 

@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -22,6 +17,9 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 class ProfileViewModel with ChangeNotifier {
   var person = User();
@@ -101,7 +99,7 @@ class ProfileViewModel with ChangeNotifier {
     if (response != null) {
       person = response;
       var context = navigatorKey.currentState!.context;
-      unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
+      unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount(isDelay: true));
     }
     loader.common = false;
     notifyListeners();

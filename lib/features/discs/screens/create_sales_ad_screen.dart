@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -31,7 +26,6 @@ import 'package:app/models/plastic/plastic.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/input_formatters.dart';
-import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
@@ -51,6 +45,9 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class CreateSalesAdScreen extends StatefulWidget {
   final int tabIndex;
@@ -238,7 +235,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
         ),
       ),
       const SizedBox(height: 12),
-      if (_modelData.address.is_home) Text('address'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+      /*if (_modelData.address.is_home) Text('address'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
       if (_modelData.address.is_home) const SizedBox(height: 04),
       if (_modelData.address.is_home)
         Container(
@@ -265,7 +262,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
             ],
           ),
         ),
-      if (_modelData.address.is_home) const SizedBox(height: 12),
+      if (_modelData.address.is_home) const SizedBox(height: 12),*/
       /*Text('shipping'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
       const SizedBox(height: 04),
       Container(
@@ -546,9 +543,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
     if (_modelData.step == 2) return;
     if (_modelData.step == 1) {
       var isHomeAddress = _modelData.address.id != null && _modelData.address.is_home;
-      if (!isHomeAddress) {
-        return unawaited(addHomeAddressDialog(onProceed: () => Routes.user.seller_settings(onItem: _modelData.updateAddress).push()));
-      }
+      if (!isHomeAddress) return unawaited(addHomeAddressDialog());
       if (_price.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_price_of_your_disc'.recast);
       var invalidImage = _modelData.discFile.file == null && widget.userDisc.media?.id == null;
       if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);

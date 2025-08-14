@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/constants/app_keys.dart';
@@ -6,6 +6,7 @@ import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
@@ -13,8 +14,9 @@ import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
+import 'package:flutter/material.dart';
 
-Future<void> addHomeAddressDialog({Function()? onProceed}) async {
+Future<void> addHomeAddressDialog() async {
   var context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('add-home-address-popup');
   await showGeneralDialog(
@@ -22,14 +24,11 @@ Future<void> addHomeAddressDialog({Function()? onProceed}) async {
     barrierLabel: 'Add Home Address Dialog',
     transitionDuration: DIALOG_DURATION,
     transitionBuilder: sl<Transitions>().topToBottom,
-    pageBuilder: (buildContext, anim1, anim2) => PopScopeNavigator(canPop: false, child: Align(child: _DialogView(onProceed))),
+    pageBuilder: (buildContext, anim1, anim2) => PopScopeNavigator(canPop: false, child: Align(child: _DialogView())),
   );
 }
 
 class _DialogView extends StatelessWidget {
-  final Function()? onProceed;
-  const _DialogView(this.onProceed);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,8 +74,7 @@ class _DialogView extends StatelessWidget {
   }
 
   void _onProceed() {
-    if (onProceed == null) return;
     backToPrevious();
-    onProceed!();
+    unawaited(Routes.user.seller_settings(isSelectable: true).push());
   }
 }

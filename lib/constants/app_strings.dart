@@ -955,7 +955,7 @@ const APP_STRINGS = {
   'you_will_both_attend': 'You will both attend',
   'the_seller_pick_up_points': 'The seller pick up points',
   'this_seller_offers_shipping': 'This seller offers shipping.',
-  'this_seller_does_not_offers_shipping': 'This seller doen not offers shipping.',
+  'this_seller_does_not_offers_shipping': 'This seller does not offers shipping.',
   'rotate_disc_image': 'Rotate Disc Image',
   'add_your_home_address': 'Add your home address',
   'home_address': 'Home address',

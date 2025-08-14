@@ -1,5 +1,5 @@
+import 'package:app/constants/app_constants.dart';
 import 'package:app/constants/data_constants.dart';
-import '../constants/app_constants.dart';
 
 const String _SERVER = 'https://api.capty.com/api/v1';
 // const String _SERVER = 'https://apitest.capty.com/api/v1';
