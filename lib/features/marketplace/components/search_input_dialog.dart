@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/constants/app_keys.dart';
@@ -15,7 +17,6 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
 
 Future<void> searchInputDialog({required String searchKey, Function(String)? onFilter}) async {
   var context = navigatorKey.currentState!.context;

@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/app_lists/menu_horizontal_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/drawers/app_drawer.dart';
@@ -36,8 +40,6 @@ import 'package:app/widgets/exception/no_disc_found.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/row_label_placeholder.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 const _TABS_LIST = ['disc_listings', 'your_ads', 'favourites'];
 

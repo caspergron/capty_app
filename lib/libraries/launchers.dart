@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
+
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/libraries/flush_popup.dart';
-import 'package:flutter/foundation.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 const _headers = <String, String>{'my_header_key': 'my_header_value'};
 const _webViewConfigurationJsEnabled = WebViewConfiguration(headers: _headers);

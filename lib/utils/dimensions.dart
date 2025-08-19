@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:app/utils/size_config.dart';
 import 'package:flutter/material.dart';
+
+import 'package:app/utils/size_config.dart';
 
 abstract class Dimensions {
   static double dialog_width = SizeConfig.width - 32;

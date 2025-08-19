@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/circle_loader.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -20,8 +24,6 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/ui/phone_prefix.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // country, phone, medium, social_id, name, email
 class SetProfileScreen1 extends StatefulWidget {

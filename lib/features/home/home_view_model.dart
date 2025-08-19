@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/libraries/locations.dart';
@@ -11,7 +13,6 @@ import 'package:app/preferences/app_preferences.dart';
 import 'package:app/repository/club_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/api_status.dart';
-import 'package:flutter/cupertino.dart';
 
 class HomeViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
