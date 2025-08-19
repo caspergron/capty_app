@@ -1,3 +1,5 @@
+import 'package:app/extensions/string_ext.dart';
+
 class Plastic {
   int? id;
   int? discId;
@@ -26,5 +28,11 @@ class Plastic {
     map['is_active'] = isActive;
     map['label'] = label;
     return map;
+  }
+
+  static List<Plastic> plastics_by_name(List<Plastic> brands, String key) {
+    if (brands.isEmpty) return [];
+    if (key.isEmpty) return brands;
+    return brands.where((item) => item.name.toKey.startsWith(key.toKey)).toList();
   }
 }

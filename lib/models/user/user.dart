@@ -37,6 +37,7 @@ class User {
   Country? country;
   Currency? currency;
   Media? media;
+  bool? isOnline;
 
   String get full_name => name == null ? '' : name!;
   String get first_name => name == null ? '' : name!.split(' ').first.firstLetterCapital;
@@ -77,6 +78,7 @@ class User {
     this.country,
     this.currency,
     this.media,
+    this.isOnline,
   });
 
   User.fromJson(json) {
@@ -107,6 +109,7 @@ class User {
     country = json['country'] != null ? Country.fromJson(json['country']) : null;
     currency = json['currency'] != null ? Currency.fromJson(json['currency']) : null;
     media = json['media'] != null ? Media.fromJson(json['media']) : null;
+    isOnline = json['is_online'];
   }
 
   Map<String, dynamic> toJson() {
@@ -138,6 +141,7 @@ class User {
     if (country != null) map['country'] = country?.toJson();
     if (currency != null) map['currency'] = currency?.toJson();
     if (media != null) map['media'] = media?.toJson();
+    map['is_online'] = isOnline;
     return map;
   }
 
@@ -149,5 +153,11 @@ class User {
     if (countries.isEmpty) return Country();
     if (!sl<AuthService>().authStatus || countryId == null) return countries.first;
     return countries.firstWhere((item) => (item.id ?? DEFAULT_ID) == countryId, orElse: () => countries.first);
+  }
+
+  static List<User> users_by_name(List<User> users, String key) {
+    if (users.isEmpty) return [];
+    if (key.isEmpty) return users;
+    return users.where((item) => item.name.toKey.startsWith(key.toKey)).toList();
   }
 }

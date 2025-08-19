@@ -19,6 +19,7 @@ class Address {
   String? zipCode;
   Country? country;
 
+  int get distance_number => distance == null ? 0 : distance!.toInt();
   bool get is_home => label.toKey == 'home'.toKey;
   bool get is_coordinate => latitude != null && longitude != null;
   Coordinates get coordinates => latitude == null || longitude == null ? Coordinates() : Coordinates(lat: latitude!, lng: longitude!);

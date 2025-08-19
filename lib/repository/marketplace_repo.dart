@@ -171,4 +171,27 @@ class MarketplaceRepository {
     var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     return apiResponse.status == 200;
   }
+
+  Future<List<MarketplaceCategory>> fetchMarketplaceFavourites(int page) async {
+    var endpoint = '${ApiUrl.user.marketplaceFavouriteList}$page';
+    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return [];
+    var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
+    var categories = marketplaceApi.categories ?? [];
+    return categories;
+  }
+
+  Future<bool> setMarketplaceDiscAsFavourite(Map<String, dynamic> body) async {
+    var endpoint = ApiUrl.user.setMarketplaceDiscAsFavourite;
+    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    if (apiResponse.status != 200) return false;
+    return true;
+  }
+
+  Future<bool> RemoveMarketplaceDiscFromFavourite(int salesAdId) async {
+    var endpoint = '${ApiUrl.user.RemoveMarketplaceDiscFromFavourite}$salesAdId';
+    var apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return false;
+    return true;
+  }
 }

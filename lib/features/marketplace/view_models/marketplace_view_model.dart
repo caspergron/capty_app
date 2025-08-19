@@ -15,6 +15,7 @@ import 'package:app/models/marketplace/marketplace_filter.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/system/doc_file.dart';
 import 'package:app/models/system/loader.dart';
+import 'package:app/models/system/paginate.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
@@ -24,19 +25,25 @@ import 'package:flutter/cupertino.dart';
 
 class MarketplaceViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
+  var searchKey = '';
   var tag = Tag();
   var tags = <Tag>[];
-  var salesAdDiscs = <SalesAd>[];
   var categories = <MarketplaceCategory>[];
   var clubTournament = ClubTournamentInfo();
   var filterOption = MarketplaceFilter(types: [], brands: [], tags: []);
+  var salesAdDiscs = <SalesAd>[];
+  var salesAdPaginate = Paginate();
+  var salesAdScrollControl = ScrollController();
+  var favouritePaginate = Paginate();
+  var favouriteScrollControl = ScrollController();
 
   Future<void> initViewModel() async {
     unawaited(_fetchClubTournamentsInfo());
     if (ApiStatus.instance.marketplace) return;
     unawaited(fetchTags());
     unawaited(fetchSalesAdDiscs());
-    await fetchMarketplaceDiscs(isLoader: true);
+    unawaited(_salesAdPaginationCheck());
+    await generateFilterUrl(isLoader: true);
   }
 
   void updateUi() => notifyListeners();
@@ -63,15 +70,29 @@ class MarketplaceViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchSalesAdDiscs() async {
-    var params = '&page=1';
+  Future<void> fetchSalesAdDiscs({bool isPaginate = false}) async {
+    if (salesAdPaginate.pageLoader) return;
+    salesAdPaginate.pageLoader = isPaginate;
+    notifyListeners();
+    var params = '&page=${salesAdPaginate.page}';
     var response = await sl<MarketplaceRepository>().fetchSalesAdDiscs(params);
-    salesAdDiscs.clear();
-    if (response.isNotEmpty) salesAdDiscs = response;
+    if (salesAdPaginate.page == 1) salesAdDiscs.clear();
+    salesAdPaginate.length = response.length;
+    if (salesAdPaginate.length >= COMMON_LENGTH_20) salesAdPaginate.page++;
+    if (response.isNotEmpty) salesAdDiscs.addAll(response);
+    salesAdPaginate.pageLoader = false;
     notifyListeners();
   }
 
-  Future<void> fetchMarketplaceDiscs({bool isLoader = false, bool isPaginate = false, String filterParams = '', int index = 0}) async {
+  Future<void> _salesAdPaginationCheck() async {
+    salesAdScrollControl.addListener(() {
+      final position = salesAdScrollControl.position;
+      final isPosition70 = position.pixels >= position.maxScrollExtent * 0.7;
+      if (isPosition70 && salesAdPaginate.length == COMMON_LENGTH_20) fetchSalesAdDiscs(isPaginate: true);
+    });
+  }
+
+  Future<void> generateFilterUrl({bool isLoader = false, bool isPaginate = false, String filterParams = '', int index = 0}) async {
     var invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
     if (invalidApiCall) return;
     loader.common = isLoader;
@@ -81,7 +102,9 @@ class MarketplaceViewModel with ChangeNotifier {
     var coordinates = await sl<Locations>().fetchLocationPermission();
     var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
     var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
-    if (tag.id == null) {
+    if (searchKey.isNotEmpty) {
+      params = '&page=$pageNumber$locationParams&search=$searchKey'.trim();
+    } else if (tag.id == null) {
       params = '&page=$pageNumber$locationParams$filterParams'.trim();
     } else if (tag.name.toKey == 'all'.toKey) {
       params = '&page=$pageNumber$locationParams$filterParams'.trim();
@@ -96,6 +119,11 @@ class MarketplaceViewModel with ChangeNotifier {
     } else {
       params = '&page=$pageNumber$locationParams$filterParams'.trim();
     }
+    unawaited(_fetchMarketplaceDiscs(isLoader: isLoader, isPaginate: isPaginate, index: index, params: params));
+  }
+
+  Future<void> _fetchMarketplaceDiscs({bool isLoader = false, bool isPaginate = false, String params = '', int index = 0}) async {
+    var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
     var response = await sl<MarketplaceRepository>().fetchMarketplaceDiscs(params: params);
     if (isLoader) categories.clear();
     if (response.isEmpty) return _turnOffLoaders(index: index);
@@ -117,7 +145,7 @@ class MarketplaceViewModel with ChangeNotifier {
         }
       }
     }
-    if (categories.isNotEmpty) unawaited(_paginationCheck());
+    if (categories.isNotEmpty) unawaited(_marketplacePaginationCheck());
     ApiStatus.instance.marketplace = true;
     _turnOffLoaders(index: index);
   }
@@ -129,7 +157,7 @@ class MarketplaceViewModel with ChangeNotifier {
     return notifyListeners();
   }
 
-  Future<void> _paginationCheck() async {
+  Future<void> _marketplacePaginationCheck() async {
     if (categories.isEmpty) return;
     for (var entry in categories.asMap().entries) {
       final index = entry.key;
@@ -140,22 +168,31 @@ class MarketplaceViewModel with ChangeNotifier {
       if (!scrollController.hasListeners) {
         scrollController.addListener(() {
           final maxPosition = scrollController.position.pixels == scrollController.position.maxScrollExtent;
-          if (maxPosition && paginate.length == SALES_AD_LENGTH_05) fetchMarketplaceDiscs(isPaginate: true, index: index);
+          if (maxPosition && paginate.length == SALES_AD_LENGTH_05) generateFilterUrl(isPaginate: true, index: index);
         });
       }
     }
   }
 
   void onMarketplaceFilter(MarketplaceFilter option, String filterParams) {
+    searchKey = '';
     filterOption = option;
     notifyListeners();
-    fetchMarketplaceDiscs(isLoader: true, filterParams: filterParams);
+    generateFilterUrl(isLoader: true, filterParams: filterParams);
   }
 
   void onTag(Tag item) {
+    searchKey = '';
     tag = item;
     notifyListeners();
-    fetchMarketplaceDiscs(isLoader: true);
+    generateFilterUrl(isLoader: true);
+  }
+
+  void onSearch(String key) {
+    searchKey = key;
+    filterOption = MarketplaceFilter(types: [], brands: [], tags: []);
+    notifyListeners();
+    generateFilterUrl(isLoader: true);
   }
 
   Future<void> onShareSalesAd() async {
@@ -216,11 +253,7 @@ class MarketplaceViewModel with ChangeNotifier {
     loader.common = true;
     notifyListeners();
     var mediaId = null as int?;
-    if (docFile == null) {
-      mediaId = item.userDisc?.media?.id;
-    } else {
-      mediaId = await _fetchMediaId(docFile);
-    }
+    mediaId = docFile == null ? item.userDisc?.media?.id : await _fetchMediaId(docFile);
     if (mediaId == null) {
       loader.common = false;
       return notifyListeners();

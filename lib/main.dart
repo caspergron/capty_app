@@ -33,7 +33,6 @@ import 'di.dart' as dependency_injection;
 /// keytool -list -v -keystore KEY_STORE_PATH -alias key
 
 // Check unused translations function in report problem view model
-// update image rotate dialog with logic rotation < 1 -> do not rotate
 // Ned is online data in player profile model
 
 @pragma('vm:entry-point')

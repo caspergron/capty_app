@@ -12,6 +12,8 @@ import 'package:app/models/club/courses_api.dart';
 import 'package:app/models/club/event.dart';
 import 'package:app/models/club/events_api.dart';
 import 'package:app/models/map/coordinates.dart';
+import 'package:app/models/user/user.dart';
+import 'package:app/models/user/users_api.dart';
 import 'package:app/utils/api_url.dart';
 
 class ClubRepository {
@@ -81,6 +83,14 @@ class ClubRepository {
     if (apiResponse.status != 200) return null;
     FlushPopup.onInfo(message: 'default_club_updated_successfully'.recast);
     return Club.fromJson(apiResponse.response['data']);
+  }
+
+  Future<List<User>> fetchClubMembers(int clubId) async {
+    var endpoint = '${ApiUrl.user.clubMembers}$clubId';
+    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return [];
+    var usersApi = UsersApi.fromJson(apiResponse.response);
+    return usersApi.users ?? [];
   }
 
   Future<Map<String, dynamic>?> findNearbyCourses(Coordinates coordinates) async {

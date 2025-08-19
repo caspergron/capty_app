@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:app/utils/size_config.dart';
+import 'package:flutter/material.dart';
 
 abstract class Dimensions {
   static double dialog_width = SizeConfig.width - 32;
@@ -34,6 +33,6 @@ var ACTION_SIZE = const SizedBox(width: 20);
 
 var DIALOG_PADDING = 24.0;
 var BOTTOM_GAP = (SizeConfig.bottom < 1 ? 0.0 : SizeConfig.bottom) + (Platform.isIOS ? 0 : 12);
-var BOTTOM_GAP_NAV = Platform.isIOS ? (SizeConfig.bottom < 1 ? 8.0 : SizeConfig.bottom - 08) : SizeConfig.bottom + 08;
+var BOTTOM_GAP_NAV = Platform.isIOS ? (SizeConfig.bottom < 1 ? 8.0 : SizeConfig.bottom - 14) : SizeConfig.bottom + 08;
 
 const DROPDOWN_ICON_PADDING = EdgeInsets.only(right: 12);

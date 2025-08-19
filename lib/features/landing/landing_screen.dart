@@ -1,11 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
-import 'package:convex_bottom_bar/convex_bottom_bar.dart' as convex;
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/components/dialogs/app_exit_dialog.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -21,10 +15,15 @@ import 'package:app/models/club/club.dart';
 import 'package:app/models/system/data_model.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
+import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/core/spinner_menu.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart' as convex;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LandingScreen extends StatefulWidget {
   static final GlobalKey<_LandingScreenState> landingKey = GlobalKey<_LandingScreenState>();
@@ -99,7 +98,11 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
                 }
               }),
             ),
-            if (_modelData.expansion == 1) Container(width: SizeConfig.width, height: SizeConfig.height, color: transparent),
+            if (_modelData.expansion == 1)
+              InkWell(
+                onTap: () => _viewModel.onSpinner(),
+                child: Container(width: SizeConfig.width, height: SizeConfig.height, color: transparent),
+              ),
             Positioned(
               bottom: -120,
               left: 0,
@@ -114,30 +117,39 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
             ),
           ],
         ),
-        bottomNavigationBar: convex.StyleProvider(
-          style: _ConvexStyle(),
-          child: convex.ConvexAppBar(
-            height: 50,
-            top: -24,
-            controller: _tabController,
-            elevation: 0,
-            curveSize: 100,
-            backgroundColor: primary,
-            color: mediumBlue,
-            activeColor: lightBlue,
-            initialActiveIndex: _modelData.index,
-            style: convex.TabStyle.fixedCircle,
-            // disableDefaultTabController: true,
-            items: _modelData.navItems.asMap().entries.map(_navbarItem).toList(),
-            onTap: (index) => index == 2 ? null : _viewModel.updateView(index),
-            disableDefaultTabController: true,
-            onTabNotify: (i) {
-              if (i == 2) _viewModel.onSpinner();
-              return i != 2;
-            },
+        bottomNavigationBar: MediaQuery.removePadding(
+          context: context,
+          removeBottom: true,
+          child: Container(
+            color: primary,
+            padding: EdgeInsets.only(bottom: BOTTOM_GAP_NAV),
+            child: convex.StyleProvider(style: _ConvexStyle(), child: _bottomNavigationBar),
           ),
         ),
       ),
+    );
+  }
+
+  convex.ConvexAppBar get _bottomNavigationBar {
+    return convex.ConvexAppBar(
+      height: 54,
+      top: -24,
+      controller: _tabController,
+      elevation: 0,
+      curveSize: 100,
+      backgroundColor: primary,
+      color: mediumBlue,
+      activeColor: lightBlue,
+      initialActiveIndex: _modelData.index,
+      style: convex.TabStyle.fixedCircle,
+      // disableDefaultTabController: true,
+      items: _modelData.navItems.asMap().entries.map(_navbarItem).toList(),
+      onTap: (index) => index == 2 ? null : _viewModel.updateView(index),
+      disableDefaultTabController: true,
+      onTabNotify: (i) {
+        if (i == 2) _viewModel.onSpinner();
+        return i != 2;
+      },
     );
   }
 

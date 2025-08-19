@@ -60,6 +60,7 @@ class _UserApis {
   String defaultClubInfo = '$_SERVER/user/club';
   String salesDiscByClub = '$_SERVER/market-place-disc/get-by-club?size=20'; // &club_id=3&page=1
   String changeToDefault = '$_SERVER/user/club/change-default'; // &club_id=3&page=1
+  String clubMembers = '$_SERVER/user/club-member/list?club_id='; // &club_id=3&page=1
 
   String createClubEvent = '$_SERVER/club-event/create';
   String findEvents = '$_SERVER/club-event/find-event'; // ?latitude=48.8566&longitude=2.3522
@@ -112,6 +113,10 @@ class _UserApis {
   String clubTournamentInfo = '$_SERVER/user/club-tournament-info';
   String matchedInfoWithSeller = '$_SERVER/user/match/info?match_with='; // 4
   String popularityCount = '$_SERVER/market-place-disc/popularity_count';
+
+  String marketplaceFavouriteList = '$_SERVER/user/favorite-sales-ads/list?size=$COMMON_LENGTH_20&page='; // 1
+  String setMarketplaceDiscAsFavourite = '$_SERVER/user/favorite-sales-ads/store';
+  String RemoveMarketplaceDiscFromFavourite = '$_SERVER/user/favorite-sales-ads/delete?sales_ad_id='; // 1
 
   String createAddress = '$_SERVER/user/address/create';
   String addressList = '$_SERVER/user/address/list';

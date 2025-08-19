@@ -4,12 +4,10 @@ import 'package:app/components/loaders/circle_loader.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
-import 'package:app/components/menus/options_menu.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/chat/chat_view_model.dart';
-import 'package:app/features/chat/components/delete_conversation_dialog.dart';
 import 'package:app/features/chat/units/chat_suggestions_list.dart';
 import 'package:app/features/chat/units/document_selection.dart';
 import 'package:app/features/chat/units/marketplace_disk_info.dart';
@@ -66,17 +64,17 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  void _onDelete() => deleteConversationDialog(onDelete: _viewModel.onDeleteMessages);
+  // void _onDelete() => deleteConversationDialog(onDelete: _viewModel.onDeleteMessages);
 
   @override
   Widget build(BuildContext context) {
-    var isDelete = _modelData.messages.isNotEmpty;
+    // var isDelete = _modelData.messages.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         title: _appbarSection,
         automaticallyImplyLeading: false,
-        actions: [if (isDelete) TrashMenu(onTap: _modelData.loader ? null : _onDelete), ACTION_SIZE],
+        // actions: [if (isDelete) TrashMenu(onTap: _modelData.loader ? null : _onDelete), ACTION_SIZE],
       ),
       body: Container(
         width: SizeConfig.width,

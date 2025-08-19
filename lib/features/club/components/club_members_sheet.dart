@@ -1,26 +1,29 @@
-import 'package:app/components/app_lists/countries_list.dart';
 import 'package:app/components/headers/sheet_header_1.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/prefix_menu.dart';
 import 'package:app/constants/app_keys.dart';
+import 'package:app/di.dart';
+import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/models/public/country.dart';
+import 'package:app/features/club/units/club_members_list.dart';
+import 'package:app/models/club/club.dart';
 import 'package:app/models/user/user.dart';
-import 'package:app/preferences/app_preferences.dart';
+import 'package:app/repository/club_repo.dart';
+import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
+import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
-import 'package:app/widgets/exception/no_country_found.dart';
+import 'package:app/widgets/library/svg_image.dart';
 import 'package:flutter/material.dart';
 
-Future<void> clubMembersSheet({List<User> members = const []}) async {
+Future<void> clubMembersSheet({required Club club}) async {
   var context = navigatorKey.currentState!.context;
   var padding = MediaQuery.of(context).viewInsets;
-  var child = _BottomSheetView(members);
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -28,13 +31,13 @@ Future<void> clubMembersSheet({List<User> members = const []}) async {
     isScrollControlled: true,
     shape: BOTTOM_SHEET_SHAPE,
     clipBehavior: Clip.antiAlias,
-    builder: (builder) => Padding(padding: padding, child: PopScopeNavigator(canPop: false, child: child)),
+    builder: (builder) => Padding(padding: padding, child: PopScopeNavigator(canPop: false, child: _BottomSheetView(club))),
   );
 }
 
 class _BottomSheetView extends StatefulWidget {
-  final List<User> members;
-  const _BottomSheetView(this.members);
+  final Club club;
+  const _BottomSheetView(this.club);
 
   @override
   State<_BottomSheetView> createState() => _BottomSheetViewState();
@@ -42,21 +45,23 @@ class _BottomSheetView extends StatefulWidget {
 
 class _BottomSheetViewState extends State<_BottomSheetView> {
   var _loader = true;
-  var _country = Country();
   var _focusNode = FocusNode();
   var _search = TextEditingController();
+  var _members = <User>[];
 
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('club-members-sheet');
     _focusNode.addListener(() => setState(() {}));
+    _fetchAllClubMembers();
     super.initState();
   }
 
-  /*Future<void> _fetchCountries() async {
-    await AppPreferences.fetchCountries();
+  Future<void> _fetchAllClubMembers() async {
+    var response = await sl<ClubRepository>().fetchClubMembers(widget.club.id!);
+    if (response.isNotEmpty) _members = response;
     setState(() => _loader = false);
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,21 +73,21 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SheetHeader1(label: 'select_your_country'.recast),
+          SheetHeader1(label: 'club_members'.recast),
           const SizedBox(height: 16),
-          if (AppPreferences.countries.isNotEmpty)
+          if (_members.isNotEmpty)
             InputField(
               padding: 20,
               cursorHeight: 14,
               controller: _search,
               fillColor: skyBlue,
-              hintText: 'search_your_country'.recast,
+              hintText: 'search_by_name'.recast,
               focusNode: _focusNode,
               onChanged: (v) => setState(() {}),
               prefixIcon: PrefixMenu(icon: Assets.svg1.search_2, isFocus: _focusNode.hasFocus),
             ),
           Expanded(child: Stack(children: [_screenView(context), if (_loader) const ScreenLoader()])),
-          if (AppPreferences.countries.isNotEmpty) SizedBox(height: BOTTOM_GAP),
+          if (_members.isNotEmpty) SizedBox(height: BOTTOM_GAP),
         ],
       ),
     );
@@ -90,25 +95,44 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   Widget _screenView(BuildContext context) {
     if (_loader) return const SizedBox.shrink();
-    if (AppPreferences.countries.isEmpty) return NoCountryFound();
-    var countries = Country.countries_by_name(AppPreferences.countries, _search.text);
+    if (_members.isEmpty) return _noMemberFound;
+    var clubMembers = User.users_by_name(_members, _search.text);
     return ListView(
       shrinkWrap: true,
       controller: ScrollController(),
       clipBehavior: Clip.antiAlias,
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      children: countries.isEmpty
-          ? [
-              const SizedBox(height: 20),
-              NoCountryFound(),
-              SizedBox(height: BOTTOM_GAP),
-            ]
+      children: clubMembers.isEmpty
+          ? [const SizedBox(height: 20), _noMemberFound, SizedBox(height: BOTTOM_GAP)]
           : [
-              const SizedBox(height: 20),
-              CountriesList(country: _country, countries: countries, onChanged: (item) => setState(() => _country = item)),
-              SizedBox(height: BOTTOM_GAP),
+              const SizedBox(height: 12),
+              ClubMembersList(members: clubMembers, onViewProfile: _onViewProfile),
+              SizedBox(height: BOTTOM_GAP)
             ],
+    );
+  }
+
+  void _onViewProfile(User user) {
+    backToPrevious();
+    Routes.user.player_profile(playerId: user.id!).push();
+  }
+
+  Widget get _noMemberFound {
+    var description = 'club_member_not_found_please_recheck_entered_information'.recast;
+    return Padding(
+      padding: const EdgeInsets.all(40),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 4.height),
+          SvgImage(image: Assets.svg3.not_found, height: 16.height, color: lightBlue),
+          const SizedBox(height: 28),
+          Text('${'no_club_member_found'.recast}!', textAlign: TextAlign.center, style: TextStyles.text16_600.copyWith(color: lightBlue)),
+          const SizedBox(height: 04),
+          Text(description, textAlign: TextAlign.center, style: TextStyles.text14_400.copyWith(color: lightBlue)),
+        ],
+      ),
     );
   }
 }

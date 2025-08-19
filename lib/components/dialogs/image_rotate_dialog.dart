@@ -153,6 +153,7 @@ class _DialogViewState extends State<_DialogView> {
                 radius: 04,
                 height: 38,
                 width: 33.width,
+                loader: _loader,
                 label: 'confirm'.recast.toUpper,
                 onTap: () => _onConfirm(widget.imageFile, _rotation),
                 textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
@@ -186,6 +187,9 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Future<void> _onConfirm(File original, double angleDeg) async {
+    var value = angleDeg.toInt();
+    if (value == 0 || value == 360) return backToPrevious();
+
     try {
       setState(() => _loader = true);
 

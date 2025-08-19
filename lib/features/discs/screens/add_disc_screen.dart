@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
@@ -40,6 +36,8 @@ import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/view/color_view.dart';
 import 'package:app/widgets/view/disc_initial_info.dart';
 import 'package:app/widgets/view/unit_suffix.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddDiscScreen extends StatefulWidget {
   final ParentDisc disc;
@@ -131,6 +129,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
             height: 42,
             background: skyBlue,
             onTap: backToPrevious,
+            loader: _modelData.loader.loader,
             label: 'cancel'.recast.toUpper,
             textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
           ),
@@ -140,6 +139,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
           child: ElevateButton(
             radius: 04,
             height: 42,
+            loader: _modelData.loader.loader,
             label: 'add_disc'.recast.toUpper,
             onTap: _onAddDisc,
             textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),

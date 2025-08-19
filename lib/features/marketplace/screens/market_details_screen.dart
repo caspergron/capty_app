@@ -150,6 +150,25 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
               const Divider(color: mediumBlue),
               const SizedBox(height: 14),
               Container(
+                height: 60,
+                width: double.infinity,
+                padding: EdgeInsets.zero,
+                margin: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
+                decoration: BoxDecoration(border: Border.all(color: lightBlue), borderRadius: BorderRadius.circular(8)),
+                child: Row(
+                  children: [
+                    Expanded(child: _DiscFlightInfo(label: 'speed'.recast, value: userDisc?.speed ?? 0)),
+                    Container(height: 60, width: 0.5, color: lightBlue),
+                    Expanded(child: _DiscFlightInfo(label: 'glide'.recast, value: userDisc?.glide ?? 0)),
+                    Container(height: 60, width: 0.5, color: lightBlue),
+                    Expanded(child: _DiscFlightInfo(label: 'turn'.recast, value: userDisc?.turn ?? 0)),
+                    Container(height: 60, width: 0.5, color: lightBlue),
+                    Expanded(child: _DiscFlightInfo(label: 'fade'.recast, value: userDisc?.fade ?? 0)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 14),
+              Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 margin: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
@@ -479,6 +498,26 @@ class _DiscInfo extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class _DiscFlightInfo extends StatelessWidget {
+  final String label;
+  final double value;
+
+  const _DiscFlightInfo({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    var style1 = TextStyles.text14_600.copyWith(color: lightBlue);
+    var style2 = TextStyles.text16_700.copyWith(color: lightBlue);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 04),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [Text(label, style: style1), const SizedBox(height: 01), Text(value.formatDouble, style: style2)],
+      ),
     );
   }
 }

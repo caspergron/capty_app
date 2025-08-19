@@ -10,6 +10,7 @@ import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/menus/label_suffix.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/components/sheets/plastics_sheet.dart';
 import 'package:app/components/sheets/special_tags_sheet.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -22,7 +23,6 @@ import 'package:app/helpers/file_helper.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/common/tag.dart';
 import 'package:app/models/disc/user_disc.dart';
-import 'package:app/models/plastic/plastic.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/input_formatters.dart';
@@ -40,10 +40,10 @@ import 'package:app/widgets/core/linear_progressbar.dart';
 import 'package:app/widgets/core/memory_image.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/exception/error_upload_image.dart';
-import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/icon_box.dart';
+import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -120,6 +120,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
             height: 42,
             background: skyBlue,
             onTap: _onBack,
+            loader: _modelData.loader.loader,
             label: _modelData.step == 1 ? 'cancel'.recast.toUpper : 'back'.recast.toUpper,
             textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
           ),
@@ -130,6 +131,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
             radius: 04,
             height: 42,
             onTap: _onNext,
+            loader: _modelData.loader.loader,
             label: _modelData.step < 4 ? 'next'.recast.toUpper : 'confirm'.recast.toUpper,
             textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
           ),
@@ -304,7 +306,23 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
       if (isPlastics) ...[
         Text('plastic'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
         const SizedBox(height: 04),
-        DropdownFlutter<Plastic>(
+        LabelPlaceholder(
+          height: 40,
+          background: lightBlue,
+          textColor: dark,
+          fontSize: 12,
+          hint: 'select_plastic',
+          label: _modelData.plastic.name ?? '',
+          endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
+          onTap: () => _modelData.plastics.isEmpty
+              ? null
+              : plasticsSheet(
+                  plastic: _modelData.plastic,
+                  plastics: _modelData.plastics,
+                  onChanged: (v) => setState(() => _modelData.plastic = v),
+                ),
+        ),
+        /*DropdownFlutter<Plastic>(
           height: 40,
           borderColor: transparent,
           items: _modelData.plastics,
@@ -312,7 +330,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
           value: _modelData.plastic.id == null ? null : _modelData.plastic,
           hintLabel: _modelData.plastic.id == null ? null : _modelData.plastics.firstWhere((item) => item == item).label,
           onChanged: (v) => setState(() => _modelData.plastic = v!),
-        ),
+        ),*/
         const SizedBox(height: 12),
       ],
       Row(

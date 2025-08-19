@@ -12,6 +12,7 @@ import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/club/components/club_members_sheet.dart';
 import 'package:app/features/club/components/club_settings_dialog.dart';
 import 'package:app/features/club/components/schedule_event_dialog.dart';
 import 'package:app/features/club/units/sell_disc_list.dart';
@@ -150,6 +151,7 @@ class _ClubScreenState extends State<ClubScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
+                onTap: () => club.totalMember.nullToInt < 1 ? null : clubMembersSheet(club: _modelData.club),
                 child: Row(
                   children: [
                     SvgImage(image: Assets.svg1.users, height: 20, color: lightBlue),

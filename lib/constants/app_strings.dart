@@ -1002,6 +1002,18 @@ const APP_STRINGS = {
   'send_message': 'Send Message',
   'could_not_open_url': 'Could not open url',
   // New translations
+  'club_members': 'Club Members',
+  'search_by_name': 'Search by name',
+  'no_club_member_found': 'No club member found',
+  'club_member_not_found_please_recheck_entered_information': 'Club member not found. Please recheck entered information',
+  'view_profile': 'View Profile',
+  'search_result_for': 'Search result for',
+  'clear_search': 'Clear Search',
+  'favourites': 'Favourites',
+  'please_select_any_disc_plastic': 'Please select any disc plastic',
+  'no_disc_plastic_found': 'No disc plastic found',
+  'search_by_plastic_name': 'Search by plastic name',
+  'we_could_not_find_any_plastic_right_now_please_try_again_later': 'We could not find any plastic right now. Please try again later.',
   '': ''
 };
 
