@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/new_messages_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -34,6 +30,9 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -113,7 +112,17 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(12),
             image: DecorationImage(image: AssetImage(Assets.png_image.challenge_banner), fit: BoxFit.cover, colorFilter: colorFilter),
           ),
-          child: Text('${'hello'.recast} ${user.first_name}!', style: TextStyles.text40_700.copyWith(color: lightBlue, fontWeight: w500)),
+          child: Text.rich(
+            TextSpan(
+              text: 'hello'.recast + ' ',
+              children: [
+                TextSpan(text: '${user.first_name}!', recognizer: TapGestureRecognizer()..onTap = () => Routes.user.profile().push())
+              ],
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.visible,
+            style: TextStyles.text40_700.copyWith(color: lightBlue, fontWeight: w500),
+          ),
         ),
         const SizedBox(height: 10),
         Row(

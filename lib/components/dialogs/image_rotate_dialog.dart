@@ -1,12 +1,6 @@
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
-import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
@@ -26,10 +20,14 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 
 Future<void> imageRotateDialog({required File file, required Function(DocFile) onChanged}) async {
   var context = navigatorKey.currentState!.context;
-  // sl<AppAnalytics>().screenView('disc-cropper-popup');
+  // sl<AppAnalytics>().screenView('image-rotate-popup');
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Image Rotate Dialog',

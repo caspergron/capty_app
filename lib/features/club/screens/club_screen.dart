@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/club_management_dialog.dart';
 import 'package:app/components/drawers/app_drawer.dart';
@@ -40,6 +36,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _SPACE20 = '    ';
 
@@ -151,14 +149,16 @@ class _ClubScreenState extends State<ClubScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  SvgImage(image: Assets.svg1.users, height: 20, color: lightBlue),
-                  const SizedBox(width: 06),
-                  Expanded(child: Text('members'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
-                  const SizedBox(width: 06),
-                  Text(club.totalMember.formatInt, style: TextStyles.text14_700.copyWith(color: lightBlue))
-                ],
+              InkWell(
+                child: Row(
+                  children: [
+                    SvgImage(image: Assets.svg1.users, height: 20, color: lightBlue),
+                    const SizedBox(width: 06),
+                    Expanded(child: Text('members'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
+                    const SizedBox(width: 06),
+                    Text(club.totalMember.formatInt, style: TextStyles.text14_700.copyWith(color: lightBlue))
+                  ],
+                ),
               ),
               const SizedBox(height: 14),
               Row(

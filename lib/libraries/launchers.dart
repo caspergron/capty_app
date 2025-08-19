@@ -1,5 +1,6 @@
+import 'package:app/extensions/string_ext.dart';
+import 'package:app/libraries/flush_popup.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 
 const _headers = <String, String>{'my_header_key': 'my_header_value'};
@@ -32,7 +33,8 @@ class Launchers {
       mode: LaunchMode.externalApplication,
       webViewConfiguration: _webViewConfigurationJsEnabled,
     )) {
-      throw ArgumentError('Could not launch $url');
+      FlushPopup.onInfo(message: '${'could_not_open_url'.recast} $url');
+      // throw ArgumentError('Could not launch $url');
     }
   }
 

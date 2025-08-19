@@ -162,6 +162,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
       var clubViewModel = Provider.of<ClubViewModel>(context, listen: false);
       unawaited(discsViewModel.fetchAllDiscBags());
       unawaited(marketplaceModel.fetchMarketplaceDiscs());
+      // unawaited(marketplaceModel.generateFilterUrl());
       unawaited(marketplaceModel.fetchSalesAdDiscs());
       if (clubViewModel.club.id != null) unawaited(clubViewModel.fetchSellingDiscs());
       sl<AppAnalytics>().logEvent(name: 'created_sales_ad', parameters: response.analyticParams);

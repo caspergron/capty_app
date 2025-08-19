@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -12,6 +8,7 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/discs/units/disc_speciality_list.dart';
+import 'package:app/features/marketplace/components/zoom_image_dialog.dart';
 import 'package:app/features/marketplace/units/used_disc_list.dart';
 import 'package:app/features/marketplace/view_models/market_details_view_model.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
@@ -29,6 +26,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MarketDetailsScreen extends StatefulWidget {
   final bool isDelay;
@@ -110,36 +109,39 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Center(
-                    child: Builder(builder: (context) {
-                      if (userDisc?.media?.url != null) {
-                        // return Image.network(userDisc!.media!.url!);
-                        return CircleImage(
-                          borderWidth: 0.4,
-                          radius: 22.width,
-                          image: userDisc?.media?.url,
-                          backgroundColor: primary,
-                          placeholder: const FadingCircle(color: lightBlue),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-                        );
-                      } else if (userDisc?.color != null) {
-                        return ColoredDisc(
-                          size: 60.width,
-                          iconSize: 24.width,
-                          discColor: userDisc!.disc_color!,
-                          brandIcon: parentDisc?.brand_media.url,
-                        );
-                      } else {
-                        return CircleImage(
-                          borderWidth: 0.4,
-                          radius: 31.width,
-                          image: parentDisc?.media.url,
-                          backgroundColor: primary,
-                          placeholder: const FadingCircle(color: lightBlue),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-                        );
-                      }
-                    }),
+                  InkWell(
+                    onTap: () => zoomImageDialog(salesAd: _modelData.marketplace),
+                    child: Center(
+                      child: Builder(builder: (context) {
+                        if (userDisc?.media?.url != null) {
+                          // return Image.network(userDisc!.media!.url!);
+                          return CircleImage(
+                            borderWidth: 0.4,
+                            radius: 22.width,
+                            image: userDisc?.media?.url,
+                            backgroundColor: primary,
+                            placeholder: const FadingCircle(color: lightBlue),
+                            errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
+                          );
+                        } else if (userDisc?.color != null) {
+                          return ColoredDisc(
+                            size: 60.width,
+                            iconSize: 24.width,
+                            discColor: userDisc!.disc_color!,
+                            brandIcon: parentDisc?.brand_media.url,
+                          );
+                        } else {
+                          return CircleImage(
+                            borderWidth: 0.4,
+                            radius: 31.width,
+                            image: parentDisc?.media.url,
+                            backgroundColor: primary,
+                            placeholder: const FadingCircle(color: lightBlue),
+                            errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
+                          );
+                        }
+                      }),
+                    ),
                   ),
                   Positioned(left: 0, right: 0, bottom: -20, child: Center(child: _discBasicInfo))
                 ],
@@ -189,7 +191,7 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
                 child: _DiscInfo(
                   icon: Assets.svg1.disc_2,
-                  label: '${'disc_condition'.recast}: ${widget.salesAd.condition_number}',
+                  label: '${'disc_condition'.recast}: ${widget.salesAd.condition_number}/10',
                   value: widget.salesAd.usedRange == null ? 'n/a'.recast : USED_DISC_INFO[widget.salesAd.condition_value!].recast,
                 ),
               ),
@@ -403,7 +405,7 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
                         clipBehavior: Clip.antiAlias,
                         itemCount: _modelData.sellerAddresses.length,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) => _sellerInfoItemCard(_modelData.sellerAddresses[index].formatted_address),
+                        itemBuilder: (context, i) => _sellerInfoItemCard(_modelData.sellerAddresses[i].formatted_city_state_country),
                       ),
                     ],
                   ),

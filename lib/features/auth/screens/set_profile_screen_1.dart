@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/circle_loader.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -24,6 +20,8 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/ui/phone_prefix.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // country, phone, medium, social_id, name, email
 class SetProfileScreen1 extends StatefulWidget {
@@ -232,7 +230,7 @@ class _SetProfileScreen1State extends State<SetProfileScreen1> {
 
   void _onNext() {
     minimizeKeyboard();
-    var invalidName = sl<Validators>().name(_name.text);
+    var invalidName = widget.data['medium'] == 2 ? sl<Validators>().name(_name.text) : sl<Validators>().fullName(_name.text);
     if (invalidName != null) return FlushPopup.onWarning(message: invalidName);
     var invalidEmail = sl<Validators>().email(_email.text);
     if (invalidEmail != null) return FlushPopup.onWarning(message: invalidEmail);

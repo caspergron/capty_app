@@ -2,6 +2,7 @@ import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/models/chat/chat_buddy.dart';
 import 'package:app/models/common/media.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/public/currency.dart';
@@ -139,6 +140,8 @@ class User {
     if (media != null) map['media'] = media?.toJson();
     return map;
   }
+
+  ChatBuddy get chat_buddy => ChatBuddy(id: id, name: name, media: media, isOnline: false);
 
   Country get country_item {
     if (country?.id != null) return country!;

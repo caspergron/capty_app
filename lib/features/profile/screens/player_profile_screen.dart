@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/sales_ads_list.dart';
 import 'package:app/components/app_lists/upcoming_tournaments_list.dart';
@@ -13,6 +9,7 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/profile/view_models/player_profile_view_model.dart';
+import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
@@ -23,6 +20,8 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
@@ -59,14 +58,14 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var firstName = _modelData.player.first_name;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         leading: const BackMenu(),
         automaticallyImplyLeading: false,
-        title:
-            Text("${_modelData.player.first_name} ${_modelData.player.first_name.isNotEmpty ? 'extra_s'.recast : ''} ${'profile'.recast}"),
+        title: Text("$firstName ${firstName.isNotEmpty ? 'extra_s'.recast : ''} ${'profile'.recast}"),
       ),
       body: Container(
         width: SizeConfig.width,
@@ -168,16 +167,44 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         ),
         // const SizedBox(height: 10 + 10),
         SizedBox(height: (isRatingSection ? 70 : 10) + 10),
-        Center(
-          child: ElevateButton(
-            radius: 04,
-            height: 34,
-            padding: 16,
-            label: "${'view'.recast} ${_modelData.player.first_name}${'extra_s'.recast} ${'tournament_bag'.recast}".toUpper,
-            onTap: _modelData.loader.loader ? null : Routes.user.tournament_discs(player: _modelData.player).push,
-            textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+        if (UserPreferences.user.id == _modelData.player.id)
+          Center(
+            child: ElevateButton(
+              radius: 04,
+              height: 34,
+              padding: 16,
+              label: "${'view'.recast} ${'tournament_bag'.recast}".toUpper,
+              onTap: _modelData.loader.loader ? null : Routes.user.tournament_discs(player: _modelData.player).push,
+              textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+            ),
+          )
+        else
+          Row(
+            children: [
+              SizedBox(width: 10.width),
+              Expanded(
+                child: ElevateButton(
+                  radius: 04,
+                  height: 34,
+                  padding: 16,
+                  label: "${'view'.recast} ${'tournament_bag'.recast}".toUpper,
+                  onTap: _modelData.loader.loader ? null : Routes.user.tournament_discs(player: _modelData.player).push,
+                  textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+                ),
+              ),
+              const SizedBox(width: 10),
+              ElevateButton(
+                radius: 04,
+                height: 34,
+                padding: 16,
+                background: skyBlue,
+                label: 'send_message'.recast.toUpper,
+                onTap: _modelData.loader.loader ? null : Routes.user.chat(buddy: _modelData.player.chat_buddy).push,
+                textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
+              ),
+              SizedBox(width: 10.width),
+            ],
           ),
-        ),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,

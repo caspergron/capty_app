@@ -89,4 +89,10 @@ class Address {
     var addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
     return addressParts.isEmpty ? 'N/A' : addressParts.join(', ');
   }
+
+  String get formatted_city_state_country {
+    var addressItems = [city, zipCode, state, country?.name];
+    var addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
+    return addressParts.isEmpty ? 'N/A' : addressParts.join(', ');
+  }
 }

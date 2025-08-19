@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
 import 'package:app/components/sheets/country_sheet.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -8,6 +8,7 @@ import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class PhonePrefix extends StatelessWidget {
   final Country country;
@@ -38,9 +39,10 @@ class PhonePrefix extends StatelessWidget {
     );
   }
 
-  void _onChanged() {
+  Future<void> _onChanged() async {
     if (onChanged == null) return;
     minimizeKeyboard();
-    countriesSheet(country: country, onChanged: onChanged!);
+    await Future.delayed(const Duration(milliseconds: 200));
+    unawaited(countriesSheet(country: country, onChanged: onChanged!));
   }
 }

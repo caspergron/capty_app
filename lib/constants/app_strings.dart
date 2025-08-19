@@ -996,6 +996,11 @@ const APP_STRINGS = {
   'image_of_the_disc': 'Image of the disc',
   'founder': 'Founder',
   'join_waitlist': 'Join Waitlist',
+  'view_image': 'View Image',
+  'please_write_any_disc_name': 'Please write any disc name',
+  'write_here': 'Write here',
+  'send_message': 'Send Message',
+  'could_not_open_url': 'Could not open url',
   // New translations
   '': ''
 };

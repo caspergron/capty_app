@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -8,6 +6,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/chat/chat_buddy.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
+import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
@@ -15,6 +14,7 @@ import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 // var desc1 = 'Club connection: Wesley De Ridder will attend same tournament as this user';
 // var desc2 = 'Club connection: Wesley De Ridder will attend same tournament as this user';
@@ -26,6 +26,7 @@ class MarketplaceDiskInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var nameStyle = TextStyles.text16_600.copyWith(color: lightBlue, fontWeight: w500);
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,
@@ -50,14 +51,13 @@ class MarketplaceDiskInfo extends StatelessWidget {
                 image: buddy.media?.url,
                 placeholder: const FadingCircle(size: 18),
                 errorWidget: SvgImage(image: Assets.svg1.coach, height: 18, color: primary),
+                onTap: () => buddy.id == null ? null : Routes.user.player_profile(playerId: buddy.id!).push(),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Text(
-                  buddy.full_name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyles.text16_600.copyWith(color: lightBlue, fontWeight: w500),
+                child: InkWell(
+                  onTap: () => buddy.id == null ? null : Routes.user.player_profile(playerId: buddy.id!).push(),
+                  child: Text(buddy.full_name, maxLines: 1, overflow: TextOverflow.ellipsis, style: nameStyle),
                 ),
               ),
               if (buddy.distance != null && buddy.distance! > 0) ...[

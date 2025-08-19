@@ -6,6 +6,11 @@ import 'package:app/utils/reg_exps.dart';
 class Validators {
   String? name(String data) {
     if (data.isEmpty) return 'please_write_your_name'.recast;
+    return null;
+  }
+
+  String? fullName(String data) {
+    if (data.isEmpty) return 'please_write_your_name'.recast;
     final words = data.trim().split(RegExp(r'\s+'));
     if (words.length < 2) return 'you_must_write_your_full_name'.recast;
     return null;

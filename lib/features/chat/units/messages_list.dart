@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
 import 'package:app/constants/data_constants.dart';
@@ -21,6 +19,7 @@ import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MessagesList extends StatelessWidget {
   final ChatBuddy sender;
@@ -286,8 +285,10 @@ class _DiscCard extends StatelessWidget {
           ),
           if (salesAd.usedRange != null) ...[
             const SizedBox(height: 08),
-            Text('${'disc_condition'.recast}: ${salesAd.condition_number}',
-                style: TextStyles.text14_600.copyWith(color: isMe ? lightBlue : primary)),
+            Text(
+              '${'disc_condition'.recast}: ${salesAd.condition_number}/10',
+              style: TextStyles.text14_600.copyWith(color: isMe ? lightBlue : primary),
+            ),
             const SizedBox(height: 02),
             Text(
               salesAd.usedRange == null ? 'n/a'.recast : USED_DISC_INFO[salesAd.condition_value!].recast,
@@ -301,7 +302,7 @@ class _DiscCard extends StatelessWidget {
             Text('address'.recast, style: TextStyles.text14_600.copyWith(color: isMe ? lightBlue : primary)),
             const SizedBox(height: 02),
             Text(
-              salesAd.address?.formatted_address ?? '',
+              salesAd.address?.formatted_city_state_country ?? '',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyles.text12_400.copyWith(color: isMe ? lightBlue : primary),

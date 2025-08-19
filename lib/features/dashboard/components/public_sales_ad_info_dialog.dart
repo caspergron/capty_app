@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/app_keys.dart';
@@ -22,6 +20,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 Future<void> publicSalesAdInfoDialog({required SalesAd disc}) async {
   var context = navigatorKey.currentState!.context;
@@ -147,7 +146,9 @@ class _DialogViewState extends State<_DialogView> {
             Expanded(flex: 10, child: _DiscInfo(icon: Assets.svg1.weight_scale, label: 'disc_weight'.recast, value: weight)),
             const SizedBox(width: 12),
             Expanded(
-                flex: 10, child: _DiscInfo(icon: Assets.svg1.target, label: 'disc_type'.recast, value: parentDisc?.type ?? 'n/a'.recast)),
+              flex: 10,
+              child: _DiscInfo(icon: Assets.svg1.target, label: 'disc_type'.recast, value: parentDisc?.type ?? 'n/a'.recast),
+            ),
             SizedBox(width: Dimensions.dialog_padding),
           ],
         ),
@@ -156,7 +157,7 @@ class _DialogViewState extends State<_DialogView> {
           padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
           child: _DiscInfo(
             icon: Assets.svg1.disc_2,
-            label: '${'disc_condition'.recast}: ${widget.disc.condition_number}',
+            label: '${'disc_condition'.recast}: ${widget.disc.condition_number}/10',
             value: widget.disc.condition_value == null ? 'n/a'.recast : USED_DISC_INFO[widget.disc.condition_value!].recast,
           ),
         ),
@@ -169,8 +170,12 @@ class _DialogViewState extends State<_DialogView> {
           const SizedBox(height: 08),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
-            child: Text(widget.disc.notes ?? '',
-                maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyles.text12_400.copyWith(color: lightBlue)),
+            child: Text(
+              widget.disc.notes ?? '',
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyles.text12_400.copyWith(color: lightBlue),
+            ),
           ),
         ],
         const SizedBox(height: 28),

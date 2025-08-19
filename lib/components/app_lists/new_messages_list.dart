@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -10,6 +8,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/libraries/formatters.dart';
 import 'package:app/models/chat/chat_message.dart';
+import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
@@ -17,6 +16,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class NewMessagesList extends StatelessWidget {
   final List<ChatMessage> messages;
@@ -75,17 +75,21 @@ class NewMessagesList extends StatelessWidget {
                     backgroundColor: primary,
                     placeholder: const FadingCircle(size: 16, color: lightBlue),
                     errorWidget: SvgImage(image: Assets.svg1.coach, height: 16, color: lightBlue),
+                    onTap: () => item.endUser?.id == null ? null : Routes.user.player_profile(playerId: item.endUser!.id!).push(),
                   ),
                   const SizedBox(width: 08),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          item.endUser?.name ?? '',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyles.text16_700.copyWith(color: lightBlue),
+                        InkWell(
+                          onTap: () => item.endUser?.id == null ? null : Routes.user.player_profile(playerId: item.endUser!.id!).push(),
+                          child: Text(
+                            item.endUser?.name ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyles.text16_700.copyWith(color: lightBlue),
+                          ),
                         ),
                         const SizedBox(height: 02),
                         Text(

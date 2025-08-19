@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
@@ -18,6 +16,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
+import 'package:flutter/material.dart';
 
 Future<void> editProfileDialog({required User person, Function(Map<String, dynamic>)? onEdit}) async {
   var context = navigatorKey.currentState!.context;
@@ -187,7 +186,7 @@ class _DialogViewState extends State<_DialogView> {
   }*/
 
   void _onSaveProfile() {
-    var invalidName = sl<Validators>().name(_name.text);
+    var invalidName = sl<Validators>().fullName(_name.text);
     if (invalidName != null) return FlushPopup.onWarning(message: invalidName);
     // var invalidUDiscUsername = _isDiscUsername && _discUsername.text.isEmpty;
     // if (invalidUDiscUsername) return FlushPopup.onWarning(message: 'please_write_your_udisc_username'.recast);

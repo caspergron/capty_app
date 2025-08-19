@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
@@ -15,6 +13,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class UsedDiscList extends StatelessWidget {
   final String label;
@@ -135,7 +134,7 @@ class UsedDiscList extends StatelessWidget {
                     ),
                     const SizedBox(height: 02),
                     Text(
-                      item.address?.formatted_address ?? '',
+                      item.address?.formatted_city_state_country ?? '',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.text10_400.copyWith(color: mediumBlue),

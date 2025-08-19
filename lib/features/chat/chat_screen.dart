@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/circle_loader.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -21,6 +17,7 @@ import 'package:app/features/chat/units/messages_list.dart';
 import 'package:app/models/chat/chat_buddy.dart';
 import 'package:app/models/system/data_model.dart';
 import 'package:app/services/app_analytics.dart';
+import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
@@ -31,6 +28,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatBuddy buddy;
@@ -75,7 +74,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        // leading: const BackMenu(),
         title: _appbarSection,
         automaticallyImplyLeading: false,
         actions: [if (isDelete) TrashMenu(onTap: _modelData.loader ? null : _onDelete), ACTION_SIZE],
@@ -93,6 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget get _appbarSection {
     var name = widget.buddy.name ?? '';
     var isOnline = _modelData.receiver.is_online;
+    var nameStyle = TextStyles.text14_500.copyWith(color: primary, fontSize: 15, fontWeight: w600);
     return Row(
       children: [
         const BackMenu(size: 20),
@@ -105,22 +104,19 @@ class _ChatScreenState extends State<ChatScreen> {
               image: widget.buddy.media?.url,
               placeholder: const FadingCircle(size: 22),
               errorWidget: SvgImage(image: Assets.svg1.coach, height: 24, color: primary),
+              onTap: () => widget.buddy.id == null ? null : Routes.user.player_profile(playerId: widget.buddy.id!).push(),
             ),
             if (isOnline) const Positioned(bottom: 2, right: 0, child: CircleAvatar(radius: 5, backgroundColor: success)),
           ],
         ),
-
         const SizedBox(width: 10),
-        // Text('contact_seller'.recast),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyles.text14_500.copyWith(color: primary, fontSize: 15, fontWeight: w600),
+              InkWell(
+                onTap: () => widget.buddy.id == null ? null : Routes.user.player_profile(playerId: widget.buddy.id!).push(),
+                child: Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: nameStyle),
               ),
               Text(
                 isOnline ? 'online_now'.recast : 'offline_now'.recast,
