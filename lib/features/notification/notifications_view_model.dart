@@ -90,8 +90,8 @@ class NotificationsViewModel with ChangeNotifier {
 
   void _paginationCheck() {
     final position = scrollControl.position;
-    final isPosition70 = position.pixels >= position.maxScrollExtent * 0.75;
-    if (isPosition70 && paginate.length == LENGTH_20) fetchMessageFeeds(isPaginate: true);
+    final isPosition80 = position.pixels >= position.maxScrollExtent * 0.85;
+    if (isPosition80 && paginate.length == LENGTH_20) fetchMessageFeeds(isPaginate: true);
   }
 
   void removeMessage(int receiverId) {

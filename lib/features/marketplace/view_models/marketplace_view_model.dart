@@ -233,8 +233,8 @@ class MarketplaceViewModel with ChangeNotifier {
       if (!scrollController.hasListeners) {
         scrollController.addListener(() {
           final position = scrollController.position;
-          final isPosition70 = position.pixels >= position.maxScrollExtent * 0.80;
-          if (isPosition70 && paginate.length == LENGTH_08) generateFilterUrl(isPaginate: true, index: index);
+          final isPosition80 = position.pixels >= position.maxScrollExtent * 0.85;
+          if (isPosition80 && paginate.length == LENGTH_08) generateFilterUrl(isPaginate: true, index: index);
         });
       }
     }

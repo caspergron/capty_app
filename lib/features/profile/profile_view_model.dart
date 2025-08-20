@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -22,6 +17,9 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 class ProfileViewModel with ChangeNotifier {
   var person = User();
@@ -43,6 +41,11 @@ class ProfileViewModel with ChangeNotifier {
     loader = DEFAULT_LOADER;
     upcomingTournaments.clear();
     salesAdDiscs.clear();
+  }
+
+  void _stopLoader() {
+    loader = Loader(initial: false, common: false);
+    notifyListeners();
   }
 
   Future<void> _fetchTournamentInfo() async {
@@ -73,16 +76,10 @@ class ProfileViewModel with ChangeNotifier {
     var base64 = 'data:image/${docFile.file?.path.fileExtension};base64,${docFile.base64}';
     var body = {'type': 'image', 'section': 'user', 'alt_text': imageName, 'image': base64};
     var response = await sl<UserRepository>().uploadBase64Media(body);
-    if (response == null) {
-      loader.common = false;
-      return notifyListeners();
-    }
+    if (response == null) return _stopLoader();
     var userBody = {'media_id': response.id};
     var userResponse = await sl<UserRepository>().updateProfileInfo(userBody);
-    if (userResponse == null) {
-      loader.common = false;
-      return notifyListeners();
-    }
+    if (userResponse == null) return _stopLoader();
     var context = navigatorKey.currentState!.context;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
     await Future.delayed(const Duration(seconds: 4));
@@ -97,13 +94,11 @@ class ProfileViewModel with ChangeNotifier {
   Future<void> onUpdateProfile(Map<String, dynamic> params) async {
     loader.common = true;
     notifyListeners();
+    var context = navigatorKey.currentState!.context;
     var response = await sl<UserRepository>().updateProfileInfo(params);
-    if (response != null) {
-      person = response;
-      var context = navigatorKey.currentState!.context;
-      unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount(isDelay: true));
-    }
-    loader.common = false;
-    notifyListeners();
+    if (response == null) return _stopLoader();
+    person = response;
+    unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount(isDelay: true));
+    _stopLoader();
   }
 }

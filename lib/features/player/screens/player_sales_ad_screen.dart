@@ -16,8 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PlayerSalesAdScreen extends StatefulWidget {
-  final User? player;
-  const PlayerSalesAdScreen({this.player});
+  final User player;
+  const PlayerSalesAdScreen({required this.player});
 
   @override
   State<PlayerSalesAdScreen> createState() => _PlayerSalesAdScreenState();
@@ -54,7 +54,7 @@ class _PlayerSalesAdScreenState extends State<PlayerSalesAdScreen> {
         centerTitle: true,
         leading: const BackMenu(),
         automaticallyImplyLeading: false,
-        title: Text('${widget.player?.first_name}${'extra_s'.recast} ${'sales_ads'.recast.allFirstLetterCapital}'),
+        title: Text('${widget.player.first_name}${'extra_s'.recast} ${'sales_ads'.recast.allFirstLetterCapital}'),
       ),
       body: Container(
         width: SizeConfig.width,
@@ -68,8 +68,8 @@ class _PlayerSalesAdScreenState extends State<PlayerSalesAdScreen> {
 
   Widget get _screenView {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var isMe = widget.player?.id != null && widget.player?.id == UserPreferences.user.id;
-    var name = isMe ? '' : (widget.player?.first_name ?? 'this_player'.recast);
+    var isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
+    var name = isMe ? '' : (widget.player.first_name.isEmpty ? 'this_player'.recast : widget.player.first_name);
     var label = 'no_sales_ad_found';
     var description = isMe
         ? 'you_have_no_sales_ad_disc_in_marketplace_please_create_your_sales_ads'

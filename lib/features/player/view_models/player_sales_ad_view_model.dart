@@ -19,10 +19,10 @@ class PlayerSalesAdViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
   var categories = <MarketplaceCategory>[];
 
-  void initViewModel(User? player) {
-    if (player?.id == null) loader = Loader(initial: false, common: false);
-    if (player?.id == null) return notifyListeners();
-    _fetchPlayerSalesAdDiscs(playerId: player!.id!, isLoader: true);
+  void initViewModel(User player) {
+    if (player.id == null) loader = Loader(initial: false, common: false);
+    if (player.id == null) return notifyListeners();
+    _fetchPlayerSalesAdDiscs(playerId: player.id!, isLoader: true);
   }
 
   void disposeViewModel() {

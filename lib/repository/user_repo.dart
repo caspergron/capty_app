@@ -1,5 +1,3 @@
-import 'package:http/http.dart';
-
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -10,14 +8,13 @@ import 'package:app/models/common/media.dart';
 import 'package:app/models/common/media_api.dart';
 import 'package:app/models/common/tournament.dart';
 import 'package:app/models/common/tournament_api.dart';
-import 'package:app/models/disc/user_disc.dart';
-import 'package:app/models/disc_bag/disc_bag.dart';
 import 'package:app/models/system/doc_file.dart';
 import 'package:app/models/user/dashboard_count.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:http/http.dart';
 
 class UserRepository {
   Future<User> fetchProfileInfo() async {
@@ -80,13 +77,13 @@ class UserRepository {
     return Media.fromJson(apiResponse.response['data']);
   }
 
-  Future<List<UserDisc>> fetchTournamentDiscs() async {
+  /*Future<List<UserDisc>> fetchTournamentDiscs() async {
     var endpoint = ApiUrl.user.tournamentDisc;
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var discBag = DiscBag.fromJson(apiResponse.response['data']);
     return discBag.userDiscs ?? [];
-  }
+  }*/
 
   Future<List<Tournament>> fetchPlayerTournamentInfo() async {
     var endpoint = ApiUrl.user.tournamentInfo;

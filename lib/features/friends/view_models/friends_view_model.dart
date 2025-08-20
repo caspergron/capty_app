@@ -1,20 +1,17 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/friends/components/added_friend_dialog.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/friend/friend.dart';
-import 'package:app/models/system/data_model.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/repository/friend_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class FriendsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
-  var feedbackType = DataModel();
   var friends = <Friend>[];
   var friendRequests = <Friend>[];
 
@@ -25,6 +22,8 @@ class FriendsViewModel with ChangeNotifier {
 
   void disposeViewModel() {
     loader = DEFAULT_LOADER;
+    friends.clear();
+    friendRequests.clear();
   }
 
   void updateUi() => notifyListeners();

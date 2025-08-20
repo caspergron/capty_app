@@ -116,8 +116,8 @@ class _UserRoutes {
   Widget add_friend() => AddFriendScreen();
 
   Widget player_profile({required int playerId}) => PlayerProfileScreen(playerId: playerId);
-  Widget tournament_discs({User? player}) => TournamentBagScreen(player: player);
-  Widget player_sale_ads({User? player}) => PlayerSalesAdScreen(player: player);
+  Widget tournament_discs({required User player}) => TournamentBagScreen(player: player);
+  Widget player_sale_ads({required User player}) => PlayerSalesAdScreen(player: player);
 
   Widget create_club() => CreateClubScreen();
   Widget club({required Club club, bool isHome = false}) => ClubScreen(club: club, isHome: isHome);

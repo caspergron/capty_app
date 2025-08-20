@@ -173,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             height: 34,
             padding: 16,
             label: 'view_my_tournament_bag'.recast.toUpper,
-            onTap: Routes.user.tournament_discs().push,
+            onTap: Routes.user.tournament_discs(player: _modelData.person).push,
             textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
           ),
         ),

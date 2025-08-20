@@ -868,7 +868,6 @@ const APP_STRINGS = {
   'view': 'View',
   'tournament_bag': 'Tournament Bag',
   'extra_s': "'s",
-  'this_player_has_no_disc_in_the_tournament_bag': 'This player has no disc in the tournament bag',
   'seller_disc_details': 'Seller Disc Details',
   'my_disc_details': 'My Disc Details',
   'select_brands': 'Select Brands',
@@ -1021,6 +1020,8 @@ const APP_STRINGS = {
   'has_no_available_disc_in_marketplace_please_check_back_later': 'has no available disc in marketplace. Please check back later.',
   'this_player': 'This player',
   'no_sales_ad_found': 'No Sales Ads Found!',
+  'no_tournament_discs_found': 'No Tournament Discs Found!',
+  'has_no_disc_in_the_tournament_bag': 'has no disc in the tournament bag',
   '': ''
 };
 

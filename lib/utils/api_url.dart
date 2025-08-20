@@ -43,7 +43,7 @@ class _UserApis {
   String profile = '$_SERVER/user/profile';
   String updateProfile = '$_SERVER/user/update-profile';
   String dashboardCount = '$_SERVER/user/dashboard/count';
-  String tournamentDisc = '$_SERVER/user/bag/tournament-bag';
+  // String tournamentDisc = '$_SERVER/user/bag/tournament-bag';
   String tournamentInfo = '$_SERVER/user/tournament-info';
 
   String signOut = '$_SERVER/user/logout';
@@ -157,7 +157,7 @@ class _UserApis {
   String playerProfile = '$_SERVER/player/profile?user_id='; // 15
   String playerSalesAds = '$_SERVER/player/sales-ads?user_id='; // 15
   String playerAllSalesAds = '$_SERVER/player/sales-ads-view-all?user_id='; // 15
-  String playerTournamentBag = '$_SERVER/player/tournament-bag?user_id='; // 15
+  // String playerTournamentBag = '$_SERVER/player/tournament-bag?user_id='; // 15
   String playerTournamentInfo = '$_SERVER/player/tournament-info?user_id='; // 15
 }
 

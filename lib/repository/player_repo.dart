@@ -3,8 +3,6 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/models/common/tournament.dart';
 import 'package:app/models/common/tournament_api.dart';
-import 'package:app/models/disc/user_disc.dart';
-import 'package:app/models/disc_bag/disc_bag.dart';
 import 'package:app/models/marketplace/marketplace_api.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
@@ -45,11 +43,11 @@ class PlayerRepository {
     return tournamentApi.tournaments ?? [];
   }
 
-  Future<List<UserDisc>> fetchPlayerTournamentDiscs(int userId) async {
+  /*Future<List<UserDisc>> fetchPlayerTournamentDiscs(int userId) async {
     var endpoint = '${ApiUrl.user.playerTournamentBag}$userId';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var discBag = DiscBag.fromJson(apiResponse.response['data']);
     return discBag.userDiscs ?? [];
-  }
+  }*/
 }

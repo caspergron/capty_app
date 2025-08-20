@@ -20,14 +20,16 @@ class PgdaDiscsViewModel with ChangeNotifier {
   var categories = <DiscCategory>[];
   var scrollControl = ScrollController();
 
-  void initViewModel() {
-    _fetchPdgaDiscsByCategory(isLoader: true);
-    _paginationCheck();
-  }
+  void initViewModel() => _fetchPdgaDiscsByCategory(isLoader: true);
 
   void disposeViewModel() {
     loader = DEFAULT_LOADER;
     categories.clear();
+  }
+
+  void _stopLoader() {
+    loader = Loader(initial: false, common: false);
+    notifyListeners();
   }
 
   Future<void> _fetchPdgaDiscsByCategory({bool isLoader = false, bool isPaginate = false, int index = 0}) async {
@@ -38,33 +40,29 @@ class PgdaDiscsViewModel with ChangeNotifier {
     notifyListeners();
     var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
     var response = await sl<DiscRepository>().fetchParentDiscsByCategory(page: pageNumber, isWishlistSearch: true);
-    if (response.isEmpty) return _turnOffLoaders(index: index);
-    if (pageNumber == 1) {
-      categories = response;
-    } else {
-      for (final entry in categories.asMap().entries) {
-        final catIndex = entry.key;
-        final catItem = entry.value;
-        var newIndex = response.indexWhere((element) => element.name.toKey == catItem.name.toKey);
-        if (newIndex >= 0) {
-          var newItem = response[newIndex];
-          categories[catIndex].parentDiscs ??= [];
-          categories[catIndex].parentDiscs!.addAll(newItem.discs);
-          categories[catIndex].pagination = newItem.pagination;
-          var newLength = newItem.discs.length;
-          categories[catIndex].paginate?.length = newLength;
-          if (newLength >= LENGTH_08) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
-        }
-      }
-    }
+    if (isLoader) categories.clear();
+    if (response.isEmpty) return _stopLoader();
+    pageNumber == 1 ? categories = response : _updateMarketplaceData(response);
     if (categories.isNotEmpty) unawaited(_paginationCheck());
-    _turnOffLoaders(index: index);
+    if (categories.isNotEmpty) categories[index].paginate?.pageLoader = false;
+    _stopLoader();
   }
 
-  void _turnOffLoaders({int index = 0}) {
-    loader = Loader(initial: false, common: false);
-    if (categories.isNotEmpty) categories[index].paginate?.pageLoader = false;
-    return notifyListeners();
+  void _updateMarketplaceData(List<DiscCategory> responseList) {
+    for (final entry in categories.asMap().entries) {
+      final catIndex = entry.key;
+      final catItem = entry.value;
+      var newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
+      if (newIndex >= 0) {
+        var newItem = responseList[newIndex];
+        categories[catIndex].parentDiscs ??= [];
+        categories[catIndex].parentDiscs!.addAll(newItem.discs);
+        categories[catIndex].pagination = newItem.pagination;
+        var newLength = newItem.discs.length;
+        categories[catIndex].paginate?.length = newLength;
+        if (newLength >= LENGTH_10) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
+      }
+    }
   }
 
   Future<void> _paginationCheck() async {
@@ -77,8 +75,9 @@ class PgdaDiscsViewModel with ChangeNotifier {
       if (scrollController == null || paginate == null) continue;
       if (!scrollController.hasListeners) {
         scrollController.addListener(() {
-          final maxPosition = scrollController.position.pixels == scrollController.position.maxScrollExtent;
-          if (maxPosition && paginate.length == LENGTH_08) _fetchPdgaDiscsByCategory(isPaginate: true, index: index);
+          final position = scrollController.position;
+          final isPosition80 = position.pixels >= position.maxScrollExtent * 0.85;
+          if (isPosition80 && paginate.length == LENGTH_10) _fetchPdgaDiscsByCategory(isPaginate: true, index: index);
         });
       }
     }
