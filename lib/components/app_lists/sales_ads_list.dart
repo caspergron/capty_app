@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
+import 'package:app/constants/data_constants.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -13,23 +12,40 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class SalesAdsList extends StatelessWidget {
   final String label;
   final List<SalesAd> salesAdsList;
+  final Function()? onShowMore;
   final Function(SalesAd)? onItem;
 
-  const SalesAdsList({this.label = '', this.salesAdsList = const [], this.onItem});
+  const SalesAdsList({this.label = '', this.salesAdsList = const [], this.onItem, this.onShowMore});
 
   @override
   Widget build(BuildContext context) {
-    var listTitle = '$label ${'sales_ads'.recast}'.trim();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
-          child: Text(listTitle, style: TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54)),
+        Row(
+          children: [
+            SizedBox(width: Dimensions.screen_padding),
+            Expanded(
+              child: Text(
+                '$label ${'sales_ads'.recast}'.trim(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54),
+              ),
+            ),
+            const SizedBox(width: 08),
+            if (salesAdsList.length == LENGTH_20 && onShowMore != null)
+              InkWell(
+                onTap: () => onShowMore!(),
+                child: Text('show_more'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue, letterSpacing: 0.54)),
+              ),
+            SizedBox(width: Dimensions.screen_padding),
+          ],
         ),
         const SizedBox(height: 08),
         SizedBox(

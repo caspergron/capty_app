@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/models/common/pagination.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/system/paginate.dart';
+import 'package:flutter/cupertino.dart';
 
 class MarketplaceCategory {
   int? id;
@@ -45,7 +44,7 @@ class MarketplaceCategory {
     if (json['sales_ads'] != null) json['sales_ads'].forEach((v) => salesAds?.add(SalesAd.fromJson(v)));
     pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
     var length = salesAds?.length ?? 0;
-    var isNextPage = length >= SALES_AD_LENGTH_05;
+    var isNextPage = length >= LENGTH_08;
     scrollControl = ScrollController();
     paginate = Paginate(length: length, page: isNextPage ? 2 : 1, pageLoader: isNextPage);
   }

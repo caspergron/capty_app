@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -17,6 +15,7 @@ import 'package:app/repository/disc_bag_repo.dart';
 import 'package:app/repository/disc_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/routes.dart';
+import 'package:flutter/cupertino.dart';
 
 var _ALL_CATEGORY = DiscBag(id: 1000001, name: 'all');
 
@@ -103,7 +102,7 @@ class DiscsViewModel with ChangeNotifier {
     loader.common = true;
     notifyListeners();
     await fetchAllDiscBags();
-    await Future.delayed(const Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 3));
     FlushPopup.onInfo(message: 'disc_update_successfully'.recast);
     loader.common = false;
     notifyListeners();
@@ -116,12 +115,11 @@ class DiscsViewModel with ChangeNotifier {
     loader.common = true;
     notifyListeners();
     var response = await sl<DiscBagRepository>().deleteDiscBag(item.id!);
-    if (response) {
-      await fetchAllDiscBags();
-      if (isSelected) discBag = _ALL_CATEGORY;
-      FlushPopup.onInfo(message: 'bag_deleted_successfully'.recast);
-    }
     loader.common = false;
+    if (!response) return notifyListeners();
+    await fetchAllDiscBags();
+    if (isSelected) discBag = _ALL_CATEGORY;
+    FlushPopup.onInfo(message: 'bag_deleted_successfully'.recast);
     notifyListeners();
   }
 

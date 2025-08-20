@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/features/club/components/club_created_dialog.dart';
@@ -13,6 +11,7 @@ import 'package:app/models/system/loader.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/club_repo.dart';
 import 'package:app/repository/google_repo.dart';
+import 'package:flutter/foundation.dart';
 
 class CreateClubViewModel with ChangeNotifier {
   var step = 1;
@@ -56,21 +55,18 @@ class CreateClubViewModel with ChangeNotifier {
     loader = Loader(initial: false, common: false);
     notifyListeners();
     // var position = Coordinates(lat: 23.622418, lng: 90.496595);
-    // var position = Coordinates(lat: 23.789063, lng: 90.363781);
-    // var response = await sl<ClubRepository>().findNearbyCourses(position);
     var response = await sl<ClubRepository>().findNearbyCourses(coordinates);
     clubs.clear();
     courses.clear();
-    if (response == null) {
-      // Do Nothing
-    } else if (response['is_course']) {
+    loader = Loader(initial: false, common: false);
+    if (response == null) return notifyListeners();
+    if (response['is_course']) {
       var courseItems = response['data'] as List<Course>;
       if (courseItems.isNotEmpty) courses = courseItems;
     } else {
       var clubItems = response['data'] as List<Club>;
       if (clubItems.isNotEmpty) clubs = clubItems;
     }
-    loader = Loader(initial: false, common: false);
     notifyListeners();
   }
 
@@ -100,8 +96,6 @@ class CreateClubViewModel with ChangeNotifier {
     body.addAll(additionalData);
     var response = await sl<ClubRepository>().createClub(body);
     if (response != null) {
-      // var context = navigatorKey.currentState!.context;
-      // Provider.of<HomeViewModel>(context, listen: false)
       if (selectedCourses.isNotEmpty) await _onCreateClubCourse(response.id!);
       unawaited(clubCreatedDialog(club: response));
     }

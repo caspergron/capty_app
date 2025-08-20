@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -23,6 +21,7 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/marketplace/sales_ad_api.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:provider/provider.dart';
 
 class MarketplaceRepository {
   Future<List<Tag>> fetchSpecialityDiscMenus({int isSpecial = 1}) async {
@@ -46,7 +45,7 @@ class MarketplaceRepository {
   }
 
   Future<List<MarketplaceCategory>> fetchMarketplaceDiscs({String params = ''}) async {
-    var endpoint = '${ApiUrl.user.marketplaceList}?size=$SALES_AD_LENGTH_05$params';
+    var endpoint = '${ApiUrl.user.marketplaceList}?size=$LENGTH_08$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
@@ -55,7 +54,7 @@ class MarketplaceRepository {
   }
 
   /*Future<List<MarketplaceCategory>> fetchMarketplaceDiscsByCategory({int page = 1}) async {
-    var endpoint = '${ApiUrl.user.marketplaceList}?size=$SALES_AD_LENGTH_05&page=$page';
+    var endpoint = '${ApiUrl.user.marketplaceList}?size=$LENGTH_08&page=$page';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
@@ -173,8 +172,8 @@ class MarketplaceRepository {
     return apiResponse.status == 200;
   }
 
-  Future<List<MarketplaceCategory>> fetchMarketplaceFavourites(int page) async {
-    var endpoint = '${ApiUrl.user.marketplaceFavouriteList}$page';
+  Future<List<MarketplaceCategory>> fetchMarketplaceFavourites(String params) async {
+    var endpoint = '${ApiUrl.user.marketplaceFavouriteList}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
@@ -189,7 +188,7 @@ class MarketplaceRepository {
     return true;
   }
 
-  Future<bool> RemoveMarketplaceDiscFromFavourite(int salesAdId) async {
+  Future<bool> removeMarketplaceDiscFromFavourite(int salesAdId) async {
     var endpoint = '${ApiUrl.user.RemoveMarketplaceDiscFromFavourite}$salesAdId';
     var apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return false;

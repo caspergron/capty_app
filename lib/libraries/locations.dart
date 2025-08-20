@@ -1,7 +1,6 @@
-import 'package:location/location.dart';
-
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/preferences/user_preferences.dart';
+import 'package:location/location.dart';
 
 // import 'package:geocoding/geocoding.dart';
 
@@ -9,6 +8,7 @@ class Locations {
   final _location = Location();
 
   Future<Coordinates> fetchLocationPermission() async {
+    if (UserPreferences.coordinates.is_coordinate) return UserPreferences.coordinates;
     if (!await _isServiceEnabled) return Coordinates();
     var permissionStatus = await _location.hasPermission();
     if (permissionStatus == PermissionStatus.denied) {

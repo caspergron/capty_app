@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -12,6 +9,7 @@ import 'package:app/models/club/event.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/club_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class ClubEventViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -54,13 +52,11 @@ class ClubEventViewModel with ChangeNotifier {
     notifyListeners();
     unawaited(scrollDown(scrollControl));
     var body = {'club_event_id': event.id, 'comment': comment};
-    if (kDebugMode) print(body);
     await Future.delayed(const Duration(seconds: 1));
     var response = await sl<ClubRepository>().addEventComment(body, messageInfos);
-    if (response != null) {
-      var index = comments.indexWhere((item) => item.dateMS == dateMillisecond);
-      if (index >= 0) comments[index] = response;
-    }
+    if (response == null) return notifyListeners();
+    var index = comments.indexWhere((item) => item.dateMS == dateMillisecond);
+    if (index >= 0) comments[index] = response;
     notifyListeners();
   }
 

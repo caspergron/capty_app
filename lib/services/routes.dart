@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/features/address/screens/add_address_screen.dart';
 import 'package:app/features/address/screens/seller_settings_screen.dart';
 import 'package:app/features/auth/screens/otp_screen.dart';
@@ -34,9 +32,10 @@ import 'package:app/features/leaderboard/leaderboard_screen.dart';
 import 'package:app/features/marketplace/screens/market_details_screen.dart';
 import 'package:app/features/notification/notifications_screen.dart';
 import 'package:app/features/notify_pref/notify_pref_screen.dart';
-import 'package:app/features/profile/screens/player_profile_screen.dart';
-import 'package:app/features/profile/screens/profile_screen.dart';
-import 'package:app/features/profile/screens/tournament_bag_screen.dart';
+import 'package:app/features/player/screens/player_profile_screen.dart';
+import 'package:app/features/player/screens/player_sales_ad_screen.dart';
+import 'package:app/features/player/screens/tournament_bag_screen.dart';
+import 'package:app/features/profile/profile_screen.dart';
 import 'package:app/features/report_problem/report_problem_screen.dart';
 import 'package:app/features/settings/settings_screen.dart';
 import 'package:app/features/suggest_feature/screens/suggest_feature_screen.dart';
@@ -57,6 +56,7 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/settings/settings.dart';
 import 'package:app/models/user/user.dart';
+import 'package:flutter/material.dart';
 
 class Routes {
   static _AuthRoutes auth = _AuthRoutes();
@@ -88,7 +88,6 @@ class _UserRoutes {
   Widget leaderboard() => LeaderboardScreen();
 
   Widget profile() => ProfileScreen();
-  Widget tournament_discs({User? player}) => TournamentBagScreen(player: player);
   Widget notification() => NotificationsScreen();
   Widget seller_settings({bool isSelectable = false}) => SellerSettingsScreen(isSelectable: isSelectable);
   Widget add_address({required Address address}) => AddAddressScreen(address: address);
@@ -115,7 +114,10 @@ class _UserRoutes {
 
   Widget friends({bool isHome = false, int index = 0}) => FriendsScreen(isHome: isHome, index: index);
   Widget add_friend() => AddFriendScreen();
+
   Widget player_profile({required int playerId}) => PlayerProfileScreen(playerId: playerId);
+  Widget tournament_discs({User? player}) => TournamentBagScreen(player: player);
+  Widget player_sale_ads({User? player}) => PlayerSalesAdScreen(player: player);
 
   Widget create_club() => CreateClubScreen();
   Widget club({required Club club, bool isHome = false}) => ClubScreen(club: club, isHome: isHome);

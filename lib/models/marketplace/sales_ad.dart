@@ -19,6 +19,7 @@ class SalesAd {
   String? shippingMethod;
   int? condition;
   double? usedRange;
+  int? isFavorite;
   String? soldThrough;
   String? soldThroughDetails;
   String? notes;
@@ -31,7 +32,8 @@ class SalesAd {
 
   bool get is_shipping => isShipping != null && isShipping == 1;
 
-  bool get is_wishListed => wishlistId != null;
+  // bool get is_wishListed => wishlistId != null;
+  bool get is_favourite => isFavorite != null && isFavorite == 1;
   bool get is_my_disc => userDisc?.userId != null && (userDisc?.userId == UserPreferences.user.id);
   int? get condition_value => usedRange == null ? null : (usedRange == 0 ? 0 : usedRange!.toInt() - 1);
   String get currency_code => currency?.code ?? '';
@@ -48,6 +50,7 @@ class SalesAd {
     this.shippingMethod,
     this.condition,
     this.usedRange,
+    this.isFavorite,
     this.soldThrough,
     this.soldThroughDetails,
     this.notes,
@@ -70,6 +73,7 @@ class SalesAd {
     shippingMethod = json['shipping_method'];
     condition = json['condition'];
     usedRange = json['used_range'] == null ? 0 : double.parse(json['used_range'].toString());
+    isFavorite = json['is_favorite'];
     soldThrough = json['sold_through'];
     soldThroughDetails = json['sold_through_details'];
     notes = json['notes'];
@@ -94,6 +98,7 @@ class SalesAd {
     map['shipping_method'] = shippingMethod;
     map['condition'] = condition;
     map['used_range'] = usedRange;
+    map['is_favorite'] = isFavorite;
     map['sold_through'] = soldThrough;
     map['sold_through_details'] = soldThroughDetails;
     map['notes'] = notes;

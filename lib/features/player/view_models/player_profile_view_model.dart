@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/libraries/locations.dart';
@@ -10,6 +8,7 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/repository/player_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class PlayerProfileViewModel with ChangeNotifier {
   var player = User();
@@ -49,7 +48,7 @@ class PlayerProfileViewModel with ChangeNotifier {
     salesAdDiscs.clear();
     var coordinates = await sl<Locations>().fetchLocationPermission();
     var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '$userId$locationParams';
+    var params = '$userId&size=$LENGTH_20$locationParams';
     var response = await sl<PlayerRepository>().fetchSalesAdDiscs(params);
     if (response.isNotEmpty) salesAdDiscs = response;
     loader = Loader(initial: false, common: false);

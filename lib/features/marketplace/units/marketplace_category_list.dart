@@ -1,16 +1,17 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/features/marketplace/units/marketplace_disc_list.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
+import 'package:flutter/material.dart';
 
 class MarketplaceCategoryList extends StatelessWidget {
   final List<MarketplaceCategory> categories;
   final Function(SalesAd)? onDiscItem;
-  const MarketplaceCategoryList({this.categories = const [], this.onDiscItem});
+  final Function(SalesAd)? onSetFav;
+  final Function(SalesAd)? onRemoveFav;
+  const MarketplaceCategoryList({this.categories = const [], this.onDiscItem, this.onSetFav, this.onRemoveFav});
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +36,20 @@ class MarketplaceCategoryList extends StatelessWidget {
       children: [
         Padding(padding: gap, child: Text(item.displayName ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: style)),
         const SizedBox(height: 08),
-        MarketplaceDiscList(
-          discs: item.discs,
-          scrollControl: item.scrollControl,
-          onTap: (discItem) => onDiscItem == null ? null : onDiscItem!(discItem),
-        ),
+        MarketplaceDiscList(discs: item.discs, scrollControl: item.scrollControl, onTap: _onDiscItem, onFav: _onFavourite),
       ],
     );
+  }
+
+  void _onDiscItem(SalesAd item) => onDiscItem == null ? null : onDiscItem!(item);
+
+  void _onFavourite(SalesAd item, bool status) {
+    if (status) {
+      if (onRemoveFav == null) return;
+      onRemoveFav!(item);
+    } else {
+      if (onSetFav == null) return;
+      onSetFav!(item);
+    }
   }
 }

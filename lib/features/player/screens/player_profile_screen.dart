@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/sales_ads_list.dart';
 import 'package:app/components/app_lists/upcoming_tournaments_list.dart';
@@ -9,12 +5,11 @@ import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
-import 'package:app/components/sheets/image_option_sheet.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/profile/components/pofile_edit_dialog.dart';
-import 'package:app/features/profile/view_models/profile_view_model.dart';
+import 'package:app/features/player/view_models/player_profile_view_model.dart';
+import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
@@ -25,40 +20,52 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatefulWidget {
+class PlayerProfileScreen extends StatefulWidget {
+  final int playerId;
+  const PlayerProfileScreen({required this.playerId});
+
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<PlayerProfileScreen> createState() => _PlayerProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  var _modelData = ProfileViewModel();
-  var _viewModel = ProfileViewModel();
+class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
+  var _modelData = PlayerProfileViewModel();
+  var _viewModel = PlayerProfileViewModel();
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('profile-screen');
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel(widget.playerId));
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    _viewModel = Provider.of<ProfileViewModel>(context, listen: false);
-    _modelData = Provider.of<ProfileViewModel>(context);
+    _viewModel = Provider.of<PlayerProfileViewModel>(context, listen: false);
+    _modelData = Provider.of<PlayerProfileViewModel>(context);
     super.didChangeDependencies();
   }
 
   @override
+  void dispose() {
+    _viewModel.disposeViewModel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var firstName = _modelData.player.first_name;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         leading: const BackMenu(),
         automaticallyImplyLeading: false,
-        title: Text('profile'.recast),
+        title: Text("$firstName ${firstName.isNotEmpty ? 'extra_s'.recast : ''} ${'profile'.recast}"),
       ),
       body: Container(
         width: SizeConfig.width,
@@ -70,11 +77,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _screenView(BuildContext context) {
+    if (_modelData.loader.initial) return const SizedBox.shrink();
     var radius = const Radius.circular(12);
     var borderSide = const BorderSide(color: primary, width: 2);
     var borderAll = Border.all(color: primary, width: 2);
-    var person = _modelData.person;
-    var isRatingSection = person.is_pdga_or_total_club;
+    var player = _modelData.player;
+    var isRatingSection = player.is_pdga_or_total_club;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -117,9 +125,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _ProfileInfo(label: 'pdga_rating'.recast, value: (person.pdgaRating ?? 0).toDouble()),
+                        _ProfileInfo(label: 'pdga_rating'.recast, value: (player.pdgaRating ?? 0).toDouble()),
                         _ProfileInfo(label: 'club_point'.recast),
-                        _ProfileInfo(label: 'total_club'.recast, value: (person.totalClub ?? 0).toDouble()),
+                        _ProfileInfo(label: 'total_club'.recast, value: (player.totalClub ?? 0).toDouble()),
                       ],
                     ),
                   ),
@@ -135,10 +143,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderWidth: 02,
                       borderColor: primary,
                       backgroundColor: skyBlue,
-                      image: _modelData.person.media?.url,
+                      image: _modelData.player.media?.url,
                       placeholder: const FadingCircle(size: 60),
                       errorWidget: SvgImage(image: Assets.svg1.coach, color: primary, height: 32.width),
-                      onTap: () => imageOptionSheet(onFile: _viewModel.onUpdateProfileImage),
                     ),
                     const SizedBox(height: 16),
                     Container(
@@ -146,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                       decoration: BoxDecoration(color: skyBlue, border: borderAll, borderRadius: BorderRadius.circular(06)),
                       child: Text(
-                        _modelData.person.full_name,
+                        _modelData.player.full_name,
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -156,29 +163,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-              Positioned(
-                top: 12,
-                right: 12.width + 12,
-                child: InkWell(
-                  onTap: () => editProfileDialog(person: _modelData.person, onEdit: _viewModel.onUpdateProfile),
-                  child: SvgImage(image: Assets.svg1.edit, color: lightBlue, height: 24),
-                ),
-              ),
             ],
           ),
         ),
         // const SizedBox(height: 10 + 10),
         SizedBox(height: (isRatingSection ? 70 : 10) + 10),
-        Center(
-          child: ElevateButton(
-            radius: 04,
-            height: 34,
-            padding: 16,
-            label: 'view_my_tournament_bag'.recast.toUpper,
-            onTap: Routes.user.tournament_discs().push,
-            textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+        if (UserPreferences.user.id == _modelData.player.id)
+          Center(
+            child: ElevateButton(
+              radius: 04,
+              height: 34,
+              padding: 16,
+              label: "${'view'.recast} ${'tournament_bag'.recast}".toUpper,
+              onTap: _modelData.loader.loader ? null : Routes.user.tournament_discs(player: _modelData.player).push,
+              textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+            ),
+          )
+        else
+          Row(
+            children: [
+              SizedBox(width: 10.width),
+              Expanded(
+                child: ElevateButton(
+                  radius: 04,
+                  height: 34,
+                  padding: 16,
+                  label: "${'view'.recast} ${'tournament_bag'.recast}".toUpper,
+                  onTap: _modelData.loader.loader ? null : Routes.user.tournament_discs(player: _modelData.player).push,
+                  textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+                ),
+              ),
+              const SizedBox(width: 10),
+              ElevateButton(
+                radius: 04,
+                height: 34,
+                padding: 16,
+                background: skyBlue,
+                label: 'send_message'.recast.toUpper,
+                onTap: _modelData.loader.loader ? null : Routes.user.chat(buddy: _modelData.player.chat_buddy).push,
+                textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
+              ),
+              SizedBox(width: 10.width),
+            ],
           ),
-        ),
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
@@ -195,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Text('club_name'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue)),
                     const SizedBox(height: 06),
                     Text(
-                      person.clubName ?? 'n/a'.recast,
+                      player.clubName ?? 'n/a'.recast,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.text14_400.copyWith(color: lightBlue),
@@ -204,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Text('udisc_username'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue)),
                     const SizedBox(height: 06),
                     Text(
-                      person.uDiscUsername ?? 'n/a'.recast,
+                      player.uDiscUsername ?? 'n/a'.recast,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.text14_400.copyWith(color: lightBlue),
@@ -219,12 +246,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Text('pdga_number'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue)),
                   const SizedBox(height: 06),
-                  Text(person.pdgaNumber ?? 'n/a'.recast, style: TextStyles.text14_400.copyWith(color: lightBlue)),
+                  Text(player.pdgaNumber ?? 'n/a'.recast, style: TextStyles.text14_400.copyWith(color: lightBlue)),
                   /*const SizedBox(height: 20),
                   Text('hand_expert'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue)),
                   const SizedBox(height: 06),
                   Text(
-                    person.handPref.toKey.isEmpty ? 'n/a'.recast : person.handPref.toKey.firstLetterCapital,
+                    player.handPref.toKey.isEmpty ? 'n/a'.recast : player.handPref.toKey.firstLetterCapital,
                     style: TextStyles.text14_400.copyWith(color: lightBlue),
                   ),*/
                   const SizedBox(height: 02),
@@ -236,12 +263,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(height: 24),
         if (_modelData.upcomingTournaments.isNotEmpty)
           UpcomingTournamentsList(
-            label: "${_modelData.person.first_name}'s",
+            label: "${_modelData.player.first_name}'s",
             tournaments: _modelData.upcomingTournaments,
           ),
         if (_modelData.salesAdDiscs.isNotEmpty)
           SalesAdsList(
-            label: "${_modelData.person.first_name}'s",
+            label: "${_modelData.player.first_name}'s",
             salesAdsList: _modelData.salesAdDiscs,
             onItem: (item) => Routes.user.market_details(salesAd: item).push(),
           ),
@@ -279,3 +306,6 @@ class _ProfileInfo extends StatelessWidget {
     );
   }
 }
+
+// casper Just signed up in Capty and joined the club Søhøjlandets Disc Golf. Join casper and compare PDGA rank and buy/sell disc
+// https://www.capty.com/welcome

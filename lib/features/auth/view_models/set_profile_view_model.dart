@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:path/path.dart';
-
 import 'package:app/components/sheets/image_option_sheet.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -20,6 +16,8 @@ import 'package:app/repository/auth_repo.dart';
 import 'package:app/repository/public_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/routes.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 
 class SetProfileViewModel with ChangeNotifier {
   var loader = false;
@@ -103,7 +101,7 @@ class SetProfileViewModel with ChangeNotifier {
     var coordinates = await sl<Locations>().fetchLocationPermission();
     if (!coordinates.is_coordinate) loader = false;
     if (!coordinates.is_coordinate) unawaited(Routes.auth.set_profile_4(data: data).push());
-    if (!coordinates.is_coordinate) notifyListeners();
+    if (!coordinates.is_coordinate) return notifyListeners();
     var response = await sl<PublicRepository>().findClubs(coordinates);
     clubs.clear();
     if (response.isNotEmpty) clubs = response.sublist(0, response.length > 3 ? 3 : response.length);

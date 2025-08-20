@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_icons/favourite.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -7,6 +5,7 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
+import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
@@ -14,13 +13,14 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MarketplaceDiscList extends StatelessWidget {
   final List<SalesAd> discs;
   final ScrollPhysics physics;
   final ScrollController? scrollControl;
   final Function(SalesAd)? onTap;
-  final Function(SalesAd, int index)? onFav;
+  final Function(SalesAd, bool)? onFav;
 
   const MarketplaceDiscList({
     this.onTap,
@@ -36,13 +36,13 @@ class MarketplaceDiscList extends StatelessWidget {
       height: 216 + 10,
       child: ListView.builder(
         shrinkWrap: true,
+        physics: physics,
         controller: scrollControl,
         clipBehavior: Clip.antiAlias,
         itemCount: discs.length,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(bottom: 10),
         itemBuilder: _discItemCard,
-        physics: physics,
       ),
     );
   }
@@ -55,6 +55,7 @@ class MarketplaceDiscList extends StatelessWidget {
     var distance = item.address?.distance_number ?? 0;
     var distanceLabel = '${item.address?.distance_number.formatInt ?? 0} ${'km'.recast}';
     var flightDataStyle = TextStyles.text13_600.copyWith(color: lightBlue, height: 1);
+    var isMyDisc = UserPreferences.user.id == item.sellerInfo?.id;
     return InkWell(
       onTap: () => onTap == null ? null : onTap!(item),
       child: TweenListItem(
@@ -71,7 +72,7 @@ class MarketplaceDiscList extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Favourite(status: item.is_wishListed, onTap: onFav == null ? null : () => onFav!(item, index)),
+                  if (!isMyDisc) Favourite(status: item.is_favourite, onTap: onFav == null ? null : () => onFav!(item, item.is_favourite)),
                   const Spacer(),
                   if (distance > 0) Text(distanceLabel, style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1))
                 ],

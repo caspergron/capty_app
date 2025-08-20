@@ -1,6 +1,3 @@
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart' show SingleChildWidget;
-
 import 'package:app/features/address/view_models/add_address_view_model.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/features/auth/view_models/otp_view_model.dart';
@@ -31,14 +28,17 @@ import 'package:app/features/marketplace/view_models/market_details_view_model.d
 import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
 import 'package:app/features/notification/notifications_view_model.dart';
 import 'package:app/features/notify_pref/notify_pref_view_model.dart';
-import 'package:app/features/profile/view_models/player_profile_view_model.dart';
-import 'package:app/features/profile/view_models/profile_view_model.dart';
-import 'package:app/features/profile/view_models/tournament_discs_view_model.dart';
+import 'package:app/features/player/view_models/player_profile_view_model.dart';
+import 'package:app/features/player/view_models/player_sales_ad_view_model.dart';
+import 'package:app/features/player/view_models/tournament_discs_view_model.dart';
+import 'package:app/features/profile/profile_view_model.dart';
 import 'package:app/features/report_problem/report_problem_view_model.dart';
 import 'package:app/features/settings/settings_view_model.dart';
 import 'package:app/features/suggest_feature/view_models/suggest_feature_view_model.dart';
 import 'package:app/features/suggest_feature/view_models/suggestion_details_view_model.dart';
 import 'package:app/features/waitlist/waitlist_view_model.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart' show SingleChildWidget;
 
 List<SingleChildWidget> providers = [
   ..._auth_providers,
@@ -70,12 +70,13 @@ List<SingleChildWidget> _user_providers = [
   ChangeNotifierProvider(create: (_) => ChatViewModel()),
   ChangeNotifierProvider(create: (_) => ChallengeViewModel()),
   ChangeNotifierProvider(create: (_) => ProfileViewModel()),
-  ChangeNotifierProvider(create: (_) => TournamentDiscsViewModel()),
   ChangeNotifierProvider(create: (_) => NotificationsViewModel()),
   ChangeNotifierProvider(create: (_) => SellerSettingsViewModel()),
   ChangeNotifierProvider(create: (_) => AddAddressViewModel()),
   ChangeNotifierProvider(create: (_) => NotificationsViewModel()),
   ChangeNotifierProvider(create: (_) => PlayerProfileViewModel()),
+  ChangeNotifierProvider(create: (_) => TournamentDiscsViewModel()),
+  ChangeNotifierProvider(create: (_) => PlayerSalesAdViewModel()),
   ..._preferences_providers,
 ];
 

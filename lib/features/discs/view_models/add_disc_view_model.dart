@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -20,6 +16,8 @@ import 'package:app/repository/user_repo.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class AddDiscViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -92,8 +90,8 @@ class AddDiscViewModel with ChangeNotifier {
       var mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
       var mediaResponse = await sl<UserRepository>().uploadBase64Media(mediaBody);
       if (mediaResponse == null) loader.common = false;
-      if (mediaResponse == null) notifyListeners();
-      mediaId = mediaResponse?.id;
+      if (mediaResponse == null) return notifyListeners();
+      mediaId = mediaResponse.id;
     }
     var colorValue = color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
     var body = {
@@ -104,14 +102,13 @@ class AddDiscViewModel with ChangeNotifier {
       'media_id': isMediaUpload ? mediaId : null,
     };
     body.addAll(params);
+    var context = navigatorKey.currentState!.context;
     var response = await sl<DiscRepository>().createUserDisc(body);
-    if (response != null) {
-      var context = navigatorKey.currentState!.context;
-      sl<AppAnalytics>().logEvent(name: 'added_disc', parameters: response.analyticParams);
-      unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchAllDiscBags());
-      unawaited(Routes.user.created_disc(isDisc: true, disc: response).push());
-    }
     loader.common = false;
+    if (response == null) return notifyListeners();
+    sl<AppAnalytics>().logEvent(name: 'added_disc', parameters: response.analyticParams);
+    unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchAllDiscBags());
+    unawaited(Routes.user.created_disc(isDisc: true, disc: response).push());
     notifyListeners();
   }
 }

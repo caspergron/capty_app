@@ -1014,6 +1014,13 @@ const APP_STRINGS = {
   'no_disc_plastic_found': 'No disc plastic found',
   'search_by_plastic_name': 'Search by plastic name',
   'we_could_not_find_any_plastic_right_now_please_try_again_later': 'We could not find any plastic right now. Please try again later.',
+  'no_favourite_disc_found': 'No Favourite Disc Found!',
+  'show_more': 'Show More',
+  'you_have_no_sales_ad_disc_in_marketplace_please_create_your_sales_ads':
+      'You have no sales ad disc in marketplace. Please create your sales ads.',
+  'has_no_available_disc_in_marketplace_please_check_back_later': 'has no available disc in marketplace. Please check back later.',
+  'this_player': 'This player',
+  'no_sales_ad_found': 'No Sales Ads Found!',
   '': ''
 };
 

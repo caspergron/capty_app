@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -19,6 +15,8 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/chat_repository.dart';
 import 'package:app/repository/notifiation_repo.dart';
 import 'package:app/services/routes.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NotificationsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -30,7 +28,6 @@ class NotificationsViewModel with ChangeNotifier {
   Future<void> initViewModel() async {
     await fetchNotifications();
     unawaited(fetchMessageFeeds());
-    unawaited(_paginationCheck());
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }
@@ -77,13 +74,6 @@ class NotificationsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _paginationCheck() async {
-    scrollControl.addListener(() {
-      var maxPosition = scrollControl.position.pixels == scrollControl.position.maxScrollExtent;
-      if (maxPosition && paginate.length == COMMON_LENGTH_20) fetchMessageFeeds(isPaginate: true);
-    });
-  }
-
   Future<void> fetchMessageFeeds({bool isPaginate = false}) async {
     if (paginate.pageLoader) return;
     paginate.pageLoader = isPaginate;
@@ -91,10 +81,17 @@ class NotificationsViewModel with ChangeNotifier {
     var response = await sl<ChatRepository>().fetchChats();
     paginate.length = response.length;
     if (paginate.page == 1) messageFeeds.clear();
-    if (paginate.length >= COMMON_LENGTH_20) paginate.page++;
+    if (paginate.length >= LENGTH_20) paginate.page++;
     if (response.isNotEmpty) messageFeeds.addAll(response);
     paginate.pageLoader = false;
     notifyListeners();
+    if (messageFeeds.isNotEmpty) scrollControl.addListener(_paginationCheck);
+  }
+
+  void _paginationCheck() {
+    final position = scrollControl.position;
+    final isPosition70 = position.pixels >= position.maxScrollExtent * 0.75;
+    if (isPosition70 && paginate.length == LENGTH_20) fetchMessageFeeds(isPaginate: true);
   }
 
   void removeMessage(int receiverId) {

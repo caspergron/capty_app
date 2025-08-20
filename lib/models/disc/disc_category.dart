@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/models/common/pagination.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/system/paginate.dart';
+import 'package:flutter/material.dart';
 
 class DiscCategory {
   String? displayName;
@@ -61,7 +60,7 @@ class DiscCategory {
     if (json['discs'] != null) json['discs'].forEach((v) => parentDiscs?.add(ParentDisc.fromJson(v)));
     pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
     var length = parentDiscs?.length ?? 0;
-    var isNextPage = length >= COMMON_LENGTH_10;
+    var isNextPage = length >= LENGTH_10;
     scrollControl = ScrollController();
     paginate = Paginate(length: length, page: isNextPage ? 2 : 1, pageLoader: isNextPage);
   }

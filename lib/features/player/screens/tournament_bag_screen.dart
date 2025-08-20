@@ -1,17 +1,15 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/profile/units/tournament_disc_list.dart';
-import 'package:app/features/profile/view_models/tournament_discs_view_model.dart';
+import 'package:app/features/player/units/tournament_disc_list.dart';
+import 'package:app/features/player/view_models/tournament_discs_view_model.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/themes/gradients.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TournamentBagScreen extends StatefulWidget {
   final User? player;

@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/app_lists/menu_horizontal_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/drawers/app_drawer.dart';
@@ -39,7 +35,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/icon_box.dart';
-import 'package:app/widgets/ui/row_label_placeholder.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _TABS_LIST = ['disc_listings', 'your_ads', 'favourites'];
 
@@ -127,15 +124,18 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
                   ),
                 ],
               )
-            else
-              RowLabelPlaceholder(
+            else if (_tabIndex == 1)
+              const SizedBox.shrink()
+            /*RowLabelPlaceholder(
                 height: 28,
                 background: skyBlue,
                 border: mediumBlue,
                 label: 'share_sales_ad'.recast,
                 icon: SvgImage(image: Assets.svg1.share, color: primary, height: 16),
                 onTap: () => _viewModel.onShareSalesAd(),
-              ),
+              )*/
+            else
+              const SizedBox.shrink(),
             SizedBox(width: Dimensions.screen_padding),
           ],
         ),
@@ -176,21 +176,27 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
       physics: const BouncingScrollPhysics(),
       children: [
         SizedBox(height: showTags ? 06 : 0),
-        if (!showTags)
-          Row(
+        Builder(builder: (context) {
+          if (showTags) return MenuHorizontalList(menuItems: _modelData.tags, menu: _modelData.tag, onTap: _onTag);
+          return Row(
             children: [
               SizedBox(width: Dimensions.screen_padding),
               Expanded(child: Text(searchLabel, style: TextStyles.text18_600.copyWith(color: dark))),
               InkWell(onTap: _onClear, child: Text('clear_search'.recast, style: TextStyles.text16_600.copyWith(color: orange))),
               SizedBox(width: Dimensions.screen_padding),
             ],
+          );
+        }),
+        const SizedBox(height: 04),
+        if (categories.isNotEmpty)
+          MarketplaceCategoryList(
+            categories: categories,
+            onSetFav: (item) => _viewModel.onSetAsFavourite(item),
+            onRemoveFav: (item) => _viewModel.onRemoveFromFavourite(item),
+            onDiscItem: (item) => Routes.user.market_details(salesAd: item).push(),
           )
         else
-          MenuHorizontalList(menuItems: _modelData.tags, menu: _modelData.tag, onTap: _onTag),
-        const SizedBox(height: 04),
-        categories.isEmpty
-            ? const NoDiscFound()
-            : MarketplaceCategoryList(categories: categories, onDiscItem: (v) => Routes.user.market_details(salesAd: v).push()),
+          const NoDiscFound(),
         SizedBox(height: BOTTOM_GAP),
       ],
     );
@@ -211,16 +217,15 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
       clubs.isEmpty ? _viewModel.onTag(item) : clubTagInfoDialog(clubs: clubs, onPositive: () => _viewModel.onTag(item));
     } else if (item.name.toKey == 'tournament') {
       var tournaments = _modelData.clubTournament.tournaments ?? [];
-      tournaments.isEmpty
-          ? _viewModel.onTag(item)
-          : tournamentTagInfoDialog(tournaments: tournaments, onPositive: () => _viewModel.onTag(item));
+      if (tournaments.isEmpty) return _viewModel.onTag(item);
+      tournamentTagInfoDialog(tournaments: tournaments, onPositive: () => _viewModel.onTag(item));
     } else {
       _viewModel.onTag(item);
     }
   }
 
   Widget get _yourAdsView {
-    if (_modelData.salesAdDiscs.isEmpty) return _noSalesAdDisc;
+    if (_modelData.salesAdDiscs.isEmpty) return _NoSalesAdFound();
     var discList = [SalesAd(id: DEFAULT_ID), if (_modelData.salesAdDiscs.isNotEmpty) ..._modelData.salesAdDiscs];
     return ListView(
       shrinkWrap: true,
@@ -240,46 +245,35 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
         marketplace: item,
         onPrice: (value) => _viewModel.onUpdatePrice(value, item, index - 1),
         onSold: () => soldInfoDialog(marketplace: item, onSave: (params) => _viewModel.onMarkAsSold(params, item, index - 1)),
-        onEdit: () => editSalesAdDiscDialog(
-          marketplace: item,
-          onSave: (params, docFile) => _viewModel.onUpdateSalesAdDisc(item, index - 1, params, docFile),
-        ),
+        onEdit: () => editSalesAdDiscDialog(marketplace: item, onSave: (p, d) => _viewModel.onUpdateSalesAdDisc(item, index - 1, p, d)),
         onRemove: () => _viewModel.onRemoveSalesAd(item, index),
       );
 
   Widget get _favouriteDiscsView {
-    var categories = _modelData.categories;
-    var showTags = _modelData.tags.isNotEmpty && _modelData.searchKey.isEmpty;
-    var searchLabel = '${'search_result_for'.recast}: ${_modelData.searchKey}';
+    var categories = _modelData.favCategories;
+    if (categories.isEmpty) return NoDiscFound(height: 09.height, label: 'no_favourite_disc_found');
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
       children: [
-        SizedBox(height: showTags ? 06 : 0),
-        if (!showTags)
-          Row(
-            children: [
-              SizedBox(width: Dimensions.screen_padding),
-              Expanded(child: Text(searchLabel, style: TextStyles.text18_600.copyWith(color: dark))),
-              InkWell(onTap: _onClear, child: Text('clear_search'.recast, style: TextStyles.text16_600.copyWith(color: orange))),
-              SizedBox(width: Dimensions.screen_padding),
-            ],
-          )
-        else
-          MenuHorizontalList(menuItems: _modelData.tags, menu: _modelData.tag, onTap: _onTag),
         const SizedBox(height: 04),
-        categories.isEmpty
-            ? const NoDiscFound()
-            : MarketplaceCategoryList(categories: categories, onDiscItem: (v) => Routes.user.market_details(salesAd: v).push()),
+        MarketplaceCategoryList(
+          categories: categories,
+          onSetFav: (item) => _viewModel.onSetAsFavourite(item),
+          onRemoveFav: (item) => _viewModel.onRemoveFromFavourite(item),
+          onDiscItem: (v) => Routes.user.market_details(salesAd: v).push(),
+        ),
         SizedBox(height: BOTTOM_GAP),
       ],
     );
   }
+}
 
-  Widget get _noSalesAdDisc {
-    var subLabel = 'you_have_no_disc_available_now_please_add_your_sales_ad_disc'.recast;
+class _NoSalesAdFound extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(
@@ -288,9 +282,17 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
           SizedBox(height: 05.height),
           SvgImage(image: Assets.svg3.empty_box, height: 34.width, color: primary),
           const SizedBox(height: 24),
-          Text('no_sales_ad_disc_found'.recast, textAlign: TextAlign.center, style: TextStyles.text16_600.copyWith(color: primary)),
+          Text(
+            'no_sales_ad_disc_found'.recast,
+            textAlign: TextAlign.center,
+            style: TextStyles.text16_600.copyWith(color: primary),
+          ),
           const SizedBox(height: 02),
-          Text(subLabel, textAlign: TextAlign.center, style: TextStyles.text14_400.copyWith(color: primary)),
+          Text(
+            'you_have_no_disc_available_now_please_add_your_sales_ad_disc'.recast,
+            textAlign: TextAlign.center,
+            style: TextStyles.text14_400.copyWith(color: primary),
+          ),
           const SizedBox(height: 12),
           Center(
             child: ElevateButton(

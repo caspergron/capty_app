@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/themes/colors.dart';
-import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
@@ -13,6 +10,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 Future<void> leaderboardDialog() async {
   var context = navigatorKey.currentState!.context;
@@ -42,11 +40,13 @@ class _DialogView extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: InkWell(onTap: backToPrevious, child: SvgImage(image: Assets.svg1.close_1, height: 20, color: lightBlue)),
+        Row(
+          children: [
+            Expanded(child: Text('leaderboards'.recast, style: TextStyles.text20_500.copyWith(color: lightBlue, height: 1))),
+            const SizedBox(width: 08),
+            InkWell(onTap: backToPrevious, child: SvgImage(image: Assets.svg1.close_1, height: 20, color: lightBlue)),
+          ],
         ),
-        Text('leaderboards'.recast, style: TextStyles.text24_600.copyWith(color: lightBlue, fontWeight: w500, height: 1)),
         const SizedBox(height: 24),
         Text('pdga_rating'.recast, style: TextStyles.text14_700.copyWith(color: lightBlue)),
         const SizedBox(height: 02),

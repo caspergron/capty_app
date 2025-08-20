@@ -5,7 +5,7 @@ class Paginate {
   int length;
   bool pageLoader;
 
-  Paginate({this.page = 1, this.length = COMMON_LENGTH_20, this.pageLoader = false});
+  Paginate({this.page = 1, this.length = LENGTH_20, this.pageLoader = false});
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};

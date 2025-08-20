@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -50,6 +45,9 @@ import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class CreateSalesAdScreen extends StatefulWidget {
   final int tabIndex;
@@ -80,6 +78,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
   void _setInitialStates() {
     var userDisc = widget.userDisc;
     _comment.text = userDisc.description ?? '';
+    _weight.text = userDisc.weight == null ? '' : '${userDisc.weight!.toInt()}';
   }
 
   @override

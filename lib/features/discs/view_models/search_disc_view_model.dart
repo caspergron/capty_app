@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-
 import 'package:app/di.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/system/paginate.dart';
 import 'package:app/repository/disc_repo.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class SearchDiscViewModel with ChangeNotifier {
   var loader = false;
@@ -34,7 +33,7 @@ class SearchDiscViewModel with ChangeNotifier {
   /*Future<void> _paginationCheck() async {
     scrollControl.addListener(() {
       var maxPosition = scrollControl.position.pixels == scrollControl.position.maxScrollExtent;
-      if (maxPosition && paginate.length == COMMON_LENGTH_20) _fetchPdgaDiscs(isPaginate: true);
+      if (maxPosition && paginate.length == LENGTH_20) _fetchPdgaDiscs(isPaginate: true);
     });
   }*/
 
@@ -46,7 +45,7 @@ class SearchDiscViewModel with ChangeNotifier {
     var response = await sl<DiscRepository>().fetchParentDiscs(page: paginate.page);
     paginate.length = response.length;
     if (paginate.page == 0) pdgaDiscs.clear();
-    if (paginate.length >= COMMON_LENGTH_20) paginate.page++;
+    if (paginate.length >= LENGTH_20) paginate.page++;
     if (response.isNotEmpty) pdgaDiscs.addAll(response);
     paginate.pageLoader = false;
     loader = false;

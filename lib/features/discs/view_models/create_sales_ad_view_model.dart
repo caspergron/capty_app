@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -29,6 +25,8 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class CreateSalesAdViewModel with ChangeNotifier {
   var step = 1;
@@ -134,43 +132,39 @@ class CreateSalesAdViewModel with ChangeNotifier {
     notifyListeners();
     var updatedMediaId = discFile.file == null ? salesAdMediaId : await _fetchMediaId();
     if (updatedMediaId == null) loader.common = false;
-    if (updatedMediaId == null) notifyListeners();
+    if (updatedMediaId == null) return notifyListeners();
     var specialityIds = specialTags.isEmpty ? <int>[] : specialTags.map((e) => e.id ?? DEFAULT_ID).toList();
-    // var intIndex = usedValue.toInt();
-    // var conditionIndex = intIndex > 10 ? 10 : intIndex;
     var body = {
       'user_disc_id': userDisc.id,
       'sales_ad_type_id': 1,
-      // 'sales_ad_type_id': salesAdType.id,
       'parent_disc_id': userDisc.parentDisc?.id,
       'disc_plastic_id': plastic.id,
       'currency_id': UserPreferences.currency.id,
-      // 'is_shipping': isShipping,
       'shipping_method': null,
-      // 'condition': discType.valueInt,
-      // 'condition': USED_DISC_INFO[conditionIndex - 1],
       'used_range': usedValue.toInt(),
-      /*if (discType.valueInt == 2) */
       'tags': specialityIds,
       'address_id': address.id,
       'media_id': updatedMediaId,
+      // 'is_shipping': isShipping,
+      // 'sales_ad_type_id': salesAdType.id,
+      // 'condition': discType.valueInt,
+      // 'condition': USED_DISC_INFO[conditionIndex - 1],
     };
     body.addAll(params);
+    final context = navigatorKey.currentState!.context;
+    final marketplaceModel = Provider.of<MarketplaceViewModel>(context, listen: false);
+    final discsViewModel = Provider.of<DiscsViewModel>(context, listen: false);
+    final clubViewModel = Provider.of<ClubViewModel>(context, listen: false);
     var response = await sl<MarketplaceRepository>().createSalesAdDisc(body);
-    if (response != null) {
-      var context = navigatorKey.currentState!.context;
-      var marketplaceModel = Provider.of<MarketplaceViewModel>(context, listen: false);
-      var discsViewModel = Provider.of<DiscsViewModel>(context, listen: false);
-      var clubViewModel = Provider.of<ClubViewModel>(context, listen: false);
-      unawaited(discsViewModel.fetchAllDiscBags());
-      unawaited(marketplaceModel.generateFilterUrl());
-      unawaited(marketplaceModel.fetchSalesAdDiscs());
-      if (clubViewModel.club.id != null) unawaited(clubViewModel.fetchSellingDiscs());
-      sl<AppAnalytics>().logEvent(name: 'created_sales_ad', parameters: response.analyticParams);
-      ToastPopup.onInfo(message: 'sales_ad_disc_created_successfully'.recast);
-      unawaited(Routes.user.created_disc(disc: response.userDisc!).push());
-    }
     loader.common = false;
+    if (response == null) return notifyListeners();
+    unawaited(discsViewModel.fetchAllDiscBags());
+    unawaited(marketplaceModel.generateFilterUrl());
+    unawaited(marketplaceModel.fetchSalesAdDiscs());
+    if (clubViewModel.club.id != null) unawaited(clubViewModel.fetchSellingDiscs());
+    sl<AppAnalytics>().logEvent(name: 'created_sales_ad', parameters: response.analyticParams);
+    ToastPopup.onInfo(message: 'sales_ad_disc_created_successfully'.recast);
+    unawaited(Routes.user.created_disc(disc: response.userDisc!).push());
     notifyListeners();
   }
 }

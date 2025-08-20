@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/app_lists/menu_horizontal_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -28,6 +23,9 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 const _TABS_LIST = ['your_club', 'your_friends'];
 
@@ -122,6 +120,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
   }
 
   Widget _yourClubView(BuildContext context) {
+    if (_modelData.loader.initial) return const SizedBox.shrink();
     var topPlayers = _modelData.clubLeaderboard.topPlayers;
     var otherPlayers = _modelData.clubLeaderboard.otherPlayers;
     if (otherPlayers.isEmpty && topPlayers.isEmpty) return _noMemberFound;
@@ -145,6 +144,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
   }
 
   Widget _yourFriendView(BuildContext context) {
+    if (_modelData.loader.initial) return const SizedBox.shrink();
     var topPlayers = _modelData.friendLeaderboard.topPlayers;
     var otherPlayers = _modelData.friendLeaderboard.otherPlayers;
     if (otherPlayers.isEmpty && topPlayers.isEmpty) return _noMemberFound;

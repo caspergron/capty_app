@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/themes/colors.dart';
@@ -8,6 +6,7 @@ import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/app_utils.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
+import 'package:flutter/material.dart';
 
 ThemeData get LIGHT_THEME {
   return ThemeData(
@@ -168,7 +167,7 @@ get _appBarTheme {
   );
 }
 
-get _bottomAppBarTheme => const BottomAppBarTheme(color: primary, elevation: 3);
+get _bottomAppBarTheme => const BottomAppBarThemeData(color: primary, elevation: 3);
 
 get _bottomNavigationBarTheme {
   return const BottomNavigationBarThemeData(

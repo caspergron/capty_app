@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/constants/date_formats.dart';
@@ -23,6 +19,8 @@ import 'package:app/models/system/paginate.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/chat_repository.dart';
 import 'package:app/repository/marketplace_repo.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatViewModel with ChangeNotifier {
   var loader = true;
@@ -99,7 +97,7 @@ class ChatViewModel with ChangeNotifier {
     var response = await sl<ChatRepository>().fetchConversations(buddy: receiver, page: paginate.page);
     paginate.length = response.length;
     if (paginate.page == 1) messages.clear();
-    if (paginate.length >= COMMON_LENGTH_20) paginate.page++;
+    if (paginate.length >= LENGTH_20) paginate.page++;
     if (response.isNotEmpty) messages.haveList ? messages.insertAll(0, response) : messages.addAll(response);
     if (response.haveList) Provider.of<NotificationsViewModel>(context, listen: false).setLastMessage(messages.last);
     loader = false;

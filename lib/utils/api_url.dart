@@ -23,7 +23,7 @@ class _PublicApis {
   String allBrands = '$_SERVER/disc-brand/list-priority';
 
   String appStatistics = '$_SERVER/statistics';
-  String marketplaceDiscsByCountry = '$_SERVER/market-place-disc-no-auth/list?size=15'; // &country_id=6&page=1&longitude=56.3&latitude=10.7
+  String marketplaceDiscsByCountry = '$_SERVER/market-place-disc-no-auth/list?size=$LENGTH_20';
 
   String findClub = '$_SERVER/club/find-club'; // ?latitude=40.7300&longitude=-73.97700
   String addInWaitlist = '$_SERVER/user/wait_lists';
@@ -70,8 +70,8 @@ class _UserApis {
   String addEventComment = '$_SERVER/club-event-comment/create';
   String eventComments = '$_SERVER/club-event-comment/list?club_event_id='; // 1
 
-  String discList = '$_SERVER/disc/list?size=$COMMON_LENGTH_20'; // ?size=100&page=10
-  String discListByCategory = '$_SERVER/disc/list-by-type?size=$COMMON_LENGTH_10&page='; // 1
+  String discList = '$_SERVER/disc/list?size=$LENGTH_20'; // ?size=100&page=10
+  String discListByCategory = '$_SERVER/disc/list-by-type?size=$LENGTH_10&page='; // 1
   String discDetails = '$_SERVER/disc/show?disc_id=';
   String searchDiscs = '$_SERVER/disc/search';
 
@@ -100,7 +100,7 @@ class _UserApis {
   String salesAdTypes = '$_SERVER/sales-ads-type/list';
   String createSalesAd = '$_SERVER/user/sales-ads/create';
   String salesAdDetails = '$_SERVER/user/sales-ads/show?sales_ad_id='; // 1
-  String salesAdList = '$_SERVER/user/sales-ads/list?size=20'; // 1
+  String salesAdList = '$_SERVER/user/sales-ads/list?size=$LENGTH_20'; // 1
   String updateSalesAd = '$_SERVER/user/sales-ads/update?sales_ad_id='; // 2
   String deleteSalesAd = '$_SERVER/user/sales-ads/delete?sales_ad_id='; // 2
   String shareSalesAd = '$_SERVER/user/shareable-disc-link';
@@ -114,7 +114,7 @@ class _UserApis {
   String matchedInfoWithSeller = '$_SERVER/user/match/info?match_with='; // 4
   String popularityCount = '$_SERVER/market-place-disc/popularity_count';
 
-  String marketplaceFavouriteList = '$_SERVER/user/favorite-sales-ads/list?size=$COMMON_LENGTH_20&page='; // 1
+  String marketplaceFavouriteList = '$_SERVER/user/favorite-sales-ads/list?size=$LENGTH_20&page='; // 1
   String setMarketplaceDiscAsFavourite = '$_SERVER/user/favorite-sales-ads/store';
   String RemoveMarketplaceDiscFromFavourite = '$_SERVER/user/favorite-sales-ads/delete?sales_ad_id='; // 1
 
@@ -140,7 +140,7 @@ class _UserApis {
   String friendLeaderboard = '$_SERVER/user/pdga-rating/friend-list';
   String clubLeaderboard = '$_SERVER/user/pdga-rating/club-list';
 
-  String notifications = '$_SERVER/user/notification/list?size=$COMMON_LENGTH_20';
+  String notifications = '$_SERVER/user/notification/list?size=$LENGTH_20';
   String readNotification = '$_SERVER/user/notification/update?notification_id=';
 
   String setOnlineStatus = '$_SERVER/user/update/online-status';
@@ -155,7 +155,8 @@ class _UserApis {
   String deleteConversation = '$_SERVER/user/messages/chats/delete'; // ?user_id=15
 
   String playerProfile = '$_SERVER/player/profile?user_id='; // 15
-  String playerSalesAd = '$_SERVER/player/sales-ads?user_id='; // 15
+  String playerSalesAds = '$_SERVER/player/sales-ads?user_id='; // 15
+  String playerAllSalesAds = '$_SERVER/player/sales-ads-view-all?user_id='; // 15
   String playerTournamentBag = '$_SERVER/player/tournament-bag?user_id='; // 15
   String playerTournamentInfo = '$_SERVER/player/tournament-info?user_id='; // 15
 }

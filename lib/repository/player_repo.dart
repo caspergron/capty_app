@@ -5,6 +5,8 @@ import 'package:app/models/common/tournament.dart';
 import 'package:app/models/common/tournament_api.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/disc_bag/disc_bag.dart';
+import 'package:app/models/marketplace/marketplace_api.dart';
+import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/marketplace/sales_ad_api.dart';
 import 'package:app/models/user/user.dart';
@@ -19,11 +21,20 @@ class PlayerRepository {
   }
 
   Future<List<SalesAd>> fetchSalesAdDiscs(String params) async {
-    var endpoint = '${ApiUrl.user.playerSalesAd}$params';
+    var endpoint = '${ApiUrl.user.playerSalesAds}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var salesAdApi = SalesAdApi.fromJson(apiResponse.response);
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
+  }
+
+  Future<List<MarketplaceCategory>> fetchAllSalesAdDiscs(String params) async {
+    var endpoint = '${ApiUrl.user.playerAllSalesAds}$params';
+    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return [];
+    var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
+    var categories = marketplaceApi.categories ?? [];
+    return categories;
   }
 
   Future<List<Tournament>> fetchPlayerTournamentInfo(int userId) async {

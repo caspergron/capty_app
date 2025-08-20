@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -14,6 +10,9 @@ import 'package:app/models/disc/disc_category.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/repository/disc_repo.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+
 import '../../../di.dart';
 
 class PgdaDiscsViewModel with ChangeNotifier {
@@ -54,7 +53,7 @@ class PgdaDiscsViewModel with ChangeNotifier {
           categories[catIndex].pagination = newItem.pagination;
           var newLength = newItem.discs.length;
           categories[catIndex].paginate?.length = newLength;
-          if (newLength >= SALES_AD_LENGTH_05) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
+          if (newLength >= LENGTH_08) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
         }
       }
     }
@@ -79,7 +78,7 @@ class PgdaDiscsViewModel with ChangeNotifier {
       if (!scrollController.hasListeners) {
         scrollController.addListener(() {
           final maxPosition = scrollController.position.pixels == scrollController.position.maxScrollExtent;
-          if (maxPosition && paginate.length == SALES_AD_LENGTH_05) _fetchPdgaDiscsByCategory(isPaginate: true, index: index);
+          if (maxPosition && paginate.length == LENGTH_08) _fetchPdgaDiscsByCategory(isPaginate: true, index: index);
         });
       }
     }
@@ -89,29 +88,27 @@ class PgdaDiscsViewModel with ChangeNotifier {
     loader.common = true;
     notifyListeners();
     var body = {'disc_id': item.id};
+    var context = navigatorKey.currentState!.context;
     var response = await sl<DiscRepository>().addToWishlist(body);
-    if (response != null) {
-      var context = navigatorKey.currentState!.context;
-      unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
-      _updateFavouriteDisc(item, wishlistId: response);
-      unawaited(addedToWishlistDialog());
-      await Future.delayed(const Duration(milliseconds: 1500));
-      backToPrevious();
-    }
     loader.common = false;
+    if (response == null) return notifyListeners();
+    unawaited(addedToWishlistDialog());
+    unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
+    await Future.delayed(const Duration(milliseconds: 1500));
+    _updateFavouriteDisc(item, wishlistId: response);
+    backToPrevious();
     notifyListeners();
   }
 
   Future<void> onRemoveFromWishlist(ParentDisc item, int index) async {
     loader.common = true;
     notifyListeners();
+    var context = navigatorKey.currentState!.context;
     var response = await sl<DiscRepository>().removeFromWishlist(item.wishlistId!);
-    if (response) {
-      var context = navigatorKey.currentState!.context;
-      unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
-      _updateFavouriteDisc(item);
-    }
     loader.common = false;
+    if (!response) return notifyListeners();
+    unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
+    _updateFavouriteDisc(item);
     notifyListeners();
   }
 

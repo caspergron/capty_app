@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
-import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/marketplace/components/share_sales_ad_dialog.dart';
+import 'package:app/helpers/marketplace_helper.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/libraries/locations.dart';
 import 'package:app/libraries/toasts_popups.dart';
@@ -23,6 +21,7 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/app_analytics.dart';
+import 'package:flutter/cupertino.dart';
 
 class MarketplaceViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -35,6 +34,7 @@ class MarketplaceViewModel with ChangeNotifier {
   var salesAdDiscs = <SalesAd>[];
   var salesAdPaginate = Paginate();
   var salesAdScrollControl = ScrollController();
+  var favCategories = <MarketplaceCategory>[];
   var favouritePaginate = Paginate();
   var favouriteScrollControl = ScrollController();
 
@@ -42,8 +42,8 @@ class MarketplaceViewModel with ChangeNotifier {
     unawaited(_fetchClubTournamentsInfo());
     if (ApiStatus.instance.marketplace) return;
     unawaited(fetchTags());
+    unawaited(fetchFavouriteDiscs(isInit: true));
     unawaited(fetchSalesAdDiscs());
-    unawaited(_salesAdPaginationCheck());
     await generateFilterUrl(isLoader: true);
   }
 
@@ -51,11 +51,18 @@ class MarketplaceViewModel with ChangeNotifier {
 
   void clearStates() {
     loader = DEFAULT_LOADER;
+    searchKey = '';
     tag = Tag();
     tags.clear();
-    salesAdDiscs.clear();
     categories.clear();
-    filterOption = MarketplaceFilter();
+    clubTournament = ClubTournamentInfo();
+    filterOption = MarketplaceFilter(types: [], brands: [], tags: []);
+    salesAdDiscs.clear();
+    salesAdPaginate = Paginate();
+    salesAdScrollControl = ScrollController();
+    favCategories = <MarketplaceCategory>[];
+    favouritePaginate = Paginate();
+    favouriteScrollControl = ScrollController();
   }
 
   Future<void> _fetchClubTournamentsInfo() async {
@@ -75,22 +82,95 @@ class MarketplaceViewModel with ChangeNotifier {
     if (salesAdPaginate.pageLoader) return;
     salesAdPaginate.pageLoader = isPaginate;
     notifyListeners();
-    var params = '&page=${salesAdPaginate.page}';
-    var response = await sl<MarketplaceRepository>().fetchSalesAdDiscs(params);
+    final params = '&page=${salesAdPaginate.page}';
+    final response = await sl<MarketplaceRepository>().fetchSalesAdDiscs(params);
     if (salesAdPaginate.page == 1) salesAdDiscs.clear();
     salesAdPaginate.length = response.length;
-    if (salesAdPaginate.length >= COMMON_LENGTH_20) salesAdPaginate.page++;
+    if (salesAdPaginate.length >= LENGTH_20) salesAdPaginate.page++;
     if (response.isNotEmpty) salesAdDiscs.addAll(response);
     salesAdPaginate.pageLoader = false;
     notifyListeners();
+    if (salesAdDiscs.isNotEmpty) salesAdScrollControl.addListener(_salesAdPaginationCheck);
   }
 
-  Future<void> _salesAdPaginationCheck() async {
-    salesAdScrollControl.addListener(() {
-      final position = salesAdScrollControl.position;
-      final isPosition70 = position.pixels >= position.maxScrollExtent * 0.7;
-      if (isPosition70 && salesAdPaginate.length == COMMON_LENGTH_20) fetchSalesAdDiscs(isPaginate: true);
-    });
+  void _salesAdPaginationCheck() {
+    final position = salesAdScrollControl.position;
+    final isPosition70 = position.pixels >= position.maxScrollExtent * 0.75;
+    if (isPosition70 && salesAdPaginate.length == LENGTH_20) fetchSalesAdDiscs(isPaginate: true);
+  }
+
+  Future<void> fetchFavouriteDiscs({bool isInit = false, bool isLoader = false, bool isPaginate = false, int index = 0}) async {
+    var invalidApiCall = favCategories.isNotEmpty && favCategories[index].is_page_loader;
+    if (invalidApiCall) return;
+    loader.common = isLoader;
+    if (favCategories.isNotEmpty) favCategories[index].paginate?.pageLoader = isPaginate;
+    notifyListeners();
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    var pageNumber = favCategories.isNotEmpty && isPaginate ? favCategories[index].paginate?.page ?? 1 : 1;
+    var params = '$pageNumber$locationParams';
+    var response = await sl<MarketplaceRepository>().fetchMarketplaceFavourites(params);
+    if (isLoader) favCategories.clear();
+    if (response.isEmpty) return isInit ? notifyListeners() : _turnOffLoaders(index: index);
+    pageNumber == 1 ? favCategories = response : _updateFavouritesData(response);
+    if (favCategories.isNotEmpty) unawaited(_favouriteDiscsPaginationCheck());
+    return isInit ? notifyListeners() : _turnOffLoaders(index: index);
+  }
+
+  void _updateFavouritesData(List<MarketplaceCategory> responseList) {
+    for (final entry in favCategories.asMap().entries) {
+      final catIndex = entry.key;
+      final catItem = entry.value;
+      var newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
+      if (newIndex >= 0) {
+        var newItem = responseList[newIndex];
+        favCategories[catIndex].salesAds ??= [];
+        favCategories[catIndex].salesAds!.addAll(newItem.discs);
+        favCategories[catIndex].pagination = newItem.pagination;
+        var newLength = newItem.discs.length;
+        favCategories[catIndex].paginate?.length = newLength;
+        if (newLength >= LENGTH_08) favCategories[catIndex].paginate?.page = (favCategories[catIndex].paginate?.page ?? 0) + 1;
+      }
+    }
+  }
+
+  Future<void> _favouriteDiscsPaginationCheck() async {
+    if (favCategories.isEmpty) return;
+    for (var entry in favCategories.asMap().entries) {
+      final index = entry.key;
+      final category = entry.value;
+      final scrollController = category.scrollControl;
+      final paginate = category.paginate;
+      if (scrollController == null || paginate == null) continue;
+      if (!scrollController.hasListeners) {
+        scrollController.addListener(() {
+          final position = scrollController.position;
+          final isPosition70 = position.pixels >= position.maxScrollExtent * 0.80;
+          if (isPosition70 && paginate.length == LENGTH_08) fetchFavouriteDiscs(isPaginate: true, index: index);
+        });
+      }
+    }
+  }
+
+  Future<void> onSetAsFavourite(SalesAd item) async {
+    loader.common = true;
+    notifyListeners();
+    var body = {'sales_ad_id': item.id};
+    var response = await sl<MarketplaceRepository>().setMarketplaceDiscAsFavourite(body);
+    if (!response) return _stopLoader();
+    unawaited(fetchFavouriteDiscs());
+    updateFavStatusInMarketplaceData(item: item, isFav: true);
+    _stopLoader();
+  }
+
+  Future<void> onRemoveFromFavourite(SalesAd item) async {
+    loader.common = true;
+    notifyListeners();
+    var response = await sl<MarketplaceRepository>().removeMarketplaceDiscFromFavourite(item.id!);
+    if (!response) return _stopLoader();
+    updateFavStatusInFavouriteData(item: item);
+    updateFavStatusInMarketplaceData(item: item);
+    _stopLoader();
   }
 
   Future<void> generateFilterUrl({bool isLoader = false, bool isPaginate = false, String filterParams = '', int index = 0}) async {
@@ -105,22 +185,12 @@ class MarketplaceViewModel with ChangeNotifier {
     var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
     if (searchKey.isNotEmpty) {
       params = '&page=$pageNumber$locationParams&search=$searchKey'.trim();
-    } else if (tag.id == null) {
-      params = '&page=$pageNumber$locationParams$filterParams'.trim();
-    } else if (tag.name.toKey == 'all'.toKey) {
-      params = '&page=$pageNumber$locationParams$filterParams'.trim();
-    } else if (tag.name.toKey == 'country'.toKey) {
-      var countryId = UserPreferences.user.countryId;
-      params = '&page=$pageNumber&sort_by=${tag.name.toKey}&country_id=$countryId$locationParams$filterParams'.trim();
-    } else if (tag.name.toKey == 'club'.toKey || tag.name.toKey == 'tournament'.toKey) {
-      params = '&page=$pageNumber&sort_by=${tag.name.toKey}$locationParams$filterParams'.trim();
-    } else if (tag.name.toKey == 'distance'.toKey) {
-      if (!coordinates.is_coordinate) return _turnOffLoaders(index: index, isPopup: true);
-      params = '&page=$pageNumber&sort_by=${tag.name.toKey}&distance=${tag.value.nullToInt}$locationParams$filterParams'.trim();
+      unawaited(_fetchMarketplaceDiscs(isLoader: isLoader, isPaginate: isPaginate, index: index, params: params));
     } else {
-      params = '&page=$pageNumber$locationParams$filterParams'.trim();
+      if (tag.name.toKey == 'distance'.toKey && !coordinates.is_coordinate) return _turnOffLoaders(index: index, isPopup: true);
+      params = sl<MarketplaceHelper>().generateMarketplaceApiParams(tag, pageNumber, locationParams, filterParams);
+      unawaited(_fetchMarketplaceDiscs(isLoader: isLoader, isPaginate: isPaginate, index: index, params: params));
     }
-    unawaited(_fetchMarketplaceDiscs(isLoader: isLoader, isPaginate: isPaginate, index: index, params: params));
   }
 
   Future<void> _fetchMarketplaceDiscs({bool isLoader = false, bool isPaginate = false, String params = '', int index = 0}) async {
@@ -128,34 +198,28 @@ class MarketplaceViewModel with ChangeNotifier {
     var response = await sl<MarketplaceRepository>().fetchMarketplaceDiscs(params: params);
     if (isLoader) categories.clear();
     if (response.isEmpty) return _turnOffLoaders(index: index);
-    if (pageNumber == 1) {
-      categories = response;
-    } else {
-      for (final entry in categories.asMap().entries) {
-        final catIndex = entry.key;
-        final catItem = entry.value;
-        var newIndex = response.indexWhere((element) => element.name.toKey == catItem.name.toKey);
-        if (newIndex >= 0) {
-          var newItem = response[newIndex];
-          categories[catIndex].salesAds ??= [];
-          categories[catIndex].salesAds!.addAll(newItem.discs);
-          categories[catIndex].pagination = newItem.pagination;
-          var newLength = newItem.discs.length;
-          categories[catIndex].paginate?.length = newLength;
-          if (newLength >= SALES_AD_LENGTH_05) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
-        }
-      }
-    }
+    pageNumber == 1 ? categories = response : _updateMarketplaceData(response);
     if (categories.isNotEmpty) unawaited(_marketplacePaginationCheck());
     ApiStatus.instance.marketplace = true;
+    if (categories.isNotEmpty) categories[index].paginate?.pageLoader = false;
     _turnOffLoaders(index: index);
   }
 
-  void _turnOffLoaders({int index = 0, bool isPopup = false}) {
-    if (isPopup) FlushPopup.onInfo(message: 'your_location_is_turned_off'.recast);
-    loader = Loader(initial: false, common: false);
-    if (categories.isNotEmpty) categories[index].paginate?.pageLoader = false;
-    return notifyListeners();
+  void _updateMarketplaceData(List<MarketplaceCategory> responseList) {
+    for (final entry in categories.asMap().entries) {
+      final catIndex = entry.key;
+      final catItem = entry.value;
+      var newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
+      if (newIndex >= 0) {
+        var newItem = responseList[newIndex];
+        categories[catIndex].salesAds ??= [];
+        categories[catIndex].salesAds!.addAll(newItem.discs);
+        categories[catIndex].pagination = newItem.pagination;
+        var newLength = newItem.discs.length;
+        categories[catIndex].paginate?.length = newLength;
+        if (newLength >= LENGTH_08) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
+      }
+    }
   }
 
   Future<void> _marketplacePaginationCheck() async {
@@ -168,11 +232,23 @@ class MarketplaceViewModel with ChangeNotifier {
       if (scrollController == null || paginate == null) continue;
       if (!scrollController.hasListeners) {
         scrollController.addListener(() {
-          final maxPosition = scrollController.position.pixels == scrollController.position.maxScrollExtent;
-          if (maxPosition && paginate.length == SALES_AD_LENGTH_05) generateFilterUrl(isPaginate: true, index: index);
+          final position = scrollController.position;
+          final isPosition70 = position.pixels >= position.maxScrollExtent * 0.80;
+          if (isPosition70 && paginate.length == LENGTH_08) generateFilterUrl(isPaginate: true, index: index);
         });
       }
     }
+  }
+
+  void _stopLoader() {
+    loader = Loader(initial: false, common: false);
+    notifyListeners();
+  }
+
+  void _turnOffLoaders({int index = 0, bool isPopup = false}) {
+    if (isPopup) FlushPopup.onInfo(message: 'your_location_is_turned_off'.recast);
+    loader = Loader(initial: false, common: false);
+    return notifyListeners();
   }
 
   void onMarketplaceFilter(MarketplaceFilter option, String filterParams) {
@@ -220,27 +296,23 @@ class MarketplaceViewModel with ChangeNotifier {
     loader.common = true;
     notifyListeners();
     var response = await sl<MarketplaceRepository>().updateSalesAdDisc(salesAd.id!, params);
-    if (response != null) {
-      _removeSalesAdFromMarketplace(salesAd);
-      await fetchSalesAdDiscs();
-      if (params['sold_through'].toString().toKey == 'capty'.toKey) sl<AppAnalytics>().logEvent(name: 'sold_through_capty');
-      ToastPopup.onInfo(message: 'sold_information_updated_successfully'.recast);
-    }
-    loader.common = false;
-    notifyListeners();
+    if (response == null) return _stopLoader();
+    _removeSalesAdFromMarketplace(salesAd);
+    await fetchSalesAdDiscs();
+    if (params['sold_through'].toString().toKey == 'capty'.toKey) sl<AppAnalytics>().logEvent(name: 'sold_through_capty');
+    ToastPopup.onInfo(message: 'sold_information_updated_successfully'.recast);
+    _stopLoader();
   }
 
   Future<void> onRemoveSalesAd(SalesAd salesAd, int index) async {
     loader.common = true;
     notifyListeners();
     var response = await sl<MarketplaceRepository>().deleteSalesAdDisc(salesAd.id!);
-    if (response) {
-      _removeSalesAdFromMarketplace(salesAd);
-      await fetchSalesAdDiscs();
-      ToastPopup.onInfo(message: 'disc_deleted_successfully'.recast);
-    }
-    loader.common = false;
-    notifyListeners();
+    if (!response) return _stopLoader();
+    _removeSalesAdFromMarketplace(salesAd);
+    await fetchSalesAdDiscs();
+    ToastPopup.onInfo(message: 'disc_deleted_successfully'.recast);
+    _stopLoader();
   }
 
   Future<int?> _fetchMediaId(DocFile docFile) async {
@@ -255,16 +327,12 @@ class MarketplaceViewModel with ChangeNotifier {
     notifyListeners();
     var mediaId = null as int?;
     mediaId = docFile == null ? item.userDisc?.media?.id : await _fetchMediaId(docFile);
-    if (mediaId == null) {
-      loader.common = false;
-      return notifyListeners();
-    }
+    if (mediaId == null) return _stopLoader();
     var salesAdId = item.id!;
     body.addAll({'media_id': mediaId});
     var response = await sl<MarketplaceRepository>().updateSalesAdDisc(salesAdId, body);
     if (response != null) salesAdDiscs[index] = response;
-    loader.common = false;
-    notifyListeners();
+    _stopLoader();
   }
 
   void _removeSalesAdFromMarketplace(SalesAd salesAdItem) {
@@ -274,6 +342,28 @@ class MarketplaceViewModel with ChangeNotifier {
       var adIndex = discsList.indexWhere((element) => element.id == salesAdItem.id);
       if (adIndex >= 0) categories[index].salesAds?.removeAt(adIndex);
     });
+    notifyListeners();
+  }
+
+  void updateFavStatusInMarketplaceData({required SalesAd item, bool isFav = false}) {
+    if (categories.isEmpty) return;
+    var isFavorite = isFav ? 1 : 0;
+    categories.asMap().forEach((index, category) {
+      var discsList = category.discs;
+      var adIndex = discsList.indexWhere((element) => element.id == item.id);
+      if (adIndex >= 0) categories[index].salesAds?[adIndex].isFavorite = isFavorite;
+    });
+    notifyListeners();
+  }
+
+  void updateFavStatusInFavouriteData({required SalesAd item}) {
+    if (favCategories.isEmpty) return;
+    favCategories.asMap().forEach((index, category) {
+      var discsList = category.discs;
+      var adIndex = discsList.indexWhere((element) => element.id == item.id);
+      if (adIndex >= 0) favCategories[index].salesAds?.removeAt(adIndex);
+    });
+    favCategories.removeWhere((element) => element.discs.isEmpty);
     notifyListeners();
   }
 }
