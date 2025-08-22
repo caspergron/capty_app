@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:app/di.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/system/paginate.dart';
 import 'package:app/repository/disc_repo.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 
 class SearchDiscViewModel with ChangeNotifier {
   var loader = false;

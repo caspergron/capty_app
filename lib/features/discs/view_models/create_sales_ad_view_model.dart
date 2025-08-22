@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -9,6 +13,7 @@ import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/discs/components/add_home_address_dialog.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
 import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
+import 'package:app/features/player/view_models/tournament_discs_view_model.dart';
 import 'package:app/libraries/toasts_popups.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/models/common/sales_ad_type.dart';
@@ -25,8 +30,6 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class CreateSalesAdViewModel with ChangeNotifier {
   var step = 1;
@@ -155,12 +158,14 @@ class CreateSalesAdViewModel with ChangeNotifier {
     final marketplaceModel = Provider.of<MarketplaceViewModel>(context, listen: false);
     final discsViewModel = Provider.of<DiscsViewModel>(context, listen: false);
     final clubViewModel = Provider.of<ClubViewModel>(context, listen: false);
+    final tournamentDiscsModel = Provider.of<TournamentDiscsViewModel>(context, listen: false);
     var response = await sl<MarketplaceRepository>().createSalesAdDisc(body);
     loader.common = false;
     if (response == null) return notifyListeners();
     unawaited(discsViewModel.fetchAllDiscBags());
     unawaited(marketplaceModel.generateFilterUrl());
     unawaited(marketplaceModel.fetchSalesAdDiscs());
+    tournamentDiscsModel.removeDiscForCreatedSalesAd(userDisc);
     if (clubViewModel.club.id != null) unawaited(clubViewModel.fetchSellingDiscs());
     sl<AppAnalytics>().logEvent(name: 'created_sales_ad', parameters: response.analyticParams);
     ToastPopup.onInfo(message: 'sales_ad_disc_created_successfully'.recast);

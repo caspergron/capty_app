@@ -1,23 +1,25 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/discs/components/added_to_wishlist_dialog.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
-import 'package:app/models/disc/disc_category.dart';
 import 'package:app/models/disc/parent_disc.dart';
+import 'package:app/models/disc/parent_disc_category.dart';
+import 'package:app/models/disc/wishlist.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/repository/disc_repo.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
-
 import '../../../di.dart';
 
 class PgdaDiscsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
-  var categories = <DiscCategory>[];
+  var categories = <ParentDiscCategory>[];
   var scrollControl = ScrollController();
 
   void initViewModel() => _fetchPdgaDiscsByCategory(isLoader: true);
@@ -48,7 +50,7 @@ class PgdaDiscsViewModel with ChangeNotifier {
     _stopLoader();
   }
 
-  void _updateMarketplaceData(List<DiscCategory> responseList) {
+  void _updateMarketplaceData(List<ParentDiscCategory> responseList) {
     for (final entry in categories.asMap().entries) {
       final catIndex = entry.key;
       final catItem = entry.value;
@@ -109,6 +111,15 @@ class PgdaDiscsViewModel with ChangeNotifier {
     unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
     _updateFavouriteDisc(item);
     notifyListeners();
+  }
+
+  Future<void> onUpdateAndAddWishList(Wishlist wishlistItem) async {
+    unawaited(addedToWishlistDialog());
+    var context = navigatorKey.currentState!.context;
+    unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
+    await Future.delayed(const Duration(milliseconds: 1500));
+    _updateFavouriteDisc(wishlistItem.disc!, wishlistId: wishlistItem.id);
+    backToPrevious();
   }
 
   void _updateFavouriteDisc(ParentDisc discItem, {int? wishlistId}) {

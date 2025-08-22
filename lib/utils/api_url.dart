@@ -106,7 +106,7 @@ class _UserApis {
   String shareSalesAd = '$_SERVER/user/shareable-disc-link';
 
   String tagList = '$_SERVER/tags/list'; // 2
-  String marketplaceList = '$_SERVER/market-place-disc/list'; // 2
+  String marketplaceList = '$_SERVER/market-place-disc/list?size=$LENGTH_10'; // 2
   String searchMarketplace = '$_SERVER/market-place-disc/search?search='; // 2
   String marketplaceDetails = '$_SERVER/market-place-disc/show?sales_ad_id='; // 2
   String marketplacesByUser = '$_SERVER/market-place-disc/get-all-user-sale-ads?user_id='; // 2
@@ -114,7 +114,7 @@ class _UserApis {
   String matchedInfoWithSeller = '$_SERVER/user/match/info?match_with='; // 4
   String popularityCount = '$_SERVER/market-place-disc/popularity_count';
 
-  String marketplaceFavouriteList = '$_SERVER/user/favorite-sales-ads/list?size=$LENGTH_20&page='; // 1
+  String marketplaceFavouriteList = '$_SERVER/user/favorite-sales-ads/list?size=$LENGTH_10&page='; // 1
   String setMarketplaceDiscAsFavourite = '$_SERVER/user/favorite-sales-ads/store';
   String RemoveMarketplaceDiscFromFavourite = '$_SERVER/user/favorite-sales-ads/delete?sales_ad_id='; // 1
 
@@ -156,9 +156,10 @@ class _UserApis {
 
   String playerProfile = '$_SERVER/player/profile?user_id='; // 15
   String playerSalesAds = '$_SERVER/player/sales-ads?user_id='; // 15
-  String playerAllSalesAds = '$_SERVER/player/sales-ads-view-all?user_id='; // 15
+  String playerAllSalesAds = '$_SERVER/player/sales-ads-view-all?size=$LENGTH_10&user_id='; // 15
   // String playerTournamentBag = '$_SERVER/player/tournament-bag?user_id='; // 15
   String playerTournamentInfo = '$_SERVER/player/tournament-info?user_id='; // 15
+  String playerAllTournamentDiscs = '$_SERVER/player/tournament-bag-view-all?size=$LENGTH_10&user_id='; // 15
 }
 
 class _PreferencesApis {

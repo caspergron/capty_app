@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/models/public/language.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 /// Log Event Keys: created_sales_ad, created_wishlist_disc, added_disc, club_view, leaderboard_view, invite_friend, contact_seller_view,
 
@@ -20,7 +22,7 @@ const ACCEPT_FRIEND_REQUEST = 'friend_accept';
 const DEFAULT_ID = 00000;
 const LENGTH_20 = 20;
 const LENGTH_10 = 10;
-const LENGTH_08 = 08;
+// const LENGTH_08 = 08;
 const String DROPDOWN_SPACE = '     ';
 
 /// Default Data

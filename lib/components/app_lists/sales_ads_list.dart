@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/data_constants.dart';
@@ -12,7 +14,6 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
 
 class SalesAdsList extends StatelessWidget {
   final String label;

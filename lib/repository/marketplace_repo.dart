@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
-import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -21,7 +22,6 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/marketplace/sales_ad_api.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:provider/provider.dart';
 
 class MarketplaceRepository {
   Future<List<Tag>> fetchSpecialityDiscMenus({int isSpecial = 1}) async {
@@ -45,7 +45,7 @@ class MarketplaceRepository {
   }
 
   Future<List<MarketplaceCategory>> fetchMarketplaceDiscs({String params = ''}) async {
-    var endpoint = '${ApiUrl.user.marketplaceList}?size=$LENGTH_08$params';
+    var endpoint = '${ApiUrl.user.marketplaceList}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
@@ -106,7 +106,6 @@ class MarketplaceRepository {
     var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
-    await Future.delayed(const Duration(seconds: 4));
     return SalesAd.fromJson(apiResponse.response['data']);
   }
 
@@ -114,7 +113,6 @@ class MarketplaceRepository {
     var endpoint = '${ApiUrl.user.updateSalesAd}$salesAdId';
     var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
-    await Future.delayed(const Duration(seconds: 4));
     ToastPopup.onInfo(message: 'disc_updated_successfully'.recast);
     return SalesAd.fromJson(apiResponse.response['data']);
   }

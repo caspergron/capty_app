@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -12,8 +16,6 @@ import 'package:app/themes/gradients.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PlayerSalesAdScreen extends StatefulWidget {
   final User player;
@@ -49,12 +51,14 @@ class _PlayerSalesAdScreenState extends State<PlayerSalesAdScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
+    var name = isMe ? 'my'.recast : '${widget.player.first_name}${'extra_s'.recast}';
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         leading: const BackMenu(),
         automaticallyImplyLeading: false,
-        title: Text('${widget.player.first_name}${'extra_s'.recast} ${'sales_ads'.recast.allFirstLetterCapital}'),
+        title: Text('$name ${'sales_ads'.recast.allFirstLetterCapital}'),
       ),
       body: Container(
         width: SizeConfig.width,

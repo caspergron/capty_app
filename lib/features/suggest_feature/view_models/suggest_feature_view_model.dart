@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/feature/feature.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/pref_repo.dart';
-import 'package:flutter/cupertino.dart';
 
 class SuggestFeatureViewModel with ChangeNotifier {
   var loader = true;

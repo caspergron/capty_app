@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/features/marketplace/units/marketplace_disc_list.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
-import 'package:flutter/material.dart';
 
 class MarketplaceCategoryList extends StatelessWidget {
   final List<MarketplaceCategory> categories;

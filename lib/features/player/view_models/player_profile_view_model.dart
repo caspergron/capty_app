@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/libraries/locations.dart';
@@ -8,7 +10,6 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/repository/player_repo.dart';
-import 'package:flutter/cupertino.dart';
 
 class PlayerProfileViewModel with ChangeNotifier {
   var player = User();

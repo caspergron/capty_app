@@ -113,11 +113,10 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
           radius: 04,
           height: 42,
           width: double.infinity,
+          onTap: _onReportProblem,
           label: 'send_report'.recast.toUpper,
-          onTap: _onSendSuggestion,
           textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
-          // onTap: _viewModel.checkUnusedTranslations,
-          // onTap: _viewModel.extractAllUsedTranslationKeys,
+          // onTap: () => Routes.user.club_settings(club: Provider.of<ClubViewModel>(context, listen: false).club).push(),
         ),
         SizedBox(height: BOTTOM_GAP),
       ],
@@ -130,7 +129,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
     setState(() {});
   }
 
-  Future<void> _onSendSuggestion() async {
+  Future<void> _onReportProblem() async {
     if (_title.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_title_of_report'.recast);
     if (_description.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_description_of_report'.recast);
     var response = await _viewModel.onSendReport(title: _title.text, description: _description.text);

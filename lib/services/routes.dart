@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/features/address/screens/add_address_screen.dart';
 import 'package:app/features/address/screens/seller_settings_screen.dart';
 import 'package:app/features/auth/screens/otp_screen.dart';
@@ -10,6 +12,7 @@ import 'package:app/features/auth/screens/signed_up_screen.dart';
 import 'package:app/features/chat/chat_screen.dart';
 import 'package:app/features/club/screens/club_event_screen.dart';
 import 'package:app/features/club/screens/club_screen.dart';
+import 'package:app/features/club/screens/club_settings_screen.dart';
 import 'package:app/features/club/screens/create_club_screen.dart';
 import 'package:app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:app/features/dashboard/screens/public_marketplace_screen.dart';
@@ -56,7 +59,6 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/settings/settings.dart';
 import 'package:app/models/user/user.dart';
-import 'package:flutter/material.dart';
 
 class Routes {
   static _AuthRoutes auth = _AuthRoutes();
@@ -86,6 +88,11 @@ class _PublicRoutes {
 class _UserRoutes {
   Widget landing({int index = 0}) => LandingScreen(index: index);
   Widget leaderboard() => LeaderboardScreen();
+
+  Widget create_club() => CreateClubScreen();
+  Widget club({required Club club, bool isHome = false}) => ClubScreen(club: club, isHome: isHome);
+  Widget club_settings({required Club club}) => ClubSettingsScreen(club: club);
+  Widget club_event({required Event event}) => ClubEventScreen(event: event);
 
   Widget profile() => ProfileScreen();
   Widget notification() => NotificationsScreen();
@@ -119,12 +126,8 @@ class _UserRoutes {
   Widget tournament_discs({required User player}) => TournamentBagScreen(player: player);
   Widget player_sale_ads({required User player}) => PlayerSalesAdScreen(player: player);
 
-  Widget create_club() => CreateClubScreen();
-  Widget club({required Club club, bool isHome = false}) => ClubScreen(club: club, isHome: isHome);
-  Widget club_event({required Event event}) => ClubEventScreen(event: event);
-
-  Widget grid_path() => GridPathScreen();
-  Widget flight_path() => FlightPathScreen();
+  Widget grid_path({required List<UserDisc> discs}) => GridPathScreen(discs: discs);
+  Widget flight_path({required List<UserDisc> discs}) => FlightPathScreen(discs: discs);
 }
 
 class _SystemRoutes {

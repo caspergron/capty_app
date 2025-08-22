@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -45,9 +50,6 @@ import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class CreateSalesAdScreen extends StatefulWidget {
   final int tabIndex;
@@ -238,72 +240,6 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
         ),
       ),
       const SizedBox(height: 12),
-      /*if (_modelData.address.is_home) Text('address'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
-      if (_modelData.address.is_home) const SizedBox(height: 04),
-      if (_modelData.address.is_home)
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 08, horizontal: 16),
-          decoration: BoxDecoration(
-            color: lightBlue,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(width: 0.50, color: primary),
-            boxShadow: const [SHADOW_1],
-          ),
-          child: Row(
-            children: [
-              SvgImage(image: Assets.svg1.map_pin, height: 16, color: primary),
-              const SizedBox(width: 08),
-              Expanded(
-                child: Text(
-                  '${_modelData.address.formatted_address}\n${_modelData.address.formatted_state_country}',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyles.text12_600.copyWith(color: dark),
-                ),
-              ),
-            ],
-          ),
-        ),
-      if (_modelData.address.is_home) const SizedBox(height: 12),*/
-      /*Text('shipping'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
-      const SizedBox(height: 04),
-      Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 08, horizontal: 16),
-        decoration: BoxDecoration(
-          color: lightBlue,
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(width: 0.50, color: primary),
-          boxShadow: const [SHADOW_1],
-        ),
-        child: Row(
-          children: [
-            SvgImage(image: Assets.svg1.truck, height: 17, color: primary),
-            const SizedBox(width: 08),
-            Expanded(
-              child: Text(
-                'i_want_to_offer_shipping'.recast,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyles.text12_400.copyWith(color: dark, fontSize: 13),
-              ),
-            ),
-            const SizedBox(width: 08),
-            FlutterSwitch(
-              width: 40,
-              height: 20,
-              inactiveColor: mediumBlue.colorOpacity(0.5),
-              activeColor: mediumBlue,
-              activeToggleColor: lightBlue,
-              inactiveToggleColor: skyBlue,
-              value: _modelData.isShipping,
-              onToggle: _viewModel.onShipping,
-            ),
-          ],
-        ),
-      ),
-      const SizedBox(height: 12),*/
       if (isPlastics) ...[
         Text('plastic'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
         const SizedBox(height: 04),
@@ -312,26 +248,11 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
           background: lightBlue,
           textColor: dark,
           fontSize: 12,
+          onTap: _onPlastic,
           hint: 'select_plastic',
           label: _modelData.plastic.name ?? '',
           endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
-          onTap: () => _modelData.plastics.isEmpty
-              ? null
-              : plasticsSheet(
-                  plastic: _modelData.plastic,
-                  plastics: _modelData.plastics,
-                  onChanged: (v) => setState(() => _modelData.plastic = v),
-                ),
         ),
-        /*DropdownFlutter<Plastic>(
-          height: 40,
-          borderColor: transparent,
-          items: _modelData.plastics,
-          hint: 'select_plastic'.recast,
-          value: _modelData.plastic.id == null ? null : _modelData.plastic,
-          hintLabel: _modelData.plastic.id == null ? null : _modelData.plastics.firstWhere((item) => item == item).label,
-          onChanged: (v) => setState(() => _modelData.plastic = v!),
-        ),*/
         const SizedBox(height: 12),
       ],
       Row(
@@ -472,6 +393,11 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
       ],
       SizedBox(height: BOTTOM_GAP),
     ];
+  }
+
+  void _onPlastic() {
+    if (_modelData.plastics.isEmpty) return;
+    plasticsSheet(plastic: _modelData.plastic, plastics: _modelData.plastics, onChanged: (v) => setState(() => _modelData.plastic = v));
   }
 
   void _onSelectDiscSpeciality(List<Tag> tagItems) => setState(() => _modelData.specialTags = tagItems);

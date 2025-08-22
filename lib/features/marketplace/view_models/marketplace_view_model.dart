@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -21,7 +23,6 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/app_analytics.dart';
-import 'package:flutter/cupertino.dart';
 
 class MarketplaceViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -129,7 +130,7 @@ class MarketplaceViewModel with ChangeNotifier {
         favCategories[catIndex].pagination = newItem.pagination;
         var newLength = newItem.discs.length;
         favCategories[catIndex].paginate?.length = newLength;
-        if (newLength >= LENGTH_08) favCategories[catIndex].paginate?.page = (favCategories[catIndex].paginate?.page ?? 0) + 1;
+        if (newLength >= LENGTH_10) favCategories[catIndex].paginate?.page = (favCategories[catIndex].paginate?.page ?? 0) + 1;
       }
     }
   }
@@ -146,7 +147,7 @@ class MarketplaceViewModel with ChangeNotifier {
         scrollController.addListener(() {
           final position = scrollController.position;
           final isPosition70 = position.pixels >= position.maxScrollExtent * 0.80;
-          if (isPosition70 && paginate.length == LENGTH_08) fetchFavouriteDiscs(isPaginate: true, index: index);
+          if (isPosition70 && paginate.length == LENGTH_10) fetchFavouriteDiscs(isPaginate: true, index: index);
         });
       }
     }
@@ -217,7 +218,7 @@ class MarketplaceViewModel with ChangeNotifier {
         categories[catIndex].pagination = newItem.pagination;
         var newLength = newItem.discs.length;
         categories[catIndex].paginate?.length = newLength;
-        if (newLength >= LENGTH_08) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
+        if (newLength >= LENGTH_10) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
       }
     }
   }
@@ -234,7 +235,7 @@ class MarketplaceViewModel with ChangeNotifier {
         scrollController.addListener(() {
           final position = scrollController.position;
           final isPosition80 = position.pixels >= position.maxScrollExtent * 0.85;
-          if (isPosition80 && paginate.length == LENGTH_08) generateFilterUrl(isPaginate: true, index: index);
+          if (isPosition80 && paginate.length == LENGTH_10) generateFilterUrl(isPaginate: true, index: index);
         });
       }
     }

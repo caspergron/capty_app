@@ -1,3 +1,6 @@
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart' show SingleChildWidget;
+
 import 'package:app/features/address/view_models/add_address_view_model.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/features/auth/view_models/otp_view_model.dart';
@@ -6,6 +9,7 @@ import 'package:app/features/auth/view_models/sign_in_view_model.dart';
 import 'package:app/features/challenge/challenge_view_model.dart';
 import 'package:app/features/chat/chat_view_model.dart';
 import 'package:app/features/club/view_models/club_event_view_model.dart';
+import 'package:app/features/club/view_models/club_settings_view_model.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/club/view_models/create_club_view_model.dart';
 import 'package:app/features/dashboard/view_models/dashboard_view_model.dart';
@@ -36,14 +40,14 @@ import 'package:app/features/report_problem/report_problem_view_model.dart';
 import 'package:app/features/settings/settings_view_model.dart';
 import 'package:app/features/suggest_feature/view_models/suggest_feature_view_model.dart';
 import 'package:app/features/suggest_feature/view_models/suggestion_details_view_model.dart';
+import 'package:app/features/test/test_controller.dart';
 import 'package:app/features/waitlist/waitlist_view_model.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart' show SingleChildWidget;
 
 List<SingleChildWidget> providers = [
   ..._auth_providers,
   ..._public_providers,
   ..._user_providers,
+  ChangeNotifierProvider(create: (_) => TestViewModel()),
 ];
 
 List<SingleChildWidget> _auth_providers = [
@@ -82,6 +86,7 @@ List<SingleChildWidget> _user_providers = [
 
 List<SingleChildWidget> _club_providers = [
   ChangeNotifierProvider(create: (_) => ClubViewModel()),
+  ChangeNotifierProvider(create: (_) => ClubSettingsViewModel()),
   ChangeNotifierProvider(create: (_) => CreateClubViewModel()),
   ChangeNotifierProvider(create: (_) => ClubEventViewModel()),
 ];

@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/components/sheets/plastics_sheet.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -21,6 +20,7 @@ import 'package:app/models/plastic/plastic.dart';
 import 'package:app/models/system/doc_file.dart';
 import 'package:app/repository/disc_repo.dart';
 import 'package:app/repository/user_repo.dart';
+import 'package:app/services/input_formatters.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
@@ -33,16 +33,18 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/memory_image.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/exception/error_upload_image.dart';
-import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
+import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/view/color_view.dart';
 import 'package:app/widgets/view/unit_suffix.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-Future<void> editWishlistDisc({required Wishlist wishlist, Function(Wishlist)? onSave}) async {
+Future<void> editWishlistDisc({required Wishlist wishlist, bool isUpdateAndAdd = false, Function(Wishlist, bool)? onSave}) async {
   var context = navigatorKey.currentState!.context;
   var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(wishlist, onSave));
+  var child = Align(child: _DialogView(wishlist, isUpdateAndAdd, onSave));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Edit Wishlist Disc Dialog',
@@ -54,8 +56,9 @@ Future<void> editWishlistDisc({required Wishlist wishlist, Function(Wishlist)? o
 
 class _DialogView extends StatefulWidget {
   final Wishlist wishlist;
-  final Function(Wishlist)? onSave;
-  const _DialogView(this.wishlist, this.onSave);
+  final bool isUpdateAndAdd;
+  final Function(Wishlist, bool)? onSave;
+  const _DialogView(this.wishlist, this.isUpdateAndAdd, this.onSave);
 
   @override
   State<_DialogView> createState() => _DialogViewState();
@@ -65,10 +68,6 @@ class _DialogViewState extends State<_DialogView> {
   var _loader = false;
   var _brand = TextEditingController();
   var _model = TextEditingController();
-  var _speed = TextEditingController();
-  var _glide = TextEditingController();
-  var _turn = TextEditingController();
-  var _fade = TextEditingController();
   var _weight = TextEditingController();
   var _comment = TextEditingController();
   var _colorOrImage = DISC_OPTIONS.first;
@@ -94,16 +93,8 @@ class _DialogViewState extends State<_DialogView> {
   void _setInitialStates() {
     var userDisc = widget.wishlist.userDisc;
     var parentDisc = widget.wishlist.disc;
-    var speed = userDisc?.speed ?? parentDisc?.speed;
-    var glide = userDisc?.glide ?? parentDisc?.glide;
-    var turn = userDisc?.turn ?? parentDisc?.turn;
-    var fade = userDisc?.fade ?? parentDisc?.fade;
     _brand.text = parentDisc?.brand?.name ?? 'n/a'.recast;
     _model.text = parentDisc?.name ?? 'n/a'.recast;
-    _speed.text = speed.formatDouble;
-    _glide.text = glide.formatDouble;
-    _turn.text = turn.formatDouble;
-    _fade.text = fade.formatDouble;
     _weight.text = '${userDisc?.weight == null ? 0 : userDisc?.weight.formatDouble}';
     _comment.text = userDisc?.description ?? '';
     if (userDisc?.disc_color != null) _color = userDisc!.disc_color!;
@@ -195,95 +186,21 @@ class _DialogViewState extends State<_DialogView> {
               ],
             ),
             const SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(child: Text('speed'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
-                const SizedBox(width: 06),
-                Expanded(child: Text('glide'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
-                const SizedBox(width: 06),
-                Expanded(child: Text('turn'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
-                const SizedBox(width: 06),
-                Expanded(child: Text('fade'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
-              ],
-            ),
-            const SizedBox(height: 06),
-            Row(
-              children: [
-                Expanded(
-                  child: InputField(
-                    cursorHeight: 10,
-                    controller: _speed,
-                    hintText: '${'ex'.recast}: 6.5',
-                    focusNode: _discSizeFocusNodes[0],
-                    keyboardType: TextInputType.number,
-                    enabledBorder: mediumBlue,
-                    focusedBorder: mediumBlue,
-                    borderRadius: BorderRadius.circular(04),
-                    textInputAction: TextInputAction.next,
-                    contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
-                    onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discSizeFocusNodes[1]),
-                  ),
-                ),
-                const SizedBox(width: 06),
-                Expanded(
-                  child: InputField(
-                    cursorHeight: 10,
-                    controller: _glide,
-                    hintText: '${'ex'.recast}: 5',
-                    focusNode: _discSizeFocusNodes[1],
-                    keyboardType: TextInputType.number,
-                    enabledBorder: mediumBlue,
-                    focusedBorder: mediumBlue,
-                    borderRadius: BorderRadius.circular(04),
-                    textInputAction: TextInputAction.next,
-                    contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
-                    onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discSizeFocusNodes[2]),
-                  ),
-                ),
-                const SizedBox(width: 06),
-                Expanded(
-                  child: InputField(
-                    cursorHeight: 10,
-                    controller: _turn,
-                    hintText: '${'ex'.recast}: -1',
-                    focusNode: _discSizeFocusNodes[2],
-                    keyboardType: TextInputType.number,
-                    enabledBorder: mediumBlue,
-                    focusedBorder: mediumBlue,
-                    borderRadius: BorderRadius.circular(04),
-                    textInputAction: TextInputAction.next,
-                    contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
-                    onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discSizeFocusNodes[3]),
-                  ),
-                ),
-                const SizedBox(width: 06),
-                Expanded(
-                  child: InputField(
-                    cursorHeight: 10,
-                    controller: _fade,
-                    hintText: '${'ex'.recast}: 1',
-                    focusNode: _discSizeFocusNodes[3],
-                    keyboardType: TextInputType.number,
-                    enabledBorder: mediumBlue,
-                    focusedBorder: mediumBlue,
-                    borderRadius: BorderRadius.circular(04),
-                    contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Text('plastic'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue)),
-            const SizedBox(height: 06),
-            DropdownFlutter<Plastic>(
-              height: 38,
-              items: _plastics,
-              hint: 'select_plastic'.recast,
-              value: _plastic.id == null ? null : _plastic,
-              hintLabel: _plastic.id == null ? null : _plastics.firstWhere((item) => item == item).label,
-              onChanged: (v) => setState(() => _plastic = v!),
-            ),
-            const SizedBox(height: 14),
+            if (_plastics.isNotEmpty) ...[
+              Text('plastic'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue)),
+              const SizedBox(height: 06),
+              LabelPlaceholder(
+                height: 40,
+                background: lightBlue,
+                textColor: dark,
+                fontSize: 12,
+                onTap: _onPlastic,
+                hint: 'select_plastic',
+                label: _plastic.name ?? '',
+                endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
+              ),
+              const SizedBox(height: 14),
+            ],
             Text('weight'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue)),
             const SizedBox(height: 06),
             InputField(
@@ -296,6 +213,7 @@ class _DialogViewState extends State<_DialogView> {
               keyboardType: TextInputType.number,
               borderRadius: BorderRadius.circular(04),
               suffixIcon: UnitSuffix(),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
             ),
             const SizedBox(height: 14),
             Row(
@@ -366,14 +284,19 @@ class _DialogViewState extends State<_DialogView> {
         ElevateButton(
           radius: 04,
           height: 36,
-          onTap: _onSave,
           width: double.infinity,
-          label: 'save_details'.recast.toUpper,
+          onTap: widget.isUpdateAndAdd ? _onSaveAndAddToWishlist : _onSave,
+          label: widget.isUpdateAndAdd ? 'save_details_and_add_to_wishlist'.recast.toUpper : 'save_details'.recast.toUpper,
           textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
         ),
         const SizedBox(height: 02),
       ],
     );
+  }
+
+  void _onPlastic() {
+    if (_plastics.isEmpty) return;
+    plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v));
   }
 
   void _onRadio(String value) {
@@ -396,15 +319,15 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   void _onSave() {
-    // if (_plastic.id == null) return FlushPopup.onWarning(message: 'please_select_the_plastic_material_of_your_disc'.recast);
-    if (_speed.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_speed'.recast);
-    if (_speed.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_glide'.recast);
-    if (_speed.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_turn'.recast);
-    if (_speed.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_fade'.recast);
-    // if (_weight.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_weight'.recast);
     var invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.wishlist.userDisc?.media?.id == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
     _onUpdateWishlistDisc();
+  }
+
+  void _onSaveAndAddToWishlist() {
+    var invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.wishlist.userDisc?.media?.id == null;
+    if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
+    _onAddAndUpdateWishlistDisc();
   }
 
   Future<int?> _fetchMediaId() async {
@@ -425,12 +348,26 @@ class _DialogViewState extends State<_DialogView> {
     if (isMediaUpload) body.addAll({'media_id': mediaId});
     var response = await sl<DiscRepository>().updateWishlistDisc(body);
     if (response == null) return setState(() => _loader = false);
-    setState(() => _loader = false);
-    if (widget.onSave != null) widget.onSave!(response);
+    if (widget.onSave != null) widget.onSave!(response, false);
+    backToPrevious();
+  }
+
+  Future<void> _onAddAndUpdateWishlistDisc() async {
+    setState(() => _loader = true);
+    var mediaId = null as int?;
+    var isMediaUpload = _colorOrImage == 'image';
+    if (isMediaUpload) mediaId = await _fetchMediaId();
+    if (isMediaUpload && mediaId == null) return setState(() => _loader = false);
+    var body = _updateDiscBody;
+    if (isMediaUpload) body.addAll({'media_id': mediaId});
+    var response = await sl<DiscRepository>().addAndUpdateWishlistDisc(body);
+    if (response == null) return setState(() => _loader = false);
+    if (widget.onSave != null) widget.onSave!(response, true);
     backToPrevious();
   }
 
   Map<String, dynamic> get _updateDiscBody {
+    var userDisc = widget.wishlist.userDisc;
     var parentDisc = widget.wishlist.disc;
     var userDiscId = widget.wishlist.userDisc?.id;
     var isMediaUpload = _colorOrImage == 'image';
@@ -438,10 +375,10 @@ class _DialogViewState extends State<_DialogView> {
     return {
       'disc_id': parentDisc?.id,
       'weight': _weight.text,
-      'speed': _speed.text,
-      'glide': _glide.text,
-      'turn': _turn.text,
-      'fade': _fade.text,
+      'speed': userDisc?.speed ?? parentDisc?.speed,
+      'glide': userDisc?.glide ?? parentDisc?.glide,
+      'turn': userDisc?.turn ?? parentDisc?.turn,
+      'fade': userDisc?.fade ?? parentDisc?.fade,
       'disc_plastic_id': _plastic.id,
       'description': _comment.text,
       'wish_list_id': widget.wishlist.id,

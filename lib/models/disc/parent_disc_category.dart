@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/models/common/pagination.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/system/paginate.dart';
-import 'package:flutter/material.dart';
 
-class DiscCategory {
+class ParentDiscCategory {
   String? displayName;
   String? name;
   int? order;
@@ -18,7 +19,7 @@ class DiscCategory {
   bool get is_page_loader => paginate?.pageLoader ?? false;
   List<ParentDisc> get discs => parentDiscs ?? [];
 
-  DiscCategory({
+  ParentDiscCategory({
     this.displayName,
     this.name,
     this.order,
@@ -29,7 +30,7 @@ class DiscCategory {
     this.paginate,
   });
 
-  DiscCategory copyWith({
+  ParentDiscCategory copyWith({
     String? displayName,
     String? name,
     int? order,
@@ -39,7 +40,7 @@ class DiscCategory {
     ScrollController? scrollControl,
     Paginate? paginate,
   }) {
-    return DiscCategory(
+    return ParentDiscCategory(
       displayName: displayName ?? this.displayName,
       name: name ?? this.name,
       order: order ?? this.order,
@@ -51,7 +52,7 @@ class DiscCategory {
     );
   }
 
-  DiscCategory.fromJson(json) {
+  ParentDiscCategory.fromJson(json) {
     displayName = json['display_name'];
     name = json['name'];
     order = json['order'];

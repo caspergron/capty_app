@@ -22,13 +22,14 @@ import 'package:app/widgets/ui/colored_disc.dart';
 
 Future<void> discInfoDialog({
   required UserDisc disc,
+  bool isMySelf = true,
   Function()? onSell,
   Function()? onDetails,
   Function()? onDelete,
 }) async {
   var context = navigatorKey.currentState!.context;
   var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(disc, onSell, onDetails, onDelete));
+  var child = Align(child: _DialogView(disc, isMySelf, onSell, onDetails, onDelete));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Disc Info Dialog',
@@ -38,24 +39,14 @@ Future<void> discInfoDialog({
   );
 }
 
-class _DialogView extends StatefulWidget {
+class _DialogView extends StatelessWidget {
+  final bool isMySelf;
   final UserDisc disc;
   final Function()? onSell;
   final Function()? onDetails;
   final Function()? onDelete;
 
-  const _DialogView(this.disc, this.onSell, this.onDetails, this.onDelete);
-
-  @override
-  State<_DialogView> createState() => _DialogViewState();
-}
-
-class _DialogViewState extends State<_DialogView> {
-  @override
-  void initState() {
-    // sl<AppAnalytics>().screenView('disc-info-popup');
-    super.initState();
-  }
+  const _DialogView(this.disc, this.isMySelf, this.onSell, this.onDetails, this.onDelete);
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +59,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var disc = widget.disc;
-    var isDescription = widget.disc.description != null && widget.disc.parentDisc?.description != null;
+    var isDescription = disc.description != null && disc.parentDisc?.description != null;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,54 +72,9 @@ class _DialogViewState extends State<_DialogView> {
           ],
         ),
         const SizedBox(height: 24),
-        Container(
-          height: 66,
-          width: double.infinity,
-          padding: EdgeInsets.zero,
-          decoration: BoxDecoration(border: Border.all(color: lightBlue), borderRadius: BorderRadius.circular(8)),
-          child: Row(
-            children: [
-              Expanded(child: _DicInfo(label: 'speed'.recast, value: disc.speed ?? 0)),
-              Container(height: 66, width: 0.5, color: lightBlue),
-              Expanded(child: _DicInfo(label: 'glide'.recast, value: disc.glide ?? 0)),
-              Container(height: 66, width: 0.5, color: lightBlue),
-              Expanded(child: _DicInfo(label: 'turn'.recast, value: disc.turn ?? 0)),
-              Container(height: 66, width: 0.5, color: lightBlue),
-              Expanded(child: _DicInfo(label: 'fade'.recast, value: disc.fade ?? 0)),
-            ],
-          ),
-        ),
+        isMySelf ? _discFlightInformation : Center(child: _discImageInformation),
         const SizedBox(height: 28),
-        Center(
-          child: Builder(builder: (context) {
-            if (disc.media?.url != null) {
-              return CircleImage(
-                borderWidth: 0.4,
-                radius: 31.width,
-                image: disc.media?.url,
-                backgroundColor: primary,
-                placeholder: const FadingCircle(color: lightBlue),
-                errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-              );
-            } else if (disc.color != null) {
-              return ColoredDisc(
-                size: 60.width,
-                iconSize: 24.width,
-                discColor: disc.disc_color!,
-                brandIcon: disc.parentDisc?.brand_media.url,
-              );
-            } else {
-              return CircleImage(
-                borderWidth: 0.4,
-                radius: 31.width,
-                image: disc.parentDisc?.media.url,
-                backgroundColor: primary,
-                placeholder: const FadingCircle(color: lightBlue),
-                errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-              );
-            }
-          }),
-        ),
+        isMySelf ? Center(child: _discImageInformation) : _discFlightInformation,
         if (isDescription) const SizedBox(height: 20),
         if (isDescription) Center(child: Text('About this Disc', style: TextStyles.text16_600.copyWith(color: lightBlue))),
         if (isDescription) const SizedBox(height: 08),
@@ -141,65 +86,118 @@ class _DialogViewState extends State<_DialogView> {
               style: TextStyles.text12_400.copyWith(color: lightBlue),
             ),
           ),
-        const SizedBox(height: 28),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ElevateButton(
-                radius: 04,
-                height: 36,
-                onTap: _onSell,
-                background: skyBlue,
-                label: 'sell_this_disc'.recast.toUpper,
-                textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
+        if (isMySelf) const SizedBox(height: 28),
+        if (isMySelf)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: ElevateButton(
+                  radius: 04,
+                  height: 36,
+                  onTap: _onSell,
+                  background: skyBlue,
+                  label: 'sell_this_disc'.recast.toUpper,
+                  textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: ElevateButton(
-                radius: 04,
-                height: 36,
-                padding: 16,
-                onTap: _onDetails,
-                label: 'edit_details'.recast.toUpper,
-                textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevateButton(
+                  radius: 04,
+                  height: 36,
+                  padding: 16,
+                  onTap: _onDetails,
+                  label: 'edit_details'.recast.toUpper,
+                  textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 14),
-        Center(
-          child: ElevateButton(
-            radius: 04,
-            height: 36,
-            width: 40.width,
-            onTap: _onDelete,
-            background: skyBlue,
-            label: 'delete'.recast.toUpper,
-            textStyle: TextStyles.text14_700.copyWith(color: dark, fontWeight: w600, height: 1.15),
+            ],
           ),
-        ),
+        if (isMySelf) const SizedBox(height: 14),
+        if (isMySelf)
+          Center(
+            child: ElevateButton(
+              radius: 04,
+              height: 36,
+              width: 40.width,
+              onTap: _onDelete,
+              background: skyBlue,
+              label: 'delete'.recast.toUpper,
+              textStyle: TextStyles.text14_700.copyWith(color: dark, fontWeight: w600, height: 1.15),
+            ),
+          ),
       ],
     );
   }
 
+  Widget get _discFlightInformation {
+    return Container(
+      height: 66,
+      width: double.infinity,
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(border: Border.all(color: lightBlue), borderRadius: BorderRadius.circular(8)),
+      child: Row(
+        children: [
+          Expanded(child: _DicInfo(label: 'speed'.recast, value: disc.speed ?? 0)),
+          Container(height: 66, width: 0.5, color: lightBlue),
+          Expanded(child: _DicInfo(label: 'glide'.recast, value: disc.glide ?? 0)),
+          Container(height: 66, width: 0.5, color: lightBlue),
+          Expanded(child: _DicInfo(label: 'turn'.recast, value: disc.turn ?? 0)),
+          Container(height: 66, width: 0.5, color: lightBlue),
+          Expanded(child: _DicInfo(label: 'fade'.recast, value: disc.fade ?? 0)),
+        ],
+      ),
+    );
+  }
+
+  Widget get _discImageInformation {
+    return Builder(builder: (context) {
+      if (disc.media?.url != null) {
+        return CircleImage(
+          borderWidth: 0.4,
+          radius: 31.width,
+          image: disc.media?.url,
+          backgroundColor: primary,
+          placeholder: const FadingCircle(color: lightBlue),
+          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
+        );
+      } else if (disc.color != null) {
+        return ColoredDisc(
+          size: 60.width,
+          iconSize: 24.width,
+          discColor: disc.disc_color!,
+          brandIcon: disc.parentDisc?.brand_media.url,
+        );
+      } else {
+        return CircleImage(
+          borderWidth: 0.4,
+          radius: 31.width,
+          image: disc.parentDisc?.media.url,
+          backgroundColor: primary,
+          placeholder: const FadingCircle(color: lightBlue),
+          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
+        );
+      }
+    });
+  }
+
   void _onDelete() {
-    if (widget.onDelete == null) return;
-    widget.onDelete!();
+    if (onDelete == null) return;
+    onDelete!();
     backToPrevious();
   }
 
   void _onDetails() {
-    if (widget.onDetails == null) return;
+    if (onDetails == null) return;
     backToPrevious();
-    widget.onDetails!();
+    onDetails!();
   }
 
   void _onSell() {
-    if (widget.onSell == null) return;
+    if (onSell == null) return;
     backToPrevious();
-    widget.onSell!();
+    onSell!();
   }
 }
 

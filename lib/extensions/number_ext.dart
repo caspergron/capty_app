@@ -16,5 +16,6 @@ extension ParseNullableInt on int? {
 }
 
 extension ParseNullableDouble on double? {
+  double get nullToDouble => this ?? 0;
   String get formatDouble => this == null ? '0' : (this == this!.toInt() ? this!.toInt().toString() : this!.toStringAsFixed(1));
 }

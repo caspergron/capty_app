@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId = "com.discgolf.capty"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 35
         multiDexEnabled = true
         versionCode = flutter.versionCode

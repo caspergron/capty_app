@@ -87,6 +87,7 @@ class _SvgIcons1 {
   String filter = '$_SVG_ICONS_1/filter.svg';
   String funnel = '$_SVG_ICONS_1/funnel.svg';
   String gallery = '$_SVG_ICONS_1/gallery.svg';
+  String grid_nine = '$_SVG_ICONS_1/grid_nine.svg';
   String hamburger = '$_SVG_ICONS_1/hamburger.svg';
   String hash_1 = '$_SVG_ICONS_1/hash_1.svg';
   String hash_2 = '$_SVG_ICONS_1/hash_2.svg';

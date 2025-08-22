@@ -1,6 +1,9 @@
+import 'package:get_it/get_it.dart';
+
 import 'package:app/helpers/dimension_helper.dart';
 import 'package:app/helpers/file_helper.dart';
 import 'package:app/helpers/filter_helper.dart';
+import 'package:app/helpers/graph_helper.dart';
 import 'package:app/helpers/marketplace_helper.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/interfaces/http_module.dart';
@@ -46,7 +49,6 @@ import 'package:app/services/storage_service.dart';
 import 'package:app/services/validators.dart';
 import 'package:app/utils/reg_exps.dart';
 import 'package:app/utils/transitions.dart';
-import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
 
@@ -55,6 +57,7 @@ Future<void> init() async {
   sl.registerLazySingleton<DimensionHelper>(DimensionHelper.new);
   sl.registerLazySingleton<FileHelper>(FileHelper.new);
   sl.registerLazySingleton<FilterHelper>(FilterHelper.new);
+  sl.registerLazySingleton<GraphHelper>(GraphHelper.new);
   sl.registerLazySingleton<MarketplaceHelper>(MarketplaceHelper.new);
 
   /// Interceptors

@@ -57,18 +57,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   @override
   void initState() {
-    // sl<AppAnalytics>().screenView('plastics-sheet');
     _focusNode.addListener(() => setState(() {}));
     if (widget.plastics.isNotEmpty) _plastic = widget.plastic;
-    // _fetchAllBrands();
     super.initState();
   }
-
-  /*Future<void> _fetchAllBrands() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    await AppPreferences.fetchBrands();
-    setState(() => _loader = false);
-  }*/
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,8 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/models/common/tournament.dart';
 import 'package:app/models/common/tournament_api.dart';
+import 'package:app/models/disc/user_disc_category.dart';
+import 'package:app/models/disc/user_disc_category_api.dart';
 import 'package:app/models/marketplace/marketplace_api.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
@@ -35,6 +37,14 @@ class PlayerRepository {
     return categories;
   }
 
+  /*Future<List<UserDisc>> fetchPlayerTournamentDiscs(int userId) async {
+    var endpoint = '${ApiUrl.user.playerTournamentBag}$userId';
+    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return [];
+    var discBag = DiscBag.fromJson(apiResponse.response['data']);
+    return discBag.userDiscs ?? [];
+  }*/
+
   Future<List<Tournament>> fetchPlayerTournamentInfo(int userId) async {
     var endpoint = '${ApiUrl.user.playerTournamentInfo}$userId';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
@@ -43,11 +53,11 @@ class PlayerRepository {
     return tournamentApi.tournaments ?? [];
   }
 
-  /*Future<List<UserDisc>> fetchPlayerTournamentDiscs(int userId) async {
-    var endpoint = '${ApiUrl.user.playerTournamentBag}$userId';
+  Future<List<UserDiscCategory>> fetchTournamentDiscsByCategory({String params = ''}) async {
+    var endpoint = '${ApiUrl.user.playerAllTournamentDiscs}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var discBag = DiscBag.fromJson(apiResponse.response['data']);
-    return discBag.userDiscs ?? [];
-  }*/
+    var categoryApi = UserDiscCategoryApi.fromJson(apiResponse.response);
+    return categoryApi.categories ?? [];
+  }
 }

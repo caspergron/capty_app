@@ -24,14 +24,15 @@ import 'package:app/widgets/ui/colored_disc.dart';
 
 Future<void> addToWishlistDialog({
   required Wishlist wishlist,
-  required bool added,
+  bool isEdit = false,
+  bool added = false,
   Function()? onEdit,
   Function()? onAdd,
   Function()? onRemove,
 }) async {
   var context = navigatorKey.currentState!.context;
   var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(wishlist, added, onEdit, onAdd, onRemove));
+  var child = Align(child: _DialogView(wishlist, added, isEdit, onEdit, onAdd, onRemove));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Add To Wishlist Dialog',
@@ -44,11 +45,12 @@ Future<void> addToWishlistDialog({
 class _DialogView extends StatelessWidget {
   final Wishlist wishlist;
   final bool added;
+  final bool isEdit;
   final Function()? onEdit;
   final Function()? onAdd;
   final Function()? onRemove;
 
-  const _DialogView(this.wishlist, this.added, this.onEdit, this.onAdd, this.onRemove);
+  const _DialogView(this.wishlist, this.added, this.isEdit, this.onEdit, this.onAdd, this.onRemove);
 
   @override
   Widget build(BuildContext context) {
@@ -161,8 +163,8 @@ class _DialogView extends StatelessWidget {
                       textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
                     ),
                   ),
-                  if (onEdit != null) const SizedBox(width: 08),
-                  if (onEdit != null)
+                  if (onEdit != null && isEdit) const SizedBox(width: 08),
+                  if (onEdit != null && isEdit)
                     Expanded(
                       flex: 11,
                       child: ElevateButton(
@@ -183,9 +185,9 @@ class _DialogView extends StatelessWidget {
                       radius: 04,
                       height: 38,
                       background: skyBlue,
-                      label: 'cancel'.recast.toUpper,
+                      onTap: _onEditDetails,
+                      label: 'update_disc'.recast.toUpper,
                       textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
-                      onTap: backToPrevious,
                     ),
                   ),
                   const SizedBox(width: 08),
@@ -193,8 +195,8 @@ class _DialogView extends StatelessWidget {
                     child: ElevateButton(
                       radius: 04,
                       height: 38,
-                      label: 'add_to_wishlist'.recast.toUpper,
                       onTap: _onAddToWishlist,
+                      label: 'add_to_wishlist'.recast.toUpper,
                       textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
                     ),
                   ),

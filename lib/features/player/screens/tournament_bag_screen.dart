@@ -1,17 +1,26 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
+import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/discs/units/parent_disc_category_list.dart';
+import 'package:app/features/player/units/user_disc_category_list.dart';
 import 'package:app/features/player/view_models/tournament_discs_view_model.dart';
+import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/preferences/user_preferences.dart';
+import 'package:app/services/routes.dart';
+import 'package:app/themes/colors.dart';
 import 'package:app/themes/gradients.dart';
+import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:app/widgets/library/svg_image.dart';
+import 'package:app/widgets/ui/icon_box.dart';
 
 class TournamentBagScreen extends StatefulWidget {
   final User player;
@@ -47,12 +56,15 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
+    var name = isMe ? 'my'.recast : '${widget.player.first_name}${'extra_s'.recast}';
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         leading: const BackMenu(),
-        title: Text('${widget.player.first_name}${'extra_s'.recast} ${'tournament_discs'.recast}'),
+        title: Text('$name ${'tournament_discs'.recast}'),
         automaticallyImplyLeading: false,
+        actions: [if (_modelData.selectedDiscs.isNotEmpty) Center(child: _flightPathMenu), ACTION_SIZE],
       ),
       body: Container(
         width: SizeConfig.width,
@@ -62,6 +74,11 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
         child: Stack(children: [_screenView, if (_modelData.loader.loader) const ScreenLoader()]),
       ),
     );
+  }
+
+  Widget get _flightPathMenu {
+    var icon = SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19);
+    return IconBox(size: 28, background: primary, icon: icon, onTap: Routes.user.grid_path(discs: _modelData.selectedDiscs).push);
   }
 
   Widget get _screenView {
@@ -77,10 +94,21 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
       physics: const BouncingScrollPhysics(),
       children: [
         const SizedBox(height: 12),
-        ParentDiscCategoryList(categories: _modelData.categories),
+        UserDiscCategoryList(
+          categories: _modelData.categories,
+          selectedItems: _modelData.selectedDiscs,
+          onSelectDisc: _onSelectYourDisc,
+          onDiscItem: (discItem) => _viewModel.onDiscItem(discItem, isMe),
+        ),
         SizedBox(height: BOTTOM_GAP),
       ],
     );
-    // onItem: (item, index) => _viewModel.onDiscItem(item, index),
+  }
+
+  void _onSelectYourDisc(UserDisc item) {
+    var selectedItems = _modelData.selectedDiscs;
+    var index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
+    index < 0 ? _modelData.selectedDiscs.add(item) : _modelData.selectedDiscs.removeAt(index);
+    setState(() {});
   }
 }

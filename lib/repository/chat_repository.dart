@@ -67,7 +67,6 @@ class ChatRepository {
 
   Future<ChatMessage?> sendChatMessage(Map<String, String> body, List<ChatContent> contents, ChatMessage chat) async {
     var endpoint = ApiUrl.user.sendMessage;
-    await Future.delayed(const Duration(seconds: 2));
     var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     var chatMessage = ChatMessage.fromJson(apiResponse.response['data']);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:app/components/buttons/elevate_button.dart';
-import 'package:app/components/dialogs/club_management_dialog.dart';
 import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -18,7 +17,6 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/components/club_members_sheet.dart';
 import 'package:app/features/club/components/club_settings_dialog.dart';
-import 'package:app/features/club/components/schedule_event_dialog.dart';
 import 'package:app/features/club/units/sell_disc_list.dart';
 import 'package:app/features/club/units/upcoming_events_list.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
@@ -39,11 +37,10 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/icon_box.dart';
-import 'package:app/widgets/ui/nav_button_box.dart';
 
 const _SPACE20 = '    ';
 
+// clubManagementDialog(club: _modelData.club, onJoin: () => joinAdministratorDialog(onProceed: () {})),
 class ClubScreen extends StatefulWidget {
   final Club club;
   final bool isHome;
@@ -102,11 +99,11 @@ class _ClubScreenState extends State<ClubScreen> {
         child: Stack(children: [_screenView(context), if (_modelData.loader.loader) const ScreenLoader()]),
       ),
       floatingActionButton: clubs.isEmpty || club.id == null ? null : _floatingButton,
-      bottomNavigationBar: widget.isHome ? null : NavButtonBox(childHeight: 42, loader: _modelData.loader.loader, child: _navbarActions),
+      // bottomNavigationBar: widget.isHome ? null : NavButtonBox(childHeight: 42, loader: _modelData.loader.loader, child: _navbarActions),
     );
   }
 
-  Widget get _navbarActions {
+  /*Widget get _navbarActions {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -129,7 +126,7 @@ class _ClubScreenState extends State<ClubScreen> {
         ),
       ],
     );
-  }
+  }*/
 
   Widget _screenView(BuildContext context) {
     if (_modelData.loader.initial) return const SizedBox.shrink();
@@ -141,7 +138,7 @@ class _ClubScreenState extends State<ClubScreen> {
       padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
       children: [
-        if (widget.isHome) const SizedBox(height: 04),
+        if (widget.isHome) const SizedBox(height: 08),
         if (widget.isHome) Center(child: Text(club.name ?? 'n/a'.recast, style: TextStyles.text20_500.copyWith(color: dark))),
         const SizedBox(height: 16),
         Container(

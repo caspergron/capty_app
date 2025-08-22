@@ -18,6 +18,7 @@ class User {
   int? countryId;
   String? uDiscUsername;
   String? pdgaNumber;
+  int? captyId;
   String? phone;
   int? mediaId;
   int? isActive;
@@ -59,6 +60,7 @@ class User {
     this.countryId,
     this.uDiscUsername,
     this.pdgaNumber,
+    this.captyId,
     this.phone,
     this.mediaId,
     this.isActive,
@@ -90,6 +92,7 @@ class User {
     countryId = json['country_id'];
     uDiscUsername = json['udisc_username'];
     pdgaNumber = json['pdga_number'];
+    captyId = json['capty_id'];
     phone = json['phone'];
     mediaId = json['media_id'];
     isActive = json['is_active'];
@@ -122,6 +125,7 @@ class User {
     map['country_id'] = countryId;
     map['udisc_username'] = uDiscUsername;
     map['pdga_number'] = pdgaNumber;
+    map['capty_id'] = captyId;
     map['phone'] = phone;
     map['media_id'] = mediaId;
     map['is_active'] = isActive;

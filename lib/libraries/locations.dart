@@ -1,6 +1,7 @@
+import 'package:location/location.dart';
+
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/preferences/user_preferences.dart';
-import 'package:location/location.dart';
 
 // import 'package:geocoding/geocoding.dart';
 

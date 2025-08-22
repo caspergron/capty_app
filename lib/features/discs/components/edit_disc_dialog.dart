@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/components/sheets/plastics_sheet.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -23,8 +25,8 @@ import 'package:app/models/system/doc_file.dart';
 import 'package:app/repository/disc_bag_repo.dart';
 import 'package:app/repository/disc_repo.dart';
 import 'package:app/repository/user_repo.dart';
+import 'package:app/services/input_formatters.dart';
 import 'package:app/themes/colors.dart';
-import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
@@ -39,6 +41,7 @@ import 'package:app/widgets/exception/error_upload_image.dart';
 import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
+import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/view/color_view.dart';
 
 Future<void> editDiscDialog({required UserDisc disc, Function(UserDisc)? onSave}) async {
@@ -287,13 +290,15 @@ class _DialogViewState extends State<_DialogView> {
               const SizedBox(height: 14),
               Text('plastic'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue)),
               const SizedBox(height: 06),
-              DropdownFlutter<Plastic>(
-                height: 38,
-                items: _plastics,
-                hint: 'select_plastic'.recast,
-                value: _plastic.id == null ? null : _plastic,
-                hintLabel: _plastic.id == null ? null : _plastics.firstWhere((item) => item == item).label,
-                onChanged: (v) => setState(() => _plastic = v!),
+              LabelPlaceholder(
+                height: 40,
+                background: lightBlue,
+                textColor: dark,
+                fontSize: 12,
+                hint: 'select_plastic',
+                label: _plastic.name ?? '',
+                endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
+                onTap: _onPlastic,
               ),
               const SizedBox(height: 14),
               Text('weight'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue)),
@@ -307,6 +312,7 @@ class _DialogViewState extends State<_DialogView> {
                 focusedBorder: lightBlue,
                 keyboardType: TextInputType.number,
                 borderRadius: BorderRadius.circular(04),
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
               ),
               const SizedBox(height: 14),
               Text('bag'.recast, style: TextStyles.text14_600.copyWith(color: lightBlue)),
@@ -388,14 +394,19 @@ class _DialogViewState extends State<_DialogView> {
         const SizedBox(height: 20),
         ElevateButton(
           radius: 04,
-          height: 36,
+          height: 42,
           onTap: _onSave,
           width: double.infinity,
           label: 'save_details'.recast.toUpper,
-          textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
+          textStyle: TextStyles.text14_600.copyWith(color: lightBlue, fontSize: 15, height: 1.15),
         ),
       ],
     );
+  }
+
+  void _onPlastic() {
+    if (_plastics.isEmpty) return;
+    plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v));
   }
 
   void _onRadio(String value) {

@@ -2,19 +2,22 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:app/animations/fade_animation.dart';
+import 'package:app/components/app_lists/label_wrap_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/components/sheets/plastics_sheet.dart';
+import 'package:app/components/sheets/special_tags_sheet.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/discs/units/disc_speciality_list.dart';
 import 'package:app/helpers/file_helper.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/common/tag.dart';
@@ -23,6 +26,7 @@ import 'package:app/models/plastic/plastic.dart';
 import 'package:app/models/system/doc_file.dart';
 import 'package:app/preferences/app_preferences.dart';
 import 'package:app/repository/disc_repo.dart';
+import 'package:app/services/input_formatters.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
@@ -35,9 +39,9 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/memory_image.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/exception/error_upload_image.dart';
-import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
+import 'package:app/widgets/ui/label_placeholder.dart';
 
 Future<void> editSalesAdDiscDialog({required SalesAd marketplace, Function(Map<String, dynamic>, DocFile?)? onSave}) async {
   var context = navigatorKey.currentState!.context;
@@ -72,7 +76,7 @@ class _DialogViewState extends State<_DialogView> {
   var _discFile = DocFile();
   var _plastic = Plastic();
   var _plastics = <Plastic>[];
-  var _selectedDiscSpecialities = <Tag>[];
+  var _specialTags = <Tag>[];
   var _disabledFocusNodes = [FocusNode(), FocusNode()];
   var _discSizeFocusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode()];
   var _focusNodes = [FocusNode(), FocusNode()];
@@ -97,7 +101,7 @@ class _DialogViewState extends State<_DialogView> {
     _model.text = parentDisc?.name ?? 'n/a'.recast;
     _weight.text = '${userDisc?.weight == null ? 0 : userDisc?.weight.formatDouble}';
     _comment.text = marketplace.notes ?? '';
-    _selectedDiscSpecialities = marketplace.specialityDiscs ?? [];
+    _specialTags = marketplace.specialityDiscs ?? [];
     setState(() {});
     // if (userDisc?.color != null) _color = userDisc!.disc_color!;
     // if (disc.media?.id != null) _colorOrImage = DISC_OPTIONS.last;
@@ -128,7 +132,6 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var selectedItems = _selectedDiscSpecialities;
     var discSpecialities = AppPreferences.specialTags;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -150,9 +153,9 @@ class _DialogViewState extends State<_DialogView> {
           children: [
             Row(
               children: [
-                Expanded(child: Text('brand'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
+                Expanded(child: Text('brand'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue))),
                 const SizedBox(width: 14),
-                Expanded(child: Text('model_name'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
+                Expanded(child: Text('model_name'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue))),
               ],
             ),
             const SizedBox(height: 06),
@@ -192,29 +195,42 @@ class _DialogViewState extends State<_DialogView> {
               ],
             ),
             const SizedBox(height: 14),
-            if (discSpecialities.isNotEmpty) ...[
-              Text('disc_special_features'.recast, style: TextStyles.text14_600.copyWith(color: lightBlue)),
-              const SizedBox(height: 08),
-              DiscSpecialityList(
-                background: primary,
-                specialities: discSpecialities,
-                selectedSpecialities: selectedItems,
-                onSelect: _onSelectDiscSpeciality,
-              ),
-            ],
-            const SizedBox(height: 14),
-            Text('plastic'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue)),
-            const SizedBox(height: 06),
-            DropdownFlutter<Plastic>(
-              height: 38,
-              items: _plastics,
-              hint: 'select_plastic'.recast,
-              value: _plastic.id == null ? null : _plastic,
-              hintLabel: _plastic.id == null ? null : _plastics.firstWhere((item) => item == item).label,
-              onChanged: (v) => setState(() => _plastic = v!),
+            Text('disc_special_features'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
+            const SizedBox(height: 08),
+            LabelPlaceholder(
+              height: 40,
+              textColor: dark,
+              fontSize: 12,
+              background: lightBlue,
+              hint: 'select_special_features',
+              label: _specialTags.isEmpty ? '' : '${_specialTags.length} ${'feature_selected'.recast}',
+              endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
+              onTap: () => specialTagsSheet(selectedTags: _specialTags, onChanged: (v) => setState(() => _specialTags = v)),
             ),
+            if (_specialTags.isNotEmpty) const SizedBox(height: 08),
+            if (_specialTags.isNotEmpty)
+              LabelWrapList(
+                fontSize: 12,
+                items: _specialTags.map((e) => e.displayName ?? '').toList(),
+                onItem: (index) => setState(() => _specialTags.removeAt(index)),
+              ),
             const SizedBox(height: 14),
-            Text('weight'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue)),
+            if (_plastics.isNotEmpty) ...[
+              Text('plastic'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
+              const SizedBox(height: 06),
+              LabelPlaceholder(
+                height: 40,
+                textColor: dark,
+                fontSize: 12,
+                background: lightBlue,
+                hint: 'select_plastic',
+                label: _plastic.name ?? '',
+                endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
+                onTap: () => plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v)),
+              ),
+              const SizedBox(height: 14),
+            ],
+            Text('weight'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
             const SizedBox(height: 06),
             InputField(
               fontSize: 12,
@@ -225,6 +241,7 @@ class _DialogViewState extends State<_DialogView> {
               focusedBorder: lightBlue,
               keyboardType: TextInputType.number,
               borderRadius: BorderRadius.circular(04),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
             ),
             const SizedBox(height: 14),
             Row(
@@ -233,15 +250,7 @@ class _DialogViewState extends State<_DialogView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('disc_image'.recast, style: TextStyles.text14_600.copyWith(color: lightBlue)),
-                      /*const SizedBox(height: 08),
-                      AnimatedRadio(
-                        color: lightBlue,
-                        label: 'pick_color'.recast,
-                        value: _colorOrImage == 'color',
-                        onChanged: () => _onRadio('color'),
-                        style: TextStyles.text14_400.copyWith(color: lightBlue, fontSize: 13),
-                      ),*/
+                      Text('disc_image'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
                       const SizedBox(height: 10),
                       AnimatedRadio(
                         color: lightBlue,
@@ -270,7 +279,7 @@ class _DialogViewState extends State<_DialogView> {
               ],
             ),
             const SizedBox(height: 14),
-            Text('notes'.recast, style: TextStyles.text14_600.copyWith(color: lightBlue)),
+            Text('notes'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
             const SizedBox(height: 06),
             InputField(
               fontSize: 12,
@@ -304,14 +313,6 @@ class _DialogViewState extends State<_DialogView> {
     );
   }
 
-  void _onSelectDiscSpeciality(Tag item) {
-    var selectedItems = _selectedDiscSpecialities;
-    if (selectedItems.isEmpty) return setState(() => _selectedDiscSpecialities.add(item));
-    var index = selectedItems.indexWhere((element) => element.id == item.id);
-    if (index < 0) return setState(() => _selectedDiscSpecialities.add(item));
-    setState(() => _selectedDiscSpecialities.removeAt(index));
-  }
-
   void _onRadio(String value) {
     if (_colorOrImage == value) return;
     _colorOrImage = value;
@@ -343,7 +344,7 @@ class _DialogViewState extends State<_DialogView> {
     var parentDiscId = parentDisc?.id;
     var salesAdTypeId = marketplace.salesAdType?.id;
     var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
-    var specialityIds = _selectedDiscSpecialities.isEmpty ? <int>[] : _selectedDiscSpecialities.map((e) => e.id ?? DEFAULT_ID).toList();
+    var specialityIds = _specialTags.isEmpty ? <int>[] : _specialTags.map((e) => e.id ?? DEFAULT_ID).toList();
     var body = {
       'sales_ad_type_id': salesAdTypeId,
       'user_disc_id': userDiscId,

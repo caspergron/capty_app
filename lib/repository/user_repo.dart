@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -14,7 +16,6 @@ import 'package:app/models/user/user.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:http/http.dart';
 
 class UserRepository {
   Future<User> fetchProfileInfo() async {

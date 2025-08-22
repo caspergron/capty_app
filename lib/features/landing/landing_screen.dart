@@ -48,8 +48,8 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
     _tabController = TabController(length: BOTTOM_NAV_ITEMS.length, vsync: this);
     if (widget.index != 0) _tabController.animateTo(widget.index);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await sl<AppUpdater>().checkAppForceUpdate();
       await sl<Permissions>().getLocationPermission();
+      await sl<AppUpdater>().checkAppForceUpdate();
       var message = await FirebaseMessaging.instance.getInitialMessage();
       _viewModel.initViewModel(widget.index, message);
     });

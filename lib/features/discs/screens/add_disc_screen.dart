@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ import 'package:app/components/dialogs/image_rotate_dialog.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/components/sheets/plastics_sheet.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -20,8 +22,8 @@ import 'package:app/helpers/file_helper.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/disc_bag/disc_bag.dart';
-import 'package:app/models/plastic/plastic.dart';
 import 'package:app/services/app_analytics.dart';
+import 'package:app/services/input_formatters.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
@@ -36,6 +38,7 @@ import 'package:app/widgets/exception/error_upload_image.dart';
 import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
+import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/view/color_view.dart';
 import 'package:app/widgets/view/disc_initial_info.dart';
@@ -156,7 +159,6 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
     if (_glide.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_glide'.recast);
     if (_turn.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_turn'.recast);
     if (_fade.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_fade'.recast);
-    // if (_weight.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_weight'.recast);
     if (_modelData.discBag.id == null) return FlushPopup.onWarning(message: 'please_select_a_bag_for_your_disc'.recast);
     var invalidImage = _modelData.selectedRadio == 'image' && _modelData.discFile.unit8List == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_pick_a_color_of_your_disc_image_or_add_your_disc_image'.recast);
@@ -173,7 +175,6 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
 
   Widget _screenView(BuildContext context) {
     var disc = _modelData.disc;
-    var isPlastics = _modelData.plastics.isNotEmpty;
     var isDiscBags = _modelData.discBags.isNotEmpty;
     return ListView(
       shrinkWrap: true,
@@ -184,7 +185,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
         const SizedBox(height: 16),
         DiscInitialInfo(disc: disc),
         const SizedBox(height: 12),
-        Text('disc_details'.recast.toUpper, style: TextStyles.text14_600.copyWith(color: dark)),
+        Text('disc_details'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
         const SizedBox(height: 04),
         Container(
           width: double.infinity,
@@ -310,17 +311,21 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
           ),
         ),
         const SizedBox(height: 12),
-        if (isPlastics) Text('plastic'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
-        if (isPlastics) const SizedBox(height: 04),
-        if (isPlastics)
-          DropdownFlutter<Plastic>(
-            hint: 'select_plastic'.recast,
-            items: _modelData.plastics,
-            value: _modelData.plastic.id == null ? null : _modelData.plastic,
-            hintLabel: _modelData.plastic.id == null ? null : _modelData.plastics.firstWhere((item) => item == item).label,
-            onChanged: (v) => setState(() => _modelData.plastic = v!),
+        if (_modelData.plastics.isNotEmpty) ...[
+          Text('plastic'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
+          const SizedBox(height: 04),
+          LabelPlaceholder(
+            height: 40,
+            background: lightBlue,
+            textColor: dark,
+            fontSize: 12,
+            onTap: _onPlastic,
+            hint: 'select_plastic',
+            label: _modelData.plastic.name ?? '',
+            endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
           ),
-        if (isPlastics) const SizedBox(height: 12),
+          const SizedBox(height: 12),
+        ],
         Text('weight'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
         const SizedBox(height: 04),
         InputField(
@@ -333,6 +338,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
           focusedBorder: lightBlue,
           borderRadius: BorderRadius.circular(04),
           suffixIcon: UnitSuffix(),
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
         ),
         const SizedBox(height: 12),
         if (isDiscBags) Text('bag'.recast, style: TextStyles.text14_600.copyWith(color: dark)),
@@ -407,6 +413,11 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
         SizedBox(height: BOTTOM_GAP),
       ],
     );
+  }
+
+  void _onPlastic() {
+    if (_modelData.plastics.isEmpty) return;
+    plasticsSheet(plastic: _modelData.plastic, plastics: _modelData.plastics, onChanged: (v) => setState(() => _modelData.plastic = v));
   }
 
   void _onEditDetails() => setState(() => _modelData.isEditDetails = true);

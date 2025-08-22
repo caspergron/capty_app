@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
 
 import 'package:app/animations/tween_list_item.dart';
-import 'package:app/components/app_icons/favourite.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
-import 'package:app/models/disc/parent_disc.dart';
+import 'package:app/models/disc/user_disc.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
+import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:app/widgets/ui/colored_disc.dart';
 
-class PdgaHorizontalDiscList extends StatelessWidget {
-  final List<ParentDisc> discs;
+class UserDiscHorizontalList extends StatelessWidget {
+  final List<UserDisc> discs;
+  final List<UserDisc> selectedItems;
   final ScrollPhysics physics;
   final ScrollController? scrollControl;
-  final Function(ParentDisc)? onTap;
-  final Function(ParentDisc, int index)? onFav;
+  final Function(UserDisc)? onTap;
+  final Function(UserDisc)? onFav;
+  final Function(UserDisc)? onSelect;
 
-  const PdgaHorizontalDiscList({
+  const UserDiscHorizontalList({
     this.onTap,
     this.onFav,
+    this.onSelect,
     this.discs = const [],
+    this.selectedItems = const [],
     this.scrollControl,
     this.physics = const BouncingScrollPhysics(),
   });
@@ -32,7 +37,7 @@ class PdgaHorizontalDiscList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 213 + 10,
+      height: 210 + 10,
       child: ListView.builder(
         shrinkWrap: true,
         controller: scrollControl,
@@ -48,8 +53,10 @@ class PdgaHorizontalDiscList extends StatelessWidget {
 
   Widget _discItemCard(BuildContext context, int index) {
     var item = discs[index];
+    var parentDisc = discs[index].parentDisc;
     var gap = Dimensions.screen_padding;
     var discFeatures = [item.speed ?? 0, item.glide ?? 0, item.turn ?? 0, item.fade ?? 0];
+    var isSelected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(item),
       child: TweenListItem(
@@ -58,36 +65,58 @@ class PdgaHorizontalDiscList extends StatelessWidget {
         child: Container(
           width: 40.width,
           key: Key('index_$index'),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 08, vertical: 10),
           margin: EdgeInsets.only(left: index == 0 ? gap : 0, right: index == discs.length - 1 ? gap : 08),
           decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              const SizedBox(height: 02),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Favourite(status: item.is_wishListed, onTap: onFav == null ? null : () => onFav!(item, index)),
-              ),
               // const SizedBox(height: 02),
-              CircleImage(
-                radius: 54,
-                borderWidth: 0.4,
-                borderColor: lightBlue,
-                fit: BoxFit.contain,
-                image: item.media.url,
-                placeholder: const FadingCircle(size: 40),
-                errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
+              Align(
+                alignment: Alignment.topRight,
+                child: RectangleCheckBox(
+                  color: lightBlue,
+                  selectedColor: lightBlue,
+                  isChecked: isSelected,
+                  onTap: () => onSelect == null ? null : onSelect!(item),
+                ),
               ),
+              if (item.media?.url != null)
+                CircleImage(
+                  radius: 54,
+                  borderWidth: 0.4,
+                  borderColor: lightBlue,
+                  fit: BoxFit.contain,
+                  image: item.media?.url,
+                  placeholder: const FadingCircle(size: 40),
+                  errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
+                )
+              else if (item.color != null)
+                ColoredDisc(
+                  iconSize: 30,
+                  size: 110,
+                  discColor: item.disc_color!,
+                  brandIcon: item.parentDisc?.brand_media.url,
+                )
+              else
+                CircleImage(
+                  radius: 54,
+                  borderWidth: 0.4,
+                  borderColor: lightBlue,
+                  fit: BoxFit.contain,
+                  image: parentDisc?.media.url,
+                  placeholder: const FadingCircle(size: 40),
+                  errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
+                ),
               const Spacer(),
               Text(
-                item.name ?? 'n/a'.recast,
+                parentDisc?.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1),
+                style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1, fontSize: 12.5),
               ),
               const SizedBox(height: 02),
               Text(
-                item.brand?.name ?? 'n/a'.recast,
+                parentDisc?.brand?.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text14_700.copyWith(color: lightBlue, height: 1.2),

@@ -89,7 +89,6 @@ class ClubViewModel with ChangeNotifier {
   }
 
   /*Future<void> _fetchClubActions() async {
-    await Future.delayed(const Duration(seconds: 1));
     clubActions = ['', '', '', '', '', ''];
     notifyListeners();
   }*/

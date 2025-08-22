@@ -1,50 +1,50 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'package:app/constants/data_constants.dart';
 import 'package:app/models/common/pagination.dart';
-import 'package:app/models/marketplace/sales_ad.dart';
+import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/system/paginate.dart';
 
-class MarketplaceCategory {
-  int? id;
+class UserDiscCategory {
   String? displayName;
   String? name;
   int? order;
+  int? tagId;
   bool? isSpecial;
-  int? totalSalesAds;
-  List<SalesAd>? salesAds;
+  int? totalUserDiscs;
+  List<UserDisc>? userDiscs;
   Pagination? pagination;
   ScrollController? scrollControl;
   Paginate? paginate;
 
   int get page_no => paginate?.page ?? 1;
   bool get is_page_loader => paginate?.pageLoader ?? false;
-  List<SalesAd> get discs => salesAds ?? [];
+  List<UserDisc> get discs => userDiscs ?? [];
 
-  MarketplaceCategory({
-    this.id,
+  UserDiscCategory({
     this.displayName,
     this.name,
     this.order,
+    this.tagId,
     this.isSpecial,
-    this.totalSalesAds,
-    this.salesAds,
+    this.totalUserDiscs,
+    this.userDiscs,
     this.pagination,
     this.scrollControl,
     this.paginate,
   });
 
-  MarketplaceCategory.fromJson(json) {
-    id = json['id'];
+  UserDiscCategory.fromJson(json) {
     displayName = json['display_name'];
     name = json['name'];
     order = json['order'];
+    tagId = json['tag_id'];
     isSpecial = json['is_special'];
-    totalSalesAds = json['total_sales_ads'];
-    salesAds = [];
-    if (json['sales_ads'] != null) json['sales_ads'].forEach((v) => salesAds?.add(SalesAd.fromJson(v)));
+    totalUserDiscs = json['total_user_discs'];
+    userDiscs = [];
+    if (json['user_discs'] != null) json['user_discs'].forEach((v) => userDiscs?.add(UserDisc.fromJson(v)));
     pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
-    var length = salesAds?.length ?? 0;
+    var length = userDiscs?.length ?? 0;
     var isNextPage = length >= LENGTH_10;
     scrollControl = ScrollController();
     paginate = Paginate(length: length, page: isNextPage ? 2 : 1, pageLoader: isNextPage);
@@ -52,13 +52,13 @@ class MarketplaceCategory {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = id;
     map['display_name'] = displayName;
     map['name'] = name;
     map['order'] = order;
+    map['tag_id'] = tagId;
     map['is_special'] = isSpecial;
-    map['total_sales_ads'] = totalSalesAds;
-    if (salesAds != null) map['sales_ads'] = salesAds?.map((v) => v.toJson()).toList();
+    map['total_user_discs'] = totalUserDiscs;
+    if (userDiscs != null) map['user_discs'] = userDiscs?.map((v) => v.toJson()).toList();
     if (pagination != null) map['pagination'] = pagination?.toJson();
     return map;
   }

@@ -1,17 +1,17 @@
-import 'package:app/models/disc/disc_category.dart';
+import 'package:app/models/disc/user_disc_category.dart';
 
-class DiscCategoryApi {
+class UserDiscCategoryApi {
   bool? success;
   String? message;
-  List<DiscCategory>? categories;
+  List<UserDiscCategory>? categories;
 
-  DiscCategoryApi({this.success, this.message, this.categories});
+  UserDiscCategoryApi({this.success, this.message, this.categories});
 
-  DiscCategoryApi.fromJson(json) {
+  UserDiscCategoryApi.fromJson(json) {
     success = json['success'];
     message = json['message'];
     categories = [];
-    if (json['data'] != null) json['data'].forEach((v) => categories?.add(DiscCategory.fromJson(v)));
+    if (json['data'] != null) json['data'].forEach((v) => categories?.add(UserDiscCategory.fromJson(v)));
   }
 
   Map<String, dynamic> toJson() {

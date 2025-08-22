@@ -5,12 +5,10 @@ import 'package:provider/provider.dart';
 
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
-import 'package:app/constants/date_formats.dart';
-import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/graph/view_models/grid_path_view_model.dart';
-import 'package:app/libraries/formatters.dart';
+import 'package:app/models/disc/user_disc.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
@@ -22,6 +20,9 @@ const _STRAIT_LINE = FlLine(color: primary, strokeWidth: 0.8);
 var _DOT_PAINTER = FlDotCirclePainter(radius: 8, color: primary);
 
 class GridPathScreen extends StatefulWidget {
+  final List<UserDisc> discs;
+  const GridPathScreen({this.discs = const []});
+
   @override
   State<GridPathScreen> createState() => _GridPathScreenState();
 }
@@ -34,7 +35,7 @@ class _GridPathScreenState extends State<GridPathScreen> {
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('grid-path-screen');
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel(widget.discs));
     super.initState();
   }
 
@@ -72,12 +73,12 @@ class _GridPathScreenState extends State<GridPathScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var key = ValueKey<List<ScatterSpot>>(_modelData.spots);
+    var key = ValueKey<List<ScatterSpot>>(_modelData.graph.graphSpots);
     return Padding(
       padding: const EdgeInsets.only(left: 08, right: 16),
       child: Column(
         children: [
-          const SizedBox(height: 60),
+          const SizedBox(height: 14),
           Expanded(child: AnimatedSwitcher(duration: _DURATION, child: ScatterChart(key: key, _scatterChartData))),
           SizedBox(height: SizeConfig.bottom + 32),
         ],
@@ -86,15 +87,15 @@ class _GridPathScreenState extends State<GridPathScreen> {
   }
 
   ScatterChartData get _scatterChartData {
+    _modelData.graph.graphSpots.forEach((item) => print('y: ${item.y.toInt()}, x: ${item.x.toInt()}'));
     return ScatterChartData(
-      minX: 0,
-      maxX: 10,
+      minX: -5,
+      maxX: _modelData.graph.maxX > 6 ? _modelData.graph.maxX : 6,
       minY: 0,
-      maxY: 10,
-      // scatterSpots: _modelData.spots,
+      maxY: _modelData.graph.maxY > 14 ? _modelData.graph.maxY : 14,
       titlesData: _titlesData,
       scatterTouchData: _scatterTouchData,
-      scatterSpots: _modelData.spots.map((spot) => spot.copyWith(dotPainter: _DOT_PAINTER)).toList(),
+      scatterSpots: _modelData.graph.graphSpots.map((spot) => spot.copyWith(dotPainter: _DOT_PAINTER)).toList(),
       borderData: FlBorderData(show: true, border: Border.all(color: primary, width: 0.4)),
       clipData: const FlClipData(top: true, bottom: true, left: true, right: true),
       gridData: FlGridData(getDrawingHorizontalLine: (v) => _STRAIT_LINE, getDrawingVerticalLine: (v) => _STRAIT_LINE),
@@ -102,37 +103,35 @@ class _GridPathScreenState extends State<GridPathScreen> {
   }
 
   FlTitlesData get _titlesData {
-    var axisTile = const AxisTitles();
-    var left = AxisTitles(sideTitles: _leftTitles);
-    var bottom = AxisTitles(sideTitles: _bottomTitles);
-    return FlTitlesData(leftTitles: left, bottomTitles: bottom, topTitles: axisTile, rightTitles: axisTile);
+    var style = TextStyles.text16_600.copyWith(color: primary, fontWeight: w500, fontSize: 20);
+    var bottomLabel = Text('${'stability'.recast} (${'turn'.recast} + ${'fade'.recast})', style: style);
+    var top = AxisTitles(sideTitles: _topTitles, axisNameWidget: bottomLabel, axisNameSize: 26);
+    var left = AxisTitles(sideTitles: _leftTitles, axisNameWidget: Text('speed'.recast, style: style), axisNameSize: 26);
+    // var bottom = AxisTitles(sideTitles: _bottomTitles, axisNameWidget: bottomLabel, axisNameSize: 26);
+    return FlTitlesData(topTitles: top, leftTitles: left, bottomTitles: const AxisTitles(), rightTitles: const AxisTitles());
   }
 
-  SideTitles get _leftTitles {
-    double interval = /*graphModel.maxY > 0 ? graphModel.maxY / 5 : */ 1;
-    return SideTitles(getTitlesWidget: _leftTitleWidgets, showTitles: true, interval: interval, reservedSize: 40);
+  SideTitles get _topTitles => SideTitles(getTitlesWidget: _topTitleWidgets, showTitles: true, interval: 1, reservedSize: 40);
+  SideTitles get _leftTitles => SideTitles(getTitlesWidget: _leftTitleWidgets, showTitles: true, interval: 1, reservedSize: 30);
+  // SideTitles get _bottomTitles => SideTitles(getTitlesWidget: _bottomTitleWidgets, showTitles: true, interval: 1, reservedSize: 24);
+
+  Widget _topTitleWidgets(double value, TitleMeta meta) {
+    var style = TextStyles.text13_600.copyWith(color: primary);
+    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
+    return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(value.formatDouble, style: style));
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta) {
-    var leftValue = value / 1;
-    var label = leftValue > 1 ? '${leftValue.formatDouble} m' : '${leftValue.formatDouble} m';
-    var style = TextStyles.text12_600.copyWith(color: primary);
-    return Text(label, textAlign: TextAlign.center, style: style);
+    var style = TextStyles.text13_600.copyWith(color: primary);
+    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: -20, parentAxisSize: 10, distanceFromEdge: -30);
+    return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(value.formatDouble, style: style));
   }
 
-  SideTitles get _bottomTitles {
-    // double interval =  maxX > 0 ? graphModel.maxX / 3 :   200;
-    return SideTitles(showTitles: true, reservedSize: 24, interval: 10 / 3 /*interval*/, getTitlesWidget: _bottomTitleWidgets);
-  }
-
-  Widget _bottomTitleWidgets(double value, TitleMeta meta) {
-    if (value < 1) return const SizedBox.shrink();
-    var chartDate = /*!charts.haveList ? '$currentDate' : charts[value.toInt()].date ?? */ '$currentDate';
-    var formattedDate = Formatters.formatDate(/*bufferTime.value > 365 ? DATE_FORMAT_15 : */ DATE_FORMAT_2, chartDate);
-    var style = TextStyles.text12_600.copyWith(color: primary);
-    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 10);
-    return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(formattedDate, style: style));
-  }
+  /*Widget _bottomTitleWidgets(double value, TitleMeta meta) {
+    var style = TextStyles.text13_600.copyWith(color: primary);
+    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
+    return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(value.formatDouble, style: style));
+  }*/
 
   ScatterTouchData get _scatterTouchData {
     return ScatterTouchData(
@@ -140,17 +139,13 @@ class _GridPathScreenState extends State<GridPathScreen> {
       handleBuiltInTouches: true,
       touchTooltipData: ScatterTouchTooltipData(
         tooltipPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 04),
-        getTooltipItems: (touchedSpot) {
+        getTooltipItems: (scatterSpot) {
+          var disc = _modelData.findDiscItemBySpotData(scatterSpot);
           var style = const TextStyle(color: white, fontWeight: w600);
-          return ScatterTooltipItem('(${touchedSpot.x.formatDouble}, ${touchedSpot.y.formatDouble})', textStyle: style);
+          return ScatterTooltipItem(disc?.parentDisc?.name ?? '', textStyle: style);
         },
       ),
-      touchCallback: (event, response) {
-        if (event is FlTapUpEvent && response != null && response.touchedSpot != null) {
-          final spot = response.touchedSpot!;
-          debugPrint('Touched spot: (${spot.spot.x}, ${spot.spot.y})');
-        }
-      },
+      touchCallback: (event, response) {},
     );
   }
 }

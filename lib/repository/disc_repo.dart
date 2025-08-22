@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -10,9 +8,9 @@ import 'package:app/features/home/home_view_model.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/disc/disc_api.dart';
-import 'package:app/models/disc/disc_category.dart';
-import 'package:app/models/disc/disc_category_api.dart';
 import 'package:app/models/disc/parent_disc.dart';
+import 'package:app/models/disc/parent_disc_category.dart';
+import 'package:app/models/disc/parent_disc_category_api.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/disc/wishlist.dart';
 import 'package:app/models/disc/wishlist_api.dart';
@@ -20,6 +18,7 @@ import 'package:app/models/plastic/plastic.dart';
 import 'package:app/models/plastic/plastic_api.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:provider/provider.dart';
 
 class DiscRepository {
   Future<List<ParentDisc>> fetchParentDiscs({int page = 1, bool isWishlistSearch = false}) async {
@@ -33,15 +32,15 @@ class DiscRepository {
     return discs.where((item) => item.is_wishListed == false).toList();
   }
 
-  Future<List<DiscCategory>> fetchParentDiscsByCategory({int page = 1, bool isWishlistSearch = false}) async {
+  Future<List<ParentDiscCategory>> fetchParentDiscsByCategory({int page = 1, bool isWishlistSearch = false}) async {
     var endpoint = '${ApiUrl.user.discListByCategory}$page';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var discCategoriesApi = DiscCategoryApi.fromJson(apiResponse.response);
+    var discCategoriesApi = ParentDiscCategoryApi.fromJson(apiResponse.response);
     var categories = discCategoriesApi.categories ?? [];
     if (categories.isEmpty) return [];
     if (isWishlistSearch == false) return categories;
-    List<DiscCategory> filteredCategories = [];
+    List<ParentDiscCategory> filteredCategories = [];
     for (var category in categories) {
       if (category.discs.isEmpty) continue;
       var unWishListedDiscs = category.discs.where((disc) => disc.is_wishListed == false).toList();
@@ -75,7 +74,6 @@ class DiscRepository {
     var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
-    await Future.delayed(const Duration(seconds: 4));
     FlushPopup.onInfo(message: 'disc_created_successfully'.recast);
     return UserDisc.fromJson(apiResponse.response['data']);
   }
@@ -85,7 +83,6 @@ class DiscRepository {
     var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     if (isFlash) FlushPopup.onInfo(message: 'disc_update_successfully'.recast);
-    await Future.delayed(const Duration(seconds: 4));
     return UserDisc.fromJson(apiResponse.response['data']);
   }
 
@@ -131,12 +128,17 @@ class DiscRepository {
     return true;
   }
 
-  Future<Wishlist?> updateWishlistDisc(Map<String, dynamic> body, {bool isFlash = false}) async {
+  Future<Wishlist?> updateWishlistDisc(Map<String, dynamic> body) async {
     var endpoint = ApiUrl.user.updateWishlistDisc;
     var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
-    await Future.delayed(const Duration(seconds: 4));
-    if (isFlash) FlushPopup.onInfo(message: 'disc_update_successfully'.recast);
+    return Wishlist.fromJson(apiResponse.response['data']);
+  }
+
+  Future<Wishlist?> addAndUpdateWishlistDisc(Map<String, dynamic> body) async {
+    var endpoint = ApiUrl.user.updateWishlistDisc;
+    var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
+    if (apiResponse.status != 200) return null;
     return Wishlist.fromJson(apiResponse.response['data']);
   }
 

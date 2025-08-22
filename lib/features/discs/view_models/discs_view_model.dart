@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -15,7 +17,6 @@ import 'package:app/repository/disc_bag_repo.dart';
 import 'package:app/repository/disc_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/routes.dart';
-import 'package:flutter/cupertino.dart';
 
 var _ALL_CATEGORY = DiscBag(id: 1000001, name: 'all');
 
@@ -23,6 +24,7 @@ class DiscsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
   var discBag = _ALL_CATEGORY;
   var discBags = <DiscBag>[];
+  var selectedDiscs = <UserDisc>[];
   var wishlistDiscs = <Wishlist>[];
 
   void initViewModel() {
@@ -38,6 +40,7 @@ class DiscsViewModel with ChangeNotifier {
     discBag = _ALL_CATEGORY;
     discBags.clear();
     wishlistDiscs.clear();
+    selectedDiscs.clear();
   }
 
   List<UserDisc> get allDiscs {
@@ -69,7 +72,7 @@ class DiscsViewModel with ChangeNotifier {
 
   void onDiscBag(DiscBag bag) {
     discBag = bag;
-    if (discBag.userDiscs.haveList) discBag.userDiscs!.forEach((item) => item.selected = false);
+    selectedDiscs.clear();
     notifyListeners();
   }
 
@@ -102,7 +105,6 @@ class DiscsViewModel with ChangeNotifier {
     loader.common = true;
     notifyListeners();
     await fetchAllDiscBags();
-    await Future.delayed(const Duration(seconds: 3));
     FlushPopup.onInfo(message: 'disc_update_successfully'.recast);
     loader.common = false;
     notifyListeners();
@@ -148,13 +150,10 @@ class DiscsViewModel with ChangeNotifier {
   }
 
   Future<void> onUpdateWishlistDisc(int index, Wishlist updatedItem) async {
-    loader.common = true;
     wishlistDiscs[index] = updatedItem;
     notifyListeners();
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 300));
     FlushPopup.onInfo(message: 'disc_update_successfully'.recast);
-    loader.common = false;
-    notifyListeners();
   }
 
   /*Future<void> fetchBagDetails(DiscBag bag) async {

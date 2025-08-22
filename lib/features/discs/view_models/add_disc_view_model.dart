@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -16,8 +20,6 @@ import 'package:app/repository/user_repo.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class AddDiscViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

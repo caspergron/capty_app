@@ -1,8 +1,13 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/discs/components/add_to_wishlist_dialog.dart';
+import 'package:app/features/discs/components/edit_wishlist_dialog.dart';
 import 'package:app/features/discs/units/parent_disc_category_list.dart';
 import 'package:app/features/discs/view_models/pgda_discs_view_model.dart';
 import 'package:app/models/disc/parent_disc.dart';
@@ -13,8 +18,6 @@ import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PgdaDiscsScreen extends StatefulWidget {
   @override
@@ -99,6 +102,7 @@ class _PgdaDiscsScreenState extends State<PgdaDiscsScreen> {
       added: added,
       onAdd: () => _viewModel.onAddedToWishlist(item, index),
       onRemove: () => _viewModel.onRemoveFromWishlist(item, index),
+      onEdit: () => editWishlistDisc(wishlist: wishlist, isUpdateAndAdd: true, onSave: (w, s) => _viewModel.onUpdateAndAddWishList(w)),
     );
   }
 }

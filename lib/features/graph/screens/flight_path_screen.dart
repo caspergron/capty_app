@@ -10,6 +10,7 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/graph/view_models/flight_path_view_model.dart';
 import 'package:app/models/chart/line_bar.dart';
+import 'package:app/models/disc/user_disc.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
@@ -20,6 +21,9 @@ const _DURATION = Duration(seconds: 1);
 const _STRAIT_LINE = FlLine(color: primary, strokeWidth: 0.8);
 
 class FlightPathScreen extends StatefulWidget {
+  final List<UserDisc> discs;
+  const FlightPathScreen({this.discs = const []});
+
   @override
   State<FlightPathScreen> createState() => _FlightPathScreenState();
 }
@@ -32,7 +36,7 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('flight-path-screen');
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel(widget.discs));
     super.initState();
   }
 
@@ -125,10 +129,7 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
     return FlTitlesData(leftTitles: left, bottomTitles: axisTile, topTitles: axisTile, rightTitles: axisTile);
   }
 
-  SideTitles get _leftTitles {
-    double interval = /*graphModel.maxY > 0 ? graphModel.maxY / 5 : */ 1;
-    return SideTitles(getTitlesWidget: _leftTitleWidgets, showTitles: true, interval: interval, reservedSize: 40);
-  }
+  SideTitles get _leftTitles => SideTitles(getTitlesWidget: _leftTitleWidgets, showTitles: true, interval: 1, reservedSize: 40);
 
   Widget _leftTitleWidgets(double value, TitleMeta meta) {
     var leftValue = value / 1;

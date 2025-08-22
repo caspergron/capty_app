@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
+import 'package:path/path.dart';
+
 import 'package:app/components/sheets/image_option_sheet.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -16,8 +20,6 @@ import 'package:app/repository/auth_repo.dart';
 import 'package:app/repository/public_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/routes.dart';
-import 'package:flutter/foundation.dart';
-import 'package:path/path.dart';
 
 class SetProfileViewModel with ChangeNotifier {
   var loader = false;
@@ -185,10 +187,7 @@ class SetProfileViewModel with ChangeNotifier {
       'club_id': clubIds,
     };
     var response = await sl<AuthRepository>().createAccount(body);
-    if (response != null) {
-      await Future.delayed(const Duration(seconds: 4));
-      unawaited(Routes.auth.signed_up(user: response.user!).pushAndRemove());
-    }
+    if (response != null) unawaited(Routes.auth.signed_up(user: response.user!).pushAndRemove());
     loader = false;
     notifyListeners();
   }

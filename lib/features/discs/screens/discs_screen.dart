@@ -16,6 +16,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/discs/components/add_bag_dialog.dart';
 import 'package:app/features/discs/components/add_to_wishlist_dialog.dart';
 import 'package:app/features/discs/components/delete_bag_dialog.dart';
+import 'package:app/features/discs/components/edit_wishlist_dialog.dart';
 import 'package:app/features/discs/units/disc_bags_list.dart';
 import 'package:app/features/discs/units/disc_grid_list.dart';
 import 'package:app/features/discs/units/wishlist_grid_list.dart';
@@ -34,7 +35,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import '../components/edit_wishlist_dialog.dart';
+import 'package:app/widgets/ui/icon_box.dart';
 
 const _TABS_LIST = ['your_discs', 'wishlist'];
 var _All_BAG = DiscBag(id: 1000001, name: 'all');
@@ -70,8 +71,7 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    // var userDiscs = _modelData.discBag.userDiscs ?? [];
-    // var pathDiscs = userDiscs.isEmpty ? <UserDisc>[] : userDiscs.where((item) => item.selected).toList();
+    // var selectedDiscs = _modelData.selectedDiscs;
     var loader = _modelData.loader.loader;
     return Scaffold(
       key: _scaffoldKey,
@@ -86,7 +86,7 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
         width: SizeConfig.width,
         height: SizeConfig.height,
         decoration: BoxDecoration(gradient: BACKGROUND_GRADIENT),
-        child: Stack(children: [_screenView(context), /*if (pathDiscs.isNotEmpty) _navbarButtons,*/ if (loader) const ScreenLoader()]),
+        child: Stack(children: [_screenView(context), /*if (selectedDiscs.isNotEmpty) _navbarButtons,*/ if (loader) const ScreenLoader()]),
       ),
     );
   }
@@ -105,8 +105,8 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
                 radius: 04,
                 height: 38,
                 background: skyBlue,
-                onTap: Routes.user.flight_path().push,
                 label: 'see_flight_paths'.recast.toUpper,
+                onTap: Routes.user.flight_path(discs: _modelData.selectedDiscs).push,
                 icon: SvgImage(image: Assets.svg1.delta, color: primary, height: 20),
                 textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
               ),
@@ -118,7 +118,7 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
                 height: 38,
                 background: skyBlue,
                 label: 'see_grid_paths'.recast.toUpper,
-                onTap: Routes.user.grid_path().push,
+                onTap: Routes.user.grid_path(discs: _modelData.selectedDiscs).push,
                 icon: SvgImage(image: Assets.svg1.hash_1, color: primary, height: 20),
                 textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
               ),
@@ -138,6 +138,21 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
           children: [
             SizedBox(width: Dimensions.screen_padding),
             Expanded(child: Text('your_discs'.recast, style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500, height: 1))),
+            // if (_tabIndex == 0 && _modelData.selectedDiscs.isNotEmpty)
+            /*IconBox(
+                size: 28,
+                background: primary,
+                icon: SvgImage(image: Assets.svg1.delta, color: lightBlue, height: 19),
+                onTap: Routes.user.flight_path(discs: _modelData.selectedDiscs).push,
+              ),*/
+            // if (_tabIndex == 0 && _modelData.selectedDiscs.isNotEmpty) const SizedBox(width: 10),
+            if (_tabIndex == 0 && _modelData.selectedDiscs.isNotEmpty)
+              IconBox(
+                size: 28,
+                background: primary,
+                icon: SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19),
+                onTap: Routes.user.grid_path(discs: _modelData.selectedDiscs).push,
+              ),
             SizedBox(width: Dimensions.screen_padding),
           ],
         ),
@@ -192,17 +207,20 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
     var discList = [UserDisc(id: DEFAULT_ID), if (bagDiscs.isNotEmpty) ...bagDiscs];
     return DiscGridList(
       discList: discList,
+      selectedItems: _modelData.selectedDiscs,
       gap: Dimensions.screen_padding,
-      // onSelect: _onSelectYourDisc,
+      onSelect: _onSelectYourDisc,
       onAdd: Routes.user.search_disc(index: 0).push,
       onDisc: (item, index) => _viewModel.onDiscItem(item, index - 1),
     );
   }
 
-  /*void _onSelectYourDisc(UserDisc item, int index) {
-    _modelData.discBag.userDiscs![index - 1].selected = item.selected ? false : true;
+  void _onSelectYourDisc(UserDisc item, int itemIndex) {
+    var selectedItems = _modelData.selectedDiscs;
+    var index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
+    index < 0 ? _modelData.selectedDiscs.add(item) : _modelData.selectedDiscs.removeAt(index);
     setState(() {});
-  }*/
+  }
 
   Widget get _wishlistView {
     var wishlistDiscs = _modelData.wishlistDiscs;
@@ -219,8 +237,9 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
   void _onWishlistDiscItem(Wishlist item, int index) => addToWishlistDialog(
         added: true,
         wishlist: item,
+        isEdit: true,
         onRemove: () => _viewModel.onRemoveFromWishlist(item, index),
-        onEdit: () => editWishlistDisc(wishlist: item, onSave: (updatedItem) => _viewModel.onUpdateWishlistDisc(index, updatedItem)),
+        onEdit: () => editWishlistDisc(wishlist: item, onSave: (disc, isAddUpdate) => _viewModel.onUpdateWishlistDisc(index, disc)),
       );
 
   Widget _noDiscFound({required int tabIndex}) {

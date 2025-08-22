@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -10,6 +11,7 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
+import 'package:app/services/input_formatters.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/shadows.dart';
@@ -107,6 +109,7 @@ class _DialogViewState extends State<_DialogView> {
           focusedBorder: lightBlue,
           borderRadius: BorderRadius.circular(04),
           suffixIcon: InkWell(onTap: _onPrice, child: _inputSuffix),
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
         ),
         const SizedBox(height: 28),
         Center(

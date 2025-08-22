@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -12,8 +16,6 @@ import 'package:app/models/system/loader.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/player_repo.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class PlayerSalesAdViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -44,7 +46,7 @@ class PlayerSalesAdViewModel with ChangeNotifier {
     final coordinates = await sl<Locations>().fetchLocationPermission();
     var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
     var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
-    var params = '$playerId&size=$LENGTH_08&page=$pageNumber$locationParams';
+    var params = '$playerId&page=$pageNumber$locationParams';
     var response = await sl<PlayerRepository>().fetchAllSalesAdDiscs(params);
     if (isLoader) categories.clear();
     if (response.isEmpty) return _stopLoader();
@@ -66,7 +68,7 @@ class PlayerSalesAdViewModel with ChangeNotifier {
         categories[catIndex].pagination = newItem.pagination;
         var newLength = newItem.discs.length;
         categories[catIndex].paginate?.length = newLength;
-        if (newLength >= LENGTH_08) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
+        if (newLength >= LENGTH_10) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
       }
     }
   }
@@ -83,7 +85,7 @@ class PlayerSalesAdViewModel with ChangeNotifier {
         scrollController.addListener(() {
           final position = scrollController.position;
           final isPosition80 = position.pixels >= position.maxScrollExtent * 0.85;
-          if (isPosition80 && paginate.length == LENGTH_08) _fetchPlayerSalesAdDiscs(playerId: playerId, isPaginate: true, index: index);
+          if (isPosition80 && paginate.length == LENGTH_10) _fetchPlayerSalesAdDiscs(playerId: playerId, isPaginate: true, index: index);
         });
       }
     }

@@ -20,12 +20,14 @@ class DiscGridList extends StatelessWidget {
   final double gap;
   final ScrollPhysics physics;
   final List<UserDisc> discList;
+  final List<UserDisc> selectedItems;
   final Function()? onAdd;
   final Function(UserDisc, int)? onDisc;
   final Function(UserDisc, int)? onSelect;
 
   const DiscGridList({
     this.discList = const [],
+    this.selectedItems = const [],
     this.onAdd,
     this.onDisc,
     this.onSelect,
@@ -80,9 +82,9 @@ class DiscGridList extends StatelessWidget {
   Widget _discItemCard(BuildContext context, int index) {
     var item = discList[index];
     if (index == 0 && item.id == DEFAULT_ID) return _addDiscItemCard;
+    var isSelected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
     var decoration = BoxDecoration(color: primary, borderRadius: BorderRadius.circular(8));
-    var rationSection = AspectRatio(aspectRatio: 1.1, child: Container(decoration: decoration));
-    var checkBox = RectangleCheckBox(color: primary, isChecked: item.selected, onTap: () => onSelect!(item, index));
+    var checkBox = RectangleCheckBox(color: primary, isChecked: isSelected, onTap: () => onSelect!(item, index));
     return TweenListItem(
       index: index,
       twinAnim: TwinAnim.right_to_left,
@@ -90,9 +92,9 @@ class DiscGridList extends StatelessWidget {
         onTap: onDisc == null ? null : () => onDisc!(item, index),
         child: Stack(
           children: [
-            Align(alignment: Alignment.bottomCenter, child: rationSection),
+            Align(alignment: Alignment.bottomCenter, child: AspectRatio(aspectRatio: 1.1, child: Container(decoration: decoration))),
             _discInformation(item),
-            if (onSelect != null) Positioned(right: 0, top: 0, child: checkBox),
+            if (onSelect != null) Positioned(top: 0, right: 0, child: checkBox),
           ],
         ),
       ),

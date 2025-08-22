@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/sales_ads_list.dart';
 import 'package:app/components/app_lists/upcoming_tournaments_list.dart';
@@ -21,8 +25,6 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -140,15 +142,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     Container(
-                      width: 44.width,
+                      width: 45.width,
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                       decoration: BoxDecoration(color: skyBlue, border: borderAll, borderRadius: BorderRadius.circular(06)),
-                      child: Text(
-                        _modelData.person.full_name,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyles.text16_700.copyWith(color: primary, height: 1, letterSpacing: 0.48),
+                      child: Column(
+                        children: [
+                          Text(
+                            _modelData.person.full_name,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyles.text16_700.copyWith(color: primary, height: 1, letterSpacing: 0.48),
+                          ),
+                          const SizedBox(height: 04),
+                          Text(
+                            '${'capty_id'.recast}: ${_modelData.person.captyId ?? 'n/a'.recast}',
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyles.text16_400.copyWith(color: primary, height: 1, letterSpacing: 0.48),
+                          ),
+                        ],
                       ),
                     ),
                   ],

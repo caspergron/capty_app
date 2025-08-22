@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/constants/date_formats.dart';
@@ -19,8 +23,6 @@ import 'package:app/models/system/paginate.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/chat_repository.dart';
 import 'package:app/repository/marketplace_repo.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ChatViewModel with ChangeNotifier {
   var loader = true;

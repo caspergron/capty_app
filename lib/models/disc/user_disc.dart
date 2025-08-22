@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import 'package:app/extensions/number_ext.dart';
 import 'package:app/models/common/media.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/plastic/plastic.dart';
@@ -22,10 +23,10 @@ class UserDisc {
   Media? media;
   ParentDisc? parentDisc;
   Plastic? plastic;
-  bool selected = false;
 
   bool? get is_my_disc => userId != null && (userId == UserPreferences.user.id);
   Color? get disc_color => color == null ? null : Color(int.parse('FF$color', radix: 16));
+  double get turn_plus_fade => turn.nullToDouble + fade.nullToDouble;
 
   UserDisc({
     this.id,
@@ -43,7 +44,6 @@ class UserDisc {
     this.media,
     this.parentDisc,
     this.plastic,
-    this.selected = false,
   });
 
   UserDisc.fromJson(json) {

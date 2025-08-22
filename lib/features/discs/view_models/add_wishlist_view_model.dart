@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -7,8 +11,6 @@ import 'package:app/features/discs/components/added_to_wishlist_dialog.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/repository/disc_repo.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class AddWishlistViewModel with ChangeNotifier {
   var loader = false;

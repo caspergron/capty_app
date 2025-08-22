@@ -34,8 +34,6 @@ import 'di.dart' as dependency_injection;
 /// keytool -list -v -keystore KEY_STORE_PATH -alias key
 // Check unused translations function in report problem view model
 
-// Ned is online data in player profile model
-
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) => Firebase.initializeApp();
 
@@ -112,17 +110,3 @@ Future<void> _listenDeepLink() async {
   // if (deepLink != null && deepLink.isNotEmpty) ToastPopup.onToast(message: deepLink);
   if (deepLink != null && deepLink.isNotEmpty) if (kDebugMode) print(deepLink);
 }
-
-// User removed the sales ad AND marked "Sold the disc through Capty"
-
-// 1.0.1 Issues
-// It doesn't show you on the leaderboard, even though it shows elsewhere that we're in the same club.
-// When I go into your Tactic, it says that we are both playing in Singapore, but that's not correct.
-
-// 1.0.0 Issues
-// And I should probably be included in this overview, right?
-// Now that we are friends and both in the same club, there must be a mistake in the leaderboard when it can’t display results.
-// Done -> When you select ‘Club’ and press the plus button, this comes up – all the text in the search field needs to be corrected.
-// The tournament date only shows the last day – can it display like on PDGA?: 15-Aug to 17-Aug-2025
-// Done -> Upcoming tournament is not displayed correctly under the marketplace, even though it appears under Profile.
-// This screen has a white stripe on the side.

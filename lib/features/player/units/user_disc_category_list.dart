@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/features/discs/units/pdga_horizontal_disc_list.dart';
-import 'package:app/models/disc/parent_disc.dart';
-import 'package:app/models/disc/parent_disc_category.dart';
+import 'package:app/features/player/units/user_disc_horizontal_list.dart';
+import 'package:app/models/disc/user_disc.dart';
+import 'package:app/models/disc/user_disc_category.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
 
-class ParentDiscCategoryList extends StatelessWidget {
-  final List<ParentDiscCategory> categories;
-  final Function(ParentDisc)? onDiscItem;
-  final Function(ParentDisc, int)? onFavDisc;
-  const ParentDiscCategoryList({this.categories = const [], this.onDiscItem, this.onFavDisc});
+class UserDiscCategoryList extends StatelessWidget {
+  final List<UserDiscCategory> categories;
+  final List<UserDisc> selectedItems;
+  final Function(UserDisc)? onDiscItem;
+  final Function(UserDisc)? onFavDisc;
+  final Function(UserDisc)? onSelectDisc;
+
+  const UserDiscCategoryList({
+    this.categories = const [],
+    this.selectedItems = const [],
+    this.onDiscItem,
+    this.onFavDisc,
+    this.onSelectDisc,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +30,11 @@ class ParentDiscCategoryList extends StatelessWidget {
       padding: EdgeInsets.zero,
       itemCount: categories.length,
       physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: _marketplaceItemCard,
+      itemBuilder: _userDiscCategoryItemCard,
     );
   }
 
-  Widget _marketplaceItemCard(BuildContext context, int index) {
+  Widget _userDiscCategoryItemCard(BuildContext context, int index) {
     var item = categories[index];
     if (item.discs.isEmpty) return const SizedBox.shrink();
     var gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
@@ -35,11 +44,13 @@ class ParentDiscCategoryList extends StatelessWidget {
       children: [
         Padding(padding: gap, child: Text(item.displayName ?? '', maxLines: 1, overflow: TextOverflow.ellipsis, style: style)),
         const SizedBox(height: 08),
-        PdgaHorizontalDiscList(
+        UserDiscHorizontalList(
           discs: item.discs,
+          selectedItems: selectedItems,
           scrollControl: item.scrollControl,
           onTap: (discItem) => onDiscItem == null ? null : onDiscItem!(discItem),
-          onFav: (discItem, discIndex) => onFavDisc == null ? null : onFavDisc!(discItem, discIndex),
+          onFav: (discItem) => onFavDisc == null ? null : onFavDisc!(discItem),
+          onSelect: (discItem) => onSelectDisc == null ? null : onSelectDisc!(discItem),
         ),
       ],
     );

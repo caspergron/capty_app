@@ -208,10 +208,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
         if (tagLabels.isNotEmpty) const SizedBox(height: 06),
         if (_tags.isNotEmpty) LabelWrapList(animIndex: 5, items: tagLabels, onItem: (index) => setState(() => _tags.removeAt(index))),
         const SizedBox(height: 16),
-        _ExpansionLabel(
-          item: _FLIGHT_PATH,
-          list: Column(crossAxisAlignment: CrossAxisAlignment.start, children: _flightPathSections),
-        ),
+        _ExpansionLabel(item: _FLIGHT_PATH, list: Column(crossAxisAlignment: CrossAxisAlignment.start, children: _flightPathSections)),
         const SizedBox(height: 16),
         // _ExpansionLabel(item: _SORT_BY, isExpanded: false, list: SortByList(selectedItems: _sortByList, onSelect: _onSelectSortBy)),
         // const SizedBox(height: 16),
