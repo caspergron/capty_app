@@ -387,7 +387,7 @@ class _RangeSliderOption extends StatelessWidget {
                   disabledInactiveTrackColor: lightBlue,
                   thumbColor: orange,
                   thumbShape: const RoundSliderThumbShape(),
-                  showValueIndicator: ShowValueIndicator.always,
+                  showValueIndicator: ShowValueIndicator.onDrag,
                   valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
                 ),
                 child: RangeSlider(

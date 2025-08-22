@@ -87,7 +87,7 @@ class _GridPathScreenState extends State<GridPathScreen> {
   }
 
   ScatterChartData get _scatterChartData {
-    _modelData.graph.graphSpots.forEach((item) => print('y: ${item.y.toInt()}, x: ${item.x.toInt()}'));
+    // _modelData.graph.graphSpots.forEach((item) => print('y: ${item.y.toInt()}, x: ${item.x.toInt()}'));
     return ScatterChartData(
       minX: -5,
       maxX: _modelData.graph.maxX > 6 ? _modelData.graph.maxX : 6,

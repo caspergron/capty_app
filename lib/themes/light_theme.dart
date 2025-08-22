@@ -113,7 +113,7 @@ get _sliderThemeData {
     allowedInteraction: SliderInteraction.slideOnly,
     valueIndicatorTextStyle: TextStyle(color: white, fontSize: 13, height: 1.38, fontWeight: w500, fontFamily: roboto),
     valueIndicatorColor: transparent,
-    showValueIndicator: ShowValueIndicator.always,
+    showValueIndicator: ShowValueIndicator.onDrag,
     rangeThumbShape: RoundRangeSliderThumbShape(enabledThumbRadius: 12),
     rangeTickMarkShape: RoundRangeSliderTickMarkShape(tickMarkRadius: 0),
     overlayShape: RoundSliderOverlayShape(overlayRadius: 0),

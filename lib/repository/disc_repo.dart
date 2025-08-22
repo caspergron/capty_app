@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -18,7 +20,6 @@ import 'package:app/models/plastic/plastic.dart';
 import 'package:app/models/plastic/plastic_api.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:provider/provider.dart';
 
 class DiscRepository {
   Future<List<ParentDisc>> fetchParentDiscs({int page = 1, bool isWishlistSearch = false}) async {
@@ -138,6 +139,13 @@ class DiscRepository {
   Future<Wishlist?> addAndUpdateWishlistDisc(Map<String, dynamic> body) async {
     var endpoint = ApiUrl.user.updateWishlistDisc;
     var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
+    if (apiResponse.status != 200) return null;
+    return Wishlist.fromJson(apiResponse.response['data']);
+  }
+
+  Future<Wishlist?> createWishlistWithUserDisc(Map<String, dynamic> body) async {
+    var endpoint = ApiUrl.user.createWishlistWithUserDisc;
+    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     return Wishlist.fromJson(apiResponse.response['data']);
   }

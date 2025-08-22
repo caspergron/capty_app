@@ -74,16 +74,7 @@ class _TestScreenState extends State<TestScreen> {
       child: Column(
         children: [
           const SizedBox(height: 60),
-          Expanded(
-            child: AnimatedSwitcher(
-              duration: _DURATION,
-              child: ScatterChart(
-                key: key,
-                _scatterChartData,
-                swapAnimationDuration: _DURATION,
-              ),
-            ),
-          ),
+          Expanded(child: AnimatedSwitcher(duration: _DURATION, child: ScatterChart(key: key, _scatterChartData))),
           SizedBox(height: SizeConfig.bottom + 32),
         ],
       ),
@@ -115,8 +106,8 @@ class _TestScreenState extends State<TestScreen> {
 
       // simple grid
       gridData: FlGridData(
-        drawHorizontalLine: true,
-        drawVerticalLine: true,
+        // drawHorizontalLine: true,
+        // drawVerticalLine: true,
         getDrawingHorizontalLine: (v) => _STRAIT_LINE,
         getDrawingVerticalLine: (v) => _STRAIT_LINE,
       ),
@@ -158,7 +149,7 @@ class _TestScreenState extends State<TestScreen> {
     if ((fade - fade.round()).abs() > 1e-6) return const SizedBox.shrink();
 
     final style = TextStyles.text12_600.copyWith(color: primary);
-    return Text('${fade.toStringAsFixed(0)}', textAlign: TextAlign.center, style: style);
+    return Text(fade.toStringAsFixed(0), textAlign: TextAlign.center, style: style);
   }
 
   // Turn: -5..+5 => 0..10 grid; show ticks every 2 grid units (=1 turn step)

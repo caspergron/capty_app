@@ -8,11 +8,8 @@ import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/features/dashboard/screens/dashboard_screen.dart';
-import 'package:app/features/graph/screens/grid_path_screen.dart';
 import 'package:app/features/intro/introduction_screen.dart';
 import 'package:app/features/landing/landing_screen.dart';
-import 'package:app/features/test/custom_pointer.dart';
-import 'package:app/features/test/test_screen.dart';
 import 'package:app/preferences/app_preferences.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/lifecycle_observer.dart';
@@ -52,9 +49,6 @@ class _CoachCaptyAppState extends State<CoachCaptyApp> {
   }
 
   Widget get _initial_screen {
-    // return TestScreen();
-    // return GridPathScreen();
-    // return CustomPointerChart();
     // return const LandingScreen(index: 0);
     if (!sl<StorageService>().onboardStatus) return IntroductionScreen();
     return sl<AuthService>().authStatus ? LandingScreen(index: 0, key: LandingScreen.landingKey) : DashboardScreen();

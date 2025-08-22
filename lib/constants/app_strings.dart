@@ -997,7 +997,6 @@ const APP_STRINGS = {
   'write_here': 'Write here',
   'send_message': 'Send Message',
   'could_not_open_url': 'Could not open url',
-  // New translations
   'club_members': 'Club Members',
   'search_by_name': 'Search by name',
   'no_club_member_found': 'No club member found',
@@ -1036,6 +1035,14 @@ const APP_STRINGS = {
   'update_disc': 'Update Disc',
   'save_details_and_add_to_wishlist': 'Save Details & Add To Wishlist',
   'capty_id': 'Capty Id',
+  'edit_club_name': 'Edit club name',
+  'edit_club_links': 'Edit club links',
+  'edit_club_description': 'Edit club description',
+  'please_write_your_club_description': 'Please write your club description',
+  'update_description': 'Update Description',
+  'update_links': 'Update Links',
+  'update_club_name': 'Update Club Name',
+  // New translations
   '': ''
 };
 

@@ -1,16 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
-import 'package:app_links/app_links.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:provider/provider.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-
 import 'package:app/coach_capty_app.dart';
 import 'package:app/constants/app_constants.dart';
 import 'package:app/di.dart';
@@ -25,6 +14,16 @@ import 'package:app/services/http_overrides.dart';
 import 'package:app/services/providers.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/app_utils.dart';
+import 'package:app_links/app_links.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 import 'di.dart' as dependency_injection;
 
 /// flutter build appbundle --release
@@ -46,7 +45,7 @@ Future<void> main() async {
     FlutterError.dumpErrorToConsole(details);
     runApp(ErrorApp(details));
   };*/
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(const Duration(seconds: 1));
   sl<AuthService>().setAppPreferences();
   if (sl<AuthService>().authStatus) sl<AuthService>().setUserPreferences();
   !kReleaseMode ? runApp(_runApp) : await SentryFlutter.init(_sentryOptions, appRunner: () => runApp(_runApp));

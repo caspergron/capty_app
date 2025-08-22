@@ -12,7 +12,6 @@ import 'package:app/features/graph/view_models/flight_path_view_model.dart';
 import 'package:app/models/chart/line_bar.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/themes/colors.dart';
-import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/size_config.dart';
@@ -138,7 +137,7 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
     return Text(label, textAlign: TextAlign.center, style: style);
   }
 
-  LineTouchData get _lineTouchData {
+  /*LineTouchData get _lineTouchData {
     return LineTouchData(
       getTouchLineEnd: (_, __) => double.infinity,
       touchTooltipData: LineTouchTooltipData(
@@ -158,7 +157,7 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
         },
       ),
     );
-  }
+  }*/
 
   /*SideTitles get _bottomTitles {
     double interval = */ /*graphModel.maxX > 0 ? graphModel.maxX / 5 : */ /* 200;

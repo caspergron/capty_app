@@ -92,6 +92,7 @@ class _UserApis {
   String deleteDiscBag = '$_SERVER/user/bag/delete?bag_id='; // 2
 
   String createWishlist = '$_SERVER/user/wish-list/create';
+  String createWishlistWithUserDisc = '$_SERVER/user/wish-list/create-with-data';
   String wishlistDiscs = '$_SERVER/user/wish-list/list';
   String wishlistDiscDetails = '$_SERVER/user/wish-list/show?wish_list_id='; // 1
   String removeWishlist = '$_SERVER/user/wish-list/delete?wish_list_id='; // 1

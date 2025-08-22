@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
@@ -38,8 +41,6 @@ import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/view/color_view.dart';
 import 'package:app/widgets/view/unit_suffix.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 Future<void> editWishlistDisc({required Wishlist wishlist, bool isUpdateAndAdd = false, Function(Wishlist, bool)? onSave}) async {
   var context = navigatorKey.currentState!.context;
@@ -358,9 +359,9 @@ class _DialogViewState extends State<_DialogView> {
     var isMediaUpload = _colorOrImage == 'image';
     if (isMediaUpload) mediaId = await _fetchMediaId();
     if (isMediaUpload && mediaId == null) return setState(() => _loader = false);
-    var body = _updateDiscBody;
+    var body = _createDiscBody;
     if (isMediaUpload) body.addAll({'media_id': mediaId});
-    var response = await sl<DiscRepository>().addAndUpdateWishlistDisc(body);
+    var response = await sl<DiscRepository>().createWishlistWithUserDisc(body);
     if (response == null) return setState(() => _loader = false);
     if (widget.onSave != null) widget.onSave!(response, true);
     backToPrevious();
@@ -384,6 +385,24 @@ class _DialogViewState extends State<_DialogView> {
       'wish_list_id': widget.wishlist.id,
       if (!isMediaUpload) 'color': colorValue,
       if (userDiscId != null) 'user_disc_id': userDiscId,
+    };
+  }
+
+  Map<String, dynamic> get _createDiscBody {
+    var userDisc = widget.wishlist.userDisc;
+    var parentDisc = widget.wishlist.disc;
+    var isMediaUpload = _colorOrImage == 'image';
+    var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
+    return {
+      'disc_id': parentDisc?.id,
+      'weight': _weight.text,
+      'speed': userDisc?.speed ?? parentDisc?.speed,
+      'glide': userDisc?.glide ?? parentDisc?.glide,
+      'turn': userDisc?.turn ?? parentDisc?.turn,
+      'fade': userDisc?.fade ?? parentDisc?.fade,
+      'disc_plastic_id': _plastic.id,
+      'description': _comment.text,
+      if (!isMediaUpload) 'color': colorValue,
     };
   }
 }

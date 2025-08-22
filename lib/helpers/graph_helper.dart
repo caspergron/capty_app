@@ -3,8 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/models/disc/user_disc.dart';
 
-var _CENTER = 5.0;
-var _INITIAL_SPOT = FlSpot(_CENTER, 0);
+// var _CENTER = 5.0;
+// var _INITIAL_SPOT = FlSpot(_CENTER, 0);
 
 class GraphHelper {
   List<ScatterSpot> getLineBarSpots(List<UserDisc> discList) {

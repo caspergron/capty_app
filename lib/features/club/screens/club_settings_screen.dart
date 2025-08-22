@@ -7,6 +7,9 @@ import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/club/components/edit_club_desc_sheet.dart';
+import 'package:app/features/club/components/edit_club_link_sheet.dart';
+import 'package:app/features/club/components/edit_club_name_sheet.dart';
 import 'package:app/features/club/view_models/club_settings_view_model.dart';
 import 'package:app/libraries/launchers.dart';
 import 'package:app/models/club/club.dart';
@@ -92,7 +95,10 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
                 children: [
                   Expanded(child: Text('club_name'.recast, style: titleStyle)),
                   const SizedBox(width: 06),
-                  SvgImage(image: Assets.svg1.edit, color: primary, height: 18),
+                  InkWell(
+                    child: SvgImage(image: Assets.svg1.edit, color: primary, height: 18),
+                    onTap: () => editClubNameSheet(club: _modelData.club, onUpdate: (v) => setState(() => _modelData.club = v)),
+                  ),
                 ],
               ),
               const SizedBox(height: 02),
@@ -131,7 +137,7 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
                   style: TextStyles.text14_400.copyWith(color: primary, height: 1.3),
                 ),
               if (courses.isEmpty) const SizedBox(height: 12),
-              !courses.isEmpty
+              courses.isEmpty
                   ? Center(
                       child: ElevateButton(
                         radius: 04,
@@ -169,7 +175,10 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
                 children: [
                   Expanded(child: Text('club_links'.recast, style: titleStyle)),
                   const SizedBox(width: 06),
-                  SvgImage(image: Assets.svg1.edit, color: primary, height: 18),
+                  InkWell(
+                    child: SvgImage(image: Assets.svg1.edit, color: primary, height: 18),
+                    onTap: () => editClubLinkSheet(club: _modelData.club, onUpdate: (v) => setState(() => _modelData.club = v)),
+                  ),
                 ],
               ),
               const SizedBox(height: 12),
@@ -248,7 +257,10 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
                 children: [
                   Expanded(child: Text('club_description'.recast, style: titleStyle)),
                   const SizedBox(width: 06),
-                  SvgImage(image: Assets.svg1.edit, color: primary, height: 18),
+                  InkWell(
+                    child: SvgImage(image: Assets.svg1.edit, color: primary, height: 18),
+                    onTap: () => editClubDescSheet(club: _modelData.club, onUpdate: (v) => setState(() => _modelData.club = v)),
+                  ),
                 ],
               ),
               const SizedBox(height: 02),

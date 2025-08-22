@@ -84,7 +84,7 @@ class TestViewModel extends ChangeNotifier {
       final y = (d.turn + d.fade).toDouble();
 
       // Dot radius scaled by speed (1..14) -> ~6..12
-      final radius = _radiusFromSpeed(d.speed);
+      // final radius = _radiusFromSpeed(d.speed);
 
       _spots.add(ScatterSpot(x, y));
       notifyListeners();
@@ -116,10 +116,10 @@ class TestViewModel extends ChangeNotifier {
     return null;
   }
 
-  double _radiusFromSpeed(int speed) {
+  /*double _radiusFromSpeed(int speed) {
     const minR = 6.0;
     const maxR = 12.0;
     final clamped = speed.clamp(1, 14);
     return minR + (maxR - minR) * (clamped / 14.0);
-  }
+  }*/
 }
