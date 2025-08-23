@@ -1043,6 +1043,11 @@ const APP_STRINGS = {
   'update_links': 'Update Links',
   'update_club_name': 'Update Club Name',
   // New translations
+  'club_courses': 'Club Courses',
+  'courses': 'Courses',
+  'no_course_found': 'No Course Found',
+  'no_course_found_around_50km_on_your_location_please_try_Again_later':
+      'No course found around 50 km on your location. Please try again later.',
   '': ''
 };
 

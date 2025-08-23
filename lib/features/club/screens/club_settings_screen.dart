@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/club/components/course_selection_sheet.dart';
+import 'package:app/features/club/components/course_settings_dialog.dart';
 import 'package:app/features/club/components/edit_club_desc_sheet.dart';
 import 'package:app/features/club/components/edit_club_link_sheet.dart';
 import 'package:app/features/club/components/edit_club_name_sheet.dart';
@@ -21,6 +19,8 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ClubSettingsScreen extends StatefulWidget {
   final Club club;
@@ -144,7 +144,7 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
                         height: 36,
                         padding: 16,
                         label: 'connect_new_course'.recast.toUpper,
-                        // onTap: Routes.user.add_friend().push,
+                        onTap: () => courseSettingsDialog(club: widget.club, onConnect: () => courseSelectionSheet(club: widget.club)),
                         icon: SvgImage(image: Assets.svg1.plus, height: 17, color: lightBlue),
                         textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
                       ),
