@@ -1048,6 +1048,7 @@ const APP_STRINGS = {
   'no_course_found': 'No Course Found',
   'no_course_found_around_50km_on_your_location_please_try_Again_later':
       'No course found around 50 km on your location. Please try again later.',
+  'this_box_will_show_the_seller_which_discs_you_are_interested_in': 'This box will show the seller which discs you are interested in.',
   '': ''
 };
 
