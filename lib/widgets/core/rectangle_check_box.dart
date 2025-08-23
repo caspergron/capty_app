@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
-
-import 'package:app/animations/fade_animation.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/utils/assets.dart';
-import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class RectangleCheckBox extends StatelessWidget {
   final Color color;
@@ -34,7 +31,7 @@ class RectangleCheckBox extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FadeAnimation(duration: DURATION_1000, fadeKey: '$isChecked', child: SvgImage(image: icon, height: size, color: iconColor)),
+          SvgImage(image: icon, height: size, color: iconColor),
           const SizedBox(width: 06),
           Flexible(child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: style)),
         ],
