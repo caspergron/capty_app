@@ -25,7 +25,7 @@ import 'package:app/services/routes.dart';
 class TournamentDiscsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
   var categories = <UserDiscCategory>[];
-  var selectedDiscs = <UserDisc>[];
+  // var selectedDiscs = <UserDisc>[];
 
   void initViewModel(User player) {
     if (player.id == null) loader = Loader(initial: false, common: false);
@@ -36,7 +36,7 @@ class TournamentDiscsViewModel with ChangeNotifier {
   void disposeViewModel() {
     loader = DEFAULT_LOADER;
     categories.clear();
-    selectedDiscs.clear();
+    // selectedDiscs.clear();
   }
 
   void _stopLoader() {
