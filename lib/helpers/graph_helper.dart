@@ -1,7 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
+
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/models/chart/graph_model.dart';
 import 'package:app/models/disc/user_disc.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 // var _CENTER = 5.0;
 // var _INITIAL_SPOT = FlSpot(_CENTER, 0);

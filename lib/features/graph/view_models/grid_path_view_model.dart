@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:fl_chart/fl_chart.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -7,8 +11,6 @@ import 'package:app/helpers/graph_helper.dart';
 import 'package:app/models/chart/graph_model.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/system/loader.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 
 class GridPathViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
@@ -16,7 +18,6 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
-import 'package:flutter/material.dart';
 
 Future<void> editClubLinkSheet({required Club club, Function(Club)? onUpdate}) async {
   var context = navigatorKey.currentState!.context;

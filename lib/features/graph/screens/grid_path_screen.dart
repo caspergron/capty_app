@@ -1,3 +1,8 @@
+import 'package:flutter/material.dart';
+
+import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
+
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -9,9 +14,6 @@ import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/size_config.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 const _DURATION = Duration(seconds: 1);
 const _STRAIT_LINE = FlLine(color: primary, strokeWidth: 0.8);

@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/themes/colors.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
 
 class RectangleCheckBox extends StatelessWidget {
   final Color color;
