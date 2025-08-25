@@ -25,6 +25,7 @@ class ChatMessage {
   String? chatStatus;
   int? sendTimeInMS;
   int dateMilliSecond = 00000;
+  SalesAd? salesAd;
 
   bool get is_read => senderId == UserPreferences.user.id || readTime != null;
   bool get is_online => isOnline != null && isOnline == true;
@@ -64,6 +65,7 @@ class ChatMessage {
     this.chatStatus,
     this.sendTimeInMS,
     this.dateMilliSecond = 00000,
+    this.salesAd,
   });
 
   ChatMessage.fromJson(json) {
@@ -102,6 +104,7 @@ class ChatMessage {
     if (contents != null) map['contents'] = contents?.map((v) => v.toJson()).toList();
     map['direction'] = chatStatus;
     map['send_time_in_sec'] = sendTimeInMS;
+    map['sales_ad'] = salesAd?.toJson();
     return map;
   }
 }

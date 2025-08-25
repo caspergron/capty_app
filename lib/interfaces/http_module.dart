@@ -200,8 +200,8 @@ class HttpModule implements ApiInterceptor {
 
   ApiResponse _returnResponse(http.Response response) {
     int statusCode = response.statusCode;
-    // if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}');
-    log('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body.toString()}');
+    if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}');
+    // log('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body.toString()}');
     // if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body}');
     var jsonResponse = response.bodyBytes.isEmpty || response.bodyBytes is String ? null : json.decode(utf8.decode(response.bodyBytes));
     if (statusCode >= 200 && statusCode <= 299) {

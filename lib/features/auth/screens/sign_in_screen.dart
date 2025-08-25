@@ -147,7 +147,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     TextSpan(
                       text: 'agree_with'.recast,
-                      style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1),
+                      style: TextStyles.text13_600.copyWith(color: lightBlue, height: 1),
                     ),
                     const TextSpan(text: ' '),
                     TextSpan(

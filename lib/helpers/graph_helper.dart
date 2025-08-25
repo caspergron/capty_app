@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:app/extensions/number_ext.dart';
+import 'package:app/models/chart/graph_model.dart';
 import 'package:app/models/disc/user_disc.dart';
 
 // var _CENTER = 5.0;
@@ -24,6 +25,15 @@ class GraphHelper {
     if (discList.isEmpty) return [];
     List<ScatterSpot> scatterSpots = [];
     discList.forEach((item) => scatterSpots.add(ScatterSpot(item.turn_plus_fade, item.speed.nullToDouble)));
+    return scatterSpots;
+  }
+
+  List<ScatterSpot> updateScatterSpotsOnDXAxis(GraphModel graphModel) {
+    if (graphModel.graphSpots.isEmpty) return graphModel.graphSpots;
+    const minX = -5.0;
+    final maxX = graphModel.maxX > 6.0 ? graphModel.maxX : 6.0;
+    List<ScatterSpot> scatterSpots = [];
+    graphModel.graphSpots.forEach((spot) => scatterSpots.add(ScatterSpot(maxX + minX - spot.x, spot.y)));
     return scatterSpots;
   }
 }

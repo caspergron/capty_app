@@ -15,7 +15,6 @@ import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/club/components/club_members_sheet.dart';
 import 'package:app/features/club/components/club_settings_dialog.dart';
 import 'package:app/features/club/units/sell_disc_list.dart';
 import 'package:app/features/club/units/upcoming_events_list.dart';
@@ -23,8 +22,6 @@ import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/home/components/joining_clubs_sheet.dart';
 import 'package:app/features/landing/landing_screen.dart';
 import 'package:app/features/landing/landing_view_model.dart';
-import 'package:app/libraries/flush_popup.dart';
-import 'package:app/libraries/launchers.dart';
 import 'package:app/models/club/club.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
@@ -132,6 +129,7 @@ class _ClubScreenState extends State<ClubScreen> {
     if (_modelData.loader.initial) return const SizedBox.shrink();
     if (_modelData.clubs.isEmpty || _modelData.club.id == null) return _NoClubView();
     var club = _modelData.club;
+    var caretRight = SvgImage(image: Assets.svg1.caret_right, color: orange, height: 16);
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -149,44 +147,41 @@ class _ClubScreenState extends State<ClubScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () => club.totalMember.nullToInt < 1 ? null : clubMembersSheet(club: _modelData.club),
-                child: Row(
-                  children: [
-                    SvgImage(image: Assets.svg1.users, height: 20, color: lightBlue),
-                    const SizedBox(width: 06),
-                    Expanded(child: Text('members'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
-                    const SizedBox(width: 06),
-                    Text(club.totalMember.formatInt, style: TextStyles.text14_700.copyWith(color: lightBlue))
-                  ],
-                ),
+              Row(
+                children: [
+                  SvgImage(image: Assets.svg1.users, height: 20, color: lightBlue),
+                  const SizedBox(width: 06),
+                  Expanded(child: Text('members'.recast.firstLetterCapital, style: TextStyles.text13_600.copyWith(color: lightBlue))),
+                  const SizedBox(width: 06),
+                  Text(
+                    club.totalMember.nullToInt > 0 ? '${'view_members'.recast.toUpper} (${club.totalMember.formatInt})' : 'n/a'.recast,
+                    textAlign: TextAlign.right,
+                    style: TextStyles.text14_700.copyWith(color: orange),
+                  ),
+                  const SizedBox(width: 02),
+                  Padding(padding: const EdgeInsets.only(top: 2), child: caretRight),
+                ],
               ),
               const SizedBox(height: 14),
               Row(
                 children: [
                   SvgImage(image: Assets.svg1.comment, height: 20, color: lightBlue),
                   const SizedBox(width: 06),
-                  Expanded(child: Text('communicate'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
+                  Expanded(child: Text('communicate'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue))),
                   const SizedBox(width: 06),
-                  if (club.whatsapp.toKey.isNotEmpty || club.messenger.toKey.isNotEmpty || club.wechat.toKey.isNotEmpty) ...[
-                    if (club.whatsapp != null)
-                      InkWell(
-                        onTap: () => _launchUrl(club.whatsapp),
-                        child: SvgImage(image: Assets.svg1.whatsapp, height: 20, color: lightBlue),
-                      ),
-                    if (club.messenger != null) const SizedBox(width: 08),
-                    if (club.messenger != null)
-                      InkWell(
-                        onTap: () => _launchUrl(club.messenger),
-                        child: SvgImage(image: Assets.svg1.messenger, height: 20, color: lightBlue),
-                      ),
-                    if (club.wechat != null) const SizedBox(width: 08),
-                    if (club.wechat != null)
-                      InkWell(
-                        onTap: () => _launchUrl(club.wechat),
-                        child: SvgImage(image: Assets.svg1.chat_circle, height: 20, color: lightBlue),
-                      ),
-                  ] else
+                  if (!club.socialLink.toKey.isNotEmpty)
+                    Row(
+                      children: [
+                        Text(
+                          club.totalMember.nullToInt > 0 ? 'open_channel'.recast.toUpper : 'n/a'.recast,
+                          textAlign: TextAlign.right,
+                          style: TextStyles.text14_700.copyWith(color: orange),
+                        ),
+                        const SizedBox(width: 02),
+                        Padding(padding: const EdgeInsets.only(top: 2), child: caretRight),
+                      ],
+                    )
+                  else
                     Text('n/a'.recast, style: TextStyles.text14_700.copyWith(color: lightBlue))
                 ],
               ),
@@ -195,7 +190,7 @@ class _ClubScreenState extends State<ClubScreen> {
                 children: [
                   SvgImage(image: Assets.svg1.home, height: 20, color: lightBlue),
                   const SizedBox(width: 06),
-                  Expanded(child: Text('home_course'.recast, style: TextStyles.text12_600.copyWith(color: lightBlue))),
+                  Expanded(child: Text('home_course'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue))),
                   const SizedBox(width: 06),
                   Text(club.homeCourse?.name ?? 'n/a'.recast, style: TextStyles.text14_700.copyWith(color: lightBlue))
                 ],
@@ -267,11 +262,6 @@ class _ClubScreenState extends State<ClubScreen> {
     var context = navigatorKey.currentState!.context;
     LandingScreen.landingKey.currentState?.changeTab(4);
     Provider.of<LandingViewModel>(context, listen: false).updateView(4);
-  }
-
-  void _launchUrl(String? url) {
-    if (url == null) return FlushPopup.onInfo(message: 'url_not_found_please_try_again_later'.recast);
-    sl<Launchers>().launchInBrowser(url: url);
   }
 }
 

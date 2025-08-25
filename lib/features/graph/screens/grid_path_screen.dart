@@ -20,8 +20,9 @@ const _STRAIT_LINE = FlLine(color: primary, strokeWidth: 0.8);
 var _DOT_PAINTER = FlDotCirclePainter(radius: 8, color: primary);
 
 class GridPathScreen extends StatefulWidget {
+  final String name;
   final List<UserDisc> discs;
-  const GridPathScreen({this.discs = const []});
+  const GridPathScreen({this.discs = const [], this.name = ''});
 
   @override
   State<GridPathScreen> createState() => _GridPathScreenState();
@@ -59,7 +60,7 @@ class _GridPathScreenState extends State<GridPathScreen> {
       appBar: AppBar(
         centerTitle: true,
         leading: const BackMenu(),
-        title: Text('your_discs'.recast),
+        title: Text(widget.name.isEmpty ? 'grid_view_of_your_discs' : '${'grid_view_of'.recast} ${widget.name}'),
         automaticallyImplyLeading: false,
       ),
       body: Container(
@@ -87,7 +88,6 @@ class _GridPathScreenState extends State<GridPathScreen> {
   }
 
   ScatterChartData get _scatterChartData {
-    // _modelData.graph.graphSpots.forEach((item) => print('y: ${item.y.toInt()}, x: ${item.x.toInt()}'));
     return ScatterChartData(
       minX: -5,
       maxX: _modelData.graph.maxX > 6 ? _modelData.graph.maxX : 6,
@@ -97,8 +97,9 @@ class _GridPathScreenState extends State<GridPathScreen> {
       scatterTouchData: _scatterTouchData,
       scatterSpots: _modelData.graph.graphSpots.map((spot) => spot.copyWith(dotPainter: _DOT_PAINTER)).toList(),
       borderData: FlBorderData(show: true, border: Border.all(color: primary, width: 0.4)),
-      clipData: const FlClipData(top: true, bottom: true, left: true, right: true),
+      clipData: const FlClipData(top: false, bottom: false, left: false, right: false),
       gridData: FlGridData(getDrawingHorizontalLine: (v) => _STRAIT_LINE, getDrawingVerticalLine: (v) => _STRAIT_LINE),
+      showingTooltipIndicators: List.generate(_modelData.graph.graphSpots.length, (index) => index),
     );
   }
 
@@ -116,9 +117,11 @@ class _GridPathScreenState extends State<GridPathScreen> {
   // SideTitles get _bottomTitles => SideTitles(getTitlesWidget: _bottomTitleWidgets, showTitles: true, interval: 1, reservedSize: 24);
 
   Widget _topTitleWidgets(double value, TitleMeta meta) {
+    final maxX = _modelData.graph.maxX > 6 ? _modelData.graph.maxX : 6;
+    final reversedValue = maxX + (-5) - value;
     var style = TextStyles.text13_600.copyWith(color: primary);
     var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
-    return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(value.formatDouble, style: style));
+    return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(reversedValue.formatDouble, style: style));
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta) {
@@ -135,14 +138,15 @@ class _GridPathScreenState extends State<GridPathScreen> {
 
   ScatterTouchData get _scatterTouchData {
     return ScatterTouchData(
-      enabled: true,
+      enabled: false,
       handleBuiltInTouches: true,
       touchTooltipData: ScatterTouchTooltipData(
         tooltipPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 04),
         getTooltipItems: (scatterSpot) {
-          var disc = _modelData.findDiscItemBySpotData(scatterSpot);
-          var style = const TextStyle(color: white, fontWeight: w600);
-          return ScatterTooltipItem(disc?.parentDisc?.name ?? '', textStyle: style);
+          var scatterSpotIndex = _modelData.findScattedIndex(scatterSpot);
+          var disc = scatterSpotIndex < 0 ? UserDisc() : _modelData.discs[scatterSpotIndex];
+          var style = const TextStyle(color: white, fontWeight: w600, height: 1);
+          return ScatterTooltipItem(disc.parentDisc?.name ?? '', textStyle: style);
         },
       ),
       touchCallback: (event, response) {},

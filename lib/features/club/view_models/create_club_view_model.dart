@@ -52,6 +52,12 @@ class CreateClubViewModel with ChangeNotifier {
     notifyListeners();
   }*/
 
+  Future<void> onCameraMove(Coordinates position) async {
+    coordinates = position;
+    notifyListeners();
+    await _fetchNearbyCourses();
+  }
+
   Future<void> _fetchNearbyCourses() async {
     loader = Loader(initial: false, common: false);
     notifyListeners();

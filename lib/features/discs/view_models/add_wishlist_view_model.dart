@@ -10,6 +10,7 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/features/discs/components/added_to_wishlist_dialog.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
 import 'package:app/models/disc/parent_disc.dart';
+import 'package:app/models/disc/wishlist.dart';
 import 'package:app/repository/disc_repo.dart';
 
 class AddWishlistViewModel with ChangeNotifier {
@@ -50,6 +51,17 @@ class AddWishlistViewModel with ChangeNotifier {
     await Future.delayed(const Duration(milliseconds: 1500));
     backToPrevious();
     notifyListeners();
+  }
+
+  Future<void> onUpdateAndAddWishList(Wishlist wishlistItem) async {
+    unawaited(addedToWishlistDialog());
+    var context = navigatorKey.currentState!.context;
+    unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
+    await Future.delayed(const Duration(milliseconds: 1500));
+    var index = discList.indexWhere((element) => element.id == wishlistItem.disc?.id);
+    if (index >= 0) discList[index].wishlistId = 1;
+    notifyListeners();
+    backToPrevious();
   }
 
   Future<void> onRemoveFromWishlist(int wishlistId, int index) async {

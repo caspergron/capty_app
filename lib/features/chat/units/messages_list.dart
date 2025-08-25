@@ -84,10 +84,9 @@ class MessagesList extends StatelessWidget {
   Widget _messageItemCard(BuildContext context, int index) {
     var item = messages[index];
     var isMe = item.senderId == sender.id;
-    // print('senderId: ${item.senderId} -> sender: ${sender.id}');
     var isDateMessage = _isDateMessage(index);
     var isShowTime = _isShowTime(index);
-    var time = Formatters.formatTime('${item.sendTime}');
+    var time = Formatters.formatTime(item.sendTime);
     return Container(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       margin: EdgeInsets.only(bottom: index == messages.length - 1 ? 20 : (!isShowTime ? 6 : 16)),
@@ -97,7 +96,7 @@ class MessagesList extends StatelessWidget {
           if (index != 0 && isDateMessage) const SizedBox(height: 10),
           if (isDateMessage) _messageDateInfo(item),
           if (isDateMessage) const SizedBox(height: 16),
-          if (item.sales_ad_info != null) _DiscCard(salesAd: item.sales_ad_info!, isMe: isMe),
+          if (item.sales_ad_info != null || item.salesAd != null) _DiscCard(salesAd: item.sales_ad_info ?? item.salesAd!, isMe: isMe),
           Container(
             padding: const EdgeInsets.all(10),
             decoration: _boxDecoration(index, isMe),

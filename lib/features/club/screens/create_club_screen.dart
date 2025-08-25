@@ -23,7 +23,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/linear_progressbar.dart';
-import 'package:app/widgets/library/map_coordinates_view.dart';
+import 'package:app/widgets/library/map_address_picker.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 
 class CreateClubScreen extends StatefulWidget {
@@ -35,11 +35,9 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
   var _viewModel = CreateClubViewModel();
   var _modelData = CreateClubViewModel();
   var _name = TextEditingController();
-  var _whatsappLink = TextEditingController();
-  var _wechatLink = TextEditingController();
-  var _facebookLink = TextEditingController();
+  var _socialLink = TextEditingController();
   var _description = TextEditingController();
-  var _focusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode(), FocusNode()];
+  var _focusNodes = [FocusNode(), FocusNode(), FocusNode()];
 
   @override
   void initState() {
@@ -128,7 +126,8 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
           height: 35.height,
           width: double.infinity,
           decoration: BoxDecoration(border: Border.all(color: white), borderRadius: BorderRadius.circular(08)),
-          child: MapCoordinatesView(coordinates: _modelData.coordinates, showMarker: true),
+          // child: MapCoordinatesView(coordinates: _modelData.coordinates, showMarker: true),
+          child: MapAddressPicker(coordinates: _modelData.coordinates, onMoveCamera: _viewModel.onCameraMove, zoomEnabled: true),
         ),
       const SizedBox(height: 20),
       if (_modelData.courses.isNotEmpty) Text('nearby_courses_within_50_km'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
@@ -155,40 +154,16 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
 
   List<Widget> get _step2View {
     return [
-      Text('whatsapp_link'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
+      Text('communication_channel_link'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
       const SizedBox(height: 04),
       InputField(
-        controller: _whatsappLink,
+        controller: _socialLink,
         hintText: '${'ex'.recast}: https://wa.me/1234567890',
         focusNode: _focusNodes[1],
         enabledBorder: skyBlue,
         focusedBorder: mediumBlue,
         keyboardType: TextInputType.url,
         onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[2]),
-      ),
-      const SizedBox(height: 16),
-      Text('we_chat_link'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
-      const SizedBox(height: 04),
-      InputField(
-        controller: _wechatLink,
-        hintText: '${'ex'.recast}: weixin://dl/chat?wxid=yourid',
-        focusNode: _focusNodes[2],
-        enabledBorder: skyBlue,
-        focusedBorder: mediumBlue,
-        keyboardType: TextInputType.url,
-        onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[3]),
-      ),
-      const SizedBox(height: 16),
-      Text('facebook_group_link'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
-      const SizedBox(height: 04),
-      InputField(
-        controller: _facebookLink,
-        hintText: '${'ex'.recast}: https://facebook.com/groups/yourgroup',
-        focusNode: _focusNodes[3],
-        enabledBorder: skyBlue,
-        focusedBorder: mediumBlue,
-        keyboardType: TextInputType.url,
-        onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[4]),
       ),
       const SizedBox(height: 16),
       Text('club_description'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
@@ -200,7 +175,7 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
         counterText: '',
         controller: _description,
         hintText: 'type_here'.recast,
-        focusNode: _focusNodes[4],
+        focusNode: _focusNodes[2],
         enabledBorder: skyBlue,
         focusedBorder: mediumBlue,
         onChanged: (v) => setState(() {}),
@@ -249,28 +224,14 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
       if (_modelData.homeCourse.id == null) return FlushPopup.onWarning(message: 'please_select_a_home_course'.recast);
       setState(() => _modelData.step = 2);
     } else {
-      if (_whatsappLink.text.isNotEmpty) {
-        var invalidWhatsApp = sl<Validators>().validateUrl(_whatsappLink.text, 'whatsapp');
-        if (invalidWhatsApp != null) return FlushPopup.onWarning(message: invalidWhatsApp);
+      if (_socialLink.text.isNotEmpty) {
+        var invalidLink = sl<Validators>().validateSocialLink(_socialLink.text);
+        if (invalidLink != null) return FlushPopup.onWarning(message: invalidLink);
       }
-
-      if (_wechatLink.text.isNotEmpty) {
-        var invalidWechat = sl<Validators>().validateUrl(_wechatLink.text, 'wechat');
-        if (invalidWechat != null) return FlushPopup.onWarning(message: invalidWechat);
-      }
-
-      if (_facebookLink.text.isNotEmpty) {
-        var invalidFacebook = sl<Validators>().validateUrl(_facebookLink.text, 'facebook_group');
-        if (invalidFacebook != null) return FlushPopup.onWarning(message: invalidFacebook);
-      }
-
-      // if (_description.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_description_of_your_club'.recast);
       var body = {
         'name': _name.text,
         'description': _description.text,
-        'whatsapp_group_url': _whatsappLink.text,
-        'facebook_group_url': _facebookLink.text,
-        'wechat_group_url': _wechatLink.text,
+        'social_link': _socialLink.text,
         'country_id': UserPreferences.user.countryId,
       };
       _modelData.onCreateClub(body);

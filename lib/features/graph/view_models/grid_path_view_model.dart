@@ -26,7 +26,7 @@ class GridPathViewModel with ChangeNotifier {
   }
 
   void disposeViewModel() {
-    discs.clear();
+    discs = [];
     loader = DEFAULT_LOADER;
     graph = GraphModel();
   }
@@ -37,8 +37,14 @@ class GridPathViewModel with ChangeNotifier {
     Map<String, double> maxValues = sl<GraphHelper>().getMaxValuesForGrid(graph.graphSpots);
     graph.maxX = maxValues['max_x']!;
     graph.maxY = maxValues['max_y']!;
+    graph.graphSpots = sl<GraphHelper>().updateScatterSpotsOnDXAxis(graph);
     loader = Loader(initial: false, common: false);
     notifyListeners();
+  }
+
+  int findScattedIndex(ScatterSpot spot) {
+    if (graph.graphSpots.isEmpty) return -1;
+    return graph.graphSpots.indexWhere((item) => item.x == spot.x && item.y == spot.y);
   }
 
   UserDisc? findDiscItemBySpotData(ScatterSpot spot) {

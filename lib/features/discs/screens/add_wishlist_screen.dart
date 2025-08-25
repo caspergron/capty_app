@@ -14,6 +14,7 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/discs/components/add_to_wishlist_dialog.dart';
+import 'package:app/features/discs/components/edit_wishlist_dialog.dart';
 import 'package:app/features/discs/view_models/add_wishlist_view_model.dart';
 import 'package:app/features/marketplace/units/new_disc_list.dart';
 import 'package:app/models/disc/parent_disc.dart';
@@ -176,8 +177,9 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
     unawaited(addToWishlistDialog(
       wishlist: wishlist,
       added: added,
-      onAdd: () => _viewModel.onAddedToWishlist(item, index),
+      // onAdd: () => _viewModel.onAddedToWishlist(item, index),
       onRemove: () => _viewModel.onRemoveFromWishlist(item.wishlistId!, index),
+      onEdit: () => editWishlistDisc(wishlist: wishlist, isUpdateAndAdd: true, onSave: (w, s) => _viewModel.onUpdateAndAddWishList(w)),
     ));
   }
 

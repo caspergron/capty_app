@@ -185,8 +185,8 @@ class _DialogView extends StatelessWidget {
                       radius: 04,
                       height: 38,
                       background: skyBlue,
-                      onTap: _onEditDetails,
-                      label: 'update_disc'.recast.toUpper,
+                      onTap: backToPrevious,
+                      label: 'cancel'.recast.toUpper,
                       textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
                     ),
                   ),
@@ -195,7 +195,8 @@ class _DialogView extends StatelessWidget {
                     child: ElevateButton(
                       radius: 04,
                       height: 38,
-                      onTap: _onAddToWishlist,
+                      onTap: _onEditDetails,
+                      // onTap: _onAddToWishlist,
                       label: 'add_to_wishlist'.recast.toUpper,
                       textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
                     ),
@@ -215,11 +216,11 @@ class _DialogView extends StatelessWidget {
     );
   }
 
-  Future<void> _onAddToWishlist() async {
+  /*Future<void> _onAddToWishlist() async {
     if (onAdd == null) return;
     onAdd!();
     backToPrevious();
-  }
+  }*/
 
   Future<void> _onRemoveFromWishlist() async {
     if (onRemove == null) return;

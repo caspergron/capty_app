@@ -130,6 +130,8 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
   }*/
 
   Widget _screenView(BuildContext context) {
+    var bagDiscs = _modelData.discBag.id == _All_BAG.id ? _modelData.allDiscs : _modelData.discBag.userDiscs ?? <UserDisc>[];
+    var bagName = _modelData.discBag.id == _All_BAG.id ? 'all_bag_discs'.recast : _modelData.discBag.bag_menu_display_name;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -146,12 +148,12 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
                 onTap: Routes.user.flight_path(discs: _modelData.selectedDiscs).push,
               ),*/
             // if (_tabIndex == 0 && _modelData.selectedDiscs.isNotEmpty) const SizedBox(width: 10),
-            if (_tabIndex == 0 && _modelData.selectedDiscs.isNotEmpty)
+            if (_tabIndex == 0 && bagDiscs.isNotEmpty)
               IconBox(
                 size: 28,
                 background: primary,
                 icon: SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19),
-                onTap: Routes.user.grid_path(discs: _modelData.selectedDiscs).push,
+                onTap: Routes.user.grid_path(discs: bagDiscs, name: bagName).push,
               ),
             SizedBox(width: Dimensions.screen_padding),
           ],
@@ -209,18 +211,18 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
       discList: discList,
       selectedItems: _modelData.selectedDiscs,
       gap: Dimensions.screen_padding,
-      onSelect: _onSelectYourDisc,
+      // onSelect: _onSelectYourDisc,
       onAdd: Routes.user.search_disc(index: 0).push,
       onDisc: (item, index) => _viewModel.onDiscItem(item, index - 1),
     );
   }
 
-  void _onSelectYourDisc(UserDisc item, int itemIndex) {
+  /*void _onSelectYourDisc(UserDisc item, int itemIndex) {
     var selectedItems = _modelData.selectedDiscs;
     var index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
     index < 0 ? _modelData.selectedDiscs.add(item) : _modelData.selectedDiscs.removeAt(index);
     setState(() {});
-  }
+  }*/
 
   Widget get _wishlistView {
     var wishlistDiscs = _modelData.wishlistDiscs;

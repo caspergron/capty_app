@@ -12,8 +12,9 @@ import 'package:app/utils/assets.dart';
 
 class MapAddressPicker extends StatefulWidget {
   final Coordinates coordinates;
+  final bool zoomEnabled;
   final Function(Coordinates) onMoveCamera;
-  const MapAddressPicker({required this.coordinates, required this.onMoveCamera});
+  const MapAddressPicker({required this.coordinates, required this.onMoveCamera, this.zoomEnabled = false});
 
   @override
   State<MapAddressPicker> createState() => _MapAddressPickerState();
@@ -58,7 +59,7 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
   Widget build(BuildContext context) {
     return GoogleMap(
       markers: _markers,
-      zoomControlsEnabled: false,
+      zoomControlsEnabled: widget.zoomEnabled,
       onMapCreated: _initializeMapController,
       initialCameraPosition: CameraPosition(target: LatLng(_coordinates.lat!, _coordinates.lng!), zoom: 12),
       onCameraMove: _onCameraMove,

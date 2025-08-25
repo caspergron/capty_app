@@ -45,7 +45,6 @@ class MarketplaceViewModel with ChangeNotifier {
     unawaited(fetchTags());
     unawaited(fetchFavouriteDiscs(isInit: true));
     unawaited(fetchSalesAdDiscs());
-    await generateFilterUrl(isLoader: true);
   }
 
   void updateUi() => notifyListeners();
@@ -77,6 +76,7 @@ class MarketplaceViewModel with ChangeNotifier {
     if (tagResponse.isNotEmpty) tags = tagResponse;
     if (tags.isNotEmpty) tag = tags.first;
     notifyListeners();
+    await generateFilterUrl(isLoader: true);
   }
 
   Future<void> fetchSalesAdDiscs({bool isPaginate = false}) async {

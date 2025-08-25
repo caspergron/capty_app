@@ -100,9 +100,10 @@ class _PgdaDiscsScreenState extends State<PgdaDiscsScreen> {
     addToWishlistDialog(
       wishlist: wishlist,
       added: added,
-      onAdd: () => _viewModel.onAddedToWishlist(item, index),
       onRemove: () => _viewModel.onRemoveFromWishlist(item, index),
       onEdit: () => editWishlistDisc(wishlist: wishlist, isUpdateAndAdd: true, onSave: (w, s) => _viewModel.onUpdateAndAddWishList(w)),
+      // onAdd: () => _viewModel.onAddedToWishlist(item, index),
+      // onEdit: () => editWishlistDisc(wishlist: wishlist, isUpdateAndAdd: true, onSave: (w, s) => _viewModel.onUpdateAndAddWishList(w)),
     );
   }
 }

@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -19,8 +23,6 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ClubSettingsScreen extends StatefulWidget {
   final Club club;
@@ -74,9 +76,7 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
 
   Widget _screenView(BuildContext context) {
     var courses = _modelData.club.courses ?? [];
-    var wechat = _modelData.club.wechat;
-    var whatsapp = _modelData.club.whatsapp;
-    var messenger = _modelData.club.messenger;
+    var socialLink = _modelData.club.socialLink;
     var titleStyle = TextStyles.text14_600.copyWith(color: primary, height: 1, fontSize: 15);
     return ListView(
       clipBehavior: Clip.antiAlias,
@@ -189,52 +189,14 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
                   const SizedBox(width: 08),
                   Expanded(
                     child: InkWell(
-                      onTap: () => whatsapp == null ? null : sl<Launchers>().launchInBrowser(url: whatsapp),
+                      onTap: () => socialLink == null ? null : sl<Launchers>().launchInBrowser(url: socialLink),
                       child: Text(
-                        whatsapp ?? 'no_link_available_yet'.recast,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyles.text14_400.copyWith(color: primary, decoration: wechat == null ? null : TextDecoration.underline),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Text('we_chat_link'.recast, style: TextStyles.text14_500.copyWith(color: primary, height: 1)),
-              Row(
-                children: [
-                  const Text('🔗', style: TextStyle(fontSize: 15)),
-                  const SizedBox(width: 08),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () => wechat == null ? null : sl<Launchers>().launchInBrowser(url: wechat),
-                      child: Text(
-                        wechat ?? 'no_link_available_yet'.recast,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyles.text14_400.copyWith(color: primary, decoration: wechat == null ? null : TextDecoration.underline),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Text('facebook_group_link'.recast, style: TextStyles.text14_500.copyWith(color: primary, height: 1)),
-              Row(
-                children: [
-                  const Text('🔗', style: TextStyle(fontSize: 15)),
-                  const SizedBox(width: 08),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () => messenger == null ? null : sl<Launchers>().launchInBrowser(url: messenger),
-                      child: Text(
-                        messenger ?? 'no_link_available_yet'.recast,
+                        socialLink ?? 'no_link_available_yet'.recast,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyles.text14_400.copyWith(
                           color: primary,
-                          decoration: messenger == null ? null : TextDecoration.underline,
+                          decoration: socialLink == null ? null : TextDecoration.underline,
                         ),
                       ),
                     ),

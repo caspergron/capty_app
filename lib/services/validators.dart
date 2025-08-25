@@ -40,6 +40,14 @@ class Validators {
     return null;
   }
 
+  String? validateSocialLink(String data) {
+    var message1 = 'please_write_the_social_link_link_of_your_club';
+    var message2 = 'please_write_a_valid_url_for_your_club';
+    if (data.isEmpty) return message1.recast;
+    if (!sl<RegExps>().urlRegExp.hasMatch(data)) return message2.recast;
+    return null;
+  }
+
   String? validateUrl(String data, String label) {
     var message1 = 'please_write_the_${label}_link_of_your_club';
     var message2 = 'please_write_a_valid_url_for_$label';

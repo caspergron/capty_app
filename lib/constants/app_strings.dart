@@ -1049,6 +1049,15 @@ const APP_STRINGS = {
   'no_course_found_around_50km_on_your_location_please_try_Again_later':
       'No course found around 50 km on your location. Please try again later.',
   'this_box_will_show_the_seller_which_discs_you_are_interested_in': 'This box will show the seller which discs you are interested in.',
+  'view_members': 'View Members',
+  'open_channel': 'Open Channel',
+  'social_link': 'Social Link',
+  'please_write_the_social_link_link_of_your_club': 'Please write the social link link of your club',
+  'please_write_a_valid_url_for_your_club': 'Please write a valid url for your club',
+  'grid_view_of_your_discs': 'Grid view of your discs',
+  'grid_view_of': 'Grid view of',
+  'all_bag_discs': 'All Bag Discs',
+  'communication_channel_link': 'Communication Channel Link',
   '': ''
 };
 

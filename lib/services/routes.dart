@@ -126,7 +126,7 @@ class _UserRoutes {
   Widget tournament_discs({required User player}) => TournamentBagScreen(player: player);
   Widget player_sale_ads({required User player}) => PlayerSalesAdScreen(player: player);
 
-  Widget grid_path({required List<UserDisc> discs}) => GridPathScreen(discs: discs);
+  Widget grid_path({required List<UserDisc> discs, String name = ''}) => GridPathScreen(discs: discs, name: name);
   Widget flight_path({required List<UserDisc> discs}) => FlightPathScreen(discs: discs);
 }
 
