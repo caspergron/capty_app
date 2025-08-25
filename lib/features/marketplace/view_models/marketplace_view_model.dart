@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -23,6 +21,7 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/app_analytics.dart';
+import 'package:flutter/cupertino.dart';
 
 class MarketplaceViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -45,7 +44,6 @@ class MarketplaceViewModel with ChangeNotifier {
     unawaited(fetchTags());
     unawaited(fetchFavouriteDiscs(isInit: true));
     unawaited(fetchSalesAdDiscs());
-    await generateFilterUrl(isLoader: true);
   }
 
   void updateUi() => notifyListeners();
@@ -77,6 +75,7 @@ class MarketplaceViewModel with ChangeNotifier {
     if (tagResponse.isNotEmpty) tags = tagResponse;
     if (tags.isNotEmpty) tag = tags.first;
     notifyListeners();
+    await generateFilterUrl(isLoader: true);
   }
 
   Future<void> fetchSalesAdDiscs({bool isPaginate = false}) async {

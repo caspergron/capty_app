@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/features/club/components/club_created_dialog.dart';
@@ -13,6 +11,7 @@ import 'package:app/models/system/loader.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/club_repo.dart';
 import 'package:app/repository/google_repo.dart';
+import 'package:flutter/foundation.dart';
 
 class CreateClubViewModel with ChangeNotifier {
   var step = 1;
@@ -51,6 +50,12 @@ class CreateClubViewModel with ChangeNotifier {
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }*/
+
+  Future<void> onCameraMove(Coordinates position) async {
+    coordinates = position;
+    notifyListeners();
+    await _fetchNearbyCourses();
+  }
 
   Future<void> _fetchNearbyCourses() async {
     loader = Loader(initial: false, common: false);

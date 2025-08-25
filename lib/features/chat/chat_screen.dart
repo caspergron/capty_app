@@ -9,6 +9,7 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/chat/chat_view_model.dart';
 import 'package:app/features/chat/units/chat_suggestions_list.dart';
+import 'package:app/features/chat/units/disc_info_chat_box.dart';
 import 'package:app/features/chat/units/document_selection.dart';
 import 'package:app/features/chat/units/marketplace_disk_info.dart';
 import 'package:app/features/chat/units/messages_list.dart';
@@ -81,7 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
         height: SizeConfig.height,
         decoration: BoxDecoration(gradient: BACKGROUND_GRADIENT),
         alignment: _modelData.messages.isNotEmpty ? Alignment.bottomCenter : Alignment.topCenter,
-        child: Stack(children: [_screenView(context), if (_modelData.loader) const ScreenLoader()]),
+        child: Stack(children: [_screenView(context), if (_modelData.loader.loader) const ScreenLoader()]),
       ),
     );
   }
@@ -136,7 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
       clipBehavior: Clip.antiAlias,
       alignment: _modelData.messages.isNotEmpty ? Alignment.bottomCenter : Alignment.topCenter,
       children: [
-        if (!_modelData.loader)
+        if (!_modelData.loader.loader)
           ListView(
             shrinkWrap: _modelData.messages.isEmpty ? false : true,
             clipBehavior: Clip.antiAlias,
@@ -160,6 +161,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _chatInputArea(BuildContext context) {
+    var salesAd = _modelData.receiver.salesAd;
     var isContent = _modelData.isUploadType || _modelData.images.isNotEmpty;
     var radius = const Radius.circular(08);
     var top = isContent ? Radius.zero : radius;
@@ -171,7 +173,9 @@ class _ChatScreenState extends State<ChatScreen> {
       children: [
         if (_modelData.messages.isEmpty) ChatSuggestionsList(suggestions: CHAT_SUGGESTIONS, onTap: _onSuggestion),
         const SizedBox(height: 12),
-        // DiscInfoChatBox(salesAd: Provider.of<MarketplaceViewModel>(context).salesAdDiscs.first),
+        if (!_modelData.loader.initial && salesAd != null)
+          DiscInfoChatBox(salesAd: salesAd, onClose: () => setState(() => _modelData.receiver.salesAd = null)),
+        if (!_modelData.loader.initial && salesAd != null) const SizedBox(height: 08),
         DocumentSelection(
           images: _modelData.images,
           imageLoadCount: _modelData.imageLoader,

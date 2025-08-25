@@ -1,5 +1,3 @@
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -12,6 +10,7 @@ import 'package:app/models/chat/chat_message.dart';
 import 'package:app/models/chat/chats_api.dart';
 import 'package:app/models/chat/conversation_api.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:provider/provider.dart';
 
 class ChatRepository {
   Future<bool> setOnlineStatus({required bool status}) async {
@@ -65,7 +64,7 @@ class ChatRepository {
     return messages;
   }
 
-  Future<ChatMessage?> sendChatMessage(Map<String, String> body, List<ChatContent> contents, ChatMessage chat) async {
+  Future<ChatMessage?> sendChatMessage(Map<String, dynamic> body, List<ChatContent> contents, ChatMessage chat) async {
     var endpoint = ApiUrl.user.sendMessage;
     var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;

@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
@@ -18,6 +16,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
+import 'package:flutter/material.dart';
 
 Future<void> editClubLinkSheet({required Club club, Function(Club)? onUpdate}) async {
   var context = navigatorKey.currentState!.context;
@@ -44,26 +43,20 @@ class _BottomSheetView extends StatefulWidget {
 
 class _BottomSheetViewState extends State<_BottomSheetView> {
   var _loader = false;
-  var _whatsappLink = TextEditingController();
-  var _wechatLink = TextEditingController();
-  var _facebookLink = TextEditingController();
-  var _focusNodes = [FocusNode(), FocusNode(), FocusNode()];
+  var _socialLink = TextEditingController();
+  var _focusNode = FocusNode();
 
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('edit-club-link-sheet');
-    _wechatLink.text = widget.club.wechat ?? '';
-    _whatsappLink.text = widget.club.whatsapp ?? '';
-    _facebookLink.text = widget.club.messenger ?? '';
-    _focusNodes.forEach((item) => item.addListener(() => setState(() {})));
+    _socialLink.text = widget.club.socialLink ?? '';
+    _focusNode.addListener(() => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
-    _wechatLink.dispose();
-    _whatsappLink.dispose();
-    _facebookLink.dispose();
+    _socialLink.dispose();
     super.dispose();
   }
 
@@ -109,40 +102,15 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   List<Widget> get _screenContents {
     return [
-      Text('whatsapp_link'.recast.allFirstLetterCapital, style: TextStyles.text14_500.copyWith(color: lightBlue)),
+      Text('social_link'.recast.allFirstLetterCapital, style: TextStyles.text14_500.copyWith(color: lightBlue)),
       const SizedBox(height: 06),
       InputField(
-        controller: _whatsappLink,
+        controller: _socialLink,
         hintText: '${'ex'.recast}: https://wa.me/1234567890',
-        focusNode: _focusNodes[0],
+        focusNode: _focusNode,
         enabledBorder: skyBlue,
         focusedBorder: mediumBlue,
         keyboardType: TextInputType.url,
-        onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[1]),
-      ),
-      const SizedBox(height: 16),
-      Text('we_chat_link'.recast.allFirstLetterCapital, style: TextStyles.text14_500.copyWith(color: lightBlue)),
-      const SizedBox(height: 06),
-      InputField(
-        controller: _wechatLink,
-        hintText: '${'ex'.recast}: weixin://dl/chat?wxid=yourid',
-        focusNode: _focusNodes[1],
-        enabledBorder: skyBlue,
-        focusedBorder: mediumBlue,
-        keyboardType: TextInputType.url,
-        onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[2]),
-      ),
-      const SizedBox(height: 16),
-      Text('facebook_group_link'.recast.allFirstLetterCapital, style: TextStyles.text14_500.copyWith(color: lightBlue)),
-      const SizedBox(height: 06),
-      InputField(
-        controller: _facebookLink,
-        hintText: '${'ex'.recast}: https://facebook.com/groups/yourgroup',
-        focusNode: _focusNodes[2],
-        enabledBorder: skyBlue,
-        focusedBorder: mediumBlue,
-        keyboardType: TextInputType.url,
-        onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[3]),
       ),
       const SizedBox(height: 32),
       ElevateButton(height: 40, radius: 06, onTap: _onUpdate, width: double.infinity, label: 'update_links'.recast.toUpper),
@@ -151,22 +119,8 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   Future<void> _onUpdate() async {
     minimizeKeyboard();
-
-    if (_whatsappLink.text.isNotEmpty) {
-      var invalidWhatsApp = sl<Validators>().validateUrl(_whatsappLink.text, 'whatsapp');
-      if (invalidWhatsApp != null) return FlushPopup.onWarning(message: invalidWhatsApp);
-    }
-
-    if (_wechatLink.text.isNotEmpty) {
-      var invalidWechat = sl<Validators>().validateUrl(_wechatLink.text, 'wechat');
-      if (invalidWechat != null) return FlushPopup.onWarning(message: invalidWechat);
-    }
-
-    if (_facebookLink.text.isNotEmpty) {
-      var invalidFacebook = sl<Validators>().validateUrl(_facebookLink.text, 'facebook_group');
-      if (invalidFacebook != null) return FlushPopup.onWarning(message: invalidFacebook);
-    }
-
+    var invalidLink = sl<Validators>().validateSocialLink(_socialLink.text);
+    if (invalidLink != null) return FlushPopup.onWarning(message: invalidLink);
     setState(() => _loader = true);
     await Future.delayed(const Duration(seconds: 1));
     setState(() => _loader = false);

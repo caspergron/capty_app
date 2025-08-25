@@ -10,9 +10,7 @@ class Club {
   Country? country;
   double? longitude;
   double? latitude;
-  String? whatsapp;
-  String? messenger;
-  String? wechat;
+  String? socialLink;
   double? distance;
   int? totalMember;
   String? location;
@@ -34,9 +32,7 @@ class Club {
     this.country,
     this.longitude,
     this.latitude,
-    this.whatsapp,
-    this.messenger,
-    this.wechat,
+    this.socialLink,
     this.distance,
     this.totalMember,
     this.location,
@@ -54,9 +50,7 @@ class Club {
     country = json['country'] != null ? Country.fromJson(json['country']) : null;
     longitude = json['longitude'] == null ? null : double.parse(json['longitude'].toString());
     latitude = json['latitude'] == null ? null : double.parse(json['latitude'].toString());
-    whatsapp = json['whatsapp_group_url'];
-    messenger = json['facebook_group_url'];
-    whatsapp = json['wechat_group_url'];
+    socialLink = json['social_link'];
     distance = json['distance'] == null ? 0 : double.parse(json['distance'].toString());
     totalMember = json['total_member'];
     location = json['location'];
@@ -77,9 +71,7 @@ class Club {
     if (country != null) map['country'] = country?.toJson();
     map['longitude'] = longitude;
     map['latitude'] = latitude;
-    map['whatsapp_group_url'] = whatsapp;
-    map['facebook_group_url'] = messenger;
-    map['wechat_group_url'] = wechat;
+    map['social_link'] = socialLink;
     map['distance'] = distance;
     map['total_member'] = totalMember;
     map['location'] = location;

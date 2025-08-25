@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:app/components/app_lists/plastics_list.dart';
+import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/components/headers/sheet_header_1.dart';
@@ -22,6 +20,7 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
 
 Future<void> plasticsSheet({required Plastic plastic, required List<Plastic> plastics, required Function(Plastic)? onChanged}) async {
   var context = navigatorKey.currentState!.context;
@@ -139,9 +138,59 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
           ? [const SizedBox(height: 20), _NoPlasticFound(), SizedBox(height: BOTTOM_GAP)]
           : [
               const SizedBox(height: 20),
-              PlasticsList(plastics: widget.plastics, plastic: _plastic, onChanged: (v) => setState(() => _plastic = v)),
+              _PlasticsList(plastics: plastics, plastic: _plastic, onChanged: (v) => setState(() => _plastic = v)),
               SizedBox(height: BOTTOM_GAP),
             ],
+    );
+  }
+}
+
+class _PlasticsList extends StatelessWidget {
+  final Plastic plastic;
+  final List<Plastic> plastics;
+  final Function(Plastic)? onChanged;
+  const _PlasticsList({required this.plastic, this.plastics = const [], this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 08,
+      runSpacing: 08,
+      clipBehavior: Clip.antiAlias,
+      children: List.generate(plastics.length, (index) => _plasticItemCard(context, index)).toList(),
+    );
+  }
+
+  Widget _plasticItemCard(BuildContext context, int index) {
+    var item = plastics[index];
+    var selected = plastic.id != null && plastic.id == item.id;
+    return InkWell(
+      onTap: () => onChanged == null ? null : onChanged!(item),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 06),
+        decoration: BoxDecoration(
+          color: selected ? skyBlue : transparent,
+          border: Border.all(color: lightBlue),
+          borderRadius: BorderRadius.circular(04),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              item.name ?? '',
+              textAlign: TextAlign.start,
+              style: TextStyles.text14_400.copyWith(color: selected ? primary : lightBlue, height: 1.1, fontWeight: selected ? w700 : w400),
+            ),
+            if (selected) const SizedBox(width: 06),
+            if (selected)
+              FadeAnimation(
+                fadeKey: item.name ?? '',
+                duration: DURATION_1000,
+                child: SvgImage(image: Assets.svg1.tick, color: selected ? primary : lightBlue, height: 18),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

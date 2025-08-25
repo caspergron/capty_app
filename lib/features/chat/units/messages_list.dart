@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
 import 'package:app/constants/data_constants.dart';
@@ -21,6 +19,7 @@ import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MessagesList extends StatelessWidget {
   final ChatBuddy sender;
@@ -84,10 +83,9 @@ class MessagesList extends StatelessWidget {
   Widget _messageItemCard(BuildContext context, int index) {
     var item = messages[index];
     var isMe = item.senderId == sender.id;
-    // print('senderId: ${item.senderId} -> sender: ${sender.id}');
     var isDateMessage = _isDateMessage(index);
     var isShowTime = _isShowTime(index);
-    var time = Formatters.formatTime('${item.sendTime}');
+    var time = Formatters.formatTime(item.sendTime);
     return Container(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       margin: EdgeInsets.only(bottom: index == messages.length - 1 ? 20 : (!isShowTime ? 6 : 16)),
@@ -97,7 +95,7 @@ class MessagesList extends StatelessWidget {
           if (index != 0 && isDateMessage) const SizedBox(height: 10),
           if (isDateMessage) _messageDateInfo(item),
           if (isDateMessage) const SizedBox(height: 16),
-          if (item.sales_ad_info != null) _DiscCard(salesAd: item.sales_ad_info!, isMe: isMe),
+          if (item.sales_ad_info != null || item.salesAd != null) _DiscCard(salesAd: item.sales_ad_info ?? item.salesAd!, isMe: isMe),
           Container(
             padding: const EdgeInsets.all(10),
             decoration: _boxDecoration(index, isMe),
