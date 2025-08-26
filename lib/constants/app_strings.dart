@@ -1042,7 +1042,6 @@ const APP_STRINGS = {
   'update_description': 'Update Description',
   'update_links': 'Update Links',
   'update_club_name': 'Update Club Name',
-  // New translations
   'club_courses': 'Club Courses',
   'courses': 'Courses',
   'no_course_found': 'No Course Found',
@@ -1058,6 +1057,7 @@ const APP_STRINGS = {
   'grid_view_of': 'Grid view of',
   'all_bag_discs': 'All Bag Discs',
   'communication_channel_link': 'Communication Channel Link',
+  // New translations
   '': ''
 };
 
