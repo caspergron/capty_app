@@ -173,7 +173,7 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
     var message = '${disc.parentDisc?.name ?? 'this_disc'.recast} ${'already_in'.recast} ${targetBag.name ?? 'this_bag'.recast}';
     if (disc.bagId == targetBag.id) return FlushPopup.onInfo(message: message);
     var bodyParams = {'user_disc_id': disc.id, 'to_bag_id': targetBag.id};
-    _viewModel.onMoveDiscToAnotherBag(bodyParams, targetBag.name ?? '');
+    _viewModel.onMoveDiscToAnotherBag(bodyParams, targetBag.bag_menu_display_name);
   }
 
   Widget get _yourDiscView {

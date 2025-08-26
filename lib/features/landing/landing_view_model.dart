@@ -53,9 +53,8 @@ class LandingViewModel with ChangeNotifier {
   void _checkAppOpenCount() {
     if (ApiStatus.instance.releasePopup) return;
     var count = sl<StorageService>().appOpenCount;
-    /*if (count + 1 < 11) */ liveAppDialog();
+    if (count + 1 < 11) liveAppDialog();
     sl<StorageService>().setAppOpenCount(count + 1);
-    // if (!ApiStatus.instance.betaPopup) unawaited(betaTestingDialog());
   }
 
   void updateView(int value) {
