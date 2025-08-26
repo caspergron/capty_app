@@ -170,6 +170,7 @@ class _SvgIcons3 {
   String circle_putting = '$_SVG_ICONS_3/circle_putting.svg';
   String direction = '$_SVG_ICONS_3/direction.svg';
   String empty_box = '$_SVG_ICONS_3/empty_box.svg';
+  String graph = '$_SVG_ICONS_3/graph.svg';
   // String no_address = '$_SVG_ICONS_3/no_address.svg';
   String no_message = '$_SVG_ICONS_3/no_message.svg';
   String no_notification = '$_SVG_ICONS_3/no_notification.svg';

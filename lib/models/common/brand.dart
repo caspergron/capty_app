@@ -42,6 +42,9 @@ class Brand {
   static List<Brand> brands_by_name(List<Brand> brands, String key) {
     if (brands.isEmpty) return [];
     if (key.isEmpty) return brands;
-    return brands.where((item) => item.name.toKey.startsWith(key.toKey)).toList();
+    var filteredBrands = brands.where((item) => item.name.toKey.contains(key.toKey)).toList();
+    if (filteredBrands.isEmpty) return [];
+    filteredBrands.sort((item1, item2) => item1.name.toKey.compareTo(item2.name.toKey));
+    return filteredBrands;
   }
 }

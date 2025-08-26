@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_icons/favourite.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -15,6 +13,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MarketplaceDiscList extends StatelessWidget {
   final List<SalesAd> discs;
@@ -163,9 +162,9 @@ class MarketplaceDiscList extends StatelessWidget {
                     Container(height: 24, width: 0.5, color: lightBlue),
                     Expanded(child: Center(child: Text('${userDisc?.glide.formatDouble ?? 0}', style: flightDataStyle))),
                     Container(height: 24, width: 0.5, color: lightBlue),
-                    Expanded(child: Center(child: Text('${userDisc?.fade.formatDouble ?? 0}', style: flightDataStyle))),
-                    Container(height: 24, width: 0.5, color: lightBlue),
                     Expanded(child: Center(child: Text('${userDisc?.turn.formatDouble ?? 0}', style: flightDataStyle))),
+                    Container(height: 24, width: 0.5, color: lightBlue),
+                    Expanded(child: Center(child: Text('${userDisc?.fade.formatDouble ?? 0}', style: flightDataStyle))),
                   ],
                 ),
               ),

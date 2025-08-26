@@ -9,8 +9,10 @@ import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
 import 'package:app/themes/text_styles.dart';
+import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
+import 'package:app/widgets/library/svg_image.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -113,7 +115,9 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
                   controller: _tabController,
                   physics: widget.bags.length < 2 ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
                   children: List.generate(_modelData.graphs.length, (i) {
-                    var key = ValueKey<List<ScatterSpot>>(_modelData.graphs[i].graphSpots);
+                    var graph = _modelData.graphs[i];
+                    var key = ValueKey<List<ScatterSpot>>(graph.graphSpots);
+                    if (graph.graphSpots.isEmpty) return _NoGraphDataFound();
                     return ScatterChart(key: key, _scatterChartData(i), duration: _DURATION);
                   }).toList(),
                 ),
@@ -190,6 +194,27 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
         },
       ),
       touchCallback: (event, response) {},
+    );
+  }
+}
+
+class _NoGraphDataFound extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var desc = 'we_could_not_find_any_discs_right_now_please_try_again_later';
+    return Padding(
+      padding: const EdgeInsets.all(40),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: 10.height),
+          SvgImage(image: Assets.svg3.graph, height: 16.height, color: mediumBlue),
+          const SizedBox(height: 18),
+          Text('no_graph_data_found'.recast, textAlign: TextAlign.center, style: TextStyles.text16_600.copyWith(color: primary)),
+          const SizedBox(height: 04),
+          Text(desc.recast, textAlign: TextAlign.center, style: TextStyles.text14_400.copyWith(color: primary)),
+        ],
+      ),
     );
   }
 }
