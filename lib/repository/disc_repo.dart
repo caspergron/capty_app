@@ -9,6 +9,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/libraries/flush_popup.dart';
+import 'package:app/libraries/toasts_popups.dart';
 import 'package:app/models/disc/disc_api.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/disc/parent_disc_category.dart';
@@ -75,7 +76,7 @@ class DiscRepository {
     var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
-    FlushPopup.onInfo(message: 'disc_created_successfully'.recast);
+    ToastPopup.onInfo(message: 'disc_created_successfully'.recast);
     return UserDisc.fromJson(apiResponse.response['data']);
   }
 
