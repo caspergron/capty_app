@@ -10,7 +10,6 @@ import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
-import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
@@ -37,7 +36,7 @@ class UserDiscHorizontalList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 210 + 10,
+      height: 196 + 10,
       child: ListView.builder(
         shrinkWrap: true,
         controller: scrollControl,
@@ -56,7 +55,7 @@ class UserDiscHorizontalList extends StatelessWidget {
     var parentDisc = discs[index].parentDisc;
     var gap = Dimensions.screen_padding;
     var discFeatures = [item.speed ?? 0, item.glide ?? 0, item.turn ?? 0, item.fade ?? 0];
-    var isSelected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
+    // var isSelected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(item),
       child: TweenListItem(
@@ -71,7 +70,7 @@ class UserDiscHorizontalList extends StatelessWidget {
           child: Column(
             children: [
               // const SizedBox(height: 02),
-              Align(
+              /*Align(
                 alignment: Alignment.topRight,
                 child: RectangleCheckBox(
                   color: lightBlue,
@@ -79,7 +78,7 @@ class UserDiscHorizontalList extends StatelessWidget {
                   isChecked: isSelected,
                   onTap: () => onSelect == null ? null : onSelect!(item),
                 ),
-              ),
+              ),*/
               if (item.media?.url != null)
                 CircleImage(
                   radius: 54,

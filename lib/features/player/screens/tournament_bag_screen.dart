@@ -24,6 +24,7 @@ import 'package:app/widgets/ui/icon_box.dart';
 
 class TournamentBagScreen extends StatefulWidget {
   final User player;
+
   const TournamentBagScreen({required this.player});
 
   @override
@@ -64,7 +65,7 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
         leading: const BackMenu(),
         title: Text('$name ${'tournament_discs'.recast}'),
         automaticallyImplyLeading: false,
-        actions: [if (_modelData.selectedDiscs.isNotEmpty) Center(child: _flightPathMenu), ACTION_SIZE],
+        actions: [if (_modelData.categories.isNotEmpty) Center(child: _flightPathMenu), ACTION_SIZE],
       ),
       body: Container(
         width: SizeConfig.width,
@@ -78,7 +79,7 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
 
   Widget get _flightPathMenu {
     var icon = SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19);
-    return IconBox(size: 28, background: primary, icon: icon, onTap: Routes.user.grid_path(discs: _modelData.selectedDiscs).push);
+    return IconBox(size: 28, background: primary, icon: icon, onTap: Routes.user.grid_path(discs: _allTournamentDiscs).push);
   }
 
   Widget get _screenView {
@@ -96,19 +97,34 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
         const SizedBox(height: 12),
         UserDiscCategoryList(
           categories: _modelData.categories,
-          selectedItems: _modelData.selectedDiscs,
-          onSelectDisc: _onSelectYourDisc,
           onDiscItem: (discItem) => _viewModel.onDiscItem(discItem, isMe),
+          // selectedItems: _modelData.selectedDiscs,
+          // onSelectDisc: _onSelectYourDisc,
         ),
         SizedBox(height: BOTTOM_GAP),
       ],
     );
   }
 
-  void _onSelectYourDisc(UserDisc item) {
+  /*void _onSelectYourDisc(UserDisc item) {
     var selectedItems = _modelData.selectedDiscs;
     var index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
     index < 0 ? _modelData.selectedDiscs.add(item) : _modelData.selectedDiscs.removeAt(index);
     setState(() {});
+  }*/
+
+  List<UserDisc> get _allTournamentDiscs {
+    if (_modelData.categories.isEmpty) return [];
+    final Set<int> addedIds = {};
+    final List<UserDisc> discs = [];
+    for (var category in _modelData.categories) {
+      for (var disc in category.discs) {
+        if (!addedIds.contains(disc.id.nullToInt)) {
+          addedIds.add(disc.id!);
+          discs.add(disc);
+        }
+      }
+    }
+    return discs;
   }
 }
