@@ -1057,6 +1057,10 @@ const APP_STRINGS = {
   'grid_view_of': 'Grid view of',
   'all_bag_discs': 'All Bag Discs',
   'communication_channel_link': 'Communication Channel Link',
+  'all_bag': 'All Bag',
+  'no_graph_data_found': 'No Graph Data Found!',
+  'we_could_not_find_any_discs_right_now_please_try_again_later':
+      'We couldn’t find any discs to display here. Add some data to see the chart.',
   // New translations
   '': ''
 };

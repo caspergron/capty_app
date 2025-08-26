@@ -56,6 +56,8 @@ class DiscBag {
   String get bag_menu_display_name {
     if (name?.toKey == 'all'.toKey) {
       return 'all'.recast;
+    } else if (name?.toKey == 'all_bag'.toKey) {
+      return 'all_bag'.recast;
     } else if (name.toKey == 'plus_new_bag'.toKey) {
       return 'plus_new_bag'.recast;
     } else if (name.toKey == 'tournament_bag'.toKey || name.toKey == 'Tournament Bag'.toKey) {

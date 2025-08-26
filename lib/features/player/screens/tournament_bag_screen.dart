@@ -10,6 +10,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/player/units/user_disc_category_list.dart';
 import 'package:app/features/player/view_models/tournament_discs_view_model.dart';
 import 'package:app/models/disc/user_disc.dart';
+import 'package:app/models/disc_bag/disc_bag.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/routes.dart';
@@ -78,8 +79,11 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
   }
 
   Widget get _flightPathMenu {
+    var userId = UserPreferences.user.id;
+    var discs = _allTournamentDiscs;
     var icon = SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19);
-    return IconBox(size: 28, background: primary, icon: icon, onTap: Routes.user.grid_path(discs: _allTournamentDiscs).push);
+    var discBag = DiscBag(name: 'tournament_bag', displayName: 'Tournament Bag', userId: userId, userDiscs: discs, discCount: discs.length);
+    return IconBox(size: 28, background: primary, icon: icon, onTap: Routes.user.grid_path(bags: [discBag]).push);
   }
 
   Widget get _screenView {

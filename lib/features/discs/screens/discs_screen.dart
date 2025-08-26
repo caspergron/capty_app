@@ -91,47 +91,8 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
     );
   }
 
-  /*Widget get _navbarButtons {
-    return Positioned(
-      left: Dimensions.screen_padding,
-      right: Dimensions.screen_padding,
-      bottom: 36,
-      child: TweenListItem(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ElevateButton(
-                radius: 04,
-                height: 38,
-                background: skyBlue,
-                label: 'see_flight_paths'.recast.toUpper,
-                onTap: Routes.user.flight_path(discs: _modelData.selectedDiscs).push,
-                icon: SvgImage(image: Assets.svg1.delta, color: primary, height: 20),
-                textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
-              ),
-            ),
-            const SizedBox(width: 08),
-            Expanded(
-              child: ElevateButton(
-                radius: 04,
-                height: 38,
-                background: skyBlue,
-                label: 'see_grid_paths'.recast.toUpper,
-                onTap: Routes.user.grid_path(discs: _modelData.selectedDiscs).push,
-                icon: SvgImage(image: Assets.svg1.hash_1, color: primary, height: 20),
-                textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }*/
-
   Widget _screenView(BuildContext context) {
     var bagDiscs = _modelData.discBag.id == _All_BAG.id ? _modelData.allDiscs : _modelData.discBag.userDiscs ?? <UserDisc>[];
-    var bagName = _modelData.discBag.id == _All_BAG.id ? 'all_bag_discs'.recast : _modelData.discBag.bag_menu_display_name;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -152,8 +113,8 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
               IconBox(
                 size: 28,
                 background: primary,
+                onTap: _onGridPath,
                 icon: SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19),
-                onTap: Routes.user.grid_path(discs: bagDiscs, name: bagName).push,
               ),
             SizedBox(width: Dimensions.screen_padding),
           ],
@@ -192,6 +153,18 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
           ),
       ],
     );
+  }
+
+  void _onGridPath() {
+    var allDiscs = _modelData.allDiscs;
+    var allBag = DiscBag(id: 1000001, name: 'all_bag', displayName: 'all_bag', userDiscs: allDiscs, discCount: allDiscs.length);
+    var bagsForGridPath = [allBag, ..._modelData.discBags];
+    var bagIndex = 0;
+    if (_modelData.discBag.id != _All_BAG.id) {
+      var findIndex = _modelData.discBags.indexWhere((element) => element.id == _modelData.discBag.id);
+      bagIndex = findIndex < 0 ? 0 : findIndex + 1;
+    }
+    Routes.user.grid_path(bags: bagsForGridPath, index: bagIndex).push();
   }
 
   void _onAcceptDragDisc(UserDisc disc, DiscBag targetBag) {

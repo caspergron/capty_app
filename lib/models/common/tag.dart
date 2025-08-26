@@ -56,7 +56,10 @@ class Tag {
   static List<Tag> tag_list_by_display_name(List<Tag> tagList, String key) {
     if (tagList.isEmpty) return [];
     if (key.isEmpty) return tagList;
-    return tagList.where((item) => item.displayName.toKey.startsWith(key.toKey)).toList();
+    var filteredTags = tagList.where((item) => item.displayName.toKey.contains(key.toKey)).toList();
+    if (filteredTags.isEmpty) return [];
+    filteredTags.sort((item1, item2) => item1.displayName.toKey.compareTo(item2.displayName.toKey));
+    return filteredTags;
   }
 
   String get marketplace_menu_display_name {
