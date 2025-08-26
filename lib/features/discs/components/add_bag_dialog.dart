@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
@@ -20,6 +18,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
+import 'package:flutter/material.dart';
 
 Future<void> addDiscBagDialog({DiscBag? discBag, Function(Map<String, dynamic>)? onSave}) async {
   var context = navigatorKey.currentState!.context;
@@ -132,7 +131,6 @@ class _DialogViewState extends State<_DialogView> {
 
   void _onSave() {
     if (_name.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_bag_name'.recast);
-    if (_description.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_bag_description'.recast);
     var body = {'name': _name.text, 'description': _description.text};
     if (widget.onSave != null) widget.onSave!(body);
     backToPrevious();
