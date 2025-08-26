@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/features/address/screens/add_address_screen.dart';
 import 'package:app/features/address/screens/seller_settings_screen.dart';
 import 'package:app/features/auth/screens/otp_screen.dart';
@@ -54,11 +52,13 @@ import 'package:app/models/club/club.dart';
 import 'package:app/models/club/event.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/disc/user_disc.dart';
+import 'package:app/models/disc_bag/disc_bag.dart';
 import 'package:app/models/feature/feature.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/settings/settings.dart';
 import 'package:app/models/user/user.dart';
+import 'package:flutter/material.dart';
 
 class Routes {
   static _AuthRoutes auth = _AuthRoutes();
@@ -126,7 +126,7 @@ class _UserRoutes {
   Widget tournament_discs({required User player}) => TournamentBagScreen(player: player);
   Widget player_sale_ads({required User player}) => PlayerSalesAdScreen(player: player);
 
-  Widget grid_path({required List<UserDisc> discs, String name = ''}) => GridPathScreen(discs: discs, name: name);
+  Widget grid_path({required List<DiscBag> bags, int index = 0}) => GridPathScreen(bags: bags, index: index);
   Widget flight_path({required List<UserDisc> discs}) => FlightPathScreen(discs: discs);
 }
 

@@ -1,42 +1,47 @@
-import 'package:flutter/material.dart';
-
-import 'package:fl_chart/fl_chart.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/graph/view_models/grid_path_view_model.dart';
 import 'package:app/models/disc/user_disc.dart';
+import 'package:app/models/disc_bag/disc_bag.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/gradients.dart';
 import 'package:app/themes/text_styles.dart';
+import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _DURATION = Duration(seconds: 1);
 const _STRAIT_LINE = FlLine(color: primary, strokeWidth: 0.8);
 var _DOT_PAINTER = FlDotCirclePainter(radius: 8, color: primary);
 
 class GridPathScreen extends StatefulWidget {
-  final String name;
-  final List<UserDisc> discs;
-  const GridPathScreen({this.discs = const [], this.name = ''});
+  final int index;
+  final List<DiscBag> bags;
+  const GridPathScreen({this.bags = const [], this.index = 0});
 
   @override
   State<GridPathScreen> createState() => _GridPathScreenState();
 }
 
-class _GridPathScreenState extends State<GridPathScreen> {
+class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProviderStateMixin {
+  var _tabIndex = 0;
   var _viewModel = GridPathViewModel();
   var _modelData = GridPathViewModel();
   var _scaffoldKey = GlobalKey<ScaffoldState>();
+  late TabController _tabController;
 
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('grid-path-screen');
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel(widget.discs));
+    _tabIndex = widget.index > 0 ? widget.index : 0;
+    _tabController = TabController(length: widget.bags.length, vsync: this, initialIndex: _tabIndex);
+    _tabController.addListener(() => setState(() => _tabIndex = _tabController.index));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel(widget.bags));
     super.initState();
   }
 
@@ -55,13 +60,16 @@ class _GridPathScreenState extends State<GridPathScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var bagName = widget.bags[_tabIndex].bag_menu_display_name;
+    var label1 = '${'grid_view_of'.recast} $bagName';
+    var label2 = 'grid_view_of_your_discs'.recast;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         leading: const BackMenu(),
-        title: Text(widget.name.isEmpty ? 'grid_view_of_your_discs' : '${'grid_view_of'.recast} ${widget.name}'),
         automaticallyImplyLeading: false,
+        title: Text(widget.bags.length < 2 ? label1 : label2),
       ),
       body: Container(
         width: SizeConfig.width,
@@ -74,32 +82,63 @@ class _GridPathScreenState extends State<GridPathScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var key = ValueKey<List<ScatterSpot>>(_modelData.graph.graphSpots);
-    return Padding(
-      padding: const EdgeInsets.only(left: 08, right: 16),
-      child: Column(
-        children: [
-          const SizedBox(height: 14),
-          Expanded(child: AnimatedSwitcher(duration: _DURATION, child: ScatterChart(key: key, _scatterChartData))),
-          SizedBox(height: SizeConfig.bottom + 32),
-        ],
-      ),
+    var padding = const EdgeInsets.only(left: 08, right: 16);
+    return Column(
+      children: [
+        if (widget.bags.length > 1) const SizedBox(height: 10),
+        if (widget.bags.length > 1)
+          Container(
+            height: 38,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
+            decoration: BoxDecoration(color: lightBlue, borderRadius: BorderRadius.circular(60)),
+            child: TabBar(
+              labelColor: primary,
+              unselectedLabelColor: primary,
+              controller: _tabController,
+              isScrollable: widget.bags.length > 3,
+              labelPadding: EdgeInsets.symmetric(horizontal: widget.bags.length > 3 ? 14 : 04),
+              indicator: BoxDecoration(color: skyBlue, borderRadius: BorderRadius.circular(60), border: Border.all(color: primary)),
+              tabs: List.generate(widget.bags.length, (index) => Tab(text: widget.bags[index].bag_menu_display_name)).toList(),
+            ),
+          ),
+        const SizedBox(height: 12),
+        if (!_modelData.loader.initial)
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: _DURATION,
+              child: Padding(
+                padding: padding,
+                child: TabBarView(
+                  controller: _tabController,
+                  physics: widget.bags.length < 2 ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
+                  children: List.generate(_modelData.graphs.length, (i) {
+                    var key = ValueKey<List<ScatterSpot>>(_modelData.graphs[i].graphSpots);
+                    return ScatterChart(key: key, _scatterChartData(i), duration: _DURATION);
+                  }).toList(),
+                ),
+              ),
+            ),
+          ),
+        SizedBox(height: SizeConfig.bottom + 32),
+      ],
     );
   }
 
-  ScatterChartData get _scatterChartData {
+  ScatterChartData _scatterChartData(int index) {
+    var graph = _modelData.graphs[index];
     return ScatterChartData(
       minX: -5,
-      maxX: _modelData.graph.maxX > 6 ? _modelData.graph.maxX : 6,
       minY: 0,
-      maxY: _modelData.graph.maxY > 14 ? _modelData.graph.maxY : 14,
+      maxX: graph.maxX > 6 ? graph.maxX : 6,
+      maxY: graph.maxY > 14 ? graph.maxY : 14,
       titlesData: _titlesData,
-      scatterTouchData: _scatterTouchData,
-      scatterSpots: _modelData.graph.graphSpots.map((spot) => spot.copyWith(dotPainter: _DOT_PAINTER)).toList(),
+      scatterTouchData: _scatterTouchData(index),
+      scatterSpots: graph.graphSpots.map((spot) => spot.copyWith(dotPainter: _DOT_PAINTER)).toList(),
       borderData: FlBorderData(show: true, border: Border.all(color: primary, width: 0.4)),
       clipData: const FlClipData(top: false, bottom: false, left: false, right: false),
       gridData: FlGridData(getDrawingHorizontalLine: (v) => _STRAIT_LINE, getDrawingVerticalLine: (v) => _STRAIT_LINE),
-      showingTooltipIndicators: List.generate(_modelData.graph.graphSpots.length, (index) => index),
+      showingTooltipIndicators: List.generate(graph.graphSpots.length, (index) => index),
     );
   }
 
@@ -117,7 +156,8 @@ class _GridPathScreenState extends State<GridPathScreen> {
   // SideTitles get _bottomTitles => SideTitles(getTitlesWidget: _bottomTitleWidgets, showTitles: true, interval: 1, reservedSize: 24);
 
   Widget _topTitleWidgets(double value, TitleMeta meta) {
-    final maxX = _modelData.graph.maxX > 6 ? _modelData.graph.maxX : 6;
+    var graph = _modelData.graphs[_tabIndex];
+    final maxX = graph.maxX > 6 ? graph.maxX : 6;
     final reversedValue = maxX + (-5) - value;
     var style = TextStyles.text13_600.copyWith(color: primary);
     var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
@@ -136,16 +176,16 @@ class _GridPathScreenState extends State<GridPathScreen> {
     return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(value.formatDouble, style: style));
   }*/
 
-  ScatterTouchData get _scatterTouchData {
+  ScatterTouchData _scatterTouchData(index) {
     return ScatterTouchData(
       enabled: false,
       handleBuiltInTouches: true,
       touchTooltipData: ScatterTouchTooltipData(
-        tooltipPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 04),
+        tooltipPadding: const EdgeInsets.symmetric(horizontal: 06, vertical: 04),
         getTooltipItems: (scatterSpot) {
-          var scatterSpotIndex = _modelData.findScattedIndex(scatterSpot);
-          var disc = scatterSpotIndex < 0 ? UserDisc() : _modelData.discs[scatterSpotIndex];
           var style = const TextStyle(color: white, fontWeight: w600, height: 1);
+          var scatterSpotIndex = _modelData.findScattedIndex(scatterSpot, index);
+          var disc = scatterSpotIndex < 0 ? UserDisc() : _modelData.discBags[index].userDiscs?[scatterSpotIndex] ?? UserDisc();
           return ScatterTooltipItem(disc.parentDisc?.name ?? '', textStyle: style);
         },
       ),

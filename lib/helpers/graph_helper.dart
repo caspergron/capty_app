@@ -1,8 +1,7 @@
-import 'package:fl_chart/fl_chart.dart';
-
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/models/chart/graph_model.dart';
 import 'package:app/models/disc/user_disc.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 // var _CENTER = 5.0;
 // var _INITIAL_SPOT = FlSpot(_CENTER, 0);
@@ -16,6 +15,7 @@ class GraphHelper {
   }
 
   Map<String, double> getMaxValuesForGrid(List<ScatterSpot> scatterSpots) {
+    if (scatterSpots.isEmpty) return {'max_x': 6, 'max_y': 14};
     var maxX = scatterSpots.reduce((item1, item2) => item1.x > item2.x ? item1 : item2).x;
     var maxY = scatterSpots.reduce((item1, item2) => item1.y > item2.y ? item1 : item2).y;
     return {'max_x': maxX, 'max_y': maxY};

@@ -1058,6 +1058,7 @@ const APP_STRINGS = {
   'all_bag_discs': 'All Bag Discs',
   'communication_channel_link': 'Communication Channel Link',
   // New translations
+  'all_bag': 'All Bag',
   '': ''
 };
 
