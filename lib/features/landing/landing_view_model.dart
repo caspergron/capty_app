@@ -112,6 +112,10 @@ class LandingViewModel with ChangeNotifier {
       Routes.user.friends(index: 1).push();
     } else if (type.toKey == ACCEPT_FRIEND_REQUEST.toKey) {
       Routes.user.friends().push();
+    } else if (type.toKey == PDGA_RATING.toKey) {
+      var isClub = jsonDecode(message.data['data_payload']) as int?;
+      if (isClub == null || isClub == 0) return;
+      Routes.user.leaderboard().push();
     } else {
       return;
     }

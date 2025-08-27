@@ -78,6 +78,7 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
       child: Scaffold(
         key: _scaffoldKey,
         body: Stack(
+          clipBehavior: Clip.none,
           children: [
             AnimatedOpacity(
               curve: Curves.easeInOut,
@@ -106,7 +107,7 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
                 child: Container(width: SizeConfig.width, height: SizeConfig.height, color: transparent),
               ),
             Positioned(
-              bottom: -120,
+              bottom: -122,
               left: 0,
               right: 0,
               child: SpinnerMenu(
@@ -168,8 +169,8 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
       title: model.label.recast,
       fontFamily: roboto,
       isIconBlend: true,
-      activeIcon: Padding(padding: topGap, child: SvgImage(image: model.icon, height: 24, color: mediumBlue)),
-      icon: Padding(padding: topGap, child: SvgImage(image: model.icon, height: 24, color: lightBlue)),
+      icon: Padding(padding: topGap, child: SvgImage(image: model.icon, height: 24)),
+      activeIcon: Padding(padding: topGap, child: SvgImage(image: model.icon, height: 24)),
     );
   }
 }

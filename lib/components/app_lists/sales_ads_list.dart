@@ -81,7 +81,7 @@ class SalesAdsList extends StatelessWidget {
           margin: EdgeInsets.only(left: index == 0 ? gap : 0, right: index == salesAdsList.length - 1 ? gap : 08),
           decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(12)),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: ImageNetwork(
@@ -97,7 +97,7 @@ class SalesAdsList extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 04),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 04),
                     Text(

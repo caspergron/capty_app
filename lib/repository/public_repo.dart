@@ -12,6 +12,7 @@ import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/discs/view_models/discs_view_model.dart';
 import 'package:app/features/friends/view_models/friends_view_model.dart';
 import 'package:app/features/home/home_view_model.dart';
+import 'package:app/features/landing/landing_view_model.dart';
 import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/libraries/flush_popup.dart';
@@ -97,6 +98,7 @@ class PublicRepository {
     Provider.of<SignInViewModel>(context, listen: false).updateUi();
     Provider.of<OtpViewModel>(context, listen: false).updateUi();
     Provider.of<SetProfileViewModel>(context, listen: false).updateUi();
+    Provider.of<LandingViewModel>(context, listen: false).updateUi();
     Provider.of<HomeViewModel>(context, listen: false).updateUi();
     Provider.of<ClubViewModel>(context, listen: false).updateUi();
     Provider.of<FriendsViewModel>(context, listen: false).updateUi();

@@ -53,7 +53,7 @@ class PlayersList extends StatelessWidget {
     var item = players[index];
     var isPositive = item.is_positive;
     return InkWell(
-      onTap: () => onItem == null ? null : onItem!(item),
+      onTap: () => _onItem(item),
       child: TweenListItem(
         index: index,
         child: Container(
@@ -115,7 +115,7 @@ class PlayersList extends StatelessWidget {
     var background = _backgroundColor(index);
     var isPositive = item.is_positive;
     return InkWell(
-      onTap: () => onItem == null ? null : onItem!(item),
+      onTap: () => _onItem(item),
       child: TweenListItem(
         index: index,
         twinAnim: TwinAnim.right_to_left,
@@ -208,6 +208,8 @@ class PlayersList extends StatelessWidget {
       ),
     );
   }
+
+  void _onItem(PdgaUser item) => onItem == null || item.id == null ? null : onItem!(item);
 
   String _playerPositionName(int index) {
     if (index == 0) {

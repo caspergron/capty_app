@@ -3,11 +3,13 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import 'package:app/constants/app_keys.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/themes/colors.dart';
 
@@ -40,8 +42,10 @@ class ImageCroppers {
             : AndroidUiSettings(
                 lockAspectRatio: false,
                 toolbarColor: primary,
-                statusBarColor: primary,
+                // backgroundColor: dark,
+                statusBarColor: transparent,
                 toolbarWidgetColor: white,
+                // cropFrameColor: transparent,
                 toolbarTitle: 'edit_photo'.recast,
                 cropStyle: crop_style,
                 hideBottomControls: false,
@@ -49,10 +53,22 @@ class ImageCroppers {
               ),
       ],
     );
+    resetStatusBarColor();
+    // SystemChrome.setSystemUIOverlayStyle(OVERLAY_STYLE);
     if (cropped == null) return null;
     if (cropType != 'circle_clip') return File(cropped.path);
     var clippedCircleImage = await _convertToCircular(File(cropped.path));
     return clippedCircleImage;
+  }
+
+  void resetStatusBarColor() {
+    var context = navigatorKey.currentState!.context;
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).appBarTheme.foregroundColor,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
   }
 
   CropStyle _cropStyle(String type) {
