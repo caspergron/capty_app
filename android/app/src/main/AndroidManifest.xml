@@ -10,7 +10,9 @@
     <application
         android:label="Capty"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:exported="true"
+        android:enableOnBackInvokedCallback="true">
 
         <activity
             android:name=".MainActivity"
@@ -69,10 +71,15 @@
             android:value="AIzaSyBhfJOM3UrS-FCC3WyT4e81I-7BFlNbfeU"/>
 
         <!-- Image Cropper -->
+        <!--<activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>-->
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Ucrop.CropTheme"/>
 
         <meta-data
             android:name="flutterEmbedding"

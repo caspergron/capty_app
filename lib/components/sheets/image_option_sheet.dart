@@ -74,7 +74,8 @@ class _BottomSheetView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: _ImageUploadItem(type: GALLERY, onTap: _onGalleryImage),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 20),
+        SizedBox(height: BOTTOM_GAP),
       ],
     );
   }

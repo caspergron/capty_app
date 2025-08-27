@@ -137,8 +137,10 @@ class _DialogViewState extends State<_DialogView> {
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
+        height: SizeConfig.height,
         width: Dimensions.dialog_width,
-        height: SizeConfig.height - SizeConfig.statusBar - SizeConfig.bottom - 30,
+        margin: EdgeInsets.only(top: SizeConfig.statusBar + (Platform.isIOS ? 10 : 16), bottom: BOTTOM_GAP + (Platform.isIOS ? 0 : 20)),
+        // height: SizeConfig.height - SizeConfig.statusBar - SizeConfig.bottom,
         padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding, vertical: Dimensions.dialog_padding),
         decoration: BoxDecoration(color: primary, borderRadius: DIALOG_RADIUS, boxShadow: const [SHADOW_2]),
         child: Material(color: transparent, shape: DIALOG_SHAPE, child: Stack(children: stackList)),

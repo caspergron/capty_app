@@ -17,6 +17,7 @@ const SEND_MESSAGE_1_DAY = 'chat_day_after';
 const SEND_MESSAGE_3_DAY = 'chat_day_after_3';
 const RECEIVE_FRIEND_REQUEST = 'friend_request';
 const ACCEPT_FRIEND_REQUEST = 'friend_accept';
+const PDGA_RATING = 'pdga_rating';
 
 /// Constant Data
 const DEFAULT_ID = 00000;
