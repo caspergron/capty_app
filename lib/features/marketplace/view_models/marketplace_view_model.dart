@@ -174,7 +174,7 @@ class MarketplaceViewModel with ChangeNotifier {
     _stopLoader();
   }
 
-  Future<void> generateFilterUrl({bool isLoader = false, bool isPaginate = false, String filterParams = '', int index = 0}) async {
+  Future<void> generateFilterUrl({bool isLoader = false, bool isPaginate = false, int index = 0}) async {
     var invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
     if (invalidApiCall) return;
     loader.common = isLoader;
@@ -189,7 +189,7 @@ class MarketplaceViewModel with ChangeNotifier {
       unawaited(_fetchMarketplaceDiscs(isLoader: isLoader, isPaginate: isPaginate, index: index, params: params));
     } else {
       if (tag.name.toKey == 'distance'.toKey && !coordinates.is_coordinate) return _turnOffLoaders(index: index, isPopup: true);
-      params = sl<MarketplaceHelper>().generateMarketplaceApiParams(tag, pageNumber, locationParams, filterParams);
+      params = sl<MarketplaceHelper>().generateMarketplaceApiParams(tag, pageNumber, locationParams, filterOption.parameters);
       unawaited(_fetchMarketplaceDiscs(isLoader: isLoader, isPaginate: isPaginate, index: index, params: params));
     }
   }
@@ -252,11 +252,11 @@ class MarketplaceViewModel with ChangeNotifier {
     return notifyListeners();
   }
 
-  void onMarketplaceFilter(MarketplaceFilter option, String filterParams) {
+  void onMarketplaceFilter(MarketplaceFilter option) {
     searchKey = '';
     filterOption = option;
     notifyListeners();
-    generateFilterUrl(isLoader: true, filterParams: filterParams);
+    generateFilterUrl(isLoader: true);
   }
 
   void onTag(Tag item) {

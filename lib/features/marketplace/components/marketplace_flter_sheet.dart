@@ -36,7 +36,7 @@ var _TAGS = DataModel(label: 'tags', valueInt: 4);
 var _FLIGHT_PATH = DataModel(label: 'flight_numbers', valueInt: 6);
 // var _SORT_BY = DataModel(label: 'sort_by', valueInt: 7);
 
-Future<void> marketplaceFilterSheet({required MarketplaceFilter filterOption, Function(MarketplaceFilter, String)? onFilter}) async {
+Future<void> marketplaceFilterSheet({required MarketplaceFilter filterOption, Function(MarketplaceFilter)? onFilter}) async {
   var context = navigatorKey.currentState!.context;
   var padding = MediaQuery.of(context).viewInsets;
   var child = _BottomSheetView(filterOption, onFilter);
@@ -53,7 +53,7 @@ Future<void> marketplaceFilterSheet({required MarketplaceFilter filterOption, Fu
 
 class _BottomSheetView extends StatefulWidget {
   final MarketplaceFilter filterOption;
-  final Function(MarketplaceFilter, String)? onFilter;
+  final Function(MarketplaceFilter)? onFilter;
   const _BottomSheetView(this.filterOption, this.onFilter);
 
   @override
@@ -307,7 +307,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     // if (!_isValidated) return FlushPopup.onWarning(message: 'please_select_at_least_one_filter_option'.recast);
     if (!_isValidated) {
       var filter = MarketplaceFilter(types: [], tags: [], brands: []);
-      if (widget.onFilter != null) widget.onFilter!(filter, '');
+      if (widget.onFilter != null) widget.onFilter!(filter);
       return backToPrevious();
     }
     var sortBy = _sortByList.isEmpty ? null : _sortByList.first;
@@ -333,8 +333,9 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
       turn: _turn,
       fade: _fade,
       sortBy: sortBy,
+      parameters: params,
     );
-    if (widget.onFilter != null) widget.onFilter!(filter, params);
+    if (widget.onFilter != null) widget.onFilter!(filter);
     backToPrevious();
   }
 }

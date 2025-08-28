@@ -13,6 +13,7 @@ class MarketplaceFilter {
   RangeValues turn;
   RangeValues fade;
   DataModel? sortBy;
+  String parameters;
 
   /*List<String> get brandLabels => brands.isEmpty ? <String>[] : brands.map((e) => e.name ?? '').toList();
   List<String> get typeLabels => types.isEmpty ? <String>[] : types.map((e) => e.displayName ?? '').toList();
@@ -31,6 +32,7 @@ class MarketplaceFilter {
     this.turn = const RangeValues(-5, 1),
     this.fade = const RangeValues(0, 5),
     this.sortBy,
+    this.parameters = '',
   });
 
   Map<String, dynamic> toJson() {
@@ -43,6 +45,7 @@ class MarketplaceFilter {
     if (tags.isNotEmpty) map['tags'] = tags.map((v) => v.toJson()).toList();
     if (brands.isNotEmpty) map['brands'] = brands.map((v) => v.toJson()).toList();
     map['sort_by'] = sortBy?.toJson();
+    map['parameters'] = parameters;
     return map;
   }
 
