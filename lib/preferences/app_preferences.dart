@@ -72,7 +72,7 @@ class AppPreferences {
     var langCode = sl<StorageService>().language.code ?? 'en';
     var appVersion = await sl<DeviceInfo>().appVersion;
     var deviceInfo = '$os/${await sl<DeviceInfo>().deviceVersion}/${await sl<DeviceInfo>().deviceName}';
-    var appInfo = 'carewithu/$appVersion ${Platform.isIOS ? 'CFNetwork/1474 Darwin' : ''} ($langCode)'.trim();
+    var appInfo = 'capty/$appVersion ${Platform.isIOS ? 'CFNetwork/1474 Darwin' : ''} ($langCode)'.trim();
     userAgent = '$deviceInfo $appInfo'.trim();
     return userAgent;
   }
