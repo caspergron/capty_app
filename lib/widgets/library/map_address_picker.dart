@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:app/models/map/coordinates.dart';
+import 'package:app/utils/assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'package:app/models/map/coordinates.dart';
-import 'package:app/utils/assets.dart';
 
 class MapAddressPicker extends StatefulWidget {
   final Coordinates coordinates;
@@ -38,14 +36,18 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
   @override
   void dispose() {
     _debounceTimer?.cancel();
+    _mapController.dispose();
     super.dispose();
   }
 
-  void _updateMapLocation() {
+  Future<void> _updateMapLocation() async {
+    _coordinates = widget.coordinates;
+    setState(() {});
     if (_coordinates.lat != widget.coordinates.lat || _coordinates.lng != widget.coordinates.lng) {
       setState(() => _coordinates = widget.coordinates);
-      _updateCameraPosition();
+      await Future.delayed(const Duration(milliseconds: 200));
       _updateMarkerPosition();
+      await _updateCameraPosition();
     }
   }
 
@@ -86,27 +88,20 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
 
   void _onCameraMove(CameraPosition position) {
     _coordinates = Coordinates(lat: position.target.latitude, lng: position.target.longitude);
-
-    // Remove the Future.delayed call that was causing issues
-    // _updateMarkerPosition will be called in onCameraIdle instead
-
     _debounceTimer?.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 300), () => widget.onMoveCamera(_coordinates));
   }
 
   void _onCameraIdle() {
     _debounceTimer?.cancel();
-
     // Update marker position only when camera stops moving
     _updateMarkerPosition();
-
     // Notify parent with final coordinates
     widget.onMoveCamera(_coordinates);
   }
 
   void _updateMarkerPosition() {
     if (_markerIcon == null) return;
-
     final position = LatLng(_coordinates.lat!, _coordinates.lng!);
     final marker = Marker(
       markerId: _markerId,
@@ -129,8 +124,8 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
     }
   }
 
-  void _updateCameraPosition() {
+  Future<void> _updateCameraPosition() async {
     final position = LatLng(_coordinates.lat!, _coordinates.lng!);
-    _mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: position, zoom: 12)));
+    await _mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: position, zoom: 12)));
   }
 }

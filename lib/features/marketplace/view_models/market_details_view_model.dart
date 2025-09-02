@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/libraries/locations.dart';
@@ -12,6 +10,7 @@ import 'package:app/models/system/loader.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/address_repo.dart';
 import 'package:app/repository/marketplace_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class MarketDetailsViewModel with ChangeNotifier {
   var marketplace = SalesAd();
@@ -49,9 +48,12 @@ class MarketDetailsViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchDiscDetails() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
-    // var response = await sl<MarketplaceRepository>().fetchMarketplaceDetails(marketplace.id!);
-    // if (response != null) marketplace = response;
+    var coordinates = await sl<Locations>().fetchLocationPermission();
+    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    var params = '${marketplace.id!}$locationParams'.trim();
+    var response = await sl<MarketplaceRepository>().fetchMarketplaceDetails(params);
+    if (response != null) marketplace = response;
+    loader = Loader(initial: false, common: false);
     notifyListeners();
   }
 
@@ -87,7 +89,7 @@ class MarketDetailsViewModel with ChangeNotifier {
   Future<void> _fetchMoreMarketplaceDiscsBySeller() async {
     var coordinates = await sl<Locations>().fetchLocationPermission();
     var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '${marketplace.userId!}&size=$LENGTH_20&page=1$locationParams';
+    var params = '${marketplace.sellerInfo!.id!}&size=$LENGTH_20&page=1$locationParams';
     var response = await sl<MarketplaceRepository>().fetchMoreMarketplaceByUser(params);
     discList.clear();
     if (response.isNotEmpty) discList = response.where((item) => marketplace.id != null && item.id != marketplace.id).toList();

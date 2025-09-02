@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -23,6 +19,8 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/map_address_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddAddressScreen extends StatefulWidget {
   final Address address;
@@ -77,11 +75,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   List<Widget> _screenView(BuildContext context) {
     var icon = Assets.svg1.close_2;
     return [
-      SizedBox(
-        width: SizeConfig.width,
-        height: SizeConfig.height,
-        child: MapAddressPicker(coordinates: _modelData.centerLocation, onMoveCamera: _onCameraMove),
-      ),
+      Positioned.fill(child: MapAddressPicker(coordinates: _modelData.centerLocation, onMoveCamera: _onCameraMove)),
       Positioned(left: 16, top: SizeConfig.statusBar + 12, child: const BackMenu()),
       Positioned(
         left: 20,
@@ -126,6 +120,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Future<void> _onCameraMove(Coordinates coordinates) async {
     setState(() => _viewModel.centerLocation = coordinates);
     var response = await _viewModel.fetchAddressInfoByCoordinates(coordinates);
+    print(response);
     _search.text = '';
     // if (response == null) return;
     if (response == null) {

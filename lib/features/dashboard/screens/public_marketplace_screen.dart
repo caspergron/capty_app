@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/auth_menu.dart';
@@ -9,7 +5,6 @@ import 'package:app/components/menus/capty_menu.dart';
 import 'package:app/components/menus/hamburger_menu.dart';
 import 'package:app/components/menus/home_menu.dart';
 import 'package:app/extensions/number_ext.dart';
-import 'package:app/features/dashboard/components/public_sales_ad_info_dialog.dart';
 import 'package:app/features/dashboard/view_models/public_marketplace_view_model.dart';
 import 'package:app/features/marketplace/units/marketplace_category_list.dart';
 import 'package:app/models/public/country.dart';
@@ -17,6 +12,8 @@ import 'package:app/themes/gradients.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PublicMarketplaceScreen extends StatefulWidget {
   final Country country;
@@ -81,7 +78,11 @@ class _PublicMarketplaceScreenState extends State<PublicMarketplaceScreen> {
       physics: const BouncingScrollPhysics(),
       children: [
         const SizedBox(height: 14),
-        MarketplaceCategoryList(categories: _modelData.categories, onDiscItem: (v) => publicSalesAdInfoDialog(disc: v)),
+        MarketplaceCategoryList(
+          isModifiedData: true,
+          categories: _modelData.categories,
+          onDiscItem: (v) => _viewModel.fetchMarketplaceDiscDetails(v),
+        ),
         SizedBox(height: BOTTOM_GAP),
       ],
     );

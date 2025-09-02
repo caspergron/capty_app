@@ -6,8 +6,8 @@ import 'package:app/models/leaderboard/pdga_user.dart';
 import 'package:app/utils/api_url.dart';
 
 class LeaderboardRepository {
-  Future<Leaderboard?> fetchClubBasedLeaderboard() async {
-    var endpoint = ApiUrl.user.clubLeaderboard;
+  Future<Leaderboard?> fetchClubBasedLeaderboard({String sortKey = ''}) async {
+    var endpoint = '${ApiUrl.user.clubLeaderboard}?sort_key=$sortKey';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     var leaderboard = Leaderboard.fromJson(apiResponse.response['data']);
@@ -20,8 +20,8 @@ class LeaderboardRepository {
     return Leaderboard(clubName: leaderboard.clubName, players: players, topPlayers: topPlayers, otherPlayers: otherPlayers);
   }
 
-  Future<Leaderboard?> fetchFriendBasedLeaderboard() async {
-    var endpoint = ApiUrl.user.friendLeaderboard;
+  Future<Leaderboard?> fetchFriendBasedLeaderboard({String sortKey = ''}) async {
+    var endpoint = '${ApiUrl.user.friendLeaderboard}?sort_key=$sortKey';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     var leaderboard = Leaderboard.fromJson(apiResponse.response['data']);

@@ -1061,6 +1061,8 @@ const APP_STRINGS = {
   'no_graph_data_found': 'No Graph Data Found!',
   'we_could_not_find_any_discs_right_now_please_try_again_later':
       'We couldn’t find any discs to display here. Add some data to see the chart.',
+  'pdga_improvement': 'PDGA Improvement',
+  'yearly_improvement': 'Yearly Improvement',
   // New translations
   '': ''
 };

@@ -1,16 +1,17 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/extensions/number_ext.dart';
+import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/media.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/plastic/plastic.dart';
 import 'package:app/preferences/user_preferences.dart';
+import 'package:flutter/cupertino.dart';
 
 class UserDisc {
   int? id;
   int? userId;
   int? discId;
   int? discPlasticId;
+  String? name;
   double? weight;
   double? speed;
   double? glide;
@@ -23,6 +24,7 @@ class UserDisc {
   Media? media;
   ParentDisc? parentDisc;
   Plastic? plastic;
+  Brand? brand;
 
   bool? get is_my_disc => userId != null && (userId == UserPreferences.user.id);
   Color? get disc_color => color == null ? null : Color(int.parse('FF$color', radix: 16));
@@ -33,6 +35,7 @@ class UserDisc {
     this.userId,
     this.discId,
     this.discPlasticId,
+    this.name,
     this.weight,
     this.speed,
     this.glide,
@@ -44,6 +47,7 @@ class UserDisc {
     this.media,
     this.parentDisc,
     this.plastic,
+    this.brand,
   });
 
   UserDisc.fromJson(json) {
@@ -51,6 +55,7 @@ class UserDisc {
     userId = json['user_id'];
     discId = json['disc_id'];
     discPlasticId = json['disc_plastic_id'];
+    name = json['name'];
     weight = json['weight'] == null ? null : double.parse('${json['weight']}');
     speed = json['speed'] == null ? null : double.parse('${json['speed']}');
     glide = json['glide'] == null ? null : double.parse('${json['glide']}');
@@ -63,6 +68,7 @@ class UserDisc {
     media = json['media'] != null ? Media.fromJson(json['media']) : null;
     parentDisc = json['disc'] != null ? ParentDisc.fromJson(json['disc']) : null;
     plastic = json['disc_brand_plastic'] != null ? Plastic.fromJson(json['disc_brand_plastic']) : null;
+    brand = json['brand'] != null ? Brand.fromJson(json['brand']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -82,6 +88,7 @@ class UserDisc {
     if (media != null) map['media'] = media?.toJson();
     if (parentDisc != null) map['disc'] = parentDisc?.toJson();
     if (plastic != null) map['disc_brand_plastic'] = plastic?.toJson();
+    if (brand != null) map['brand'] = brand?.toJson();
     return map;
   }
 

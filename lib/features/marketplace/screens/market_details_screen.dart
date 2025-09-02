@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -30,6 +26,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MarketDetailsScreen extends StatefulWidget {
   final bool isDelay;
@@ -88,9 +86,9 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
     if (marketplace.id == null) return const SizedBox.shrink();
     var userDisc = marketplace.userDisc;
     var parentDisc = userDisc?.parentDisc;
-    var specialities = widget.salesAd.specialityDiscs ?? [];
+    var specialities = marketplace.specialityDiscs ?? [];
     var weight = userDisc?.weight == null ? 'n/a'.recast : '${userDisc?.weight.formatDouble} ${'gram'.recast}';
-    var isDescription = widget.salesAd.notes.toKey.isNotEmpty;
+    var isDescription = marketplace.notes.toKey.isNotEmpty;
     var MeAsSeller = UserPreferences.user.id == widget.salesAd.sellerInfo?.id;
     return ListView(
       shrinkWrap: true,
@@ -212,8 +210,10 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
                 child: _DiscInfo(
                   icon: Assets.svg1.disc_2,
-                  label: '${'disc_condition'.recast}: ${widget.salesAd.condition_number}/10',
-                  value: widget.salesAd.usedRange == null ? 'n/a'.recast : USED_DISC_INFO[widget.salesAd.condition_value!].recast,
+                  label: '${'disc_condition'.recast}: ${_modelData.marketplace.condition_number}/10',
+                  value: _modelData.marketplace.usedRange == null
+                      ? 'n/a'.recast
+                      : USED_DISC_INFO[_modelData.marketplace.condition_value!].recast,
                 ),
               ),
               if (isDescription) ...[
@@ -226,7 +226,7 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
                   child: Text(
-                    widget.salesAd.notes ?? '',
+                    _modelData.marketplace.notes ?? '',
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyles.text13_600.copyWith(color: lightBlue, fontWeight: w400),
@@ -273,8 +273,8 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
   }
 
   Widget get _discBasicInfo {
-    var name = widget.salesAd.userDisc?.parentDisc?.name ?? '';
-    var price = '${widget.salesAd.price.formatDouble} ${widget.salesAd.currency_code}';
+    var name = _modelData.marketplace.userDisc?.parentDisc?.name ?? '';
+    var price = '${_modelData.marketplace.price.formatDouble} ${_modelData.marketplace.currency_code}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 02),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(06)),

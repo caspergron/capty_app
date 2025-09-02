@@ -1,8 +1,8 @@
 import 'package:app/constants/app_constants.dart';
 import 'package:app/constants/data_constants.dart';
 
-const String _SERVER = 'https://api.capty.com/api/v1';
-// const String _SERVER = 'https://apitest.capty.com/api/v1';
+// const String _SERVER = 'https://api.capty.com/api/v1';
+const String _SERVER = 'https://apitest.capty.com/api/v1';
 
 const String GOOGLE_API = 'https://maps.googleapis.com/maps/api/geocode/json?key=$GOOGLE_MAP_API_KEY';
 const String GOOGLE_API_AUTOCOMPLETE = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?key=$GOOGLE_MAP_API_KEY';
@@ -24,6 +24,7 @@ class _PublicApis {
 
   String appStatistics = '$_SERVER/statistics';
   String marketplaceDiscsByCountry = '$_SERVER/market-place-disc-no-auth/list?size=$LENGTH_20';
+  String marketplaceDetails = '$_SERVER/market-place-disc-no-auth/show?sales_ad_id='; // 2
 
   String findClub = '$_SERVER/club/find-club'; // ?latitude=40.7300&longitude=-73.97700
   String addInWaitlist = '$_SERVER/user/wait_lists';

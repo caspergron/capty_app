@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -42,6 +39,8 @@ import 'package:app/widgets/exception/error_upload_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 Future<void> editSalesAdDiscDialog({required SalesAd marketplace, Function(Map<String, dynamic>, DocFile?)? onSave}) async {
   var context = navigatorKey.currentState!.context;
@@ -77,6 +76,7 @@ class _DialogViewState extends State<_DialogView> {
   var _plastic = Plastic();
   var _plastics = <Plastic>[];
   var _specialTags = <Tag>[];
+  var _usedValue = 10.0;
   var _disabledFocusNodes = [FocusNode(), FocusNode()];
   var _discSizeFocusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode()];
   var _focusNodes = [FocusNode(), FocusNode()];
@@ -102,6 +102,7 @@ class _DialogViewState extends State<_DialogView> {
     _weight.text = '${userDisc?.weight == null ? 0 : userDisc?.weight.formatDouble}';
     _comment.text = marketplace.notes ?? '';
     _specialTags = marketplace.specialityDiscs ?? [];
+    _usedValue = marketplace.usedRange ?? 10;
     setState(() {});
     // if (userDisc?.color != null) _color = userDisc!.disc_color!;
     // if (disc.media?.id != null) _colorOrImage = DISC_OPTIONS.last;
@@ -132,6 +133,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
+    var intIndex = _usedValue.toInt();
+    var conditionIndex = intIndex > 10 ? 10 : intIndex;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,35 +217,73 @@ class _DialogViewState extends State<_DialogView> {
                 onItem: (index) => setState(() => _specialTags.removeAt(index)),
               ),
             const SizedBox(height: 14),
-            if (_plastics.isNotEmpty) ...[
-              Text('plastic'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
-              const SizedBox(height: 06),
-              LabelPlaceholder(
-                height: 40,
-                textColor: dark,
-                fontSize: 12,
-                background: lightBlue,
-                hint: 'select_plastic',
-                label: _plastic.name ?? '',
-                endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
-                onTap: () => plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v)),
-              ),
-              const SizedBox(height: 14),
-            ],
-            Text('weight'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
+            Row(
+              children: [
+                if (_plastics.isNotEmpty) Expanded(child: Text('plastic'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue))),
+                if (_plastics.isNotEmpty) const SizedBox(width: 08),
+                Expanded(child: Text('weight'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue))),
+              ],
+            ),
             const SizedBox(height: 06),
-            InputField(
-              fontSize: 12,
-              controller: _weight,
-              hintText: '${'ex'.recast}: 125',
-              focusNode: _focusNodes.first,
-              enabledBorder: lightBlue,
-              focusedBorder: lightBlue,
-              keyboardType: TextInputType.number,
-              borderRadius: BorderRadius.circular(04),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
+            Row(
+              children: [
+                if (_plastics.isNotEmpty)
+                  Expanded(
+                    child: LabelPlaceholder(
+                      height: 40,
+                      textColor: dark,
+                      fontSize: 12,
+                      background: lightBlue,
+                      hint: 'select_plastic',
+                      label: _plastic.name ?? '',
+                      endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
+                      onTap: () => plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v)),
+                    ),
+                  ),
+                if (_plastics.isNotEmpty) const SizedBox(width: 08),
+                Expanded(
+                  child: InputField(
+                    fontSize: 12,
+                    controller: _weight,
+                    hintText: '${'ex'.recast}: 125',
+                    focusNode: _focusNodes.first,
+                    enabledBorder: lightBlue,
+                    focusedBorder: lightBlue,
+                    keyboardType: TextInputType.number,
+                    borderRadius: BorderRadius.circular(04),
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly, PriceInputFormatter()],
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 14),
+            Text('disc_condition'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue)),
+            const SizedBox(height: 06),
+            Slider(
+              min: 1,
+              max: 10,
+              divisions: 9,
+              inactiveColor: skyBlue,
+              activeColor: orange,
+              value: 11 - _usedValue,
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              allowedInteraction: SliderInteraction.tapAndSlide,
+              onChanged: (value) => setState(() => _usedValue = 11 - value),
+            ),
+            const SizedBox(height: 06),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 04),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(10, (index) => Text('${10 - index}', style: TextStyles.text12_600.copyWith(color: lightBlue))),
+              ),
+            ),
+            const SizedBox(height: 06),
+            Text(
+              USED_DISC_INFO[conditionIndex - 1].recast,
+              style: TextStyles.text13_600.copyWith(color: lightBlue, fontWeight: w500, height: 1.3),
+            ),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
@@ -341,23 +382,12 @@ class _DialogViewState extends State<_DialogView> {
     var parentDisc = userDisc?.parentDisc;
     var userDiscId = userDisc?.id;
     var parentDiscId = parentDisc?.id;
-    var salesAdTypeId = marketplace.salesAdType?.id;
     var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
     var specialityIds = _specialTags.isEmpty ? <int>[] : _specialTags.map((e) => e.id ?? DEFAULT_ID).toList();
     var body = {
-      'sales_ad_type_id': salesAdTypeId,
       'user_disc_id': userDiscId,
       'parent_disc_id': parentDiscId,
-      'price': marketplace.price,
-      'currency_id': marketplace.currencyId,
-      'is_shipping': marketplace.isShipping,
-      'shipping_method': marketplace.shippingMethod,
-      // 'condition': marketplace.condition,
-      'used_range': marketplace.usedRange,
-      'speed': userDisc?.speed ?? parentDisc?.speed ?? 1,
-      'glide': userDisc?.glide ?? parentDisc?.glide ?? 0,
-      'turn': userDisc?.turn ?? parentDisc?.turn ?? 0,
-      'fade': userDisc?.fade ?? parentDisc?.fade ?? 0,
+      'used_range': _usedValue.toInt(),
       'disc_plastic_id': _plastic.id,
       'weight': _weight.text,
       'color': colorValue,

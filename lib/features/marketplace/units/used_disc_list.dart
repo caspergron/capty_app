@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
@@ -15,6 +13,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class UsedDiscList extends StatelessWidget {
   final String label;
@@ -40,7 +39,7 @@ class UsedDiscList extends StatelessWidget {
         ),
         const SizedBox(height: 08),
         SizedBox(
-          height: 226 + 10,
+          height: 218 + 10,
           child: ListView.builder(
             shrinkWrap: true,
             clipBehavior: Clip.antiAlias,
@@ -71,9 +70,9 @@ class UsedDiscList extends StatelessWidget {
           margin: EdgeInsets.only(left: index == 0 ? gap : 0, right: index == discs.length - 1 ? gap : 08),
           decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(12)),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 08),
+              const SizedBox(height: 10),
               Center(
                 child: Builder(builder: (context) {
                   if (userDisc?.media?.url != null) {
@@ -114,11 +113,11 @@ class UsedDiscList extends StatelessWidget {
                   errorWidget: _errorImageBox,
                 ),
               ),*/
-              const SizedBox(height: 06),
+              const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 04),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       parentDisc?.name ?? 'n/a'.recast,
@@ -136,9 +135,9 @@ class UsedDiscList extends StatelessWidget {
                     const SizedBox(height: 02),
                     Text(
                       item.address?.formatted_city_state_country ?? '',
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyles.text10_400.copyWith(color: mediumBlue),
+                      style: TextStyles.text12_400.copyWith(color: mediumBlue),
                     ),
                   ],
                 ),

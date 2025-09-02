@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -22,6 +20,7 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/marketplace/sales_ad_api.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:provider/provider.dart';
 
 class MarketplaceRepository {
   Future<List<Tag>> fetchSpecialityDiscMenus({int isSpecial = 1}) async {
@@ -69,8 +68,8 @@ class MarketplaceRepository {
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 
-  Future<SalesAd?> fetchMarketplaceDetails(int marketplaceId) async {
-    var endpoint = '${ApiUrl.user.marketplaceDetails}$marketplaceId';
+  Future<SalesAd?> fetchMarketplaceDetails(String params) async {
+    var endpoint = '${ApiUrl.user.marketplaceDetails}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return SalesAd.fromJson(apiResponse.response['data']);
@@ -96,7 +95,11 @@ class MarketplaceRepository {
     var endpoint = '${ApiUrl.user.salesAdList}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    final salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    // final salesAdList = salesAdApi.salesAdList ?? [];
+    // if (salesAdList.isEmpty) return [];
+    // final seenIds = <int>{};
+    // return salesAdList.where((ad) => seenIds.add(ad.id.nullToInt)).toList();
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 

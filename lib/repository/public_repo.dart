@@ -1,6 +1,3 @@
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -26,6 +23,7 @@ import 'package:app/models/common/tags_api.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/models/marketplace/marketplace_api.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
+import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/app_statistics.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/public/country_api.dart';
@@ -37,6 +35,8 @@ import 'package:app/preferences/app_preferences.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 class PublicRepository {
   Future<List<Country>> fetchCountries() async {
@@ -133,6 +133,13 @@ class PublicRepository {
     if (apiResponse.status != 200) return [];
     var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
     return marketplaceApi.categories.haveList ? marketplaceApi.categories! : [];
+  }
+
+  Future<SalesAd?> fetchMarketplaceDetails(String params) async {
+    var endpoint = '${ApiUrl.public.marketplaceDetails}$params';
+    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return null;
+    return SalesAd.fromJson(apiResponse.response['data']);
   }
 
   Future<List<Brand>> fetchAllBrands() async {
