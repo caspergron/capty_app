@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/components/delete_address_dialog.dart';
 import 'package:app/libraries/flush_popup.dart';
@@ -8,14 +6,16 @@ import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class AddressList extends StatelessWidget {
+  final bool isSelectable;
   final List<Address> addressList;
   final Function(Address, int)? onItem;
   final Function(Address, int)? onDelete;
   final Function(Address, int)? onUpdate;
 
-  const AddressList({this.onUpdate, this.onItem, this.onDelete, this.addressList = const []});
+  const AddressList({this.isSelectable = false, this.onUpdate, this.onItem, this.onDelete, this.addressList = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +33,8 @@ class AddressList extends StatelessWidget {
     var item = addressList[index];
     var editIcon = SvgImage(image: Assets.svg1.edit, color: warning, height: 20);
     var deleteIcon = SvgImage(image: Assets.svg1.trash, color: error, height: 20);
+    // print(item.latitude);
+    // print(item.longitude);
     return InkWell(
       onTap: () => _onSelect(item, index),
       child: Container(
@@ -88,7 +90,7 @@ class AddressList extends StatelessWidget {
   void _onDelete(Address item, int index) => deleteAddressDialog(onDelete: () => onDelete!(item, index));
 
   void _onSelect(Address item, int index) {
-    if (onItem == null) return;
+    if (onItem == null || !isSelectable) return;
     if (!item.is_home) return FlushPopup.onInfo(message: 'please_select_your_home_address'.recast);
     onItem!(item, index);
   }

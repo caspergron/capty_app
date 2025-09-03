@@ -88,7 +88,11 @@ class MarketplaceViewModel with ChangeNotifier {
     if (salesAdPaginate.page == 1) salesAdDiscs.clear();
     salesAdPaginate.length = response.length;
     if (salesAdPaginate.length >= LENGTH_20) salesAdPaginate.page++;
-    if (response.isNotEmpty) salesAdDiscs.addAll(response);
+    if (response.isNotEmpty) {
+      salesAdDiscs.addAll(response);
+      // final seenIds = <int>{};
+      // salesAdDiscs.where((ad) => seenIds.add(ad.id.nullToInt)).toList();
+    }
     salesAdPaginate.pageLoader = false;
     notifyListeners();
     if (salesAdDiscs.isNotEmpty) salesAdScrollControl.addListener(_salesAdPaginationCheck);

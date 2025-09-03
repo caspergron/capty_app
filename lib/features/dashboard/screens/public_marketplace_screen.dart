@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/auth_menu.dart';
@@ -12,8 +16,6 @@ import 'package:app/themes/gradients.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PublicMarketplaceScreen extends StatefulWidget {
   final Country country;

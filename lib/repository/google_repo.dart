@@ -46,6 +46,7 @@ class GoogleRepository {
   Future<Map<String, dynamic>?> addressInfoByCoordinates(Coordinates coordinates) async {
     var headers = {'Accept': 'application/json'};
     var endpoint = '$GOOGLE_API&latlng=${coordinates.lat},${coordinates.lng}';
+    print(endpoint);
     var response = await http.get(Uri.parse(endpoint), headers: headers);
     if (response.statusCode != 200) return null;
     var json = jsonDecode(response.body);

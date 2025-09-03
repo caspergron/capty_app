@@ -3,7 +3,7 @@ description: "Disk Golf Application"
 
 publish_to: 'none'
 
-version: 1.0.6+16 # android: 1.0.5+15, ios: 1.0.5+1
+version: 1.0.6+17 # android: 1.0.6+17, ios: 1.0.6+2
 
 environment:
   sdk: ^3.6.1

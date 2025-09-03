@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/media.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/plastic/plastic.dart';
 import 'package:app/preferences/user_preferences.dart';
-import 'package:flutter/cupertino.dart';
 
 class UserDisc {
   int? id;

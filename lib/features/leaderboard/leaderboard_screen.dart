@@ -84,6 +84,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
 
   Widget _screenView(BuildContext context) {
     var label = _tabIndex == 0 ? _modelData.clubMenu.label.recast : _modelData.friendMenu.label.recast;
+    final menuValue = _tabIndex == 0 ? _modelData.clubMenu.value : _modelData.friendMenu.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,7 +94,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
             SizedBox(width: Dimensions.screen_padding),
             Text(label, style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500, height: 1)),
             const SizedBox(width: 10),
-            InkWell(onTap: leaderboardDialog, child: SvgImage(image: Assets.svg1.info, color: primary, height: 24)),
+            InkWell(onTap: () => leaderboardDialog(menu: menuValue), child: SvgImage(image: Assets.svg1.info, color: primary, height: 24)),
             SizedBox(width: Dimensions.screen_padding),
           ],
         ),
@@ -163,8 +164,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
         DataModelMenuList(menu: _modelData.friendMenu, menuItems: LEADERBOARD_CATEGORY_LIST, onTap: _modelData.onFriendMenu),
         const SizedBox(height: 14),
         PlayersList(
-          topPlayers: topPlayers,
           players: otherPlayers,
+          topPlayers: topPlayers,
           gap: Dimensions.screen_padding,
           onItem: (item) => Routes.user.player_profile(playerId: item.id!).push(),
         ),
@@ -218,7 +219,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                 text: isClub ? 'share_the_app_with_other_members_of'.recast : 'share_the_app_with_your_friends'.recast,
                 children: [
                   const TextSpan(text: ' '),
-                  TextSpan(text: _modelData.clubLeaderboard.clubName ?? ''),
+                  TextSpan(text: isClub ? (_modelData.clubLeaderboard.clubName ?? '') : ''),
                   const TextSpan(text: ' '),
                   TextSpan(text: 'to_see_more_people_on_this_leaderboard'.recast),
                 ],

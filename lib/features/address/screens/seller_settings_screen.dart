@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/constants/app_keys.dart';
@@ -21,6 +17,8 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/flutter_switch.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SellerSettingsScreen extends StatefulWidget {
   final bool isSelectable;
@@ -89,6 +87,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
         homeAddress == null
             ? _AddAddressOption(label: 'add_your_home_address', onTap: Routes.user.add_address(address: Address(label: 'home')).push)
             : AddressList(
+                isSelectable: widget.isSelectable,
                 addressList: [homeAddress],
                 onItem: (item, index) => !widget.isSelectable ? null : _onSelect(item),
                 onDelete: (item, index) => _viewModel.deleteAddress(item),
@@ -99,6 +98,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
         const SizedBox(height: 10),
         if (otherAddresses.isNotEmpty)
           AddressList(
+            isSelectable: widget.isSelectable,
             addressList: otherAddresses,
             onItem: (item, index) => !widget.isSelectable ? null : _onSelect(item),
             onDelete: (item, index) => _viewModel.deleteAddress(item),

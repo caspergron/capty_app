@@ -1,13 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
+import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/discs/components/add_home_address_dialog.dart';
@@ -30,6 +27,8 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class CreateSalesAdViewModel with ChangeNotifier {
   var step = 1;
@@ -99,8 +98,8 @@ class CreateSalesAdViewModel with ChangeNotifier {
     var response = await sl<DiscRepository>().plasticsByDiscBrandId(brandId);
     if (response.isNotEmpty) plastics = response;
     var invalidPlastic = plastics.isEmpty || uDiscItem.discPlasticId == null;
-    var index = invalidPlastic ? -1 : plastics.indexWhere((item) => item.id == uDiscItem.discPlasticId);
-    plastic = index >= 0 ? plastics[index] : plastics.first;
+    var index = invalidPlastic ? -1 : plastics.indexWhere((item) => item.id.nullToInt == uDiscItem.discPlasticId.nullToInt);
+    if (index >= 0) plastic = plastics[index];
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }

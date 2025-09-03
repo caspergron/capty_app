@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/circle_loader.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -31,6 +27,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatBuddy buddy;
@@ -163,9 +161,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _chatInputArea(BuildContext context) {
+    var radius = const Radius.circular(08);
     var salesAd = _modelData.receiver.salesAd;
     var isContent = _modelData.isUploadType || _modelData.images.isNotEmpty;
-    var radius = const Radius.circular(08);
     var top = isContent ? Radius.zero : radius;
     var borderRadius = BorderRadius.only(topLeft: top, topRight: top, bottomLeft: radius, bottomRight: radius);
     return Column(
@@ -188,21 +186,33 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         Container(
           width: double.infinity,
+          alignment: Alignment.bottomRight,
           padding: EdgeInsets.only(top: isContent ? 02 : 0),
-          decoration: BoxDecoration(color: offWhite2, borderRadius: borderRadius),
-          child: InputField(
-            maxLines: 6,
-            cursorHeight: 14,
-            focusNode: _focusNode,
-            hintText: '${'type_your_message_here'.recast}..',
-            controller: _modelData.chatMessage,
-            onChanged: (val) => setState(() {}),
-            onTap: _onTapInputField,
-            enabledBorder: lightBlue,
-            focusedBorder: lightBlue,
-            borderRadius: !isContent ? null : BorderRadius.only(bottomLeft: radius, bottomRight: radius),
-            suffixIcon: Padding(padding: const EdgeInsets.symmetric(horizontal: 08), child: _sendButton),
-            // prefixIcon: PrefixMenu(icon: Assets.svg1.paperclip, isFocus: _focusNode.hasFocus, onTap: _onPrefix),
+          decoration: BoxDecoration(borderRadius: borderRadius),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: InputField(
+                  maxLines: 6,
+                  cursorHeight: 14,
+                  focusNode: _focusNode,
+                  onTap: _onTapInputField,
+                  enabledBorder: lightBlue,
+                  focusedBorder: lightBlue,
+                  onChanged: (v) =>setState(() {}),
+                  controller: _modelData.chatMessage,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  hintText: '${'type_your_message_here'.recast}..',
+                  borderRadius: !isContent ? null : BorderRadius.only(bottomLeft: radius, bottomRight: radius),
+                  // suffixIcon: Container(padding: const EdgeInsets.symmetric(horizontal: 08), child: _sendButton),
+                  // prefixIcon: PrefixMenu(icon: Assets.svg1.paperclip, isFocus: _focusNode.hasFocus, onTap: _onPrefix),
+                ),
+              ),
+              const SizedBox(width: 08),
+              _sendButton,
+            ],
           ),
         ),
       ],
@@ -217,11 +227,10 @@ class _ChatScreenState extends State<ChatScreen> {
     unawaited(_viewModel.scrollDown());
   }
 
-  Widget? get _sendButton {
+  Widget get _sendButton {
     var isDisabled = _modelData.chatMessage.text.isEmpty /*&& _modelData.images.isEmpty && _modelData.documents.isEmpty*/;
-    // if (isShow) return null;
-    var icon = SvgImage(image: Assets.svg1.paper_plane, color: white, height: 17);
-    var circleAvatar = CircleAvatar(radius: 16, backgroundColor: primary, child: icon);
+    var icon = SvgImage(image: Assets.svg1.paper_plane, color: white, height: 18);
+    var circleAvatar = CircleAvatar(radius: 18, backgroundColor: primary, child: icon);
     return InkWell(onTap: isDisabled ? null : _viewModel.addMessage, child: Opacity(opacity: isDisabled ? 0.3 : 1, child: circleAvatar));
   }
 }

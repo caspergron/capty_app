@@ -1063,7 +1063,28 @@ const APP_STRINGS = {
       'We couldn’t find any discs to display here. Add some data to see the chart.',
   'pdga_improvement': 'PDGA Improvement',
   'yearly_improvement': 'Yearly Improvement',
+  'selected_location': 'Selected Location',
   // New translations
+  'pdga_leaderboard': 'PDGA Leaderboard',
+  'pdga_yearly_improvement': 'PDGA Yearly Improvement',
+  'what_does_it_show': 'What does it show',
+  'how_is_it_calculated': 'How is it calculated',
+  'where_do_the_data_come_from': 'Where do the data come from',
+  'how_often_is_it_updated': 'How often is it updated',
+  'how_do_i_improve_my_rank': 'How do I improve my rank',
+  'i_do_not_want_to_be_on_the_leaderboard': "I don't want to be on the leaderboard",
+
+  'we_list_people_based_on_who_has_the_best_pdga_rating': 'We list people based on who has the best PDGA rating.',
+  'it_is_not_calculated_but_we_get_the_data_from_pdga': 'It is not calculated but we get the data from PDGA.',
+  'data_is_being_pulled_from_pdga': 'Data is being pulled from PDGA.com.',
+  'on_every_second_tuesday_of_the_month_pdga_update_the_data_and_we_then_also_update_them_here':
+      'On every second tuesday of the month, PDGA update the data and we then also update them here.',
+  'play_more_play_better': 'Play more, Play better :)',
+  'you_can_go_to_settings_and_turn_this_off': 'You can go to settings and turn this off.',
+
+  'the_people_with_the_best_yearly_improvement_shows_in_top': 'The people with the best yearly improvement shows in top.',
+  'we_grab_the_pdga_rating_you_had_last_year_and_then_we_calculate_your_improvement':
+      'We grab the PDGA rating you had last year and then we calculate your improvement.',
   '': ''
 };
 
