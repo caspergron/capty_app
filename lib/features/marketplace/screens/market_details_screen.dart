@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -29,7 +25,8 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MarketDetailsScreen extends StatefulWidget {
   final bool isDelay;
@@ -87,7 +84,6 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
     var marketplace = _modelData.marketplace;
     if (marketplace.id == null) return const SizedBox.shrink();
     var userDisc = marketplace.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     var specialities = marketplace.specialityDiscs ?? [];
     var weight = userDisc?.weight == null ? 'n/a'.recast : '${userDisc?.weight.formatDouble} ${'gram'.recast}';
     var isDescription = marketplace.notes.toKey.isNotEmpty;
@@ -114,35 +110,14 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
                   InkWell(
                     onTap: () => zoomImageDialog(salesAd: _modelData.marketplace),
                     child: Center(
-                      child: Builder(builder: (context) {
-                        if (userDisc?.media?.url != null) {
-                          // return Image.network(userDisc!.media!.url!);
-                          return CircleImage(
-                            borderWidth: 0.4,
-                            radius: 22.width,
-                            image: userDisc?.media?.url,
-                            backgroundColor: primary,
-                            placeholder: const FadingCircle(color: lightBlue),
-                            errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-                          );
-                        } else if (userDisc?.color != null) {
-                          return ColoredDisc(
-                            size: 60.width,
-                            iconSize: 24.width,
-                            discColor: userDisc!.disc_color!,
-                            brandIcon: parentDisc?.brand_media.url,
-                          );
-                        } else {
-                          return CircleImage(
-                            borderWidth: 0.4,
-                            radius: 31.width,
-                            image: parentDisc?.media.url,
-                            backgroundColor: primary,
-                            placeholder: const FadingCircle(color: lightBlue),
-                            errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-                          );
-                        }
-                      }),
+                      child: CircleImage(
+                        borderWidth: 0.4,
+                        radius: 22.width,
+                        image: userDisc?.media?.url,
+                        backgroundColor: primary,
+                        placeholder: const FadingCircle(color: lightBlue),
+                        errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
+                      ),
                     ),
                   ),
                   Positioned(left: 0, right: 0, bottom: -20, child: Center(child: _discBasicInfo))
@@ -202,7 +177,7 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     flex: 10,
-                    child: _DiscInfo(icon: Assets.svg1.target, label: 'disc_type'.recast, value: parentDisc?.type ?? 'n/a'.recast),
+                    child: _DiscInfo(icon: Assets.svg1.target, label: 'disc_type'.recast, value: userDisc?.type ?? 'n/a'.recast),
                   ),
                   SizedBox(width: Dimensions.dialog_padding),
                 ],
@@ -275,7 +250,7 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
   }
 
   Widget get _discBasicInfo {
-    var name = _modelData.marketplace.userDisc?.parentDisc?.name ?? '';
+    var name = _modelData.marketplace.userDisc?.name ?? '';
     var price = '${_modelData.marketplace.price.formatDouble} ${_modelData.marketplace.currency_code}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 02),

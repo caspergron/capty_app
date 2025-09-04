@@ -94,11 +94,13 @@ class CreateSalesAdViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchPlasticsByDiscBrandId(UserDisc uDiscItem) async {
-    var brandId = userDisc.parentDisc!.discBrandId!;
+    var brandId = userDisc.brand?.id;
+    if (brandId == null) loader = Loader(initial: false, common: false);
+    if (brandId == null) return notifyListeners();
     var response = await sl<DiscRepository>().plasticsByDiscBrandId(brandId);
     if (response.isNotEmpty) plastics = response;
-    var invalidPlastic = plastics.isEmpty || uDiscItem.discPlasticId == null;
-    var index = invalidPlastic ? -1 : plastics.indexWhere((item) => item.id.nullToInt == uDiscItem.discPlasticId.nullToInt);
+    var invalidPlastic = plastics.isEmpty || uDiscItem.plastic?.id == null;
+    var index = invalidPlastic ? -1 : plastics.indexWhere((item) => item.id.nullToInt == uDiscItem.plastic?.id.nullToInt);
     if (index >= 0) plastic = plastics[index];
     loader = Loader(initial: false, common: false);
     notifyListeners();
@@ -139,7 +141,7 @@ class CreateSalesAdViewModel with ChangeNotifier {
     var body = {
       'user_disc_id': userDisc.id,
       'sales_ad_type_id': 1,
-      'parent_disc_id': userDisc.parentDisc?.id,
+      'parent_disc_id': userDisc.parentDiscId,
       'disc_plastic_id': plastic.id,
       'currency_id': UserPreferences.currency.id,
       'shipping_method': null,

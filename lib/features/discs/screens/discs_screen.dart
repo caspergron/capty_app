@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -36,6 +32,8 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/icon_box.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _TABS_LIST = ['your_discs', 'wishlist'];
 var _All_BAG = DiscBag(id: 1000001, name: 'all');
@@ -170,7 +168,7 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
   void _onAcceptDragDisc(UserDisc disc, DiscBag targetBag) {
     var isInvalidBag = targetBag.id == _All_BAG.id || targetBag.id == _NEW_BAG.id;
     if (isInvalidBag) return FlushPopup.onInfo(message: 'you_can_not_move_disc_on_this_bag'.recast);
-    var message = '${disc.parentDisc?.name ?? 'this_disc'.recast} ${'already_in'.recast} ${targetBag.name ?? 'this_bag'.recast}';
+    var message = '${disc.name ?? 'this_disc'.recast} ${'already_in'.recast} ${targetBag.name ?? 'this_bag'.recast}';
     if (disc.bagId == targetBag.id) return FlushPopup.onInfo(message: message);
     var bodyParams = {'user_disc_id': disc.id, 'to_bag_id': targetBag.id};
     _viewModel.onMoveDiscToAnotherBag(bodyParams, targetBag.bag_menu_display_name);

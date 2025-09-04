@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
@@ -23,7 +20,8 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // type: sell, , sold
 Future<void> salesAdDialog({
@@ -83,7 +81,6 @@ class _DialogViewState extends State<_DialogView> {
   Widget _screenView(BuildContext context) {
     var marketplace = widget.marketplace;
     var userDisc = marketplace.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     var isDescription = marketplace.notes.toKey.isNotEmpty;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -92,7 +89,7 @@ class _DialogViewState extends State<_DialogView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(parentDisc?.name ?? 'n/a'.recast, style: TextStyles.text16_600.copyWith(color: lightBlue)),
+            Text(userDisc?.name ?? 'n/a'.recast, style: TextStyles.text16_600.copyWith(color: lightBlue)),
             InkWell(onTap: backToPrevious, child: SvgImage(image: Assets.svg1.close_1, height: 18, color: lightBlue)),
           ],
         ),
@@ -113,34 +110,14 @@ class _DialogViewState extends State<_DialogView> {
         ),
         const SizedBox(height: 28),
         Center(
-          child: Builder(builder: (context) {
-            if (userDisc?.media?.url != null) {
-              return ImageNetwork(
-                radius: 08,
-                width: 50.width,
-                height: 50.width,
-                image: userDisc?.media?.url,
-                placeholder: const FadingCircle(size: 60, color: lightBlue),
-                errorWidget: _loaderBox,
-              );
-            } else if (userDisc?.color != null) {
-              return ColoredDisc(
-                size: 50.width,
-                iconSize: 24,
-                discColor: userDisc!.disc_color!,
-                brandIcon: parentDisc?.brand_media.url,
-              );
-            } else {
-              return ImageNetwork(
-                radius: 08,
-                width: 50.width,
-                height: 50.width,
-                image: parentDisc?.media.url,
-                placeholder: const FadingCircle(size: 60, color: lightBlue),
-                errorWidget: _loaderBox,
-              );
-            }
-          }),
+          child: ImageNetwork(
+            radius: 08,
+            width: 50.width,
+            height: 50.width,
+            image: userDisc?.media?.url,
+            placeholder: const FadingCircle(size: 60, color: lightBlue),
+            errorWidget: _loaderBox,
+          ),
         ),
         if (isDescription) const SizedBox(height: 20),
         if (isDescription) Center(child: Text('About this Disc', style: TextStyles.text16_600.copyWith(color: lightBlue))),

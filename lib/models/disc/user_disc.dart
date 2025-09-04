@@ -1,18 +1,16 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/media.dart';
-import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/plastic/plastic.dart';
 import 'package:app/preferences/user_preferences.dart';
+import 'package:flutter/cupertino.dart';
 
 class UserDisc {
   int? id;
   int? userId;
-  int? discId;
-  int? discPlasticId;
+  int? parentDiscId;
   String? name;
+  String? type;
   double? weight;
   double? speed;
   double? glide;
@@ -23,7 +21,6 @@ class UserDisc {
   int? quantity;
   int? bagId;
   Media? media;
-  ParentDisc? parentDisc;
   Plastic? plastic;
   Brand? brand;
 
@@ -34,19 +31,19 @@ class UserDisc {
   UserDisc({
     this.id,
     this.userId,
-    this.discId,
-    this.discPlasticId,
+    this.parentDiscId,
     this.name,
+    this.type,
     this.weight,
     this.speed,
     this.glide,
     this.turn,
+    this.fade,
     this.color,
     this.description,
     this.quantity,
     this.bagId,
     this.media,
-    this.parentDisc,
     this.plastic,
     this.brand,
   });
@@ -54,9 +51,9 @@ class UserDisc {
   UserDisc.fromJson(json) {
     id = json['id'];
     userId = json['user_id'];
-    discId = json['disc_id'];
-    discPlasticId = json['disc_plastic_id'];
+    parentDiscId = json['disc_id'];
     name = json['name'];
+    type = json['type'];
     weight = json['weight'] == null ? null : double.parse('${json['weight']}');
     speed = json['speed'] == null ? null : double.parse('${json['speed']}');
     glide = json['glide'] == null ? null : double.parse('${json['glide']}');
@@ -67,7 +64,6 @@ class UserDisc {
     quantity = json['quantity'];
     bagId = json['bag_id'];
     media = json['media'] != null ? Media.fromJson(json['media']) : null;
-    parentDisc = json['disc'] != null ? ParentDisc.fromJson(json['disc']) : null;
     plastic = json['disc_brand_plastic'] != null ? Plastic.fromJson(json['disc_brand_plastic']) : null;
     brand = json['brand'] != null ? Brand.fromJson(json['brand']) : null;
   }
@@ -76,8 +72,9 @@ class UserDisc {
     final map = <String, dynamic>{};
     map['id'] = id;
     map['user_id'] = userId;
-    map['disc_id'] = discId;
-    map['disc_plastic_id'] = discPlasticId;
+    map['disc_id'] = parentDiscId;
+    map['name'] = name;
+    map['type'] = type;
     map['weight'] = weight;
     map['speed'] = speed;
     map['glide'] = glide;
@@ -87,7 +84,6 @@ class UserDisc {
     map['quantity'] = quantity;
     map['bag_id'] = bagId;
     if (media != null) map['media'] = media?.toJson();
-    if (parentDisc != null) map['disc'] = parentDisc?.toJson();
     if (plastic != null) map['disc_brand_plastic'] = plastic?.toJson();
     if (brand != null) map['brand'] = brand?.toJson();
     return map;
@@ -95,9 +91,9 @@ class UserDisc {
 
   Map<String, dynamic> get analyticParams => {
         'user_disc_id': id,
-        'parent_disc_id': parentDisc?.id,
-        'disc_name': parentDisc?.name,
+        'parent_disc_id': parentDiscId,
+        'disc_name': name,
         'image': media?.url,
-        'brand_id': parentDisc?.brand?.id,
+        'brand_id': brand?.id,
       };
 }

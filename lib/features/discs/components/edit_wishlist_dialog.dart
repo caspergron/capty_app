@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
@@ -41,6 +38,8 @@ import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/view/color_view.dart';
 import 'package:app/widgets/view/unit_suffix.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 Future<void> editWishlistDisc({required Wishlist wishlist, bool isUpdateAndAdd = false, Function(Wishlist, bool)? onSave}) async {
   var context = navigatorKey.currentState!.context;
@@ -104,7 +103,7 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _fetchPlasticsByDiscBrandId() async {
     var brandId = widget.wishlist.disc?.discBrandId;
-    var plasticId = widget.wishlist.userDisc?.discPlasticId;
+    var plasticId = widget.wishlist.userDisc?.plastic?.id;
     var response = await sl<DiscRepository>().plasticsByDiscBrandId(brandId!);
     if (response.isNotEmpty) _plastics = response;
     var index = _plastics.isEmpty || plasticId == null ? -1 : _plastics.indexWhere((item) => item.id == plasticId);

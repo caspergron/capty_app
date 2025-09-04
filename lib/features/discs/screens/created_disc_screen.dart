@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -20,6 +18,7 @@ import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
 
 class CreatedDiscScreen extends StatefulWidget {
   final UserDisc disc;
@@ -92,7 +91,6 @@ class _CreatedDiscScreenState extends State<CreatedDiscScreen> {
 
   Widget _screenView(BuildContext context) {
     var userDisc = widget.disc;
-    var parentDisc = userDisc.parentDisc;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -108,17 +106,7 @@ class _CreatedDiscScreenState extends State<CreatedDiscScreen> {
           child: Stack(
             children: [
               Builder(builder: (context) {
-                if (userDisc.media?.url != null) {
-                  return ImageNetwork(
-                    radius: 08,
-                    width: 65.width,
-                    height: 75.width,
-                    fit: BoxFit.contain,
-                    image: userDisc.media?.url,
-                    placeholder: const FadingCircle(size: 40, color: lightBlue),
-                    errorWidget: Center(child: SvgImage(image: Assets.svg1.disc_2, fit: BoxFit.cover, height: 30.width)),
-                  );
-                } else if (userDisc.color != null) {
+                if (userDisc.color != null) {
                   return Container(
                     height: 75.width,
                     width: double.infinity,
@@ -129,7 +117,7 @@ class _CreatedDiscScreenState extends State<CreatedDiscScreen> {
                       size: 70.width,
                       iconSize: 30.width,
                       discColor: userDisc.disc_color!,
-                      brandIcon: parentDisc?.brand_media.url,
+                      brandIcon: userDisc.brand?.media?.url,
                     ),
                   );
                 } else {
@@ -138,9 +126,9 @@ class _CreatedDiscScreenState extends State<CreatedDiscScreen> {
                     width: 65.width,
                     height: 75.width,
                     fit: BoxFit.contain,
-                    image: parentDisc?.media.url,
+                    image: userDisc.media?.url,
                     placeholder: const FadingCircle(size: 40, color: lightBlue),
-                    errorWidget: SvgImage(image: Assets.svg1.disc_2, fit: BoxFit.cover, width: 65.width),
+                    errorWidget: Center(child: SvgImage(image: Assets.svg1.disc_2, fit: BoxFit.cover, height: 30.width)),
                   );
                 }
               }),
@@ -159,8 +147,8 @@ class _CreatedDiscScreenState extends State<CreatedDiscScreen> {
   }
 
   Widget get _discInfo {
-    var name = widget.disc.parentDisc?.name ?? 'n/a'.recast;
-    var subLabel = '${widget.disc.parentDisc?.brand?.name ?? 'n/a'.recast} . ${widget.disc.parentDisc?.type ?? 'n/a'.recast}';
+    var name = widget.disc.name ?? 'n/a'.recast;
+    var subLabel = '${widget.disc.brand?.name ?? 'n/a'.recast} . ${widget.disc.type ?? 'n/a'.recast}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 06),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(12)),

@@ -20,6 +20,7 @@ class MapAddressPicker extends StatefulWidget {
 }
 
 class _MapAddressPickerState extends State<MapAddressPicker> {
+  var _mapStyle = '';
   var _coordinates = Coordinates(lat: 23.622857, lng: 90.499010);
   var _markers = <Marker>{};
   GoogleMapController? _mapController;
@@ -31,6 +32,7 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
   @override
   void initState() {
     super.initState();
+    _loadMapStyles();
     _coordinates = widget.coordinates;
     _loadMarkerIcon();
     // setState(() {});
@@ -42,6 +44,8 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
     _mapController?.dispose();
     super.dispose();
   }
+
+  Future<void> _loadMapStyles() async => _mapStyle = await rootBundle.loadString('assets/json/uber_style.json');
 
   Future<void> _updateMapLocation() async {
     if (_coordinates.lat != widget.coordinates.lat || _coordinates.lng != widget.coordinates.lng) {
@@ -63,6 +67,7 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
+      style: _mapStyle,
       markers: _markers,
       zoomControlsEnabled: widget.zoomEnabled,
       onMapCreated: _initializeMapController,

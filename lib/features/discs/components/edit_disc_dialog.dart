@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
@@ -43,6 +40,8 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/view/color_view.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 Future<void> editDiscDialog({required UserDisc disc, Function(UserDisc)? onSave}) async {
   var context = navigatorKey.currentState!.context;
@@ -101,8 +100,8 @@ class _DialogViewState extends State<_DialogView> {
 
   void _setInitialStates() {
     var disc = widget.disc;
-    _brand.text = disc.parentDisc?.brand?.name ?? 'n/a'.recast;
-    _model.text = disc.parentDisc?.name ?? 'n/a'.recast;
+    _brand.text = disc.brand?.name ?? 'n/a'.recast;
+    _model.text = disc.name ?? 'n/a'.recast;
     _speed.text = '${disc.speed == null ? 0 : disc.speed.formatDouble}';
     _glide.text = '${disc.glide == null ? 0 : disc.glide.formatDouble}';
     _turn.text = '${disc.turn == null ? 0 : disc.turn.formatDouble}';
@@ -114,10 +113,11 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Future<void> _fetchPlasticsByDiscBrandId() async {
-    var response = await sl<DiscRepository>().plasticsByDiscBrandId(widget.disc.parentDisc!.discBrandId!);
+    if (widget.disc.brand?.id == null) return;
+    var response = await sl<DiscRepository>().plasticsByDiscBrandId(widget.disc.brand!.id!);
     if (response.isNotEmpty) _plastics = response;
-    var invalidPlastic = _plastics.isEmpty || widget.disc.discPlasticId == null;
-    var index = invalidPlastic ? -1 : _plastics.indexWhere((item) => item.id == widget.disc.discPlasticId);
+    var invalidPlastic = _plastics.isEmpty || widget.disc.plastic?.id == null;
+    var index = invalidPlastic ? -1 : _plastics.indexWhere((item) => item.id == widget.disc.plastic?.id);
     if (index >= 0) _plastic = _plastics[index];
     setState(() {});
   }
@@ -469,11 +469,11 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Map<String, dynamic> get _updateDiscBody {
-    var disc = widget.disc;
+    var parentDiscId = widget.disc.parentDiscId;
     var isMediaUpload = _colorOrImage == 'image';
     var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
     return {
-      'disc_id': disc.discId,
+      'disc_id': parentDiscId,
       'weight': _weight.text,
       'speed': _speed.text,
       'glide': _glide.text,

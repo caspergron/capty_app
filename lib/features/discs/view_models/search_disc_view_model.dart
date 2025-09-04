@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-
 import 'package:app/di.dart';
+import 'package:app/extensions/string_ext.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/system/paginate.dart';
 import 'package:app/repository/disc_repo.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class SearchDiscViewModel with ChangeNotifier {
   var loader = false;
@@ -53,13 +53,27 @@ class SearchDiscViewModel with ChangeNotifier {
     notifyListeners();
   }*/
 
-  Future<void> fetchSearchDisc(String pattern) async {
-    if (pattern.isEmpty) return _onEmptyKey();
+  /*Future<void> fetchSearchDisc(String pattern) async {
+    if (pattern.toKey.length < 3) return _onEmptyKey();
     final currentRequest = ++_searchCounter;
     var body = {'query': pattern};
     if (kDebugMode) print(body);
     var response = await sl<DiscRepository>().searchDiscByName(body: body);
     if (currentRequest != _searchCounter) return;
+    isSearched = true;
+    searchedDisc.clear();
+    if (response.isNotEmpty) searchedDisc = response;
+    notifyListeners();
+  }*/
+
+  Future<void> fetchSearchDisc(String pattern) async {
+    if (pattern.toKey.length < 2) return _onEmptyKey(); // Use clearSearch instead of _onEmptyKey
+    final currentRequest = ++_searchCounter;
+    var body = {'query': pattern};
+    if (kDebugMode) print(body);
+    var response = await sl<DiscRepository>().searchDiscByName(body: body);
+    print('currentRequest: $currentRequest -> _searchCounter: $_searchCounter');
+    if (currentRequest != _searchCounter) return _onEmptyKey();
     isSearched = true;
     searchedDisc.clear();
     if (response.isNotEmpty) searchedDisc = response;

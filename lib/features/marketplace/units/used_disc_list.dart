@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
@@ -14,7 +12,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class UsedDiscList extends StatelessWidget {
   final String label;
@@ -57,7 +55,6 @@ class UsedDiscList extends StatelessWidget {
   Widget _clubItemCard(BuildContext context, int index) {
     var item = discs[index];
     var userDisc = item.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     var gap = Dimensions.screen_padding;
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(item),
@@ -75,45 +72,15 @@ class UsedDiscList extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               Center(
-                child: Builder(builder: (context) {
-                  if (userDisc?.media?.url != null) {
-                    return ImageNetwork(
-                      height: 132,
-                      width: 32.width,
-                      fit: BoxFit.contain,
-                      image: userDisc?.media?.url,
-                      placeholder: const FadingCircle(size: 40, color: lightBlue),
-                      errorWidget: _errorImageBox,
-                    );
-                  } else if (userDisc?.color != null) {
-                    return ColoredDisc(
-                      size: 132,
-                      iconSize: 24,
-                      discColor: userDisc!.disc_color!,
-                      brandIcon: parentDisc?.brand_media.url,
-                    );
-                  } else {
-                    return ImageNetwork(
-                      height: 132,
-                      width: 32.width,
-                      fit: BoxFit.contain,
-                      image: parentDisc?.media.url,
-                      placeholder: const FadingCircle(size: 40, color: lightBlue),
-                      errorWidget: _errorImageBox,
-                    );
-                  }
-                }),
-              ),
-              /*Center(
                 child: ImageNetwork(
                   height: 132,
-                  width: 35.width,
+                  width: 32.width,
                   fit: BoxFit.contain,
-                  image: userDisc?.media?.url ?? parentDisc?.media.url,
-                  // placeholder: const FadingCircle(size: 40, color: lightBlue),
+                  image: userDisc?.media?.url,
+                  placeholder: const FadingCircle(size: 40, color: lightBlue),
                   errorWidget: _errorImageBox,
                 ),
-              ),*/
+              ),
               const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 04),
@@ -121,7 +88,7 @@ class UsedDiscList extends StatelessWidget {
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      parentDisc?.name ?? 'n/a'.recast,
+                      userDisc?.name ?? 'n/a'.recast,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.text12_600.copyWith(color: lightBlue),

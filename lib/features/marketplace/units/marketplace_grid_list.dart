@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -11,7 +9,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MarketplaceGridList extends StatelessWidget {
   final double gap;
@@ -64,7 +62,6 @@ class MarketplaceGridList extends StatelessWidget {
   Widget _discItemCard(BuildContext context, int index) {
     var item = discList[index];
     var userDisc = item.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     return InkWell(
       onTap: onItem == null ? null : () => onItem!(item, index),
       child: TweenListItem(
@@ -76,49 +73,18 @@ class MarketplaceGridList extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 08),
-              Builder(builder: (context) {
-                if (userDisc?.media?.url != null) {
-                  return CircleImage(
-                    radius: 54,
-                    borderWidth: 0.4,
-                    borderColor: lightBlue,
-                    image: userDisc?.media?.url,
-                    placeholder: const FadingCircle(size: 40),
-                    errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
-                    // errorWidget: ColoredDisc(size: 104, iconSize: 24, discColor: Colors.deepOrangeAccent),
-                  );
-                } else if (userDisc?.color != null) {
-                  return ColoredDisc(
-                    size: 108,
-                    iconSize: 24,
-                    discColor: userDisc!.disc_color!,
-                    brandIcon: parentDisc?.brand_media.url,
-                  );
-                } else {
-                  return CircleImage(
-                    radius: 54,
-                    borderWidth: 0.4,
-                    borderColor: lightBlue,
-                    image: parentDisc?.media.url,
-                    placeholder: const FadingCircle(size: 40),
-                    errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: lightBlue),
-                  );
-                }
-              }),
-              /*Center(
-                child: CircleImage(
-                  radius: 54,
-                  borderWidth: 0.4,
-                  backgroundColor: primary,
-                  borderColor: lightBlue,
-                  image: userDisc?.media?.url ?? parentDisc?.media.url,
-                  placeholder: const FadingCircle(size: 40, color: lightBlue),
-                  errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 48, color: lightBlue),
-                ),
-              ),*/
+              CircleImage(
+                radius: 54,
+                borderWidth: 0.4,
+                borderColor: lightBlue,
+                image: userDisc?.media?.url,
+                placeholder: const FadingCircle(size: 40),
+                errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
+                // errorWidget: ColoredDisc(size: 104, iconSize: 24, discColor: Colors.deepOrangeAccent),
+              ),
               const SizedBox(height: 16),
               Text(
-                parentDisc?.name ?? 'n/a'.recast,
+                userDisc?.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1),
@@ -132,7 +98,7 @@ class MarketplaceGridList extends StatelessWidget {
               ),
               const SizedBox(height: 03),
               Text(
-                parentDisc?.brand?.name ?? 'n/a'.recast,
+                userDisc?.brand?.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text12_400.copyWith(color: lightBlue, height: 1.1),

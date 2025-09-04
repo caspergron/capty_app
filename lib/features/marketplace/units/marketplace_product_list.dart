@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_icons/favourite.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -16,7 +14,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MarketplaceProductList extends StatelessWidget {
   final List<SalesAd> discs;
@@ -54,7 +52,6 @@ class MarketplaceProductList extends StatelessWidget {
     var item = discs[index];
     var gap = Dimensions.screen_padding;
     var userDisc = item.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     var distanceLabel = '${item.distance_number.formatInt} ${'km'.recast}';
     var flightDataStyle = TextStyles.text13_600.copyWith(color: lightBlue, height: 1);
     var isMyDisc = UserPreferences.user.id == item.sellerInfo?.id;
@@ -86,37 +83,15 @@ class MarketplaceProductList extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Center(
-                    child: Builder(builder: (context) {
-                      if (userDisc?.media?.url != null) {
-                        // print('name: ${parentDisc?.name} -> image: ${userDisc?.media?.url} -> distance: ${item.address?.distance}');
-                        // return Image.network(userDisc!.media!.url!, height: 100, width: 100);
-                        return CircleImage(
-                          radius: 54,
-                          borderWidth: 0.4,
-                          borderColor: lightBlue,
-                          fit: BoxFit.contain,
-                          image: userDisc?.media?.url,
-                          placeholder: const FadingCircle(size: 40),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
-                        );
-                      } else if (userDisc?.color != null) {
-                        return ColoredDisc(
-                          size: 108,
-                          iconSize: 24,
-                          discColor: userDisc!.disc_color!,
-                          brandIcon: parentDisc?.brand_media.url,
-                        );
-                      } else {
-                        return CircleImage(
-                          radius: 54,
-                          borderWidth: 0.4,
-                          borderColor: lightBlue,
-                          image: parentDisc?.media.url,
-                          placeholder: const FadingCircle(size: 40),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: lightBlue),
-                        );
-                      }
-                    }),
+                    child: CircleImage(
+                      radius: 54,
+                      borderWidth: 0.4,
+                      borderColor: lightBlue,
+                      fit: BoxFit.contain,
+                      image: userDisc?.media?.url,
+                      placeholder: const FadingCircle(size: 40),
+                      errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
+                    ),
                   ),
                   Positioned(
                     left: 04,

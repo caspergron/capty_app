@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:fl_chart/fl_chart.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -18,6 +13,9 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _DURATION = Duration(seconds: 1);
 const _STRAIT_LINE = FlLine(color: primary, strokeWidth: 0.8);
@@ -192,7 +190,7 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
           var style = const TextStyle(color: white, fontWeight: w600, height: 1);
           var scatterSpotIndex = _modelData.findScattedIndex(scatterSpot, index);
           var disc = scatterSpotIndex < 0 ? UserDisc() : _modelData.discBags[index].userDiscs?[scatterSpotIndex] ?? UserDisc();
-          return ScatterTooltipItem(disc.parentDisc?.name ?? '', textStyle: style);
+          return ScatterTooltipItem(disc.name ?? '', textStyle: style);
         },
       ),
       touchCallback: (event, response) {},

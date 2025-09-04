@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/app_keys.dart';
@@ -19,6 +17,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 Future<void> discInfoDialog({
   required UserDisc disc,
@@ -59,7 +58,7 @@ class _DialogView extends StatelessWidget {
   }
 
   Widget _screenView(BuildContext context) {
-    var isDescription = disc.description != null && disc.parentDisc?.description != null;
+    var isDescription = disc.description != null;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +66,7 @@ class _DialogView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(disc.parentDisc?.name ?? 'n/a'.recast, style: TextStyles.text16_600.copyWith(color: lightBlue)),
+            Text(disc.name ?? 'n/a'.recast, style: TextStyles.text16_600.copyWith(color: lightBlue)),
             InkWell(onTap: backToPrevious, child: SvgImage(image: Assets.svg1.close_1, height: 18, color: lightBlue)),
           ],
         ),
@@ -81,7 +80,7 @@ class _DialogView extends StatelessWidget {
         if (isDescription)
           Center(
             child: Text(
-              disc.description ?? disc.parentDisc?.description ?? '',
+              disc.description ?? '',
               textAlign: TextAlign.center,
               style: TextStyles.text12_400.copyWith(color: lightBlue),
             ),
@@ -153,27 +152,18 @@ class _DialogView extends StatelessWidget {
 
   Widget get _discImageInformation {
     return Builder(builder: (context) {
-      if (disc.media?.url != null) {
-        return CircleImage(
-          borderWidth: 0.4,
-          radius: 31.width,
-          image: disc.media?.url,
-          backgroundColor: primary,
-          placeholder: const FadingCircle(color: lightBlue),
-          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-        );
-      } else if (disc.color != null) {
+      if (disc.color != null) {
         return ColoredDisc(
           size: 60.width,
           iconSize: 24.width,
           discColor: disc.disc_color!,
-          brandIcon: disc.parentDisc?.brand_media.url,
+          brandIcon: disc.brand?.media?.url,
         );
       } else {
         return CircleImage(
           borderWidth: 0.4,
           radius: 31.width,
-          image: disc.parentDisc?.media.url,
+          image: disc.media?.url,
           backgroundColor: primary,
           placeholder: const FadingCircle(color: lightBlue),
           errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),

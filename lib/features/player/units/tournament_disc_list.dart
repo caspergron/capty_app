@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -13,6 +11,7 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class TournamentDiscList extends StatelessWidget {
   final List<UserDisc> discs;
@@ -54,7 +53,6 @@ class TournamentDiscList extends StatelessWidget {
 
   Widget _discItemCard(BuildContext context, int index) {
     var item = discs[index];
-    var parentDisc = item.parentDisc;
     return InkWell(
       onTap: onItem == null ? null : () => onItem!(item, index),
       child: TweenListItem(
@@ -68,19 +66,8 @@ class TournamentDiscList extends StatelessWidget {
               const SizedBox(height: 08),
               Center(
                 child: Builder(builder: (context) {
-                  if (item.media?.url != null) {
-                    return CircleImage(
-                      radius: 50,
-                      borderWidth: 0.4,
-                      color: popupBearer.colorOpacity(0.1),
-                      backgroundColor: primary,
-                      borderColor: lightBlue,
-                      image: item.media?.url ?? parentDisc?.media.url,
-                      placeholder: const FadingCircle(size: 40, color: lightBlue),
-                      errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 48, color: lightBlue),
-                    );
-                  } else if (item.color != null) {
-                    return ColoredDisc(discColor: item.disc_color!, size: 100);
+                  if (item.color != null) {
+                    return ColoredDisc(discColor: item.disc_color!, size: 100, brandIcon: item.brand?.media?.url);
                   } else {
                     return CircleImage(
                       radius: 50,
@@ -88,7 +75,7 @@ class TournamentDiscList extends StatelessWidget {
                       color: popupBearer.colorOpacity(0.1),
                       backgroundColor: primary,
                       borderColor: lightBlue,
-                      image: item.media?.url ?? parentDisc?.media.url,
+                      image: item.media?.url,
                       placeholder: const FadingCircle(size: 40, color: lightBlue),
                       errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 48, color: lightBlue),
                     );
@@ -97,14 +84,14 @@ class TournamentDiscList extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               Text(
-                parentDisc?.name ?? 'n/a'.recast,
+                item.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1),
               ),
               const SizedBox(height: 08),
               Text(
-                parentDisc?.brand?.name ?? 'n/a'.recast,
+                item.brand?.name ?? 'n/a'.recast,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text12_400.copyWith(color: lightBlue, height: 1.1),

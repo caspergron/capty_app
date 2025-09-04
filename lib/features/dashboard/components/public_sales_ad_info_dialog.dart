@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/app_keys.dart';
@@ -21,7 +19,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 Future<void> publicSalesAdInfoDialog({required SalesAd disc}) async {
   var context = navigatorKey.currentState!.context;
@@ -63,7 +61,6 @@ class _DialogViewState extends State<_DialogView> {
 
   Widget _screenView(BuildContext context) {
     var userDisc = widget.disc.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     var isDescription = widget.disc.notes.toKey.isNotEmpty;
     var specialities = widget.disc.specialityDiscs ?? [];
     var weight = userDisc?.weight == null ? 'n/a'.recast : '${userDisc?.weight.formatDouble} ${'gram'.recast}';
@@ -82,34 +79,14 @@ class _DialogViewState extends State<_DialogView> {
           clipBehavior: Clip.none,
           children: [
             Center(
-              child: Builder(builder: (context) {
-                if (userDisc?.media?.url != null) {
-                  return CircleImage(
-                    borderWidth: 0.4,
-                    radius: 22.width,
-                    image: userDisc?.media?.url,
-                    backgroundColor: primary,
-                    placeholder: const FadingCircle(color: lightBlue),
-                    errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-                  );
-                } else if (userDisc?.color != null) {
-                  return ColoredDisc(
-                    size: 60.width,
-                    iconSize: 24.width,
-                    discColor: userDisc!.disc_color!,
-                    brandIcon: parentDisc?.brand_media.url,
-                  );
-                } else {
-                  return CircleImage(
-                    borderWidth: 0.4,
-                    radius: 31.width,
-                    image: parentDisc?.media.url,
-                    backgroundColor: primary,
-                    placeholder: const FadingCircle(color: lightBlue),
-                    errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-                  );
-                }
-              }),
+              child: CircleImage(
+                borderWidth: 0.4,
+                radius: 22.width,
+                image: userDisc?.media?.url,
+                backgroundColor: primary,
+                placeholder: const FadingCircle(color: lightBlue),
+                errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
+              ),
             ),
             Positioned(left: 0, right: 0, bottom: -20, child: Center(child: _discInfo))
           ],
@@ -148,7 +125,7 @@ class _DialogViewState extends State<_DialogView> {
             const SizedBox(width: 12),
             Expanded(
               flex: 10,
-              child: _DiscInfo(icon: Assets.svg1.target, label: 'disc_type'.recast, value: parentDisc?.type ?? 'n/a'.recast),
+              child: _DiscInfo(icon: Assets.svg1.target, label: 'disc_type'.recast, value: userDisc?.type ?? 'n/a'.recast),
             ),
             SizedBox(width: Dimensions.dialog_padding),
           ],
@@ -196,7 +173,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget get _discInfo {
-    var name = widget.disc.userDisc?.parentDisc?.name ?? '';
+    var name = widget.disc.userDisc?.name ?? '';
     var price = '${widget.disc.price.formatDouble} ${widget.disc.currency_code}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 04),

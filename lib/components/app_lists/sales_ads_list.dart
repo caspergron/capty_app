@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/data_constants.dart';
@@ -14,6 +12,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class SalesAdsList extends StatelessWidget {
   final String label;
@@ -68,7 +67,6 @@ class SalesAdsList extends StatelessWidget {
     var item = salesAdsList[index];
     var gap = Dimensions.screen_padding;
     var userDisc = item.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     return InkWell(
       onTap: onItem == null ? null : () => onItem!(item),
       child: TweenListItem(
@@ -89,7 +87,7 @@ class SalesAdsList extends StatelessWidget {
                   width: double.infinity,
                   background: mediumBlue,
                   fit: BoxFit.contain,
-                  image: userDisc?.media?.url ?? parentDisc?.media.url,
+                  image: userDisc?.media?.url,
                   placeholder: const FadingCircle(size: 20),
                   errorWidget: SvgImage(image: Assets.svg1.image_square, color: primary.colorOpacity(0.4), height: 24.width),
                 ),
@@ -101,7 +99,7 @@ class SalesAdsList extends StatelessWidget {
                   children: [
                     const SizedBox(height: 04),
                     Text(
-                      parentDisc?.name ?? '',
+                      userDisc?.name ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.text12_600.copyWith(color: lightBlue),

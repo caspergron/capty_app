@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -9,7 +7,7 @@ import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class DiscInfoChatBox extends StatelessWidget {
   final SalesAd salesAd;
@@ -19,7 +17,6 @@ class DiscInfoChatBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var userDisc = salesAd.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     return Container(
       margin: const EdgeInsets.only(bottom: 06),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -28,35 +25,15 @@ class DiscInfoChatBox extends StatelessWidget {
         children: [
           Row(
             children: [
-              Builder(builder: (context) {
-                if (userDisc?.media?.url != null) {
-                  return CircleImage(
-                    radius: 36,
-                    borderWidth: 0.4,
-                    borderColor: lightBlue,
-                    image: userDisc?.media?.url,
-                    placeholder: const FadingCircle(size: 30),
-                    errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 50, color: primary),
-                    // errorWidget: ColoredDisc(size: 104, iconSize: 24, discColor: Colors.deepOrangeAccent),
-                  );
-                } else if (userDisc?.color != null) {
-                  return ColoredDisc(
-                    size: 72,
-                    iconSize: 26,
-                    discColor: userDisc!.disc_color!,
-                    brandIcon: parentDisc?.brand_media.url,
-                  );
-                } else {
-                  return CircleImage(
-                    radius: 36,
-                    borderWidth: 0.4,
-                    borderColor: lightBlue,
-                    image: parentDisc?.media.url,
-                    placeholder: const FadingCircle(size: 30),
-                    errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 50, color: lightBlue),
-                  );
-                }
-              }),
+              CircleImage(
+                radius: 36,
+                borderWidth: 0.4,
+                borderColor: lightBlue,
+                image: userDisc?.media?.url,
+                placeholder: const FadingCircle(size: 30),
+                errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 50, color: primary),
+                // errorWidget: ColoredDisc(size: 104, iconSize: 24, discColor: Colors.deepOrangeAccent),
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -66,7 +43,7 @@ class DiscInfoChatBox extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            parentDisc?.name ?? '',
+                            userDisc?.name ?? '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyles.text16_600.copyWith(color: lightBlue),
@@ -81,7 +58,7 @@ class DiscInfoChatBox extends StatelessWidget {
                     ),
                     const SizedBox(height: 02),
                     Text(
-                      '${parentDisc?.brand?.name ?? ''} ${userDisc?.plastic == null ? '' : '•'} ${userDisc?.plastic?.name ?? ''}',
+                      '${userDisc?.brand?.name ?? ''} ${userDisc?.plastic == null ? '' : '•'} ${userDisc?.plastic?.name ?? ''}',
                       textAlign: TextAlign.center,
                       style: TextStyles.text14_500.copyWith(color: skyBlue),
                     ),

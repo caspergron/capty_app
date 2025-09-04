@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -12,7 +10,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class SellDiscList extends StatelessWidget {
   final List<SalesAd> discs;
@@ -37,7 +35,6 @@ class SellDiscList extends StatelessWidget {
   Widget _sellDiscItemCard(BuildContext context, int index) {
     var item = discs[index];
     var userDisc = item.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     var gap = Dimensions.screen_padding;
     return InkWell(
       onTap: () => onItem == null ? null : onItem!(item),
@@ -63,14 +60,14 @@ class SellDiscList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        parentDisc?.name ?? '',
+                        userDisc?.name ?? '',
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyles.text12_700.copyWith(color: lightBlue, fontSize: 11),
                       ),
                       Text(
-                        parentDisc?.brand?.name ?? '',
+                        userDisc?.brand?.name ?? '',
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -95,30 +92,13 @@ class SellDiscList extends StatelessWidget {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       double maxSize = constraints.maxWidth;
-                      if (userDisc?.media?.url != null) {
-                        return CircleImage(
-                          borderWidth: 0.4,
-                          radius: maxSize / 2.35,
-                          image: userDisc?.media?.url,
-                          placeholder: const FadingCircle(size: 40, color: lightBlue),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 40, color: primary),
-                        );
-                      } else if (userDisc?.color != null) {
-                        return ColoredDisc(
-                          iconSize: 20,
-                          size: maxSize - 08,
-                          discColor: userDisc!.disc_color!,
-                          brandIcon: parentDisc?.brand_media.url,
-                        );
-                      } else {
-                        return CircleImage(
-                          borderWidth: 0.4,
-                          radius: maxSize / 2.35,
-                          image: parentDisc?.media.url,
-                          placeholder: const FadingCircle(size: 40, color: lightBlue),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 40, color: primary),
-                        );
-                      }
+                      return CircleImage(
+                        borderWidth: 0.4,
+                        radius: maxSize / 2.35,
+                        image: userDisc?.media?.url,
+                        placeholder: const FadingCircle(size: 40, color: lightBlue),
+                        errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 40, color: primary),
+                      );
                     },
                   ),
                 ),

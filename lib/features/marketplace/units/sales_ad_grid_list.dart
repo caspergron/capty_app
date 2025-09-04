@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/data_constants.dart';
@@ -13,7 +11,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class SalesAdGridList extends StatelessWidget {
   final double gap;
@@ -76,7 +74,6 @@ class SalesAdGridList extends StatelessWidget {
 
   Widget _discInformation(SalesAd item) {
     var userDisc = item.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -87,47 +84,26 @@ class SalesAdGridList extends StatelessWidget {
           LayoutBuilder(
             builder: (context, constraints) {
               double maxSize = constraints.maxWidth;
-              if (userDisc?.media?.url != null) {
-                /*return Container(
-                  color: Colors.red,
-                  child: Image.network(userDisc!.media!.url!),
-                );*/
-                return CircleImage(
-                  radius: maxSize / 2.2,
-                  borderWidth: 0.4,
-                  image: userDisc?.media?.url,
-                  placeholder: const FadingCircle(size: 32),
-                  errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 40, color: primary),
-                );
-              } else if (userDisc?.color != null) {
-                return ColoredDisc(
-                  iconSize: 20,
-                  size: maxSize - 4,
-                  discColor: userDisc!.disc_color!,
-                  brandIcon: parentDisc?.brand_media.url,
-                );
-              } else {
-                return CircleImage(
-                  radius: maxSize / 2.2,
-                  borderWidth: 0.4,
-                  image: parentDisc?.media.url,
-                  placeholder: const FadingCircle(size: 32),
-                  errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 40, color: primary),
-                );
-              }
+              return CircleImage(
+                radius: maxSize / 2.2,
+                borderWidth: 0.4,
+                image: userDisc?.media?.url,
+                placeholder: const FadingCircle(size: 32),
+                errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 40, color: primary),
+              );
             },
           ),
           Column(
             children: [
               Text(
-                item.userDisc?.parentDisc?.name ?? 'n/a'.recast,
+                item.userDisc?.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyles.text10_400.copyWith(color: lightBlue, fontWeight: w700),
               ),
               Text(
-                item.userDisc?.parentDisc?.brand?.name ?? 'n/a'.recast,
+                item.userDisc?.brand?.name ?? 'n/a'.recast,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,

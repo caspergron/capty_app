@@ -94,6 +94,7 @@ flutter:
     - assets/app_icons/
     - assets/flags/
     - assets/fonts/
+    - assets/json/
     - assets/png_images/
     - assets/svg_icons_1/
     - assets/svg_icons_2/

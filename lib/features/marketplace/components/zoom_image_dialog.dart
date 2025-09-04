@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/app_keys.dart';
@@ -18,7 +16,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 Future<void> zoomImageDialog({required SalesAd salesAd}) async {
   var context = navigatorKey.currentState!.context;
@@ -87,34 +85,13 @@ class _DialogView extends StatelessWidget {
 
   Widget get _marketplaceDiscImage {
     var userDisc = salesAd.userDisc;
-    var parentDisc = userDisc?.parentDisc;
-    return Builder(builder: (context) {
-      if (userDisc?.media?.url != null) {
-        return CircleImage(
-          borderWidth: 0.4,
-          radius: 38.width,
-          image: userDisc?.media?.url,
-          backgroundColor: primary,
-          placeholder: const FadingCircle(color: lightBlue),
-          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-        );
-      } else if (userDisc?.color != null) {
-        return ColoredDisc(
-          size: 60.width,
-          iconSize: 24.width,
-          discColor: userDisc!.disc_color!,
-          brandIcon: parentDisc?.brand_media.url,
-        );
-      } else {
-        return CircleImage(
-          borderWidth: 0.4,
-          radius: 38.width,
-          image: parentDisc?.media.url,
-          backgroundColor: primary,
-          placeholder: const FadingCircle(color: lightBlue),
-          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
-        );
-      }
-    });
+    return CircleImage(
+      borderWidth: 0.4,
+      radius: 38.width,
+      image: userDisc?.media?.url,
+      backgroundColor: primary,
+      placeholder: const FadingCircle(color: lightBlue),
+      errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 42.width, color: lightBlue),
+    );
   }
 }

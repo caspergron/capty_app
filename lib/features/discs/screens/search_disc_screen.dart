@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/menus/prefix_menu.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -10,7 +6,6 @@ import 'package:app/features/discs/components/disc_request_dialog.dart';
 import 'package:app/features/discs/units/search_disc_list.dart';
 import 'package:app/features/discs/view_models/search_disc_view_model.dart';
 import 'package:app/models/disc/parent_disc.dart';
-import 'package:app/models/disc/user_disc.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/gradients.dart';
@@ -21,6 +16,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // index 0: add disc & index 1: create sales add
 // const _TABS_LIST = ['search', 'pdga_disc'];
@@ -76,7 +73,6 @@ class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerPr
         height: SizeConfig.height,
         child: _searchDiscView,
         decoration: BoxDecoration(gradient: BACKGROUND_GRADIENT),
-        // child: Stack(children: [_screenView(context), /*if (_modelData.loader) const ScreenLoader()*/]),
       ),
       floatingActionButton: FloatingActionButton(
         mini: true,
@@ -86,33 +82,6 @@ class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerPr
       ),
     );
   }
-
-  /*Widget _screenView(BuildContext context) {
-    var gap = Dimensions.screen_padding;
-    return Column(
-      children: [
-        Container(
-          height: 38,
-          margin: EdgeInsets.only(left: gap, right: gap, top: 16, bottom: 16),
-          decoration: BoxDecoration(color: lightBlue, borderRadius: BorderRadius.circular(60)),
-          child: TabBar(
-            labelColor: primary,
-            unselectedLabelColor: primary,
-            controller: _tabController,
-            indicator: BoxDecoration(color: skyBlue, borderRadius: BorderRadius.circular(60), border: Border.all(color: primary)),
-            tabs: List.generate(_TABS_LIST.length, (index) => Tab(text: _TABS_LIST[index].recast)).toList(),
-          ),
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            physics: const BouncingScrollPhysics(),
-            children: [_searchDiscView, _pdgaDiscView],
-          ),
-        ),
-      ],
-    );
-  }*/
 
   Widget get _searchDiscView {
     var padding = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
@@ -128,6 +97,7 @@ class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerPr
           focusNode: _focusNode,
           controller: _search,
           hintColor: primary,
+          textInputAction: TextInputAction.search,
           hintText: 'search_by_discs_name'.recast,
           onChanged: (v) => _viewModel.fetchSearchDisc(_search.text),
           prefixIcon: PrefixMenu(icon: Assets.svg1.search_2),
@@ -147,23 +117,9 @@ class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerPr
     );
   }
 
-  /*Widget get _pdgaDiscView {
-    if (_modelData.pdgaDiscs.isEmpty) return const NoDiscFound();
-    return ListView(
-      padding: EdgeInsets.zero,
-      physics: const BouncingScrollPhysics(),
-      controller: _viewModel.scrollControl,
-      children: [
-        SearchDiscList(gap: 20, bottomGap: BOTTOM_GAP, discList: _modelData.pdgaDiscs, onItem: (item, index) => _onDiscItem(item)),
-        if (_modelData.paginate.pageLoader) const CircleLoader(),
-        if (_modelData.paginate.pageLoader) SizedBox(height: BOTTOM_GAP),
-      ],
-    );
-  }*/
-
   void _onDiscItem(ParentDisc disc) {
     var index = widget.index;
-    var salesAdDisc = UserDisc(parentDisc: disc);
-    index == 0 ? Routes.user.add_disc(disc: disc).push() : Routes.user.create_sales_ad(tabIndex: index, disc: salesAdDisc).push();
+    var userDisc = disc.parent_disc_to_user_disc;
+    index == 0 ? Routes.user.add_disc(disc: disc).push() : Routes.user.create_sales_ad(tabIndex: index, disc: userDisc).push();
   }
 }

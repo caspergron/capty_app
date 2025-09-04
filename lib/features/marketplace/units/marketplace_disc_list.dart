@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_icons/favourite.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -14,7 +12,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class MarketplaceDiscList extends StatelessWidget {
   final List<SalesAd> discs;
@@ -52,7 +50,6 @@ class MarketplaceDiscList extends StatelessWidget {
     var item = discs[index];
     var gap = Dimensions.screen_padding;
     var userDisc = item.userDisc;
-    var parentDisc = userDisc?.parentDisc;
     var distance = item.address?.distance_number ?? 0;
     var distanceLabel = '${item.address?.distance_number.formatInt ?? 0} ${'km'.recast}';
     var flightDataStyle = TextStyles.text13_600.copyWith(color: lightBlue, height: 1);
@@ -83,37 +80,15 @@ class MarketplaceDiscList extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Center(
-                    child: Builder(builder: (context) {
-                      if (userDisc?.media?.url != null) {
-                        // print('name: ${parentDisc?.name} -> image: ${userDisc?.media?.url} -> distance: ${item.address?.distance}');
-                        // return Image.network(userDisc!.media!.url!, height: 100, width: 100);
-                        return CircleImage(
-                          radius: 54,
-                          borderWidth: 0.4,
-                          borderColor: lightBlue,
-                          fit: BoxFit.contain,
-                          image: userDisc?.media?.url,
-                          placeholder: const FadingCircle(size: 40),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
-                        );
-                      } else if (userDisc?.color != null) {
-                        return ColoredDisc(
-                          size: 108,
-                          iconSize: 24,
-                          discColor: userDisc!.disc_color!,
-                          brandIcon: parentDisc?.brand_media.url,
-                        );
-                      } else {
-                        return CircleImage(
-                          radius: 54,
-                          borderWidth: 0.4,
-                          borderColor: lightBlue,
-                          image: parentDisc?.media.url,
-                          placeholder: const FadingCircle(size: 40),
-                          errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: lightBlue),
-                        );
-                      }
-                    }),
+                    child: CircleImage(
+                      radius: 54,
+                      borderWidth: 0.4,
+                      borderColor: lightBlue,
+                      fit: BoxFit.contain,
+                      image: userDisc?.media?.url,
+                      placeholder: const FadingCircle(size: 40),
+                      errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
+                    ),
                   ),
                   Positioned(
                     left: 04,
@@ -126,7 +101,7 @@ class MarketplaceDiscList extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            parentDisc?.name ?? 'n/a'.recast,
+                            userDisc?.name ?? 'n/a'.recast,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyles.text13_600.copyWith(color: primary, height: 1),
@@ -140,7 +115,7 @@ class MarketplaceDiscList extends StatelessWidget {
                           ),
                           const SizedBox(height: 02),
                           Text(
-                            parentDisc?.brand?.name ?? 'n/a'.recast,
+                            userDisc?.brand?.name ?? 'n/a'.recast,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyles.text12_400.copyWith(color: primary, height: 1),

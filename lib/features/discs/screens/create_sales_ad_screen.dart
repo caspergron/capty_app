@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -50,6 +45,9 @@ import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class CreateSalesAdScreen extends StatefulWidget {
   final int tabIndex;
@@ -209,7 +207,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
                 const SizedBox(width: 20),
                 Expanded(
                   child: Text(
-                    userDisc.parentDisc?.name ?? 'n/a'.recast,
+                    userDisc.name ?? 'n/a'.recast,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyles.text12_600.copyWith(color: dark, fontWeight: w400),
@@ -218,7 +216,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
                 const SizedBox(width: 08),
                 Expanded(
                   child: Text(
-                    userDisc.parentDisc?.brand?.name ?? 'n/a'.recast,
+                    userDisc.brand?.name ?? 'n/a'.recast,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyles.text12_600.copyWith(color: dark, fontWeight: w400),
@@ -227,7 +225,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
                 const SizedBox(width: 08),
                 Expanded(
                   child: Text(
-                    userDisc.parentDisc?.type ?? 'n/a'.recast,
+                    userDisc.type ?? 'n/a'.recast,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyles.text12_600.copyWith(color: dark, fontWeight: w400),
@@ -405,7 +403,6 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
 
   List<Widget> get _stepTwoView {
     var userDisc = widget.userDisc;
-    var parentDisc = userDisc.parentDisc;
     var weight = _weight.text;
     var price = _price.text.isEmpty ? 'n/a'.recast : '${_price.text} ${UserPreferences.currencyCode}';
     var intIndex = _modelData.usedValue.toInt();
@@ -413,15 +410,15 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
     return [
       Row(
         children: [
-          Expanded(child: _detailsInfo(label: 'disc_name'.recast, value: parentDisc?.name ?? 'n/a'.recast)),
+          Expanded(child: _detailsInfo(label: 'disc_name'.recast, value: userDisc.name ?? 'n/a'.recast)),
           const SizedBox(width: 08),
-          Expanded(child: _detailsInfo(label: 'manufacture'.recast, value: parentDisc?.brand?.name ?? 'n/a'.recast)),
+          Expanded(child: _detailsInfo(label: 'manufacture'.recast, value: userDisc.brand?.name ?? 'n/a'.recast)),
         ],
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(color: skyBlue)),
       Row(
         children: [
-          Expanded(child: _detailsInfo(label: 'disc_type'.recast, value: parentDisc?.type ?? 'n/a'.recast)),
+          Expanded(child: _detailsInfo(label: 'disc_type'.recast, value: userDisc.type ?? 'n/a'.recast)),
           const SizedBox(width: 08),
           Expanded(child: _detailsInfo(label: 'plastic'.recast, value: _modelData.plastic.label ?? 'n/a'.recast)),
         ],
@@ -475,12 +472,11 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
 
   void _onNext() {
     var userDisc = widget.userDisc;
-    var parentDisc = userDisc.parentDisc;
     Map<String, dynamic> params = {
-      'speed': userDisc.speed ?? parentDisc?.speed ?? 1,
-      'glide': userDisc.glide ?? parentDisc?.glide ?? 0,
-      'turn': userDisc.turn ?? parentDisc?.turn ?? 0,
-      'fade': userDisc.fade ?? parentDisc?.fade ?? 0,
+      'speed': userDisc.speed ?? 1,
+      'glide': userDisc.glide ?? 0,
+      'turn': userDisc.turn ?? 0,
+      'fade': userDisc.fade ?? 0,
       'price': _price.text,
       'notes': _comment.text,
       'weight': _weight.text.isEmpty ? 0 : _weight.text,
