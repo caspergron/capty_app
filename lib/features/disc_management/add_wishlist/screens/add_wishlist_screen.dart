@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/app_lists/parent_disc_horizontal_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -29,6 +25,8 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddWishlistScreen extends StatefulWidget {
   @override
@@ -217,7 +215,7 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
           enabledBorder: lightBlue,
           focusedBorder: lightBlue,
           // onChanged: (v) => setState(() {}),
-          onChanged: (v) => _viewModel.fetchSearchDiscs(_search.text),
+          onChanged: (v) => _viewModel.onDebounceSearch(_search.text),
           hintText: 'search_by_discs_name'.recast,
           prefixIcon: PrefixMenu(icon: Assets.svg1.search_2, color: skyBlue, focusColor: lightBlue, isFocus: _focusNode.hasFocus),
           suffixIcon: !isClose ? null : SuffixMenu(icon: Assets.svg1.close_2, focusColor: lightBlue, isFocus: true, onTap: _onClose),

@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -12,11 +8,15 @@ import 'package:app/features/disc_management/discs/discs_view_model.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/disc/wishlist.dart';
 import 'package:app/repository/disc_repo.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 
 class AddWishlistViewModel with ChangeNotifier {
   var loader = false;
   var discList = <ParentDisc>[];
   var _searchCounter = 0;
+  var _lastQuery = '';
+  Timer? _debounceTimer;
 
   void initViewModel() => disposeViewModel();
 
@@ -24,16 +24,35 @@ class AddWishlistViewModel with ChangeNotifier {
     loader = false;
     discList.clear();
     _searchCounter = 0;
+    _lastQuery = '';
+    _debounceTimer?.cancel();
   }
 
-  Future<void> fetchSearchDiscs(String key) async {
-    if (key.isEmpty) discList.clear();
-    if (key.isEmpty) return notifyListeners();
+  void onDebounceSearch(String query) {
+    _debounceTimer?.cancel();
+    if (query.trim().isEmpty || query.length < 2) return _onEmptyKey();
+    if (query == _lastQuery) return;
+    _lastQuery = query;
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () => _fetchSearchDisc(query));
+  }
+
+  Future<void> _fetchSearchDisc(String pattern) async {
     final currentRequest = ++_searchCounter;
-    var body = {'query': key};
-    var response = await sl<DiscRepository>().searchDiscByName(body: body, isWishlistSearch: true);
-    if (currentRequest != _searchCounter) return;
-    if (response.isNotEmpty) discList = response;
+    var body = {'query': pattern};
+    try {
+      var response = await sl<DiscRepository>().searchDiscByName(body: body, isWishlistSearch: true);
+      if (currentRequest != _searchCounter) return;
+      discList.clear();
+      if (response.isNotEmpty) discList.addAll(response);
+      notifyListeners();
+    } catch (e) {
+      if (kDebugMode) print('Search error: $e');
+    }
+  }
+
+  void _onEmptyKey() {
+    discList.clear();
+    _lastQuery = '';
     notifyListeners();
   }
 

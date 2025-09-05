@@ -1,11 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/image_rotate_dialog.dart';
@@ -43,6 +38,9 @@ import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/view/color_view.dart';
 import 'package:app/widgets/view/disc_initial_info.dart';
 import 'package:app/widgets/view/unit_suffix.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class AddDiscScreen extends StatefulWidget {
   final ParentDisc disc;
@@ -386,7 +384,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
                       height: 70,
                       imagePath: _modelData.discFile.unit8List,
                       // error: ErrorUploadImage(discImage: widget.disc.media.url),
-                      error: ErrorUploadImage(),
+                      error: const ErrorUploadImage(),
                       onTap: () => imageOptionSheet(onFile: _onImage, cropType: 'circle_clip'),
                     ),
             ),
