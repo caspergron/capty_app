@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/constants/date_formats.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -8,7 +10,6 @@ import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
-import 'package:flutter/material.dart';
 
 class UpcomingTournamentsList extends StatelessWidget {
   final List<Tournament> tournaments;

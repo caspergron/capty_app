@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:app/extensions/string_ext.dart';
-import 'package:app/models/map/coordinates.dart';
-import 'package:app/utils/assets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'package:app/extensions/string_ext.dart';
+import 'package:app/models/map/coordinates.dart';
+import 'package:app/utils/assets.dart';
 
 class MapAddressPicker extends StatefulWidget {
   final Coordinates coordinates;

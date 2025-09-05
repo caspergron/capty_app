@@ -1,5 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:app/components/dialogs/countries_dialog.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
@@ -13,9 +18,6 @@ import 'package:app/models/public/country.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/address_repo.dart';
 import 'package:app/repository/google_repo.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 class AddAddressViewModel with ChangeNotifier {
   var loader = false;

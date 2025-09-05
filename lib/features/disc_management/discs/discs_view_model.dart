@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -15,7 +17,6 @@ import 'package:app/repository/disc_bag_repo.dart';
 import 'package:app/repository/disc_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/routes.dart';
-import 'package:flutter/cupertino.dart';
 
 var _ALL_CATEGORY = DiscBag(id: 1000001, name: 'all');
 

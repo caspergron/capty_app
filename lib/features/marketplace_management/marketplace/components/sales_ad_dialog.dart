@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/loader_box.dart';
@@ -23,8 +26,6 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // type: sell, , sold
 Future<void> salesAdDialog({

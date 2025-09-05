@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -15,8 +19,6 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/dropdown_flutter.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AiDiscSuggestionScreen extends StatefulWidget {
   @override

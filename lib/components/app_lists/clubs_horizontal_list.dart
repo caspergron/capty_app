@@ -13,6 +13,7 @@ import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
+
 import 'package:app/widgets/library/svg_image.dart';*/
 
 /*class ClubsHorizontalList extends StatelessWidget {

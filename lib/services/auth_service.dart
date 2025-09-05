@@ -1,3 +1,5 @@
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/storage_keys.dart';
 import 'package:app/di.dart';
@@ -18,7 +20,6 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/services/storage_service.dart';
-import 'package:provider/provider.dart';
 
 class AuthService {
   bool get authStatus => sl<StorageService>().accessToken.isNotEmpty;

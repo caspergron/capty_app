@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -17,8 +21,6 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/disc_repo.dart';
 import 'package:app/repository/player_repo.dart';
 import 'package:app/services/routes.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class TournamentDiscsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

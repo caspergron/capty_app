@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
+
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:http/http.dart' as http;
 
 class GoogleRepository {
   Future<List<dynamic>> fetchPredictions(String input, Coordinates coordinates, String countryCode) async {

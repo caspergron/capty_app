@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/components/app_lists/parent_disc_horizontal_list.dart';
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/disc/parent_disc_category.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
-import 'package:flutter/material.dart';
 
 class ParentDiscCategoryList extends StatelessWidget {
   final List<ParentDiscCategory> categories;

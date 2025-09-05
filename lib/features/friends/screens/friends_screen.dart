@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/drawers/app_drawer.dart';
@@ -25,8 +29,6 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // const _TABS_LIST = ['friends', 'card_mates'];
 const _TABS_LIST = ['friends', 'requests'];

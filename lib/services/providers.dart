@@ -1,3 +1,6 @@
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart' show SingleChildWidget;
+
 import 'package:app/features/address/view_models/add_address_view_model.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/features/auth/view_models/otp_view_model.dart';
@@ -39,8 +42,6 @@ import 'package:app/features/suggest_feature/view_models/suggest_feature_view_mo
 import 'package:app/features/suggest_feature/view_models/suggestion_details_view_model.dart';
 import 'package:app/features/test/test_controller.dart';
 import 'package:app/features/waitlist/waitlist_view_model.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart' show SingleChildWidget;
 
 List<SingleChildWidget> providers = [
   ..._auth_providers,

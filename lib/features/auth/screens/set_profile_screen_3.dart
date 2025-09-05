@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -16,8 +20,6 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SetProfileScreen3 extends StatelessWidget {
   final Map<String, dynamic> data;

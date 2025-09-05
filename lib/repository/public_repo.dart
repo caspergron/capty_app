@@ -1,3 +1,6 @@
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -35,8 +38,6 @@ import 'package:app/preferences/app_preferences.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:provider/provider.dart';
 
 class PublicRepository {
   Future<List<Country>> fetchCountries() async {

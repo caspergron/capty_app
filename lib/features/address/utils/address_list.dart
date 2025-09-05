@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/components/delete_address_dialog.dart';
 import 'package:app/libraries/flush_popup.dart';
@@ -6,7 +8,6 @@ import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
 
 class AddressList extends StatelessWidget {
   final bool isSelectable;

@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -11,9 +15,6 @@ import 'package:app/models/disc/parent_disc_category.dart';
 import 'package:app/models/disc/wishlist.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/repository/disc_repo.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
-
 import '../../../../di.dart';
 
 class PgdaDiscsViewModel with ChangeNotifier {

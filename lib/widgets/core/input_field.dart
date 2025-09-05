@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class InputField extends StatelessWidget {
   final double padding;

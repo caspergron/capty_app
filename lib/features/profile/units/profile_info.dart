@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
-import 'package:flutter/material.dart';
 
 class ProfileInfo extends StatelessWidget {
   final String label;
