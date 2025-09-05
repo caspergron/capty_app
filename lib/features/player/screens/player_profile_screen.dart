@@ -67,7 +67,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         centerTitle: true,
         leading: const BackMenu(),
         automaticallyImplyLeading: false,
-        title: Text("$firstName ${firstName.isNotEmpty ? 'extra_s'.recast : ''} ${'profile'.recast}"),
+        title: Text("$firstName${firstName.isNotEmpty ? 'extra_s'.recast : ''} ${'profile'.recast}"),
       ),
       body: Container(
         width: SizeConfig.width,

@@ -440,8 +440,6 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   void _onSave() {
-    // if (_plastic.id == null) return FlushPopup.onWarning(message: 'please_select_the_plastic_material_of_your_disc'.recast);
-    // if (_weight.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_weight'.recast);
     if (_speed.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_speed'.recast);
     if (_glide.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_glide'.recast);
     if (_turn.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_turn'.recast);
@@ -450,8 +448,6 @@ class _DialogViewState extends State<_DialogView> {
     var invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.disc.media?.id == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
     _onUpdateDisc();
-    // if (widget.onSave != null) widget.onSave!(body);
-    // backToPrevious();
   }
 
   Future<int?> _fetchMediaId() async {

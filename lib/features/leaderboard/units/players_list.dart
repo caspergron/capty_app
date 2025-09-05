@@ -14,13 +14,13 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:flutter/material.dart';
 
 class PlayersList extends StatelessWidget {
-  final isPdgaRating;
+  final isImprovement;
   final double gap;
   final List<PdgaUser> players;
   final List<PdgaUser> topPlayers;
   final Function(PdgaUser)? onItem;
 
-  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem, this.isPdgaRating = true});
+  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem, this.isImprovement = true});
 
   @override
   Widget build(BuildContext context) {
@@ -93,15 +93,15 @@ class PlayersList extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              if (isPdgaRating)
+              if (isImprovement)
                 SvgImage(
                   height: 14,
                   color: isPositive ? success : error,
                   image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
                 ),
-              if (isPdgaRating) const SizedBox(width: 04),
+              if (isImprovement) const SizedBox(width: 04),
               Text(
-                isPdgaRating ? item.formated_pgda_improvement : item.formatted_pdga_rating,
+                isImprovement ? item.formated_yearly_improvement : item.formatted_current_rating,
                 style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
               ),
             ],
@@ -161,13 +161,13 @@ class PlayersList extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                isPdgaRating ? item.formated_pgda_improvement : item.formatted_pdga_rating,
+                                isImprovement ? item.formated_yearly_improvement : item.formatted_current_rating,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
                               ),
-                              if (isPdgaRating) const SizedBox(width: 04),
-                              if (isPdgaRating)
+                              if (isImprovement) const SizedBox(width: 04),
+                              if (isImprovement)
                                 SvgImage(
                                   height: 14,
                                   color: isPositive ? success : error,
