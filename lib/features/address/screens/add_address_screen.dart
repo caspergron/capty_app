@@ -119,11 +119,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   Future<void> _onCameraMove(Coordinates coordinates) async {
     if (_viewModel.centerLocation.lat == coordinates.lat && _viewModel.centerLocation.lng == coordinates.lng) return;
-    print('_onCameraMove -> ${coordinates.lat}');
     setState(() => _viewModel.centerLocation = coordinates);
     var response = await _viewModel.fetchAddressInfoByCoordinates(coordinates);
     _search.text = '';
-    // if (response == null) return;
     if (response == null) {
       if (_isFirst) return setState(() => _isFirst = false);
       return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
@@ -131,7 +129,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     _search.text = response['address'];
     if (mounted) FocusScope.of(context).unfocus();
     _viewModel.suggestions.clear();
-    // setState(() {});
   }
 
   void _onClose() {

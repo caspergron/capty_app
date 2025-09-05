@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/di.dart';
+import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/feature/feature.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/pref_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class SuggestFeatureViewModel with ChangeNotifier {
   var loader = true;
@@ -45,6 +45,7 @@ class SuggestFeatureViewModel with ChangeNotifier {
     var body = {'title': title, 'description': feature};
     var response = await sl<PreferencesRepository>().createSuggestFeature(body);
     if (response != null) suggestedFeatures.add(response);
+    suggestedFeatures.sort((item1, item2) => item2.totalVotes.nullToInt.compareTo(item1.totalVotes.nullToInt));
     loader = false;
     notifyListeners();
     return response != null;
@@ -54,6 +55,7 @@ class SuggestFeatureViewModel with ChangeNotifier {
     var index = suggestedFeatures.indexWhere((item) => item.id == feature.id);
     if (index < 0) return;
     suggestedFeatures[index] = feature;
+    suggestedFeatures.sort((item1, item2) => item2.totalVotes.nullToInt.compareTo(item1.totalVotes.nullToInt));
     notifyListeners();
   }
 }

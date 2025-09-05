@@ -1,14 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
+import 'package:app/features/marketplace_management/marketplace/marketplace_view_model.dart';
 import 'package:app/libraries/locations.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
@@ -16,6 +12,8 @@ import 'package:app/models/system/loader.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/player_repo.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class PlayerSalesAdViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

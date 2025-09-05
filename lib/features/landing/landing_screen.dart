@@ -1,19 +1,13 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
-import 'package:convex_bottom_bar/convex_bottom_bar.dart' as convex;
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/components/dialogs/app_exit_dialog.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/screens/club_screen.dart';
-import 'package:app/features/discs/screens/discs_screen.dart';
+import 'package:app/features/disc_management/discs/discs_screen.dart';
 import 'package:app/features/home/home_screeen.dart';
 import 'package:app/features/landing/landing_view_model.dart';
-import 'package:app/features/marketplace/screens/marketplace_screen.dart';
+import 'package:app/features/marketplace_management/marketplace/marketplace_screen.dart';
 import 'package:app/libraries/app_updater.dart';
 import 'package:app/libraries/cloud_notification.dart';
 import 'package:app/libraries/permissions.dart';
@@ -26,6 +20,10 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/core/spinner_menu.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart' as convex;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LandingScreen extends StatefulWidget {
   static final GlobalKey<_LandingScreenState> landingKey = GlobalKey<_LandingScreenState>();

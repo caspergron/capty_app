@@ -1,3 +1,4 @@
+import 'package:app/components/app_lists/disc_speciality_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/app_keys.dart';
@@ -6,7 +7,6 @@ import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/discs/units/disc_speciality_list.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';

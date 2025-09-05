@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -26,6 +22,8 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SuggestFeatureScreen extends StatefulWidget {
   @override
@@ -118,19 +116,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
           onChanged: (v) => setState(() {}),
           borderRadius: BorderRadius.circular(06),
         ),
-        if (_feature.text.isNotEmpty) const SizedBox(height: 06),
-        if (_feature.text.isNotEmpty) CharacterCounter(count: _feature.text.length, total: 150),
-        /*const SizedBox(height: 12),
-        Text('feedback_type'.recast, style: TextStyles.text14_600.copyWith(color: primary)),
-        const SizedBox(height: 06),
-        DropdownFlutter<DataModel>(
-          radius: 06,
-          hint: 'select_feedback_type'.recast,
-          items: DATE_MENU_LIST,
-          value: _modelData.feedbackType.value.isEmpty ? null : _modelData.feedbackType,
-          hintLabel: _modelData.feedbackType.value.isEmpty ? null : DATE_MENU_LIST.firstWhere((item) => item == item).label,
-          onChanged: (v) => setState(() => _modelData.feedbackType = v!),
-        ),*/
+        if (_feature.text.isNotEmpty) ...[const SizedBox(height: 06), CharacterCounter(count: _feature.text.length, total: 150)],
         const SizedBox(height: 20),
         ElevateButton(
           radius: 04,
@@ -140,10 +126,12 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
           onTap: _onSendSuggestion,
           textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
         ),
-        if (features.isNotEmpty) const SizedBox(height: 24),
-        if (features.isNotEmpty) Text('suggested_features'.recast, style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500)),
-        if (features.isNotEmpty) const SizedBox(height: 16),
-        if (features.isNotEmpty) _SuggestFeaturesList(features: features, onVote: _viewModel.onVote),
+        if (features.isNotEmpty) ...[
+          const SizedBox(height: 24),
+          Text('suggested_features'.recast, style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500)),
+          const SizedBox(height: 16),
+          _SuggestFeaturesList(features: features, onVote: _viewModel.onVote),
+        ],
         SizedBox(height: BOTTOM_GAP),
       ],
     );

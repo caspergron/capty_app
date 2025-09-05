@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/marketplace/units/marketplace_category_list.dart';
+import 'package:app/features/marketplace_management/marketplace/units/marketplace_category_list.dart';
 import 'package:app/features/player/view_models/player_sales_ad_view_model.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/preferences/user_preferences.dart';
@@ -16,6 +12,8 @@ import 'package:app/themes/gradients.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/exception/no_disc_found.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlayerSalesAdScreen extends StatefulWidget {
   final User player;

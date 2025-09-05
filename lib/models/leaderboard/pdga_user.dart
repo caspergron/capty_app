@@ -12,8 +12,9 @@ class PdgaUser {
   PdgaPivot? pivot;
   Media? media;
 
-  String get pdga_rating => pdgaRating.formatInt;
+  int get pdga_rating => pdgaRating.nullToInt;
   int get pdga_improvement => pdgaImprovement ?? 0;
+  String get formatted_pdga_rating => pdgaRating.formatInt;
   bool get is_positive => pdgaImprovement == null ? true : pdgaImprovement! >= 0;
 
   PdgaUser({

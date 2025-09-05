@@ -1,18 +1,16 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/tween_list_item.dart';
-import 'package:app/components/app_lists/sales_ads_list.dart';
-import 'package:app/components/app_lists/upcoming_tournaments_list.dart';
+import 'package:app/components/app_lists/marketplace_disc_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
+import 'package:app/constants/data_constants.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/player/units/upcoming_tournaments_list.dart';
 import 'package:app/features/player/view_models/player_profile_view_model.dart';
+import 'package:app/features/profile/units/profile_info.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
@@ -24,6 +22,8 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
@@ -127,9 +127,9 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _ProfileInfo(label: 'pdga_rating'.recast, value: (player.pdgaRating ?? 0).toDouble()),
-                        _ProfileInfo(label: 'club_point'.recast),
-                        _ProfileInfo(label: 'total_club'.recast, value: (player.totalClub ?? 0).toDouble()),
+                        ProfileInfo(label: 'pdga_rating'.recast, value: (player.pdgaRating ?? 0).toDouble()),
+                        ProfileInfo(label: 'club_point'.recast),
+                        ProfileInfo(label: 'total_club'.recast, value: (player.totalClub ?? 0).toDouble()),
                       ],
                     ),
                   ),
@@ -241,15 +241,6 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.text14_400.copyWith(color: lightBlue),
                     ),
-                    /*const SizedBox(height: 20),
-                    Text('udisc_username'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue)),
-                    const SizedBox(height: 06),
-                    Text(
-                      player.uDiscUsername ?? 'n/a'.recast,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyles.text14_400.copyWith(color: lightBlue),
-                    ),*/
                     const SizedBox(height: 02),
                   ],
                 ),
@@ -261,13 +252,6 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                   Text('pdga_number'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue)),
                   const SizedBox(height: 06),
                   Text(player.pdgaNumber ?? 'n/a'.recast, style: TextStyles.text14_400.copyWith(color: lightBlue)),
-                  /*const SizedBox(height: 20),
-                  Text('hand_expert'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue)),
-                  const SizedBox(height: 06),
-                  Text(
-                    player.handPref.toKey.isEmpty ? 'n/a'.recast : player.handPref.toKey.firstLetterCapital,
-                    style: TextStyles.text14_400.copyWith(color: lightBlue),
-                  ),*/
                   const SizedBox(height: 02),
                 ],
               ),
@@ -275,52 +259,41 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
           ),
         ),
         const SizedBox(height: 24),
-        if (_modelData.upcomingTournaments.isNotEmpty)
-          UpcomingTournamentsList(
-            label: "${_modelData.player.first_name}'s",
-            tournaments: _modelData.upcomingTournaments,
-          ),
-        if (_modelData.salesAdDiscs.isNotEmpty)
-          SalesAdsList(
-            label: "${_modelData.player.first_name}'s",
-            salesAdsList: _modelData.salesAdDiscs,
-            onShowMore: () => Routes.user.player_sale_ads(player: _modelData.player).push(),
-            onItem: (item) => Routes.user.market_details(salesAd: item).push(),
-          ),
+        if (_modelData.upcomingTournaments.isNotEmpty) ..._upcomingTournaments,
+        if (_modelData.salesAdDiscs.isNotEmpty) ..._userSalesAdDiscs,
         SizedBox(height: BOTTOM_GAP),
       ],
     );
   }
-}
 
-class _ProfileInfo extends StatelessWidget {
-  final String label;
-  final double value;
+  List<Widget> get _upcomingTournaments {
+    final gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final label = '${_modelData.player.first_name}${'extra_s'.recast} ${'upcoming_tournaments'.recast}'.trim();
+    return [
+      Padding(padding: gap, child: Text(label, style: TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54))),
+      const SizedBox(height: 08),
+      UpcomingTournamentsList(tournaments: _modelData.upcomingTournaments),
+    ];
+  }
 
-  const _ProfileInfo({this.value = 0, this.label = ''});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          value.formatDouble,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500),
-        ),
-        Text(
-          label,
-          maxLines: 1,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyles.text12_600.copyWith(color: primary, fontWeight: w400),
-        ),
-      ],
-    );
+  List<Widget> get _userSalesAdDiscs {
+    final salesAdsList = _modelData.salesAdDiscs;
+    final label = '${_modelData.player.first_name}${'extra_s'.recast} ${'sales_ads'.recast}'.trim();
+    final labelStyle = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
+    final showMoreLabel = Text('show_more'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue, letterSpacing: 0.54));
+    return [
+      Row(
+        children: [
+          SizedBox(width: Dimensions.screen_padding),
+          Expanded(child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: labelStyle)),
+          const SizedBox(width: 08),
+          if (salesAdsList.length == LENGTH_20)
+            InkWell(onTap: () => Routes.user.player_sale_ads(player: _modelData.player).push(), child: showMoreLabel),
+          SizedBox(width: Dimensions.screen_padding),
+        ],
+      ),
+      const SizedBox(height: 08),
+      MarketplaceDiscList(discs: salesAdsList, onTap: (item) => Routes.user.market_details(salesAd: item).push()),
+    ];
   }
 }
-
-// casper Just signed up in Capty and joined the club Søhøjlandets Disc Golf. Join casper and compare PDGA rank and buy/sell disc
-// https://www.capty.com/welcome

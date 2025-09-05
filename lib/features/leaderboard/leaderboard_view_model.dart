@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/models/leaderboard/leaderboard.dart';
 import 'package:app/models/system/data_model.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/repository/leaderboard_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 class LeaderboardViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

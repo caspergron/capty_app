@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -13,9 +13,9 @@ import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
-import 'package:app/widgets/library/svg_image.dart';
+import 'package:app/widgets/library/svg_image.dart';*/
 
-class ClubsHorizontalList extends StatelessWidget {
+/*class ClubsHorizontalList extends StatelessWidget {
   final List<Club> clubs;
   final Function(Club)? onTap;
   final Function()? onShareLocation;
@@ -174,4 +174,4 @@ class ClubsHorizontalList extends StatelessWidget {
       ),
     );
   }
-}
+}*/

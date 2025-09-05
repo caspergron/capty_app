@@ -1,17 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/discs/components/disc_info_dialog.dart';
-import 'package:app/features/discs/components/edit_disc_dialog.dart';
-import 'package:app/features/discs/view_models/discs_view_model.dart';
+import 'package:app/features/disc_management/discs/components/disc_info_dialog.dart';
+import 'package:app/features/disc_management/discs/components/edit_disc_dialog.dart';
+import 'package:app/features/disc_management/discs/discs_view_model.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/models/disc/user_disc_category.dart';
@@ -21,6 +17,8 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/disc_repo.dart';
 import 'package:app/repository/player_repo.dart';
 import 'package:app/services/routes.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class TournamentDiscsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

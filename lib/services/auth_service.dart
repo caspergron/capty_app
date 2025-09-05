@@ -1,5 +1,3 @@
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/storage_keys.dart';
 import 'package:app/di.dart';
@@ -7,10 +5,10 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/features/auth/view_models/set_profile_view_model.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
-import 'package:app/features/discs/view_models/discs_view_model.dart';
+import 'package:app/features/disc_management/discs/discs_view_model.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/features/leaderboard/leaderboard_view_model.dart';
-import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
+import 'package:app/features/marketplace_management/marketplace/marketplace_view_model.dart';
 import 'package:app/features/notification/notifications_view_model.dart';
 import 'package:app/libraries/formatters.dart';
 import 'package:app/libraries/local_storage.dart';
@@ -20,6 +18,7 @@ import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:provider/provider.dart';
 
 class AuthService {
   bool get authStatus => sl<StorageService>().accessToken.isNotEmpty;

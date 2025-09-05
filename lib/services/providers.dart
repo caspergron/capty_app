@@ -1,6 +1,3 @@
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart' show SingleChildWidget;
-
 import 'package:app/features/address/view_models/add_address_view_model.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/features/auth/view_models/otp_view_model.dart';
@@ -14,13 +11,12 @@ import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/club/view_models/create_club_view_model.dart';
 import 'package:app/features/dashboard/view_models/dashboard_view_model.dart';
 import 'package:app/features/dashboard/view_models/public_marketplace_view_model.dart';
-import 'package:app/features/discs/view_models/add_disc_view_model.dart';
-import 'package:app/features/discs/view_models/add_wishlist_view_model.dart';
-import 'package:app/features/discs/view_models/ai_disc_suggestion_view_model.dart';
-import 'package:app/features/discs/view_models/create_sales_ad_view_model.dart';
-import 'package:app/features/discs/view_models/discs_view_model.dart';
-import 'package:app/features/discs/view_models/pgda_discs_view_model.dart';
-import 'package:app/features/discs/view_models/search_disc_view_model.dart';
+import 'package:app/features/disc_management/add_disc/add_disc_view_model.dart';
+import 'package:app/features/disc_management/add_wishlist/view_models/add_wishlist_view_model.dart';
+import 'package:app/features/disc_management/add_wishlist/view_models/pgda_discs_view_model.dart';
+import 'package:app/features/disc_management/ai_suggestion/ai_disc_suggestion_view_model.dart';
+import 'package:app/features/disc_management/discs/discs_view_model.dart';
+import 'package:app/features/disc_management/search_disc/search_disc_view_model.dart';
 import 'package:app/features/friends/view_models/add_friend_view_model.dart';
 import 'package:app/features/friends/view_models/friends_view_model.dart';
 import 'package:app/features/graph/view_models/flight_path_view_model.dart';
@@ -28,8 +24,9 @@ import 'package:app/features/graph/view_models/grid_path_view_model.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/features/landing/landing_view_model.dart';
 import 'package:app/features/leaderboard/leaderboard_view_model.dart';
-import 'package:app/features/marketplace/view_models/market_details_view_model.dart';
-import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
+import 'package:app/features/marketplace_management/create_sales_ad/create_sales_ad_view_model.dart';
+import 'package:app/features/marketplace_management/marketplace/marketplace_view_model.dart';
+import 'package:app/features/marketplace_management/marketplace_details/market_details_view_model.dart';
 import 'package:app/features/notification/notifications_view_model.dart';
 import 'package:app/features/notify_pref/notify_pref_view_model.dart';
 import 'package:app/features/player/view_models/player_profile_view_model.dart';
@@ -42,6 +39,8 @@ import 'package:app/features/suggest_feature/view_models/suggest_feature_view_mo
 import 'package:app/features/suggest_feature/view_models/suggestion_details_view_model.dart';
 import 'package:app/features/test/test_controller.dart';
 import 'package:app/features/waitlist/waitlist_view_model.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart' show SingleChildWidget;
 
 List<SingleChildWidget> providers = [
   ..._auth_providers,

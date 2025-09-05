@@ -1,6 +1,3 @@
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -9,11 +6,11 @@ import 'package:app/features/auth/view_models/otp_view_model.dart';
 import 'package:app/features/auth/view_models/set_profile_view_model.dart';
 import 'package:app/features/auth/view_models/sign_in_view_model.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
-import 'package:app/features/discs/view_models/discs_view_model.dart';
+import 'package:app/features/disc_management/discs/discs_view_model.dart';
 import 'package:app/features/friends/view_models/friends_view_model.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/features/landing/landing_view_model.dart';
-import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
+import 'package:app/features/marketplace_management/marketplace/marketplace_view_model.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/libraries/formatters.dart';
@@ -38,6 +35,8 @@ import 'package:app/preferences/app_preferences.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 class PublicRepository {
   Future<List<Country>> fetchCountries() async {

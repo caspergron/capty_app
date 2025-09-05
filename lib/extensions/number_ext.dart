@@ -12,7 +12,7 @@ extension ParseNullableInt on int? {
   int get nullToInt => this ?? 0;
   double get parseDouble => this == null ? 0 : this!.toDouble();
   double get intToDouble => this == null ? 0 : this!.toDouble();
-  String get formatInt => this == null ? '0' : (this! < 9 ? '0$this' : '$this');
+  String get formatInt => this == null ? '0' : (this! < 10 ? '0$this' : '$this');
 }
 
 extension ParseNullableDouble on double? {

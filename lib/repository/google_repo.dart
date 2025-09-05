@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:http/http.dart' as http;
 
 class GoogleRepository {
   Future<List<dynamic>> fetchPredictions(String input, Coordinates coordinates, String countryCode) async {
@@ -46,7 +45,6 @@ class GoogleRepository {
   Future<Map<String, dynamic>?> addressInfoByCoordinates(Coordinates coordinates) async {
     var headers = {'Accept': 'application/json'};
     var endpoint = '$GOOGLE_API&latlng=${coordinates.lat},${coordinates.lng}';
-    print(endpoint);
     var response = await http.get(Uri.parse(endpoint), headers: headers);
     if (response.statusCode != 200) return null;
     var json = jsonDecode(response.body);

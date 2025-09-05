@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
+import 'package:app/components/app_lists/marketplace_disc_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -17,7 +14,6 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/components/club_members_sheet.dart';
 import 'package:app/features/club/components/club_settings_dialog.dart';
-import 'package:app/features/club/units/sell_disc_list.dart';
 import 'package:app/features/club/units/upcoming_events_list.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/home/components/joining_clubs_sheet.dart';
@@ -36,6 +32,8 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _SPACE20 = '    ';
 
@@ -233,18 +231,19 @@ class _ClubScreenState extends State<ClubScreen> {
   }
 
   List<Widget> get _salesAdDiscsSection {
-    var moreStyle = TextStyles.text14_700.copyWith(color: primary);
+    final salesAds = _modelData.salesAdDiscs;
+    final viewMoreStyle = TextStyles.text14_700.copyWith(color: primary);
     return [
       Row(
         children: [
           SizedBox(width: Dimensions.screen_padding),
           Expanded(child: Text('discs_for_sale_in_this_club'.recast, style: TextStyles.text18_600.copyWith(color: dark))),
-          if (_modelData.salesAdDiscs.length > 5) InkWell(onTap: _goToMarketplace, child: Text('view_more'.recast, style: moreStyle)),
+          if (salesAds.length > 5) InkWell(onTap: _goToMarketplace, child: Text('view_more'.recast, style: viewMoreStyle)),
           SizedBox(width: Dimensions.screen_padding),
         ],
       ),
       const SizedBox(height: 08),
-      SellDiscList(discs: _modelData.salesAdDiscs, onItem: (v) => Routes.user.market_details(salesAd: v).push()),
+      MarketplaceDiscList(discs: _modelData.salesAdDiscs, onTap: (v) => Routes.user.market_details(salesAd: v).push()),
     ];
   }
 

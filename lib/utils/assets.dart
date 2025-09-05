@@ -77,6 +77,7 @@ class _SvgIcons1 {
   String disc_3 = '$_SVG_ICONS_1/disc_3.svg';
   String disc_4 = '$_SVG_ICONS_1/disc_4.svg';
   String disc_plus = '$_SVG_ICONS_1/disc_plus.svg';
+  String dna = '$_SVG_ICONS_1/dna.svg';
   String dollar_circle = '$_SVG_ICONS_1/dollar_circle.svg';
   // String dots_three_vertical = '$_SVG_ICONS_1/dots_three_vertical.svg';
   // String dropdown = '$_SVG_ICONS_1/dropdown.svg';

@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
+import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/leaderboard/pdga_user.dart';
@@ -12,14 +11,16 @@ import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class PlayersList extends StatelessWidget {
+  final isPdgaRating;
   final double gap;
   final List<PdgaUser> players;
   final List<PdgaUser> topPlayers;
   final Function(PdgaUser)? onItem;
 
-  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem});
+  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem, this.isPdgaRating = true});
 
   @override
   Widget build(BuildContext context) {
@@ -67,18 +68,12 @@ class PlayersList extends StatelessWidget {
               Container(
                 width: 46,
                 child: Text(
-                  item.formated_pgda_improvement,
+                  (index + 4).formatInt,
                   textAlign: TextAlign.start,
                   style: TextStyles.text24_600.copyWith(color: lightBlue, fontWeight: w500, height: 1),
                 ),
               ),
-              const SizedBox(width: 4),
-              SvgImage(
-                height: 16,
-                color: isPositive ? success : error,
-                image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
-              ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 02),
               ImageNetwork(
                 width: 32,
                 radius: 06,
@@ -98,7 +93,17 @@ class PlayersList extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              Text(item.pdga_rating, style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1)),
+              if (isPdgaRating)
+                SvgImage(
+                  height: 14,
+                  color: isPositive ? success : error,
+                  image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
+                ),
+              if (isPdgaRating) const SizedBox(width: 04),
+              Text(
+                isPdgaRating ? item.formated_pgda_improvement : item.formatted_pdga_rating,
+                style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
+              ),
             ],
           ),
         ),
@@ -156,17 +161,18 @@ class PlayersList extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                item.pdga_rating,
+                                isPdgaRating ? item.formated_pgda_improvement : item.formatted_pdga_rating,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
                               ),
-                              const SizedBox(width: 04),
-                              SvgImage(
-                                height: 14,
-                                color: isPositive ? success : error,
-                                image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
-                              ),
+                              if (isPdgaRating) const SizedBox(width: 04),
+                              if (isPdgaRating)
+                                SvgImage(
+                                  height: 14,
+                                  color: isPositive ? success : error,
+                                  image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
+                                ),
                             ],
                           ),
                         ],
