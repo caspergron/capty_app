@@ -182,8 +182,8 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
     var discList = [UserDisc(id: DEFAULT_ID), if (bagDiscs.isNotEmpty) ...bagDiscs];
     return DiscGridList(
       discList: discList,
-      selectedItems: _modelData.selectedDiscs,
       gap: Dimensions.screen_padding,
+      selectedItems: _modelData.selectedDiscs,
       // onSelect: _onSelectYourDisc,
       onAdd: Routes.user.search_disc(index: 0).push,
       onDisc: (item, index) => _viewModel.onDiscItem(item, index - 1),

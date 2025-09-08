@@ -1085,6 +1085,10 @@ const APP_STRINGS = {
       'We grab the PDGA rating you had last year and then we calculate your improvement.',
   'disc_plastic': 'Disc Plastic',
   'clear_notes': 'Clear Notes',
+  'condition': 'Condition',
+  'range_10_0': 'Range (10-0)',
+  'range_100_200': 'Range (100-200)',
+  'range_0_1000': 'Range (0-1000)',
   '': ''
 };
 

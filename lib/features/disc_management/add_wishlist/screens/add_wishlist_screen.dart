@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:app/components/app_lists/parent_disc_horizontal_list.dart';
-import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/menus/prefix_menu.dart';
 import 'package:app/components/menus/suffix_menu.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
-import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/disc_management/add_wishlist/components/add_to_wishlist_dialog.dart';
 import 'package:app/features/disc_management/add_wishlist/components/edit_wishlist_dialog.dart';
@@ -16,7 +14,6 @@ import 'package:app/features/disc_management/add_wishlist/view_models/add_wishli
 import 'package:app/models/disc/parent_disc.dart';
 import 'package:app/models/disc/wishlist.dart';
 import 'package:app/services/app_analytics.dart';
-import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/gradients.dart';
 import 'package:app/themes/text_styles.dart';
@@ -120,7 +117,7 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
           ParentDiscHorizontalList(discs: _modelData.discList, onTap: _onWishlist, onFav: _onWishlist),
         ],
         const SizedBox(height: 06),
-        Stack(
+        /*Stack(
           children: [
             Container(
               height: 140,
@@ -142,8 +139,8 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
               ),
             ),
           ],
-        ),
-        const SizedBox(height: 16),
+        ),*/
+        // const SizedBox(height: 16),
         /*Stack(
           children: [
             Container(
@@ -235,7 +232,7 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
     ];
   }
 
-  List<Widget> get _pgdaApprovedListItems {
+  /*List<Widget> get _pgdaApprovedListItems {
     var title = Text('browse_in_all_pdga_approved_discs'.recast, style: TextStyles.text18_700.copyWith(color: white));
     var subtitle = Text('be_nerdy_and_browse_in_all_discs'.recast, style: TextStyles.text12_400.copyWith(color: lightBlue));
     return [
@@ -255,7 +252,7 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
         ),
       )
     ];
-  }
+  }*/
 
   /*List<Widget> get _askAiListItems {
     var title = Text('ask_the_ai'.recast, style: TextStyles.text18_700.copyWith(color: white));

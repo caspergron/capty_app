@@ -1,6 +1,3 @@
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -38,6 +35,8 @@ import 'package:app/preferences/app_preferences.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
 
 class PublicRepository {
   Future<List<Country>> fetchCountries() async {
@@ -143,10 +142,19 @@ class PublicRepository {
     return SalesAd.fromJson(apiResponse.response['data']);
   }
 
-  Future<List<Brand>> fetchAllBrands() async {
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.allBrands);
+  Future<List<Brand>> fetchAllBrands(String params) async {
+    final endpoint = '${ApiUrl.public.allBrands}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var brandsApi = BrandsApi.fromJson(apiResponse.response);
+    final brandsApi = BrandsApi.fromJson(apiResponse.response);
+    return brandsApi.brands ?? [];
+  }
+
+  Future<List<Brand>> fetchSearchBrands(String params) async {
+    final endpoint = '${ApiUrl.public.searchBrands}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return [];
+    final brandsApi = BrandsApi.fromJson(apiResponse.response);
     return brandsApi.brands ?? [];
   }
 

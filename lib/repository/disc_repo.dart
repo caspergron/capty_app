@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -19,7 +21,6 @@ import 'package:app/models/plastic/plastic.dart';
 import 'package:app/models/plastic/plastic_api.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:provider/provider.dart';
 
 class DiscRepository {
   Future<List<ParentDisc>> fetchParentDiscs({int page = 1, bool isWishlistSearch = false}) async {

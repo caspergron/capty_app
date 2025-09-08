@@ -23,6 +23,7 @@ const PDGA_RATING = 'pdga_rating';
 const DEFAULT_ID = 00000;
 const LENGTH_20 = 20;
 const LENGTH_10 = 10;
+const LENGTH_30 = 30;
 // const LENGTH_08 = 08;
 const String DROPDOWN_SPACE = '     ';
 

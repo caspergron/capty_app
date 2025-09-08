@@ -11,6 +11,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/units/club_members_list.dart';
 import 'package:app/models/club/club.dart';
 import 'package:app/models/user/user.dart';
+import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/club_repo.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
@@ -114,9 +115,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     );
   }
 
-  void _onViewProfile(User user) {
+  void _onViewProfile(User item) {
     backToPrevious();
-    Routes.user.player_profile(playerId: user.id!).push();
+    var isMe = UserPreferences.user.id == item.id;
+    isMe ? Routes.user.profile().push() : Routes.user.player_profile(playerId: item.id!).push();
   }
 
   Widget get _noMemberFound {

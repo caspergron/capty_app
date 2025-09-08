@@ -5,7 +5,6 @@ import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/models/user/user.dart';
-import 'package:app/preferences/user_preferences.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
@@ -34,7 +33,6 @@ class ClubMembersList extends StatelessWidget {
   Widget _friendItemCard(BuildContext context, int index) {
     var item = members[index];
     var isLast = index == members.length - 1;
-    var isMe = UserPreferences.user.id == item.id;
     return TweenListItem(
       index: index,
       child: Container(
@@ -61,15 +59,14 @@ class ClubMembersList extends StatelessWidget {
                 style: TextStyles.text14_500.copyWith(color: lightBlue, height: 1),
               ),
             ),
-            if (!isMe) const SizedBox(width: 4),
-            if (!isMe)
-              ElevateButton(
-                radius: 04,
-                height: 26,
-                label: 'view_profile'.recast.toUpper,
-                onTap: () => onViewProfile == null ? null : onViewProfile!(item),
-                textStyle: TextStyles.text13_600.copyWith(color: lightBlue, height: 1.15),
-              ),
+            const SizedBox(width: 4),
+            ElevateButton(
+              radius: 04,
+              height: 26,
+              label: 'view_profile'.recast.toUpper,
+              onTap: () => onViewProfile == null ? null : onViewProfile!(item),
+              textStyle: TextStyles.text13_600.copyWith(color: lightBlue, height: 1.15),
+            ),
           ],
         ),
       ),

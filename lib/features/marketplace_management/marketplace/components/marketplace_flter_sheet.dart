@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/disc_speciality_list.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -13,6 +9,7 @@ import 'package:app/constants/app_keys.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/libraries/toasts_popups.dart';
 import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/tag.dart';
 import 'package:app/models/marketplace/marketplace_filter.dart';
@@ -29,11 +26,15 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
 
 var _BRAND = DataModel(label: 'brand');
 var _TYPE = DataModel(label: 'type', valueInt: 2);
 var _TAGS = DataModel(label: 'tags', valueInt: 4);
 var _FLIGHT_PATH = DataModel(label: 'flight_numbers', valueInt: 6);
+// var _CONDITION = DataModel(label: 'condition', valueInt: 7);
+// var _WEIGHT = DataModel(label: 'weight', valueInt: 9);
+// var _PRICE = DataModel(label: 'price', valueInt: 11);
 // var _SORT_BY = DataModel(label: 'sort_by', valueInt: 7);
 
 Future<void> marketplaceFilterSheet({required MarketplaceFilter filterOption, Function(MarketplaceFilter)? onFilter}) async {
@@ -65,11 +66,14 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   var _types = <Tag>[];
   var _brands = <Brand>[];
   var _tags = <Tag>[];
-  var _sortByList = <DataModel>[];
+  // var _sortBy = DataModel();
   var _speed = const RangeValues(1, 15);
   var _glide = const RangeValues(0, 7);
   var _turn = const RangeValues(-5, 1);
   var _fade = const RangeValues(0, 5);
+  // var _condition = const RangeValues(0, 10);
+  // var _weight = const RangeValues(100, 200);
+  // var _price = const RangeValues(0, 1000);
 
   @override
   void initState() {
@@ -81,6 +85,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _setInitialStates() {
+    // final sortBy = widget.filterOption.sortBy;
     _types = widget.filterOption.types;
     _brands = widget.filterOption.brands;
     _tags = widget.filterOption.tags;
@@ -88,6 +93,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     _glide = widget.filterOption.glide;
     _turn = widget.filterOption.turn;
     _fade = widget.filterOption.fade;
+    // _condition = widget.filterOption.condition;
+    // _weight = widget.filterOption.weight;
+    // _price = widget.filterOption.price;
+    // if (sortBy != null) _sortBy = sortBy;
   }
 
   Future<void> _fetchSpecialDiscTags() async => AppPreferences.fetchSpecialDiscTags();
@@ -169,6 +178,9 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     var typeLabels = _types.isEmpty ? <String>[] : _types.map((e) => e.displayName ?? '').toList();
     var brandLabels = _brands.isEmpty ? <String>[] : _brands.map((e) => e.name ?? '').toList();
     var tagLabels = _tags.isEmpty ? <String>[] : _tags.map((e) => e.displayName ?? '').toList();
+    // var priceLabelValue = '${'from'.recast}: ${_price.start.toInt()} ${'to'.recast} ${_price.end.toInt()}';
+    // var weightLabelValue = '${'from'.recast}: ${_weight.start.toInt()} ${'to'.recast} ${_weight.end.toInt()}';
+    // var conditionLabelValue = '${'from'.recast}: ${_condition.end.toInt()} ${'to'.recast} ${_condition.start.toInt()}';
     return ListView(
       controller: ScrollController(),
       clipBehavior: Clip.antiAlias,
@@ -187,31 +199,77 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
             onTap: () => brandsSheet(brands: _brands, onChanged: (v) => setState(() => _brands = v)),
           ),
         ),
-        if (brandLabels.isNotEmpty) const SizedBox(height: 06),
-        if (brandLabels.isNotEmpty)
+        if (brandLabels.isNotEmpty) ...[
+          const SizedBox(height: 06),
           LabelWrapList(animIndex: 1, items: brandLabels, onItem: (index) => setState(() => _brands.removeAt(index))),
+        ],
         const SizedBox(height: 16),
         _ExpansionLabel(
           item: _TYPE,
           isExpanded: false,
           list: DiscSpecialityList(specialities: discTypeTags, selectedSpecialities: _types, onSelect: _onSelectDiscType),
         ),
-        if (typeLabels.isNotEmpty) const SizedBox(height: 06),
-        if (typeLabels.isNotEmpty)
+        if (typeLabels.isNotEmpty) ...[
+          const SizedBox(height: 06),
           LabelWrapList(animIndex: 3, items: typeLabels, onItem: (index) => setState(() => _types.removeAt(index))),
+        ],
         const SizedBox(height: 16),
         _ExpansionLabel(
           item: _TAGS,
           isExpanded: false,
           list: DiscSpecialityList(specialities: tags, selectedSpecialities: _tags, onSelect: _onSelectTag),
         ),
-        if (tagLabels.isNotEmpty) const SizedBox(height: 06),
-        if (_tags.isNotEmpty) LabelWrapList(animIndex: 5, items: tagLabels, onItem: (index) => setState(() => _tags.removeAt(index))),
+        if (tagLabels.isNotEmpty) ...[
+          const SizedBox(height: 06),
+          LabelWrapList(animIndex: 5, items: tagLabels, onItem: (index) => setState(() => _tags.removeAt(index))),
+        ],
         const SizedBox(height: 16),
         _ExpansionLabel(item: _FLIGHT_PATH, list: Column(crossAxisAlignment: CrossAxisAlignment.start, children: _flightPathSections)),
         const SizedBox(height: 16),
-        // _ExpansionLabel(item: _SORT_BY, isExpanded: false, list: SortByList(selectedItems: _sortByList, onSelect: _onSelectSortBy)),
-        // const SizedBox(height: 16),
+        /*_ExpansionLabel(
+          item: _CONDITION,
+          list: _RangeSliderOption(
+            index: 8,
+            maxValue: 10,
+            // isOpposite: true,
+            rangeValue: _condition,
+            label: 'range_10_0'.recast,
+            labelValue: conditionLabelValue,
+            onChanged: (v) => setState(() => _condition = v),
+          ),
+        ),
+        const SizedBox(height: 16),*/
+        /*_ExpansionLabel(
+          item: _WEIGHT,
+          list: _RangeSliderOption(
+            index: 10,
+            minValue: 100,
+            maxValue: 200,
+            rangeValue: _weight,
+            label: 'range_100_200'.recast,
+            labelValue: weightLabelValue,
+            onChanged: (v) => setState(() => _weight = v),
+          ),
+        ),
+        const SizedBox(height: 16),*/
+        /*_ExpansionLabel(
+          item: _PRICE,
+          list: _RangeSliderOption(
+            index: 12,
+            maxValue: 1000,
+            rangeValue: _price,
+            label: 'range_0_1000'.recast,
+            labelValue: priceLabelValue,
+            onChanged: (v) => setState(() => _price = v),
+          ),
+        ),
+        const SizedBox(height: 16),*/
+        /*_ExpansionLabel(
+          item: _SORT_BY,
+          isExpanded: false,
+          list: SortByList(selectedItems: _sortBy.value.isEmpty ? [] : [_sortBy], onSelect: _onSelectSortBy),
+        ),
+        const SizedBox(height: 16),*/
       ],
     );
   }
@@ -264,15 +322,9 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _onResetFilter() {
-    _types = [];
-    _brands = [];
-    _tags = [];
-    _speed = const RangeValues(1, 15);
-    _glide = const RangeValues(0, 7);
-    _turn = const RangeValues(-5, 1);
-    _fade = const RangeValues(0, 5);
-    setState(() {});
-    _onFilter();
+    final filter = MarketplaceFilter(types: [], tags: [], brands: []);
+    if (widget.onFilter != null) widget.onFilter!(filter);
+    backToPrevious();
   }
 
   void _onSelectTag(Tag item) {
@@ -290,41 +342,42 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   /*void _onSelectSortBy(DataModel item) {
-    _sortByList = _sortByList.toList();
-    _sortByList.clear();
-    _sortByList.add(item);
+    _sortBy = DataModel();
+    _sortBy = item;
     setState(() {});
   }*/
 
   bool get _isValidated {
-    var invalidFlight1 = (_speed.start == 1 && _speed.end == 15) && (_glide.start == 0 && _glide.end == 7);
-    var invalidFlight2 = (_turn.start == -5 && _turn.end == 1) && (_fade.start == 0 && _fade.end == 5);
-    var isInvalid = invalidFlight1 && invalidFlight2 && _types.isEmpty && _brands.isEmpty && _tags.isEmpty;
+    final invalidFlight1 = (_speed.start == 1 && _speed.end == 15) && (_glide.start == 0 && _glide.end == 7);
+    final invalidFlight2 = (_turn.start == -5 && _turn.end == 1) && (_fade.start == 0 && _fade.end == 5);
+    // final conditionPaths = _condition.start == 0 && _condition.end == 10;
+    // final weightAndPricePaths = (_weight.start == 100 && _weight.end == 200) && (_price.start == 0 && _price.end == 1000);
+    final invalidLists = _types.isEmpty && _brands.isEmpty && _tags.isEmpty /*&& _sortBy.value.toKey.isEmpty*/;
+    var isInvalid = invalidFlight1 && invalidFlight2 && invalidLists /*&& conditionPaths && weightAndPricePaths*/;
     return !isInvalid;
   }
 
   void _onFilter() {
-    // if (!_isValidated) return FlushPopup.onWarning(message: 'please_select_at_least_one_filter_option'.recast);
-    if (!_isValidated) {
-      var filter = MarketplaceFilter(types: [], tags: [], brands: []);
-      if (widget.onFilter != null) widget.onFilter!(filter);
-      return backToPrevious();
-    }
-    var sortBy = _sortByList.isEmpty ? null : _sortByList.first;
-    var typeIds = _types.isEmpty ? <int>[] : _types.map((e) => e.id.nullToInt).toList();
-    var tagIds = _tags.isEmpty ? <int>[] : _tags.map((e) => e.id.nullToInt).toList();
-    var brandIds = _brands.isEmpty ? <int>[] : _brands.map((e) => e.id.nullToInt).toList();
-    // var sortByParam = sortBy == null ? '' : '&sort_by=${sortBy.value}';
-    var tagParam = tagIds.isEmpty ? '' : '&tag_ids=$tagIds';
-    var typeParam = typeIds.isEmpty ? '' : '&type_ids=$typeIds';
-    var brandParam = brandIds.isEmpty ? '' : '&brand_ids=$brandIds';
-    var speedParam = {'from': _speed.start.toInt(), 'to': _speed.end.toInt()};
-    var glideParam = {'from': _glide.start.toInt(), 'to': _glide.end.toInt()};
-    var turnParam = {'from': _turn.start.toInt(), 'to': _turn.end.toInt()};
-    var fadeParam = {'from': _fade.start.toInt(), 'to': _fade.end.toInt()};
-    var flightParams = {'speed': speedParam, 'glide': glideParam, 'turn': turnParam, 'fade': fadeParam};
-    var params = '&enable_custom_sort=true$tagParam$typeParam$brandParam&flight=${jsonEncode(flightParams)}'.trim();
-    var filter = MarketplaceFilter(
+    if (!_isValidated) return ToastPopup.onWarning(message: 'please_select_at_least_one_filter_option'.recast);
+    final typeIds = _types.isEmpty ? <int>[] : _types.map((e) => e.id.nullToInt).toList();
+    final tagIds = _tags.isEmpty ? <int>[] : _tags.map((e) => e.id.nullToInt).toList();
+    final brandIds = _brands.isEmpty ? <int>[] : _brands.map((e) => e.id.nullToInt).toList();
+    // final sortByParam = _sortBy.value.isEmpty ? '' : '&sort_by=${_sortBy.value}';
+    final tagParam = tagIds.isEmpty ? '' : '&tag_ids=$tagIds';
+    final typeParam = typeIds.isEmpty ? '' : '&type_ids=$typeIds';
+    final brandParam = brandIds.isEmpty ? '' : '&brand_ids=$brandIds';
+    final speedParam = {'from': _speed.start.toInt(), 'to': _speed.end.toInt()};
+    final glideParam = {'from': _glide.start.toInt(), 'to': _glide.end.toInt()};
+    final turnParam = {'from': _turn.start.toInt(), 'to': _turn.end.toInt()};
+    final fadeParam = {'from': _fade.start.toInt(), 'to': _fade.end.toInt()};
+    final flightParams = {'speed': speedParam, 'glide': glideParam, 'turn': turnParam, 'fade': fadeParam};
+    // final conditionParam = jsonEncode({'from': _condition.start.toInt(), 'to': _condition.end.toInt()});
+    // final weightParam = jsonEncode({'from': _weight.start.toInt(), 'to': _weight.end.toInt()});
+    // final priceParam = jsonEncode({'from': _price.start.toInt(), 'to': _price.end.toInt()});
+    // final flightParameters = '&flight=${jsonEncode(flightParams)}&condition=$conditionParam&weight=$weightParam&price=$priceParam';
+    // final parameters = '&enable_custom_sort=true$tagParam$typeParam$brandParam$sortByParam$flightParameters'.trim();
+    final parameters = '&enable_custom_sort=true$tagParam$typeParam$brandParam$flightParams'.trim();
+    final filter = MarketplaceFilter(
       types: _types,
       tags: _tags,
       brands: _brands,
@@ -332,8 +385,11 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
       glide: _glide,
       turn: _turn,
       fade: _fade,
-      sortBy: sortBy,
-      parameters: params,
+      // condition: _condition,
+      // price: _price,
+      // weight: _weight,
+      // sortBy: _sortBy,
+      parameters: parameters,
     );
     if (widget.onFilter != null) widget.onFilter!(filter);
     backToPrevious();
@@ -347,6 +403,7 @@ class _RangeSliderOption extends StatelessWidget {
   final RangeValues rangeValue;
   final double minValue;
   final double maxValue;
+  final bool isOpposite;
   final Function(RangeValues)? onChanged;
 
   const _RangeSliderOption({
@@ -357,12 +414,17 @@ class _RangeSliderOption extends StatelessWidget {
     this.onChanged,
     this.label = '',
     this.labelValue = '',
+    this.isOpposite = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    var minTextWidget = Text(minValue.formatDouble, style: TextStyles.text12_600.copyWith(color: white, fontSize: 11));
-    var maxTextWidget = Text(maxValue.formatDouble, style: TextStyles.text12_600.copyWith(color: white, fontSize: 11));
+    final min_value = isOpposite ? maxValue.formatDouble : minValue.formatDouble;
+    final max_value = isOpposite ? minValue.formatDouble : maxValue.formatDouble;
+    final minTextWidget = Text(min_value, style: TextStyles.text12_600.copyWith(color: white, fontSize: 11));
+    final maxTextWidget = Text(max_value, style: TextStyles.text12_600.copyWith(color: white, fontSize: 11));
+    final minTooltipLabel = '${(isOpposite ? rangeValue.end : rangeValue.start).round()}';
+    final maxTooltipLabel = '${(isOpposite ? rangeValue.start : rangeValue.end).round()}';
     return TweenListItem(
       index: index,
       child: Column(
@@ -395,7 +457,7 @@ class _RangeSliderOption extends StatelessWidget {
                   values: rangeValue,
                   min: minValue,
                   max: maxValue,
-                  labels: RangeLabels('${rangeValue.start.round()}', '${rangeValue.end.round()}'),
+                  labels: RangeLabels(minTooltipLabel, maxTooltipLabel),
                   onChanged: (v) => onChanged == null ? null : onChanged!(v),
                 ),
               ),

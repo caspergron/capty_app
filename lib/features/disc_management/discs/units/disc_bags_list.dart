@@ -34,6 +34,26 @@ class DiscBagsList extends StatelessWidget {
     );
   }
 
+  /*Widget _dragTargetMenuItemCard(BuildContext context, int index) {
+    return DragTarget<UserDisc>(
+      onWillAcceptWithDetails: (details) => true,
+      onAcceptWithDetails: onAccept == null ? null : (details) => onAccept!(details, discBags[index]),
+      builder: (context, candidateData, rejectedData) {
+        final UserDisc? candidate = candidateData.cast<UserDisc?>().firstWhere((e) => e != null, orElse: () => null);
+        final hasCandidate = candidate != null;
+        return InkWell(
+          onLongPress: (hasCandidate && onAccept != null)
+              ? () {
+                  final details = DragTargetDetails<UserDisc>(data: candidate, offset: Offset.zero);
+                  onAccept!(details, discBags[index]);
+                }
+              : null,
+          child: _menuItemCard(context, index, hasCandidate),
+        );
+      },
+    );
+  }*/
+
   Widget _dragTargetMenuItemCard(BuildContext context, int index) {
     return DragTarget<UserDisc>(
       onWillAcceptWithDetails: (data) => true,
@@ -43,9 +63,9 @@ class DiscBagsList extends StatelessWidget {
   }
 
   Widget _menuItemCard(BuildContext context, int index, bool isHighlighted) {
+    var gap = Dimensions.screen_padding;
     var item = discBags[index];
     var selected = discBag.id != null && discBag.id == item.id;
-    var gap = Dimensions.screen_padding;
     var invalidDelete = item.id == 1000001 || item.id == 1000002 || !item.is_delete;
     return InkWell(
       onTap: () => _onItem(index),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:app/components/app_lists/marketplace_disc_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
+import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -131,9 +132,6 @@ class _ClubScreenState extends State<ClubScreen> {
     if (_modelData.loader.initial) return const SizedBox.shrink();
     if (_modelData.clubs.isEmpty || _modelData.club.id == null) return _NoClubView();
     var club = _modelData.club;
-    var caretRight = SvgImage(image: Assets.svg1.caret_right, color: orange, height: 16);
-    var totalMembers = club.totalMember.nullToInt > 0 ? '${'view_members'.recast.toUpper} (${club.totalMember.formatInt})' : 'n/a'.recast;
-    var socialLink = club.socialLink.toKey.isNotEmpty ? 'open_channel'.recast.toUpper : 'n/a'.recast;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -155,18 +153,25 @@ class _ClubScreenState extends State<ClubScreen> {
                 children: [
                   SvgImage(image: Assets.svg1.users, height: 20, color: lightBlue),
                   const SizedBox(width: 06),
-                  Expanded(child: Text('members'.recast.firstLetterCapital, style: TextStyles.text13_600.copyWith(color: lightBlue))),
-                  const SizedBox(width: 06),
-                  InkWell(
-                    onTap: () => club.totalMember.nullToInt < 1 ? null : clubMembersSheet(club: _modelData.club),
-                    child: Row(
-                      children: [
-                        Text(totalMembers, textAlign: TextAlign.right, style: TextStyles.text14_700.copyWith(color: orange)),
-                        if (club.totalMember.nullToInt > 0) const SizedBox(width: 02),
-                        if (club.totalMember.nullToInt > 0) Padding(padding: const EdgeInsets.only(top: 2), child: caretRight),
-                      ],
+                  Expanded(
+                    child: Text(
+                      '${'members'.recast.firstLetterCapital} ${club.totalMember.nullToInt > 0 ? '(${club.totalMember.formatInt})' : ''}',
+                      style: TextStyles.text13_600.copyWith(color: lightBlue),
                     ),
                   ),
+                  const SizedBox(width: 06),
+                  club.totalMember.nullToInt > 0
+                      ? OutlineButton(
+                          radius: 04,
+                          height: 24,
+                          padding: 08,
+                          border: lightBlue,
+                          background: transparent,
+                          label: 'view_members'.recast.toUpper,
+                          textStyle: TextStyles.text10_400.copyWith(color: lightBlue, fontSize: 10, fontWeight: w600),
+                          onTap: () => club.totalMember.nullToInt < 1 ? null : clubMembersSheet(club: _modelData.club),
+                        )
+                      : Text('n/a'.recast, style: TextStyles.text14_700.copyWith(color: lightBlue)),
                 ],
               ),
               const SizedBox(height: 14),
@@ -176,19 +181,18 @@ class _ClubScreenState extends State<ClubScreen> {
                   const SizedBox(width: 06),
                   Expanded(child: Text('communicate'.recast, style: TextStyles.text13_600.copyWith(color: lightBlue))),
                   const SizedBox(width: 06),
-                  if (club.socialLink.toKey.isNotEmpty)
-                    InkWell(
-                      onTap: () => sl<Launchers>().launchInBrowser(url: club.socialLink!),
-                      child: Row(
-                        children: [
-                          Text(socialLink, textAlign: TextAlign.right, style: TextStyles.text14_700.copyWith(color: orange)),
-                          const SizedBox(width: 02),
-                          Padding(padding: const EdgeInsets.only(top: 2), child: caretRight),
-                        ],
-                      ),
-                    )
-                  else
-                    Text('n/a'.recast, style: TextStyles.text14_700.copyWith(color: lightBlue))
+                  club.socialLink.toKey.isNotEmpty
+                      ? OutlineButton(
+                          radius: 04,
+                          height: 24,
+                          padding: 08,
+                          border: lightBlue,
+                          background: transparent,
+                          label: 'open_channel'.recast.toUpper,
+                          textStyle: TextStyles.text10_400.copyWith(color: lightBlue, fontSize: 10, fontWeight: w600),
+                          onTap: () => sl<Launchers>().launchInBrowser(url: club.socialLink!),
+                        )
+                      : Text('n/a'.recast, style: TextStyles.text14_700.copyWith(color: lightBlue))
                 ],
               ),
               const SizedBox(height: 14),
@@ -290,8 +294,8 @@ class _NoClubView extends StatelessWidget {
             radius: 04,
             height: 40,
             padding: 32,
-            label: 'choose_a_club'.recast.toUpper,
             onTap: joiningClubsSheet,
+            label: 'choose_a_club'.recast.toUpper,
             textStyle: TextStyles.text14_700.copyWith(color: lightBlue, fontWeight: w600, height: 1.15),
           )
         ],

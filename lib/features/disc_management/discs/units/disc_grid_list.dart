@@ -53,7 +53,7 @@ class DiscGridList extends StatelessWidget {
     var spacing = 6.0;
     var totalSpacing = (crossAxisCount - 1) * spacing;
     var usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
-    var itemHeight = 270;
+    var itemHeight = 256;
     var aspectRatio = usableWidth / itemHeight;
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 4,
@@ -64,11 +64,11 @@ class DiscGridList extends StatelessWidget {
   }
 
   Widget _draggableDiscItemCard(BuildContext context, int index) {
-    var item = discList[index];
+    final item = discList[index];
     if (index == 0 && item.id == DEFAULT_ID) return _addDiscItemCard;
-    return Draggable<UserDisc>(
+    return LongPressDraggable<UserDisc>(
       data: item,
-      feedback: Opacity(opacity: 0.7, child: _feedBackItem(context, index)),
+      feedback: Material(type: MaterialType.transparency, child: Opacity(opacity: 0.7, child: _feedBackItem(context, index))),
       childWhenDragging: Opacity(opacity: 0.5, child: _discItemCard(context, index)),
       child: _discItemCard(context, index),
     );
@@ -112,7 +112,6 @@ class DiscGridList extends StatelessWidget {
           LayoutBuilder(
             builder: (context, constraints) {
               double maxSize = constraints.maxWidth;
-
               if (item.color != null) {
                 return ColoredDisc(
                   iconSize: 30,
