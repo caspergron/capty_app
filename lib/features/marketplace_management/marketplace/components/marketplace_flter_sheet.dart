@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/disc_speciality_list.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -26,7 +28,6 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
-import 'package:flutter/material.dart';
 
 var _BRAND = DataModel(label: 'brand');
 var _TYPE = DataModel(label: 'type', valueInt: 2);

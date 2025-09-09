@@ -132,14 +132,21 @@ class _DialogViewState extends State<_DialogView> {
           ],
         ),
         const SizedBox(height: 20),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding),
-          child: _DiscInfo(
-            icon: Assets.svg1.disc_2,
-            label: '${'disc_condition'.recast}: ${widget.disc.condition_number}/10',
-            value: widget.disc.condition_value == null ? 'n/a'.recast : USED_DISC_INFO[widget.disc.condition_value!].recast,
-          ),
+        _DiscInfo(
+          icon: Assets.svg1.disc_2,
+          padding: Dimensions.dialog_padding,
+          label: '${'disc_condition'.recast}: ${widget.disc.condition_number}/10',
+          value: widget.disc.condition_value == null ? 'n/a'.recast : USED_DISC_INFO[widget.disc.condition_value!].recast,
         ),
+        if (userDisc?.plastic?.id != null) ...[
+          const SizedBox(height: 16),
+          _DiscInfo(
+            icon: Assets.svg1.dna,
+            label: 'disc_plastic'.recast,
+            padding: Dimensions.dialog_padding,
+            value: userDisc?.plastic?.name ?? 'n/a'.recast,
+          ),
+        ],
         if (isDescription) ...[
           const SizedBox(height: 20),
           Padding(
@@ -157,8 +164,7 @@ class _DialogViewState extends State<_DialogView> {
             ),
           ),
         ],
-        const SizedBox(height: 28),
-        const SizedBox(height: 14),
+        const SizedBox(height: 32),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
           child: ElevateButton(
@@ -198,7 +204,8 @@ class _DiscInfo extends StatelessWidget {
   final String icon;
   final String label;
   final String value;
-  const _DiscInfo({this.icon = '', this.label = '', this.value = ''});
+  final double padding;
+  const _DiscInfo({this.icon = '', this.label = '', this.value = '', this.padding = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -206,6 +213,7 @@ class _DiscInfo extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(width: padding),
         SvgImage(image: icon, height: 34, color: lightBlue),
         const SizedBox(width: 06),
         Expanded(
@@ -216,7 +224,8 @@ class _DiscInfo extends StatelessWidget {
               Text(value, maxLines: 2, overflow: TextOverflow.ellipsis, style: style),
             ],
           ),
-        )
+        ),
+        SizedBox(width: padding),
       ],
     );
   }
