@@ -1089,6 +1089,13 @@ const APP_STRINGS = {
   'range_10_0': 'Range (10-0)',
   'range_100_200': 'Range (100-200)',
   'range_0_1000': 'Range (0-1000)',
+  'monthly_improvement': 'Monthly Improvement',
+  'leaderboard_sharing': 'Leaderboard sharing',
+  'leaderboard_sharing_sublabel': 'Share your score and display name on public leaderboards. You can turn this off anytime.',
+  'leaderboard_sharing_helper_text': 'When enabled, recent scores and rank may be visible to others.',
+  'leaderboard_sharing_is': 'Leaderboard sharing is',
+  'turned_on': 'turned on',
+  'turned_off': 'turned off',
   '': ''
 };
 

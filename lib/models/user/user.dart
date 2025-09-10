@@ -39,11 +39,13 @@ class User {
   Currency? currency;
   Media? media;
   bool? isOnline;
+  int? shareLeaderboard;
 
   String get full_name => name == null ? '' : name!;
   String get first_name => name == null ? '' : name!.split(' ').first.firstLetterCapital;
   String get name_initial => name == null ? '' : name!.name_initial;
 
+  bool get share_leaderboard => shareLeaderboard != null && shareLeaderboard == 1;
   bool get is_shipping => isShipping != null && isShipping == 1;
   String get pdga_rating => pdgaRating.formatInt;
   int get pdga_improvement => pdgaImprovement ?? 0;
@@ -81,6 +83,7 @@ class User {
     this.currency,
     this.media,
     this.isOnline,
+    this.shareLeaderboard,
   });
 
   User.fromJson(json) {
@@ -113,6 +116,7 @@ class User {
     currency = json['currency'] != null ? Currency.fromJson(json['currency']) : null;
     media = json['media'] != null ? Media.fromJson(json['media']) : null;
     isOnline = json['is_online'];
+    shareLeaderboard = json['share_leaderboard'];
   }
 
   Map<String, dynamic> toJson() {
@@ -146,6 +150,7 @@ class User {
     if (currency != null) map['currency'] = currency?.toJson();
     if (media != null) map['media'] = media?.toJson();
     map['is_online'] = isOnline;
+    map['share_leaderboard'] = shareLeaderboard;
     return map;
   }
 

@@ -208,7 +208,7 @@ class _DialogViewState extends State<_DialogView> {
               hint: 'select_special_features',
               label: _specialTags.isEmpty ? '' : '${_specialTags.length} ${'feature_selected'.recast}',
               endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
-              onTap: () => specialTagsSheet(selectedTags: _specialTags, onChanged: (v) => setState(() => _specialTags = v)),
+              onTap: _onSpecialFeature,
             ),
             if (_specialTags.isNotEmpty) const SizedBox(height: 08),
             if (_specialTags.isNotEmpty)
@@ -238,7 +238,7 @@ class _DialogViewState extends State<_DialogView> {
                       hint: 'select_plastic',
                       label: _plastic.name ?? '',
                       endIcon: SvgImage(image: Assets.svg1.caret_down_1, height: 19, color: dark),
-                      onTap: () => plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v)),
+                      onTap: _onPlastic,
                     ),
                   ),
                 if (_plastics.isNotEmpty) const SizedBox(width: 08),
@@ -361,6 +361,17 @@ class _DialogViewState extends State<_DialogView> {
         const SizedBox(height: 02),
       ],
     );
+  }
+
+  Future<void> _onPlastic() async {
+    if (_plastics.isEmpty) return;
+    await Future.delayed(const Duration(milliseconds: 200));
+    unawaited(plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v)));
+  }
+
+  Future<void> _onSpecialFeature() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    unawaited(specialTagsSheet(selectedTags: _specialTags, onChanged: (v) => setState(() => _specialTags = v)));
   }
 
   void _onRadio(String value) {

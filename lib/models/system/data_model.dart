@@ -68,6 +68,6 @@ List<DataModel> SORT_BY_LIST = [
 
 List<DataModel> LEADERBOARD_CATEGORY_LIST = [
   DataModel(label: 'pdga_rating', value: 'rating'),
-  // DataModel(label: 'pdga_improvement', value: 'improvement'),
+  DataModel(label: 'monthly_improvement', value: 'improvement'),
   DataModel(label: 'yearly_improvement', value: 'yearly_improvement')
 ];

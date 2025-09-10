@@ -229,63 +229,75 @@ class _DialogViewState extends State<_DialogView> {
                 children: [
                   Expanded(
                     child: InputField(
+                      maxLength: 4,
                       cursorHeight: 10,
+                      counterText: '',
                       controller: _speed,
                       hintText: '${'ex'.recast}: 6.5',
                       focusNode: _discSizeFocusNodes[0],
-                      keyboardType: TextInputType.number,
                       enabledBorder: mediumBlue,
                       focusedBorder: mediumBlue,
                       borderRadius: BorderRadius.circular(04),
                       textInputAction: TextInputAction.next,
                       contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discSizeFocusNodes[1]),
+                      inputFormatters: [FloatNumberInputFormatter()],
                     ),
                   ),
                   const SizedBox(width: 06),
                   Expanded(
                     child: InputField(
+                      maxLength: 4,
                       cursorHeight: 10,
+                      counterText: '',
                       controller: _glide,
                       hintText: '${'ex'.recast}: 5',
                       focusNode: _discSizeFocusNodes[1],
-                      keyboardType: TextInputType.number,
                       enabledBorder: mediumBlue,
                       focusedBorder: mediumBlue,
                       borderRadius: BorderRadius.circular(04),
                       textInputAction: TextInputAction.next,
                       contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discSizeFocusNodes[2]),
+                      inputFormatters: [FloatNumberInputFormatter()],
                     ),
                   ),
                   const SizedBox(width: 06),
                   Expanded(
                     child: InputField(
+                      maxLength: 4,
                       cursorHeight: 10,
+                      counterText: '',
                       controller: _turn,
                       hintText: '${'ex'.recast}: -1',
                       focusNode: _discSizeFocusNodes[2],
-                      keyboardType: TextInputType.number,
                       enabledBorder: mediumBlue,
                       focusedBorder: mediumBlue,
                       borderRadius: BorderRadius.circular(04),
                       textInputAction: TextInputAction.next,
                       contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discSizeFocusNodes[3]),
+                      inputFormatters: [FloatNumberInputFormatter()],
                     ),
                   ),
                   const SizedBox(width: 06),
                   Expanded(
                     child: InputField(
+                      maxLength: 4,
                       cursorHeight: 10,
+                      counterText: '',
                       controller: _fade,
                       hintText: '${'ex'.recast}: 1',
                       focusNode: _discSizeFocusNodes[3],
-                      keyboardType: TextInputType.number,
                       enabledBorder: mediumBlue,
                       focusedBorder: mediumBlue,
                       borderRadius: BorderRadius.circular(04),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
+                      inputFormatters: [FloatNumberInputFormatter()],
                     ),
                   ),
                 ],
@@ -416,9 +428,10 @@ class _DialogViewState extends State<_DialogView> {
     );
   }
 
-  void _onPlastic() {
+  Future<void> _onPlastic() async {
     if (_plastics.isEmpty) return;
-    plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v));
+    await Future.delayed(const Duration(milliseconds: 200));
+    unawaited(plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v)));
   }
 
   void _onRadio(String value) {

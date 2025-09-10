@@ -69,7 +69,7 @@ class DiscGridList extends StatelessWidget {
     return LongPressDraggable<UserDisc>(
       data: item,
       feedback: Material(type: MaterialType.transparency, child: Opacity(opacity: 0.7, child: _feedBackItem(context, index))),
-      childWhenDragging: Opacity(opacity: 0.5, child: _discItemCard(context, index)),
+      childWhenDragging: Opacity(opacity: 1, child: _draggedDiscCard(item)),
       child: _discItemCard(context, index),
     );
   }
@@ -173,6 +173,67 @@ class DiscGridList extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _draggedDiscCard(UserDisc item) {
+    var decoration = BoxDecoration(color: orange, borderRadius: BorderRadius.circular(8));
+    return Stack(
+      children: [
+        Align(alignment: Alignment.bottomCenter, child: AspectRatio(aspectRatio: 1.1, child: Container(decoration: decoration))),
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 04),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  double maxSize = constraints.maxWidth;
+                  if (item.color != null) {
+                    return ColoredDisc(
+                      iconSize: 30,
+                      size: maxSize - 4,
+                      discColor: item.disc_color!,
+                      brandIcon: item.brand?.media?.url,
+                    );
+                  } else {
+                    return CircleImage(
+                      radius: maxSize / 2.2,
+                      borderWidth: 0.4,
+                      image: item.media?.url,
+                      placeholder: const FadingCircle(size: 32),
+                      errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 40, color: primary),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 02),
+              Column(
+                children: [
+                  Text(
+                    item.name ?? 'n/a'.recast,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.text10_400.copyWith(color: lightBlue, fontWeight: w700),
+                  ),
+                  const SizedBox(height: 01),
+                  Text(
+                    item.brand?.name ?? 'n/a'.recast,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles.text10_400.copyWith(color: lightBlue),
+                  ),
+                  const SizedBox(height: 01),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

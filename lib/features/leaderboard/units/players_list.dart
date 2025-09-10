@@ -15,13 +15,13 @@ import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 class PlayersList extends StatelessWidget {
-  final isImprovement;
+  final String menu;
   final double gap;
   final List<PdgaUser> players;
   final List<PdgaUser> topPlayers;
   final Function(PdgaUser)? onItem;
 
-  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem, this.isImprovement = true});
+  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem, this.menu = 'rating'});
 
   @override
   Widget build(BuildContext context) {
@@ -94,17 +94,14 @@ class PlayersList extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              if (isImprovement)
+              if (_isImprovement)
                 SvgImage(
                   height: 14,
                   color: isPositive ? success : error,
                   image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
                 ),
-              if (isImprovement) const SizedBox(width: 04),
-              Text(
-                isImprovement ? item.formated_yearly_improvement : item.formatted_current_rating,
-                style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
-              ),
+              if (_isImprovement) const SizedBox(width: 04),
+              Text(_playerRating(item), style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1)),
             ],
           ),
         ),
@@ -162,13 +159,13 @@ class PlayersList extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                isImprovement ? item.formated_yearly_improvement : item.formatted_current_rating,
+                                _playerRating(item),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
                               ),
-                              if (isImprovement) const SizedBox(width: 04),
-                              if (isImprovement)
+                              if (_isImprovement) const SizedBox(width: 04),
+                              if (_isImprovement)
                                 SvgImage(
                                   height: 14,
                                   color: isPositive ? success : error,
@@ -218,6 +215,18 @@ class PlayersList extends StatelessWidget {
 
   void _onItem(PdgaUser item) => onItem == null || item.id == null ? null : onItem!(item);
 
+  bool get _isImprovement => menu.toKey != 'rating'.toKey;
+
+  String _playerRating(PdgaUser item) {
+    if (menu.toKey == 'rating'.toKey) {
+      return item.formatted_current_rating;
+    } else if (menu.toKey == 'improvement'.toKey) {
+      return item.formated_current_improvement;
+    } else {
+      return item.formated_yearly_improvement;
+    }
+  }
+
   String _playerPositionName(int index) {
     if (index == 0) {
       return '2nd_player'.recast;
@@ -240,11 +249,11 @@ class PlayersList extends StatelessWidget {
 
   Color _backgroundColor(int index) {
     if (index == 0) {
-      return gold;
-    } else if (index == 1) {
-      return warning;
-    } else {
       return silver;
+    } else if (index == 1) {
+      return gold;
+    } else {
+      return warning;
     }
   }
 }

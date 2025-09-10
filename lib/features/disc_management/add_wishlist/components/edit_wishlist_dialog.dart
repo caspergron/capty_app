@@ -304,9 +304,10 @@ class _DialogViewState extends State<_DialogView> {
     );
   }
 
-  void _onPlastic() {
+  Future<void> _onPlastic() async {
     if (_plastics.isEmpty) return;
-    plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v));
+    await Future.delayed(const Duration(milliseconds: 200));
+    unawaited(plasticsSheet(plastic: _plastic, plastics: _plastics, onChanged: (v) => setState(() => _plastic = v)));
   }
 
   void _onRadio(String value) {

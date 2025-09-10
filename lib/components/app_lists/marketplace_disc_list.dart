@@ -73,7 +73,9 @@ class MarketplaceDiscList extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (showFavourite) Favourite(height: 19, status: item.is_favourite, onTap: () => onFav!(item, item.is_favourite)),
+                  !showFavourite
+                      ? const SizedBox(height: 18)
+                      : Favourite(height: 18, status: item.is_favourite, onTap: () => onFav!(item, item.is_favourite)),
                   const Spacer(),
                   Text(
                     item.distance_number > 0 ? distanceLabel : '',
@@ -82,7 +84,7 @@ class MarketplaceDiscList extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(height: showFavourite ? 04 : 09),
+              const SizedBox(height: 04),
               Stack(
                 clipBehavior: Clip.none,
                 children: [

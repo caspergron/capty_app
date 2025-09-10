@@ -65,7 +65,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
@@ -96,7 +96,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
@@ -127,7 +127,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
@@ -158,7 +158,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
@@ -200,8 +200,8 @@ class HttpModule implements ApiInterceptor {
 
   ApiResponse _returnResponse(http.Response response) {
     int statusCode = response.statusCode;
-    if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}');
-    // log('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body.toString()}');
+    // if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}');
+    log('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body.toString()}');
     // if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body}');
     var jsonResponse = response.bodyBytes.isEmpty || response.bodyBytes is String ? null : json.decode(utf8.decode(response.bodyBytes));
     if (statusCode >= 200 && statusCode <= 299) {

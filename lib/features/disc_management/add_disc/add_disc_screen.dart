@@ -235,63 +235,75 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
                           const SizedBox(width: 20),
                           Expanded(
                             child: InputField(
+                              maxLength: 4,
                               cursorHeight: 10,
+                              counterText: '',
                               controller: _speed,
                               hintText: '${'ex'.recast}: 6.5',
                               focusNode: _discNodes[0],
-                              keyboardType: TextInputType.number,
                               enabledBorder: mediumBlue,
                               focusedBorder: mediumBlue,
                               borderRadius: BorderRadius.circular(04),
                               textInputAction: TextInputAction.next,
                               contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discNodes[1]),
+                              inputFormatters: [FloatNumberInputFormatter()],
                             ),
                           ),
                           const SizedBox(width: 06),
                           Expanded(
                             child: InputField(
+                              maxLength: 4,
                               cursorHeight: 10,
+                              counterText: '',
                               controller: _glide,
                               hintText: '${'ex'.recast}: 5',
                               focusNode: _discNodes[1],
-                              keyboardType: TextInputType.number,
                               enabledBorder: mediumBlue,
                               focusedBorder: mediumBlue,
                               borderRadius: BorderRadius.circular(04),
                               textInputAction: TextInputAction.next,
                               contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discNodes[2]),
+                              inputFormatters: [FloatNumberInputFormatter()],
                             ),
                           ),
                           const SizedBox(width: 06),
                           Expanded(
                             child: InputField(
+                              maxLength: 4,
                               cursorHeight: 10,
+                              counterText: '',
                               controller: _turn,
                               hintText: '${'ex'.recast}: -1',
                               focusNode: _discNodes[2],
-                              keyboardType: TextInputType.number,
                               enabledBorder: mediumBlue,
                               focusedBorder: mediumBlue,
                               borderRadius: BorderRadius.circular(04),
                               textInputAction: TextInputAction.next,
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
                               onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_discNodes[3]),
+                              inputFormatters: [FloatNumberInputFormatter()],
                             ),
                           ),
                           const SizedBox(width: 06),
                           Expanded(
                             child: InputField(
+                              maxLength: 4,
                               cursorHeight: 10,
+                              counterText: '',
                               controller: _fade,
                               hintText: '${'ex'.recast}: 1',
                               focusNode: _discNodes[3],
-                              keyboardType: TextInputType.number,
                               enabledBorder: mediumBlue,
                               focusedBorder: mediumBlue,
                               borderRadius: BorderRadius.circular(04),
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
                               contentPadding: const EdgeInsets.fromLTRB(08, 7.5, 04, 7.5),
+                              inputFormatters: [FloatNumberInputFormatter()],
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -416,9 +428,11 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
     );
   }
 
-  void _onPlastic() {
+  Future<void> _onPlastic() async {
     if (_modelData.plastics.isEmpty) return;
-    plasticsSheet(plastic: _modelData.plastic, plastics: _modelData.plastics, onChanged: (v) => setState(() => _modelData.plastic = v));
+    await Future.delayed(const Duration(milliseconds: 200));
+    final plastic = _modelData.plastic;
+    unawaited(plasticsSheet(plastic: plastic, plastics: _modelData.plastics, onChanged: (v) => setState(() => _modelData.plastic = v)));
   }
 
   void _onEditDetails() => setState(() => _modelData.isEditDetails = true);

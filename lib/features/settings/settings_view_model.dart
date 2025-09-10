@@ -98,6 +98,16 @@ class SettingsViewModel with ChangeNotifier {
     // notifyListeners();
   }
 
+  Future<void> onShareLeaderboard(bool value) async {
+    loader.common = true;
+    notifyListeners();
+    var body = {'share_leaderboard': value ? 1 : 0};
+    var response = await sl<UserRepository>().updateLeaderboardSharing(body);
+    if (response != null) FlushPopup.onInfo(message: '${'leaderboard_sharing_is'.recast} ${(value ? 'turned_on' : 'turned_off').recast}');
+    loader.common = false;
+    notifyListeners();
+  }
+
   void updateSettings(Settings item) {
     settings = item;
     notifyListeners();

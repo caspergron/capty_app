@@ -94,6 +94,16 @@ class UserRepository {
     return tournamentApi.tournaments ?? [];
   }
 
+  Future<User?> updateLeaderboardSharing(Map<String, dynamic> body) async {
+    var endpoint = ApiUrl.user.updateProfile;
+    var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
+    if (apiResponse.status != 200) return null;
+    var userInfo = User.fromJson(apiResponse.response['data']['user']);
+    UserPreferences.user = userInfo;
+    sl<StorageService>().setUser(userInfo);
+    return userInfo;
+  }
+
   Future<bool> signOut() async {
     var endpoint = ApiUrl.user.signOut;
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);

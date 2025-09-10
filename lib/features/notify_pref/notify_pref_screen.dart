@@ -123,6 +123,7 @@ class _NotifyPrefScreenState extends State<NotifyPrefScreen> {
           Expanded(child: Text('allow_notifications'.recast, maxLines: 1, overflow: TextOverflow.ellipsis, style: style)),
           const SizedBox(width: 4),
           FlutterSwitch(
+            width: 40,
             height: 22,
             inactiveColor: mediumBlue,
             activeColor: mediumBlue,
@@ -175,6 +176,7 @@ class _PreferenceOption extends StatelessWidget {
                 const SizedBox(width: 4),
                 FlutterSwitch(
                   height: 22,
+                  width: 40,
                   inactiveColor: mediumBlue,
                   activeColor: mediumBlue,
                   activeToggleColor: lightBlue,

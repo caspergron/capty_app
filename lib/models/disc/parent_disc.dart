@@ -99,7 +99,6 @@ class ParentDisc {
       turn: turn,
       fade: fade,
       color: color,
-      description: description,
       media: media,
       brand: brand,
     );

@@ -26,7 +26,6 @@ import 'package:app/features/marketplace_management/create_sales_ad/components/a
 import 'package:app/features/marketplace_management/create_sales_ad/create_sales_ad_view_model.dart';
 import 'package:app/helpers/file_helper.dart';
 import 'package:app/libraries/flush_popup.dart';
-import 'package:app/models/common/tag.dart';
 import 'package:app/models/disc/user_disc.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/app_analytics.dart';
@@ -327,7 +326,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
           const SizedBox(width: 08),
           IconBox(
             background: primary,
-            onTap: () => specialTagsSheet(selectedTags: _modelData.specialTags, onChanged: _onSelectDiscSpeciality),
+            onTap: _onSpecialitySheet,
             icon: SvgImage(image: Assets.svg1.plus, height: 17, color: lightBlue),
           ),
         ],
@@ -396,12 +395,17 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
     ];
   }
 
-  void _onPlastic() {
+  Future<void> _onPlastic() async {
     if (_modelData.plastics.isEmpty) return;
-    plasticsSheet(plastic: _modelData.plastic, plastics: _modelData.plastics, onChanged: (v) => setState(() => _modelData.plastic = v));
+    await Future.delayed(const Duration(milliseconds: 200));
+    final plastic = _modelData.plastic;
+    unawaited(plasticsSheet(plastic: plastic, plastics: _modelData.plastics, onChanged: (v) => setState(() => _modelData.plastic = v)));
   }
 
-  void _onSelectDiscSpeciality(List<Tag> tagItems) => setState(() => _modelData.specialTags = tagItems);
+  Future<void> _onSpecialitySheet() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    unawaited(specialTagsSheet(selectedTags: _modelData.specialTags, onChanged: (v) => setState(() => _modelData.specialTags = v)));
+  }
 
   List<Widget> get _stepTwoView {
     var userDisc = widget.userDisc;
