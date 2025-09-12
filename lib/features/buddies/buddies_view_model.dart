@@ -1,33 +1,26 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
-import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/models/chat/chat_message.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/models/system/paginate.dart';
-import 'package:app/models/user/notification.dart' as notify;
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/chat_repository.dart';
-import 'package:app/repository/notifiation_repo.dart';
-import 'package:app/services/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class NotificationsViewModel with ChangeNotifier {
+class BuddiesViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
-  var notifications = <notify.Notification>[];
   var paginate = Paginate();
   var scrollControl = ScrollController();
   var messageFeeds = <ChatMessage>[];
 
   Future<void> initViewModel() async {
-    await fetchMessageFeeds();
-    unawaited(fetchNotifications());
+    unawaited(fetchMessageFeeds());
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }
@@ -39,39 +32,6 @@ class NotificationsViewModel with ChangeNotifier {
 
   void clearStates() {
     loader = DEFAULT_LOADER;
-    notifications.clear();
-  }
-
-  Future<void> fetchNotifications() async {
-    var response = await sl<NotificationRepository>().fetchNotifications();
-    if (response.isNotEmpty) notifications = response;
-    notifyListeners();
-  }
-
-  void onNotification(notify.Notification notificationItem) {
-    if (!notificationItem.is_read) onReadNotifications(notificationItem);
-    var notifyKey = notificationItem.notificationType.toKey;
-    if (notifyKey == SEND_MESSAGE.toKey || notifyKey == SEND_MESSAGE_1_DAY.toKey || notifyKey == SEND_MESSAGE_3_DAY.toKey) {
-      if (notificationItem.metadata == null) return;
-      var chatMessage = ChatMessage.fromJson(jsonDecode(notificationItem.metadata!));
-      if (chatMessage.endUser == null) return;
-      Routes.user.chat(buddy: chatMessage.chat_buddy).push();
-    } else if (notifyKey == RECEIVE_FRIEND_REQUEST.toKey) {
-      Routes.user.friends(index: 1).push();
-    } else if (notifyKey == ACCEPT_FRIEND_REQUEST.toKey) {
-      Routes.user.friends().push();
-    } else {
-      return;
-    }
-  }
-
-  Future<void> onReadNotifications(notify.Notification notificationItem) async {
-    var response = await sl<NotificationRepository>().readNotification(notificationItem.id!);
-    if (response == null) return;
-    var index = notifications.indexWhere((item) => item.id == notificationItem.id);
-    if (index < 0) return;
-    notifications[index] = response;
-    notifyListeners();
   }
 
   Future<void> fetchMessageFeeds({bool isPaginate = false}) async {

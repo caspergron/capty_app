@@ -1,11 +1,9 @@
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart' show SingleChildWidget;
-
 import 'package:app/features/address/view_models/add_address_view_model.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
 import 'package:app/features/auth/view_models/otp_view_model.dart';
 import 'package:app/features/auth/view_models/set_profile_view_model.dart';
 import 'package:app/features/auth/view_models/sign_in_view_model.dart';
+import 'package:app/features/buddies/buddies_view_model.dart';
 import 'package:app/features/challenge/challenge_view_model.dart';
 import 'package:app/features/chat/chat_view_model.dart';
 import 'package:app/features/club/view_models/club_event_view_model.dart';
@@ -42,6 +40,8 @@ import 'package:app/features/suggest_feature/view_models/suggest_feature_view_mo
 import 'package:app/features/suggest_feature/view_models/suggestion_details_view_model.dart';
 import 'package:app/features/test/test_controller.dart';
 import 'package:app/features/waitlist/waitlist_view_model.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart' show SingleChildWidget;
 
 List<SingleChildWidget> providers = [
   ..._auth_providers,
@@ -71,6 +71,7 @@ List<SingleChildWidget> _user_providers = [
   ..._marketplace_providers,
   ChangeNotifierProvider(create: (_) => FriendsViewModel()),
   ChangeNotifierProvider(create: (_) => AddFriendViewModel()),
+  ChangeNotifierProvider(create: (_) => BuddiesViewModel()),
   ChangeNotifierProvider(create: (_) => ChatViewModel()),
   ChangeNotifierProvider(create: (_) => ChallengeViewModel()),
   ChangeNotifierProvider(create: (_) => ProfileViewModel()),

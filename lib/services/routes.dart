@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/features/address/screens/add_address_screen.dart';
 import 'package:app/features/address/screens/seller_settings_screen.dart';
 import 'package:app/features/auth/screens/otp_screen.dart';
@@ -9,6 +7,7 @@ import 'package:app/features/auth/screens/set_profile_screen_3.dart';
 import 'package:app/features/auth/screens/set_profile_screen_4.dart';
 import 'package:app/features/auth/screens/sign_in_screen.dart';
 import 'package:app/features/auth/screens/signed_up_screen.dart';
+import 'package:app/features/buddies/buddies_screen.dart';
 import 'package:app/features/chat/chat_screen.dart';
 import 'package:app/features/club/screens/club_event_screen.dart';
 import 'package:app/features/club/screens/club_screen.dart';
@@ -60,6 +59,7 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/settings/settings.dart';
 import 'package:app/models/user/user.dart';
+import 'package:flutter/material.dart';
 
 class Routes {
   static _AuthRoutes auth = _AuthRoutes();
@@ -114,6 +114,8 @@ class _UserRoutes {
   Widget market_details({required SalesAd salesAd, bool isDelay = false}) => MarketDetailsScreen(salesAd: salesAd, isDelay: isDelay);
 
   Widget chat({required ChatBuddy buddy}) => ChatScreen(buddy: buddy);
+  Widget buddies() => BuddiesScreen();
+
   Widget settings() => SettingsScreen();
   Widget notify_pref({required Settings settings}) => NotifyPrefScreen(settings: settings);
   Widget report_problem() => ReportProblemScreen();
