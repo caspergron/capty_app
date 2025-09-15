@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -13,6 +11,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class PlayersList extends StatelessWidget {
   final String menu;
@@ -53,7 +52,7 @@ class PlayersList extends StatelessWidget {
 
   Widget _playerItemCard(BuildContext context, int index) {
     var item = players[index];
-    var isPositive = item.is_positive;
+    var isPositive = _arrowIconStatus(item);
     return InkWell(
       onTap: () => _onItem(item),
       child: TweenListItem(
@@ -116,7 +115,7 @@ class PlayersList extends StatelessWidget {
     var left = index == topPlayers.length - 1 ? 8.0 : 0.0;
     var isTopper = index == 1;
     var background = _backgroundColor(index);
-    var isPositive = item.is_positive;
+    var isPositive = _arrowIconStatus(item);
     return InkWell(
       onTap: () => _onItem(item),
       child: TweenListItem(
@@ -216,6 +215,16 @@ class PlayersList extends StatelessWidget {
   void _onItem(PdgaUser item) => onItem == null || item.id == null ? null : onItem!(item);
 
   bool get _isImprovement => menu.toKey != 'rating'.toKey;
+
+  bool _arrowIconStatus(PdgaUser item) {
+    if (menu.toKey == 'rating'.toKey) {
+      return false;
+    } else if (menu.toKey == 'improvement'.toKey) {
+      return item.currentImprovement != null && item.currentImprovement! >= 0;
+    } else {
+      return item.yearlyImprovement != null && item.yearlyImprovement! >= 0;
+    }
+  }
 
   String _playerRating(PdgaUser item) {
     if (menu.toKey == 'rating'.toKey) {

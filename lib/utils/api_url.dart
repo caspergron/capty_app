@@ -87,7 +87,7 @@ class _UserApis {
   String plasticByDiscId = '$_SERVER/disc-plastic/get-by-disc-brand?disc_brand_id='; // 1
 
   String createBag = '$_SERVER/user/bag/create';
-  String bagList = '$_SERVER/user/bag/list?size=20&page='; // 1
+  String bagList = '$_SERVER/user/bag/list?size=$LENGTH_30&page='; // 1
   String bagDetails = '$_SERVER/user/bag/show?bag_id='; // 1
   String updateBag = '$_SERVER/user/bag/update?bag_id='; // 1
   String moveDisc = '$_SERVER/user/bag/move-disc';

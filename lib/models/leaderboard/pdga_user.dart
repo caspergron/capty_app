@@ -13,11 +13,11 @@ class PdgaUser {
   PdgaPivot? pivot;
   Media? media;
 
-  int get current_rating => currentRating.nullToInt;
-  int get current_improvement => currentImprovement ?? 0;
-  int get yearly_improvement => yearlyImprovement ?? 0;
+  // int get current_rating => currentRating.nullToInt;
+  // int get current_improvement => currentImprovement ?? 0;
+  // int get yearly_improvement => yearlyImprovement ?? 0;
   String get formatted_current_rating => currentRating.formatInt;
-  bool get is_positive => currentImprovement == null ? true : currentImprovement! >= 0;
+  // bool get is_positive => currentImprovement == null ? true : currentImprovement! >= 0;
 
   PdgaUser({
     this.id,
@@ -38,7 +38,7 @@ class PdgaUser {
     pdgaNumber = json['pdga_number'];
     currentRating = json['current_pdga_rating'];
     currentImprovement = json['current_pdga_improvement'];
-    yearlyImprovement = json['current_pdga_improvement'];
+    yearlyImprovement = json['pdga_yearly_improvement'];
     pivot = json['pivot'] != null ? PdgaPivot.fromJson(json['pivot']) : null;
     media = json['media'] != null ? Media.fromJson(json['media']) : null;
   }

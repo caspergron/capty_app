@@ -62,7 +62,7 @@ class AddDiscViewModel with ChangeNotifier {
   Future<void> _fetchAllDiscBags() async {
     final context = navigatorKey.currentState!.context;
     final bag = Provider.of<DiscsViewModel>(context, listen: false).discBag;
-    var response = await sl<DiscBagRepository>().fetchDiscBags();
+    var response = await sl<DiscBagRepository>().fetchDiscBags(needDisc: false);
     if (response.isNotEmpty) discBags = response;
     final findIndex = discBags.isEmpty ? -1 : discBags.indexWhere((element) => element.id == bag.id);
     if (findIndex >= 0) discBag = discBags[findIndex];

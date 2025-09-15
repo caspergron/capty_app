@@ -50,9 +50,7 @@ class _DialogView extends StatefulWidget {
 
 class _DialogViewState extends State<_DialogView> {
   var _loader = false;
-  var _sliderValue = 0.0; // Slider value from -180 to +180
-
-  // Convert slider value to actual rotation angle
+  var _sliderValue = 0.0;
   double get _rotation => _sliderValue;
 
   @override
@@ -83,9 +81,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var percentage = _rotation / 180 * 100; // Changed to base on 180 degrees
+    var percentage = _rotation / 180 * 100;
     var displayText = '';
-
     if (_rotation != 0) {
       if (_rotation > 0) {
         displayText = '+${percentage.abs().formatDouble}%';
@@ -93,7 +90,6 @@ class _DialogViewState extends State<_DialogView> {
         displayText = '-${percentage.abs().formatDouble}%';
       }
     }
-
     return Column(
       children: [
         Row(
@@ -138,7 +134,19 @@ class _DialogViewState extends State<_DialogView> {
           ],
         ),
         const SizedBox(height: 10),
-        Slider(
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(trackShape: const CenteredSliderTrackShape()),
+          child: Slider(
+            value: _sliderValue,
+            min: -180,
+            max: 180,
+            activeColor: orange,
+            inactiveColor: lightBlue,
+            thumbColor: orange,
+            onChanged: (v) => setState(() => _sliderValue = v),
+          ),
+        ),
+        /*Slider(
           value: _sliderValue,
           min: -180, // Allow rotation from -180 to +180 degrees
           max: 180,
@@ -146,7 +154,7 @@ class _DialogViewState extends State<_DialogView> {
           inactiveColor: lightBlue,
           thumbColor: lightBlue,
           onChanged: (v) => setState(() => _sliderValue = v),
-        ),
+        ),*/
         const SizedBox(height: 32),
         Row(
           children: [
@@ -238,4 +246,72 @@ class _RotateOutput {
   final Uint8List bytes;
   final String ext;
   _RotateOutput(this.bytes, this.ext);
+}
+
+// Add this class to your existing file (anywhere outside your existing classes)
+class CenteredSliderTrackShape extends SliderTrackShape with BaseSliderTrackShape {
+  const CenteredSliderTrackShape();
+
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    Offset offset = Offset.zero,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final double trackHeight = sliderTheme.trackHeight!;
+    final double trackLeft = offset.dx;
+    final double trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
+    final double trackWidth = parentBox.size.width;
+    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
+  }
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset offset, {
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required Animation<double> enableAnimation,
+    required TextDirection textDirection,
+    required Offset thumbCenter,
+    Offset? secondaryOffset,
+    bool isDiscrete = false,
+    bool isEnabled = false,
+    double additionalActiveTrackHeight = 2,
+  }) {
+    final Rect trackRect = getPreferredRect(
+      parentBox: parentBox,
+      offset: offset,
+      sliderTheme: sliderTheme,
+      isEnabled: isEnabled,
+      isDiscrete: isDiscrete,
+    );
+
+    final Canvas canvas = context.canvas;
+    final Paint inactivePaint = Paint()
+      ..color = sliderTheme.inactiveTrackColor!
+      ..style = PaintingStyle.fill;
+
+    final Paint activePaint = Paint()
+      ..color = sliderTheme.activeTrackColor!
+      ..style = PaintingStyle.fill;
+
+    // Draw the entire track in inactive color
+    final RRect trackRRect = RRect.fromRectAndRadius(trackRect, Radius.circular(trackRect.height / 2));
+    canvas.drawRRect(trackRRect, inactivePaint);
+
+    // Calculate the center position
+    final double centerX = trackRect.left + trackRect.width / 2;
+
+    // Draw active segment between center and thumb
+    if (thumbCenter.dx != centerX) {
+      final double leftX = math.min(centerX, thumbCenter.dx);
+      final double rightX = math.max(centerX, thumbCenter.dx);
+      final Rect activeRect = Rect.fromLTRB(leftX, trackRect.top, rightX, trackRect.bottom);
+      final RRect activeRRect = RRect.fromRectAndRadius(activeRect, Radius.circular(trackRect.height / 2));
+      canvas.drawRRect(activeRRect, activePaint);
+    }
+  }
 }

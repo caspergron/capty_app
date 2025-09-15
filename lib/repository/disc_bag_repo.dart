@@ -22,8 +22,8 @@ class DiscBagRepository {
     }
   }
 
-  Future<List<DiscBag>> fetchDiscBags({int page = 1}) async {
-    var endpoint = '${ApiUrl.user.bagList}$page';
+  Future<List<DiscBag>> fetchDiscBags({int page = 1, bool needDisc = true}) async {
+    var endpoint = needDisc ? '${ApiUrl.user.bagList}$page' : '${ApiUrl.user.bagList}$page&no_disc=1';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     var bagsApi = DiscBagApi.fromJson(apiResponse.response);

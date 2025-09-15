@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/logout_dialog.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/menus/capty_menu.dart';
@@ -46,7 +45,7 @@ class AppDrawer extends StatelessWidget {
             const Divider(color: mediumBlue),
             const SizedBox(height: 12),
             Expanded(child: _screenView(context)),
-            if (authStatus) const SizedBox(height: 04),
+            /*if (authStatus) const SizedBox(height: 04),
             if (authStatus)
               ElevateButton(
                 radius: 04,
@@ -56,8 +55,8 @@ class AppDrawer extends StatelessWidget {
                 label: 'sign_out'.recast.toUpper,
                 onTap: logoutDialog,
                 textStyle: TextStyles.text14_700.copyWith(color: primary, fontWeight: w600, height: 1.15),
-              ),
-            SizedBox(height: BOTTOM_GAP + 14),
+              ),*/
+            // SizedBox(height: BOTTOM_GAP + 14),
           ],
         ),
       ),
@@ -148,7 +147,11 @@ class AppDrawer extends StatelessWidget {
         authStatus
             ? _DrawerItem(label: 'settings'.recast, icon: Assets.svg1.settings, onTap: Routes.user.settings().push)
             : _DrawerItem(label: 'login'.recast, icon: Assets.svg1.sign_in, onTap: Routes.auth.sign_in().push),
-        SizedBox(height: BOTTOM_GAP),
+        if (authStatus) ...[
+          const SizedBox(height: 10),
+          _DrawerItem(label: 'sign_out'.recast.toUpper, color: orange, icon: Assets.svg1.logout, onTap: logoutDialog),
+        ],
+        SizedBox(height: BOTTOM_GAP + 10),
       ],
     );
   }
@@ -157,13 +160,14 @@ class AppDrawer extends StatelessWidget {
 class _DrawerItem extends StatelessWidget {
   final String label;
   final String icon;
+  final Color color;
   final Function()? onTap;
 
-  const _DrawerItem({this.label = '', this.icon = '', this.onTap});
+  const _DrawerItem({this.label = '', this.icon = '', this.color = dark, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    var style = TextStyles.text14_500.copyWith(color: dark, fontSize: 14, fontWeight: w400, height: 1.3);
+    var style = TextStyles.text14_500.copyWith(color: color, fontSize: 14, fontWeight: w400, height: 1.3);
     var textWidget = Text(label, maxLines: 1, overflow: TextOverflow.fade, style: style);
     return InkWell(
       onTap: onTap == null ? null : _onItemTap,
@@ -171,7 +175,7 @@ class _DrawerItem extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 08),
         decoration: BoxDecoration(color: skyBlue, borderRadius: BorderRadius.circular(4)),
-        child: Row(children: [SvgImage(image: icon, color: dark, height: 20), const SizedBox(width: 12), Expanded(child: textWidget)]),
+        child: Row(children: [SvgImage(image: icon, color: color, height: 20), const SizedBox(width: 12), Expanded(child: textWidget)]),
       ),
     );
   }
