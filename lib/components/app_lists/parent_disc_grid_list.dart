@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -12,6 +10,7 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class ParentDiscGridList extends StatelessWidget {
   final double gap;
@@ -74,7 +73,7 @@ class ParentDiscGridList extends StatelessWidget {
               const SizedBox(height: 04),
               Center(
                 child: CircleImage(
-                  radius: 54,
+                  radius: 53,
                   borderWidth: 0.4,
                   color: popupBearer.colorOpacity(0.1),
                   backgroundColor: primary,

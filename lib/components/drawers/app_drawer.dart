@@ -1,9 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/logout_dialog.dart';
 import 'package:app/components/loaders/fading_circle.dart';
@@ -12,7 +8,6 @@ import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/home/home_view_model.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/routes.dart';
@@ -25,6 +20,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -115,9 +111,6 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _screenView(BuildContext context) {
-    // var user = UserPreferences.user;
-    var homeModel = Provider.of<HomeViewModel>(context);
-    var isLeaderboard = homeModel.dashboardCount.is_pdga && homeModel.clubInfo.id != null;
     var authStatus = sl<AuthService>().authStatus;
     return ListView(
       shrinkWrap: true,
@@ -133,8 +126,10 @@ class AppDrawer extends StatelessWidget {
           const SizedBox(height: 10),
           _DrawerItem(label: 'friends_cardmates'.recast, icon: Assets.svg1.buddies, onTap: Routes.user.friends().push),
           const SizedBox(height: 10),
-          if (isLeaderboard) _DrawerItem(label: 'leaderboard'.recast, icon: Assets.svg1.ranking, onTap: Routes.user.leaderboard().push),
-          if (isLeaderboard) const SizedBox(height: 10),
+          _DrawerItem(label: 'notifications'.recast, icon: Assets.svg1.bell, onTap: Routes.user.notification().push),
+          const SizedBox(height: 10),
+          _DrawerItem(label: 'leaderboard'.recast, icon: Assets.svg1.ranking, onTap: Routes.user.leaderboard().push),
+          const SizedBox(height: 10),
           // _DrawerItem(label: 'course_manager'.recast, icon: Assets.svg1.coach, onTap: courseManagementDialog),
           // const SizedBox(height: 10),
           // _DrawerItem(label: 'club_manager'.recast, icon: Assets.svg1.user_square, onTap: clubManagementDialog),

@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
@@ -12,13 +10,18 @@ import 'package:app/libraries/toasts_popups.dart';
 import 'package:app/models/user/auth_api.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/services/auth_service.dart';
+import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthRepository {
-  Future<Map<String, dynamic>?> sendOtp({Map<String, dynamic> body = const {}, bool isToast = true}) async {
+  Future<Map<String, dynamic>?> sendOtp(
+      {Map<String, dynamic> body = const {}, String phone = '', bool isRemember = true, bool isToast = true}) async {
     var endpoint = ApiUrl.auth.sendOtp;
     var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
+    sl<StorageService>().setRememberStatus(isRemember);
+    if (phone.isNotEmpty) sl<StorageService>().setPhoneNumber(phone);
     var message = 'a_verification_code_sent_to_your_phone_number'.recast;
     isToast ? ToastPopup.onInfo(message: message) : FlushPopup.onInfo(message: message);
     return apiResponse.response['data'];

@@ -5,8 +5,9 @@ const String LANGUAGE = 'language';
 const String TRANSLATIONS = 'translations';
 
 const String REMEMBER = 'remember';
-const String USERNAME = 'username';
-const String PASSWORD = 'password';
+// const String USERNAME = 'username';
+// const String PASSWORD = 'password';
+const String PHONE_NUMBER = 'phone-number';
 
 const String AUTH_STATUS = 'auth-status';
 const String ACCESS_TOKEN = 'access-token';

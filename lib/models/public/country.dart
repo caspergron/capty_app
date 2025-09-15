@@ -3,6 +3,8 @@ import 'package:app/models/common/media.dart';
 import 'package:app/models/public/currency.dart';
 import 'package:app/models/public/language.dart';
 
+var _DEFAULT_COUNTRY = Country();
+
 class Country {
   int? id;
   String? name;
@@ -60,5 +62,12 @@ class Country {
     if (countries.isEmpty) return [];
     if (key.isEmpty) return countries;
     return countries.where((item) => item.name.toKey.startsWith(key.toKey)).toList();
+  }
+
+  static Country country_by_language_code(List<Country> countries, String code) {
+    if (countries.isEmpty) return _DEFAULT_COUNTRY;
+    if (code.isEmpty) return countries.first;
+    final findIndex = countries.indexWhere((item) => item.appLanguage.toKey == code.toKey);
+    return findIndex < 0 ? countries.first : countries[findIndex];
   }
 }

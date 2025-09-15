@@ -1,9 +1,7 @@
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/notification/notifications_view_model.dart';
+import 'package:app/features/buddies/buddies_view_model.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/libraries/toasts_popups.dart';
 import 'package:app/models/chat/chat_buddy.dart';
@@ -12,6 +10,7 @@ import 'package:app/models/chat/chat_message.dart';
 import 'package:app/models/chat/chats_api.dart';
 import 'package:app/models/chat/conversation_api.dart';
 import 'package:app/utils/api_url.dart';
+import 'package:provider/provider.dart';
 
 class ChatRepository {
   Future<bool> setOnlineStatus({required bool status}) async {
@@ -73,7 +72,7 @@ class ChatRepository {
     chatMessage.chatStatus = 'sent';
     chatMessage.dateMilliSecond = chat.dateMilliSecond;
     var context = navigatorKey.currentState!.context;
-    Provider.of<NotificationsViewModel>(context, listen: false).setLastMessage(chatMessage);
+    Provider.of<BuddiesViewModel>(context, listen: false).setLastMessage(chatMessage);
     return chatMessage;
   }
 

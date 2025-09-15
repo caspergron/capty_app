@@ -20,7 +20,7 @@ class BuddiesViewModel with ChangeNotifier {
   var messageFeeds = <ChatMessage>[];
 
   Future<void> initViewModel() async {
-    unawaited(fetchMessageFeeds());
+    await fetchMessageFeeds();
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }

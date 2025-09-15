@@ -1,9 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/components/dialogs/change_language_dialog.dart';
@@ -30,6 +26,8 @@ import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/ui/phone_prefix.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -44,18 +42,12 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void initState() {
-    // _fetchFcmKey();
     // sl<AppAnalytics>().screenView('sign-in-screen');
-    _phone.text = sl<StorageService>().username;
+    _phone.text = sl<StorageService>().phoneNumber;
     _focusNode.addListener(() => setState(() {}));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel());
     super.initState();
   }
-
-  /*Future<void> _fetchFcmKey() async {
-    var key = await sl<CloudNotification>().getFcmToken;
-    if (key != null) _fcmKey = key;
-  }*/
 
   @override
   void didChangeDependencies() {
@@ -160,8 +152,6 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ],
         ),
-        /*if (_fcmKey.isNotEmpty)
-          InkWell(onTap: () => sl<AppClipboard>().copy(_fcmKey), child: Text(_fcmKey, style: const TextStyle(color: white))),*/
         SizedBox(height: 8.height),
         Center(
           child: ElevateButton(

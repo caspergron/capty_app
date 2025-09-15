@@ -36,7 +36,19 @@ class DiscBag {
     if (json['user_discs'] != null) json['user_discs'].forEach((v) => userDiscs?.add(UserDisc.fromJson(v)));
     discCount = json['disc_count'];
     hasDelete = json['has_delete'];
-    label = json['name'];
+    label = translate_label(name, displayName);
+  }
+
+  String translate_label(String? jsonName, String? displayName) {
+    if (name?.toKey == ''.toKey) {
+      return displayName ?? '';
+    } else if (name.toKey == 'tournament_bag'.toKey || name.toKey == 'Tournament Bag'.toKey) {
+      return 'tournament_bag_menu'.recast;
+    } else if (name.toKey == 'backup_bag'.toKey || name.toKey == 'Backup Bag'.toKey) {
+      return 'backup_bag'.recast;
+    } else {
+      return displayName ?? '';
+    }
   }
 
   Map<String, dynamic> toJson() {

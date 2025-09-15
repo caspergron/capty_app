@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -11,6 +9,7 @@ import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 class MessageFeedsList extends StatelessWidget {
   final List<ChatMessage> messageFeeds;
@@ -32,7 +31,6 @@ class MessageFeedsList extends StatelessWidget {
 
   Widget _messageFeedsItemCard(BuildContext context, int index) {
     var item = messageFeeds[index];
-
     var isUnread = item.is_read == false;
     return InkWell(
       onTap: () => onRead == null ? null : onRead!(item, index),

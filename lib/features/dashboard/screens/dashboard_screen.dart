@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/app_exit_dialog.dart';
@@ -29,6 +25,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -225,7 +223,12 @@ class _DashboardInfoBox extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: TextStyles.text18_600.copyWith(color: lightBlue, fontWeight: w500)),
+                Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.text18_600.copyWith(color: lightBlue, fontWeight: w500),
+                ),
                 SizedBox(height: SizeConfig.isSmall ? 1.2.height : 1.5.height),
                 Text(
                   value.formatInt,

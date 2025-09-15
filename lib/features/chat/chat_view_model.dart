@@ -1,16 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/constants/date_formats.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/notification/notifications_view_model.dart';
+import 'package:app/features/buddies/buddies_view_model.dart';
 import 'package:app/helpers/file_helper.dart';
 import 'package:app/libraries/formatters.dart';
 import 'package:app/libraries/image_pickers.dart';
@@ -25,6 +21,8 @@ import 'package:app/models/system/paginate.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/chat_repository.dart';
 import 'package:app/repository/marketplace_repo.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChatViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -103,7 +101,7 @@ class ChatViewModel with ChangeNotifier {
     if (paginate.page == 1) messages.clear();
     if (paginate.length >= LENGTH_20) paginate.page++;
     if (response.isNotEmpty) messages.haveList ? messages.insertAll(0, response) : messages.addAll(response);
-    if (response.haveList) Provider.of<NotificationsViewModel>(context, listen: false).setLastMessage(messages.last);
+    if (response.haveList) Provider.of<BuddiesViewModel>(context, listen: false).setLastMessage(messages.last);
     loader = Loader(initial: false, common: false);
     paginate.pageLoader = false;
     notifyListeners();
@@ -163,7 +161,7 @@ class ChatViewModel with ChangeNotifier {
     if (!response) loader.common = false;
     if (!response) return notifyListeners();
     var context = navigatorKey.currentState!.context;
-    Provider.of<NotificationsViewModel>(context, listen: false).removeMessage(receiver.id!);
+    Provider.of<BuddiesViewModel>(context, listen: false).removeMessage(receiver.id!);
     messages.clear();
     backToPrevious();
     loader.common = false;

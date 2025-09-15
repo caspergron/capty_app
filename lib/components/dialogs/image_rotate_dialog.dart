@@ -1,12 +1,6 @@
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
-import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
@@ -26,6 +20,10 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 
 Future<void> imageRotateDialog({required File file, required Function(DocFile) onChanged}) async {
   var context = navigatorKey.currentState!.context;
@@ -52,7 +50,10 @@ class _DialogView extends StatefulWidget {
 
 class _DialogViewState extends State<_DialogView> {
   var _loader = false;
-  var _rotation = 0.0;
+  var _sliderValue = 0.0; // Slider value from -180 to +180
+
+  // Convert slider value to actual rotation angle
+  double get _rotation => _sliderValue;
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class _DialogViewState extends State<_DialogView> {
   @override
   void dispose() {
     _loader = false;
-    _rotation = 0.0;
+    _sliderValue = 0.0;
     super.dispose();
   }
 
@@ -82,7 +83,17 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var percentage = _rotation / 360 * 100;
+    var percentage = _rotation / 180 * 100; // Changed to base on 180 degrees
+    var displayText = '';
+
+    if (_rotation != 0) {
+      if (_rotation > 0) {
+        displayText = '+${percentage.abs().formatDouble}%';
+      } else {
+        displayText = '-${percentage.abs().formatDouble}%';
+      }
+    }
+
     return Column(
       children: [
         Row(
@@ -113,27 +124,28 @@ class _DialogViewState extends State<_DialogView> {
             const Text(' '),
             Expanded(
               child: Text(
-                percentage > 0 ? '${percentage.formatDouble}%' : '',
+                displayText,
                 style: TextStyles.text12_600.copyWith(color: lightBlue, fontWeight: w500),
               ),
             ),
             const SizedBox(width: 08),
-            InkWell(onTap: () => setState(() => _rotation = 0), child: const Icon(Icons.refresh, color: orange, size: 14)),
+            InkWell(onTap: () => setState(() => _sliderValue = 0), child: const Icon(Icons.refresh, color: orange, size: 14)),
             const SizedBox(width: 02),
             InkWell(
-              onTap: () => setState(() => _rotation = 0),
+              onTap: () => setState(() => _sliderValue = 0),
               child: Text('reset'.recast, style: TextStyles.text12_600.copyWith(color: orange, fontWeight: w500)),
             )
           ],
         ),
         const SizedBox(height: 10),
         Slider(
-          value: _rotation,
-          max: 360,
+          value: _sliderValue,
+          min: -180, // Allow rotation from -180 to +180 degrees
+          max: 180,
           activeColor: orange,
           inactiveColor: lightBlue,
           thumbColor: lightBlue,
-          onChanged: (v) => setState(() => _rotation = v),
+          onChanged: (v) => setState(() => _sliderValue = v),
         ),
         const SizedBox(height: 32),
         Row(
@@ -190,7 +202,7 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _onConfirm(File original, double angleDeg) async {
     var value = angleDeg.toInt();
-    if (value == 0 || value == 360) return backToPrevious();
+    if (value == 0) return backToPrevious();
 
     try {
       setState(() => _loader = true);
@@ -227,34 +239,3 @@ class _RotateOutput {
   final String ext;
   _RotateOutput(this.bytes, this.ext);
 }
-
-/*Future<_RotateOutput> _rotateBytes(Uint8List bytes, double angleDeg, String extension) async {
-    final img.Image? decoded = img.decodeImage(bytes);
-    if (decoded == null) throw Exception('Unsupported or corrupt image');
-    final img.Image rotated = img.copyRotate(decoded, angle: angleDeg);
-    late Uint8List outBytes;
-    final ext = extension.toLowerCase();
-    if (ext == 'png') {
-      outBytes = Uint8List.fromList(img.encodePng(rotated));
-      return _RotateOutput(outBytes, 'png');
-    } else {
-      outBytes = Uint8List.fromList(img.encodeJpg(rotated, quality: 95));
-      return _RotateOutput(outBytes, 'jpg');
-    }
-  }*/
-
-/*Future<void> _onConfirm(File original, double angleDeg) async {
-    setState(() => _loader = true);
-    final bytes = await original.readAsBytes();
-    final ext = _guessExt(original.path);
-    final _RotateOutput rotateOutput = await _rotateBytes(bytes, angleDeg, ext);
-    final dir = await getTemporaryDirectory();
-    final outPath = '${dir.path}/rotated_${currentDate.millisecondsSinceEpoch}.${rotateOutput.ext}';
-    final file = File(outPath);
-    await file.writeAsBytes(rotateOutput.bytes);
-    var compressed = await sl<FileCompressor>().compressFileImage(image: file, maxMB: 3);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([compressed]);
-    setState(() => _loader = true);
-    widget.onChanged(docFiles.first);
-    backToPrevious();
-  }*/

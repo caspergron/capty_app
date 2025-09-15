@@ -1,17 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:provider/provider.dart';
-
 import 'package:app/components/dialogs/live_app_dialog.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/buddies/buddies_view_model.dart';
 import 'package:app/features/notification/notifications_view_model.dart';
 import 'package:app/libraries/pusher.dart';
 import 'package:app/models/chat/chat_message.dart';
@@ -21,6 +17,9 @@ import 'package:app/services/api_status.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class LandingViewModel with ChangeNotifier {
   var index = 0;
@@ -33,8 +32,8 @@ class LandingViewModel with ChangeNotifier {
     if (pageIndex >= 0) updateView(pageIndex);
     if (message != null) _notificationActions(message);
     var context = navigatorKey.currentState!.context;
+    Provider.of<BuddiesViewModel>(context, listen: false).fetchMessageFeeds();
     Provider.of<NotificationsViewModel>(context, listen: false).fetchNotifications();
-    Provider.of<NotificationsViewModel>(context, listen: false).fetchMessageFeeds();
     if (ApiStatus.instance.landing) return;
     navItems = BOTTOM_NAV_ITEMS;
     notifyListeners();

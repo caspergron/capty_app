@@ -4,19 +4,20 @@ import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/bell_menu.dart';
 import 'package:app/components/menus/capty_menu.dart';
+import 'package:app/components/menus/chats_menu.dart';
 import 'package:app/components/menus/hamburger_menu.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/buddies/buddies_view_model.dart';
 import 'package:app/features/home/components/joining_clubs_sheet.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/features/home/units/closest_club_events.dart';
 import 'package:app/features/home/units/new_messages_list.dart';
 import 'package:app/features/landing/landing_screen.dart';
 import 'package:app/features/landing/landing_view_model.dart';
-import 'package:app/features/notification/notifications_view_model.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/libraries/locations.dart';
 import 'package:app/models/chat/chat_message.dart';
@@ -41,7 +42,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var _modelData = HomeViewModel();
   var _viewModel = HomeViewModel();
-  var _notifyModel = NotificationsViewModel();
+  var _notifyModel = BuddiesViewModel();
   var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     _viewModel = Provider.of<HomeViewModel>(context, listen: false);
     _modelData = Provider.of<HomeViewModel>(context);
-    _notifyModel = Provider.of<NotificationsViewModel>(context);
+    _notifyModel = Provider.of<BuddiesViewModel>(context);
     super.didChangeDependencies();
   }
 
@@ -67,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: CaptyMenu(),
-        actions: [const BellMenu(), ACTION_GAP, HamburgerMenu(scaffoldKey: _scaffoldKey), ACTION_SIZE],
+        leading: const BellMenu(),
+        actions: [const ChatsMenu(), ACTION_GAP, HamburgerMenu(scaffoldKey: _scaffoldKey), ACTION_SIZE],
       ),
       body: Container(
         width: SizeConfig.width,
@@ -190,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onChatMessage(ChatMessage item) {
     Routes.user.chat(buddy: item.chat_buddy).push();
     var context = navigatorKey.currentState!.context;
-    Provider.of<NotificationsViewModel>(context, listen: false).setReadStatus(item);
+    Provider.of<BuddiesViewModel>(context, listen: false).setReadStatus(item);
   }
 
   List<ChatMessage> get _newMessages {

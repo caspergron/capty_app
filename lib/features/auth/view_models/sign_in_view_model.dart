@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -14,6 +12,7 @@ import 'package:app/repository/auth_repo.dart';
 import 'package:app/repository/public_repo.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
 
 class SignInViewModel with ChangeNotifier {
   var loader = true;
@@ -21,8 +20,11 @@ class SignInViewModel with ChangeNotifier {
   var country = Country();
 
   Future<void> initViewModel() async {
-    await AppPreferences.fetchCountries();
-    country = sl<StorageService>().user.country_item;
+    // country = sl<StorageService>().user.country_item;
+    final countries = await AppPreferences.fetchCountries();
+    final languageCode = sl<StorageService>().language.code ?? 'en';
+    country = Country.country_by_language_code(countries, languageCode);
+    isPolicy = sl<StorageService>().rememberMe;
     loader = false;
     notifyListeners();
   }
@@ -49,7 +51,7 @@ class SignInViewModel with ChangeNotifier {
     var body = {'phone': '${country.phonePrefix}$phone'};
     var parameters = {'country': country, 'phone': phone, 'phone_with_prefix': '${country.phonePrefix}$phone'};
     if (kDebugMode) print(body);
-    var response = await sl<AuthRepository>().sendOtp(body: body);
+    var response = await sl<AuthRepository>().sendOtp(body: body, phone: phone, isRemember: isPolicy);
     if (response != null) unawaited(Routes.auth.otp_screen(data: parameters).push());
     loader = false;
     notifyListeners();

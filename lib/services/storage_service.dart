@@ -31,11 +31,14 @@ class StorageService {
   // bool get authStatus => _storage.readData(key: AUTH_STATUS) ?? false;
   // void setAuthStatus(bool status) => _storage.storeData(key: AUTH_STATUS, value: status);
 
-  String get username => _storage.readData(key: USERNAME) ?? '';
-  void setUsername(String email) => _storage.storeData(key: USERNAME, value: email);
+  // String get username => _storage.readData(key: USERNAME) ?? '';
+  // void setUsername(String email) => _storage.storeData(key: USERNAME, value: email);
 
-  String get password => _storage.readData(key: PASSWORD) ?? '';
-  void setPassword(String passcode) => _storage.storeData(key: PASSWORD, value: passcode);
+  // String get password => _storage.readData(key: PASSWORD) ?? '';
+  // void setPassword(String passcode) => _storage.storeData(key: PASSWORD, value: passcode);
+
+  String get phoneNumber => _storage.readData(key: PHONE_NUMBER) ?? '';
+  void setPhoneNumber(String phone) => _storage.storeData(key: PHONE_NUMBER, value: phone);
 
   String get accessToken => _storage.readData(key: ACCESS_TOKEN) ?? '';
   void setAccessToken(String token) => _storage.storeData(key: ACCESS_TOKEN, value: token);

@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -20,6 +16,8 @@ import 'package:app/repository/user_repo.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class AddDiscViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -62,9 +60,12 @@ class AddDiscViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchAllDiscBags() async {
+    final context = navigatorKey.currentState!.context;
+    final bag = Provider.of<DiscsViewModel>(context, listen: false).discBag;
     var response = await sl<DiscBagRepository>().fetchDiscBags();
     if (response.isNotEmpty) discBags = response;
-    if (discBags.isNotEmpty) discBag = discBags.first;
+    final findIndex = discBags.isEmpty ? -1 : discBags.indexWhere((element) => element.id == bag.id);
+    if (findIndex >= 0) discBag = discBags[findIndex];
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }

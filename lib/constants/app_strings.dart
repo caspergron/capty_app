@@ -1061,7 +1061,6 @@ const APP_STRINGS = {
   'no_graph_data_found': 'No Graph Data Found!',
   'we_could_not_find_any_discs_right_now_please_try_again_later':
       'We couldn’t find any discs to display here. Add some data to see the chart.',
-  // New translations
   'pdga_improvement': 'PDGA Improvement',
   'yearly_improvement': 'Yearly Improvement',
   'selected_location': 'Selected Location',
@@ -1096,7 +1095,15 @@ const APP_STRINGS = {
   'leaderboard_sharing_is': 'Leaderboard sharing is',
   'turned_on': 'turned on',
   'turned_off': 'turned off',
-  '': ''
+  // New Translations
+  'i_want_to_be_on_the_leaderboard': 'I want to be on the leaderboard',
+  'you_can_go_to_settings_and_find_your_profile_and_enter_your_pdga_number':
+      'You can go to settings and find your profile and enter your PDGA number ',
+  'pdga_monthly_improvement': 'PDGA Monthly Improvement',
+  'the_people_with_the_best_monthly_improvement_shows_in_top': 'The people with the best monthly improvement shows in top.',
+  'we_grab_the_pdga_rating_you_had_last_month_and_then_we_calculate_your_improvement':
+      'We grab the PDGA rating you had last month and then we calculate your improvement.',
+  '': '',
 };
 
 /*I will give you sentences you have to convert that

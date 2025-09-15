@@ -1,17 +1,16 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:provider/provider.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
-
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/buddies/buddies_view_model.dart';
 import 'package:app/features/chat/chat_view_model.dart';
-import 'package:app/features/notification/notifications_view_model.dart';
 import 'package:app/models/chat/chat_message.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
+
 import '../constants/app_constants.dart';
 
 class Pusher {
@@ -71,7 +70,7 @@ class Pusher {
     if (chatMessage.message == null) return;
     chatMessage.chatStatus = 'received';
     Provider.of<ChatViewModel>(context, listen: false).setReceivedMessage(chatMessage);
-    Provider.of<NotificationsViewModel>(context, listen: false).setReceivedMessage(chatMessage);
+    Provider.of<BuddiesViewModel>(context, listen: false).setReceivedMessage(chatMessage);
   }
 
   void _onSubscriptionSucceeded(String channelName, data) {
