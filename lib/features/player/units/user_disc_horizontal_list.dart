@@ -52,10 +52,8 @@ class UserDiscHorizontalList extends StatelessWidget {
 
   Widget _discItemCard(BuildContext context, int index) {
     var item = discs[index];
-    var parentDisc = discs[index].parentDisc;
     var gap = Dimensions.screen_padding;
     var discFeatures = [item.speed ?? 0, item.glide ?? 0, item.turn ?? 0, item.fade ?? 0];
-    // var isSelected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(item),
       child: TweenListItem(
@@ -79,7 +77,14 @@ class UserDiscHorizontalList extends StatelessWidget {
                   onTap: () => onSelect == null ? null : onSelect!(item),
                 ),
               ),*/
-              if (item.media?.url != null)
+              if (item.color != null)
+                ColoredDisc(
+                  iconSize: 30,
+                  size: 110,
+                  discColor: item.disc_color!,
+                  brandIcon: item.brand?.media?.url,
+                )
+              else
                 CircleImage(
                   radius: 54,
                   borderWidth: 0.4,
@@ -88,34 +93,17 @@ class UserDiscHorizontalList extends StatelessWidget {
                   image: item.media?.url,
                   placeholder: const FadingCircle(size: 40),
                   errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
-                )
-              else if (item.color != null)
-                ColoredDisc(
-                  iconSize: 30,
-                  size: 110,
-                  discColor: item.disc_color!,
-                  brandIcon: item.parentDisc?.brand_media.url,
-                )
-              else
-                CircleImage(
-                  radius: 54,
-                  borderWidth: 0.4,
-                  borderColor: lightBlue,
-                  fit: BoxFit.contain,
-                  image: parentDisc?.media.url,
-                  placeholder: const FadingCircle(size: 40),
-                  errorWidget: SvgImage(image: Assets.svg1.disc_3, height: 62, color: primary),
                 ),
               const Spacer(),
               Text(
-                parentDisc?.name ?? 'n/a'.recast,
+                item.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1, fontSize: 12.5),
               ),
               const SizedBox(height: 02),
               Text(
-                parentDisc?.brand?.name ?? 'n/a'.recast,
+                item.brand?.name ?? 'n/a'.recast,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.text14_700.copyWith(color: lightBlue, height: 1.2),

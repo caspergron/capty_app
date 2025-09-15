@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
+import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/helpers/enums.dart';
 import 'package:app/models/leaderboard/pdga_user.dart';
@@ -14,12 +15,13 @@ import 'package:app/widgets/library/image_network.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 class PlayersList extends StatelessWidget {
+  final String menu;
   final double gap;
   final List<PdgaUser> players;
   final List<PdgaUser> topPlayers;
   final Function(PdgaUser)? onItem;
 
-  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem});
+  const PlayersList({this.gap = 0, this.players = const [], this.topPlayers = const [], this.onItem, this.menu = 'rating'});
 
   @override
   Widget build(BuildContext context) {
@@ -67,18 +69,12 @@ class PlayersList extends StatelessWidget {
               Container(
                 width: 46,
                 child: Text(
-                  item.formated_pgda_improvement,
+                  (index + 4).formatInt,
                   textAlign: TextAlign.start,
                   style: TextStyles.text24_600.copyWith(color: lightBlue, fontWeight: w500, height: 1),
                 ),
               ),
-              const SizedBox(width: 4),
-              SvgImage(
-                height: 16,
-                color: isPositive ? success : error,
-                image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
-              ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 02),
               ImageNetwork(
                 width: 32,
                 radius: 06,
@@ -98,7 +94,14 @@ class PlayersList extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              Text(item.pdga_rating, style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1)),
+              if (_isImprovement)
+                SvgImage(
+                  height: 14,
+                  color: isPositive ? success : error,
+                  image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
+                ),
+              if (_isImprovement) const SizedBox(width: 04),
+              Text(_playerRating(item), style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1)),
             ],
           ),
         ),
@@ -156,17 +159,18 @@ class PlayersList extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                item.pdga_rating,
+                                _playerRating(item),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyles.text18_700.copyWith(color: lightBlue, height: 1),
                               ),
-                              const SizedBox(width: 04),
-                              SvgImage(
-                                height: 14,
-                                color: isPositive ? success : error,
-                                image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
-                              ),
+                              if (_isImprovement) const SizedBox(width: 04),
+                              if (_isImprovement)
+                                SvgImage(
+                                  height: 14,
+                                  color: isPositive ? success : error,
+                                  image: isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down,
+                                ),
                             ],
                           ),
                         ],
@@ -211,6 +215,18 @@ class PlayersList extends StatelessWidget {
 
   void _onItem(PdgaUser item) => onItem == null || item.id == null ? null : onItem!(item);
 
+  bool get _isImprovement => menu.toKey != 'rating'.toKey;
+
+  String _playerRating(PdgaUser item) {
+    if (menu.toKey == 'rating'.toKey) {
+      return item.formatted_current_rating;
+    } else if (menu.toKey == 'improvement'.toKey) {
+      return item.formated_current_improvement;
+    } else {
+      return item.formated_yearly_improvement;
+    }
+  }
+
   String _playerPositionName(int index) {
     if (index == 0) {
       return '2nd_player'.recast;
@@ -233,11 +249,11 @@ class PlayersList extends StatelessWidget {
 
   Color _backgroundColor(int index) {
     if (index == 0) {
-      return gold;
-    } else if (index == 1) {
-      return warning;
-    } else {
       return silver;
+    } else if (index == 1) {
+      return gold;
+    } else {
+      return warning;
     }
   }
 }

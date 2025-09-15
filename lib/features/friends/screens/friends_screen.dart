@@ -86,7 +86,6 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       body: Container(
         width: SizeConfig.width,
         height: SizeConfig.height,
-        padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
         decoration: BoxDecoration(gradient: BACKGROUND_GRADIENT),
         child: Stack(children: [_screenView(context), if (_modelData.loader.loader) const ScreenLoader()]),
       ),
@@ -99,6 +98,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         const SizedBox(height: 16),
         Container(
           height: 38,
+          margin: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
           decoration: BoxDecoration(color: lightBlue, borderRadius: BorderRadius.circular(60)),
           child: TabBar(
             labelColor: primary,
@@ -129,6 +129,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
     return Container(
       width: double.infinity,
       key: const Key('player--1'),
+      margin: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       decoration: BoxDecoration(color: primary, borderRadius: BorderRadius.circular(8)),
       child: Row(
@@ -148,8 +149,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
-      padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
       children: [
         const SizedBox(height: 04),
         Text('friends'.recast, style: TextStyles.text18_700.copyWith(color: primary)),
@@ -169,8 +170,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
-      padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
       children: [
         // const SizedBox(height: 0),
         FriendRequestList(

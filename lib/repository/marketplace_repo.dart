@@ -69,8 +69,8 @@ class MarketplaceRepository {
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 
-  Future<SalesAd?> fetchMarketplaceDetails(int marketplaceId) async {
-    var endpoint = '${ApiUrl.user.marketplaceDetails}$marketplaceId';
+  Future<SalesAd?> fetchMarketplaceDetails(String params) async {
+    var endpoint = '${ApiUrl.user.marketplaceDetails}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return SalesAd.fromJson(apiResponse.response['data']);
@@ -96,7 +96,11 @@ class MarketplaceRepository {
     var endpoint = '${ApiUrl.user.salesAdList}$params';
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    final salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    // final salesAdList = salesAdApi.salesAdList ?? [];
+    // if (salesAdList.isEmpty) return [];
+    // final seenIds = <int>{};
+    // return salesAdList.where((ad) => seenIds.add(ad.id.nullToInt)).toList();
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 

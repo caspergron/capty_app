@@ -4,7 +4,6 @@ import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/libraries/device_info.dart';
-import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/tag.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/public/currency.dart';
@@ -21,7 +20,7 @@ class AppPreferences {
   static var languages = <Language>[];
   static var translations = <String, dynamic>{};
   static var language = DEFAULT_LANGUAGE;
-  static var brands = <Brand>[];
+  // static var brands = <Brand>[];
   static var specialTags = <Tag>[];
   static var discTypeTags = <Tag>[];
 
@@ -46,11 +45,11 @@ class AppPreferences {
     return languages;
   }
 
-  static Future<List<Brand>> fetchBrands() async {
+  /*static Future<List<Brand>> fetchBrands() async {
     if (brands.haveList) return brands;
     brands = await sl<PublicRepository>().fetchAllBrands();
     return brands;
-  }
+  }*/
 
   static Future<List<Tag>> fetchSpecialDiscTags() async {
     if (specialTags.haveList) return specialTags;
@@ -72,7 +71,7 @@ class AppPreferences {
     var langCode = sl<StorageService>().language.code ?? 'en';
     var appVersion = await sl<DeviceInfo>().appVersion;
     var deviceInfo = '$os/${await sl<DeviceInfo>().deviceVersion}/${await sl<DeviceInfo>().deviceName}';
-    var appInfo = 'carewithu/$appVersion ${Platform.isIOS ? 'CFNetwork/1474 Darwin' : ''} ($langCode)'.trim();
+    var appInfo = 'capty/$appVersion ${Platform.isIOS ? 'CFNetwork/1474 Darwin' : ''} ($langCode)'.trim();
     userAgent = '$deviceInfo $appInfo'.trim();
     return userAgent;
   }

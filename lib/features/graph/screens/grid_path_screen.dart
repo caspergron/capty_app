@@ -192,7 +192,7 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
           var style = const TextStyle(color: white, fontWeight: w600, height: 1);
           var scatterSpotIndex = _modelData.findScattedIndex(scatterSpot, index);
           var disc = scatterSpotIndex < 0 ? UserDisc() : _modelData.discBags[index].userDiscs?[scatterSpotIndex] ?? UserDisc();
-          return ScatterTooltipItem(disc.parentDisc?.name ?? '', textStyle: style);
+          return ScatterTooltipItem(disc.name ?? '', textStyle: style);
         },
       ),
       touchCallback: (event, response) {},

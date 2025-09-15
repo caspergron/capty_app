@@ -1,18 +1,24 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:app/components/app_lists/brands_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/components/headers/sheet_header_1.dart';
+import 'package:app/components/loaders/button_loader.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/prefix_menu.dart';
 import 'package:app/constants/app_keys.dart';
+import 'package:app/constants/data_constants.dart';
+import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/models/common/brand.dart';
-import 'package:app/preferences/app_preferences.dart';
+import 'package:app/models/system/paginate.dart';
+import 'package:app/repository/public_repo.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
 import 'package:app/themes/text_styles.dart';
@@ -50,24 +56,68 @@ class _BottomSheetView extends StatefulWidget {
 
 class _BottomSheetViewState extends State<_BottomSheetView> {
   var _loader = true;
+  var _brands = <Brand>[];
+  var _paginate = Paginate();
   var _selectedBrands = <Brand>[];
   var _focusNode = FocusNode();
   var _search = TextEditingController();
+  var _scrollControl = ScrollController();
+  var _searchCounter = 0;
+  var _lastQuery = '';
+  Timer? _debounceTimer;
 
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('brands-sheet');
     _focusNode.addListener(() => setState(() {}));
     if (widget.brands.isNotEmpty) _selectedBrands = widget.brands;
-    _fetchAllBrands();
+    _onInit();
     super.initState();
   }
 
-  Future<void> _fetchAllBrands() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    await AppPreferences.fetchBrands();
-    setState(() => _loader = false);
+  Future<void> _onInit() => Future.delayed(const Duration(milliseconds: 200), _fetchBrands);
+
+  void _onDebounceSearch(String query) {
+    _debounceTimer?.cancel();
+    // if (query.trim().isEmpty || query.length < 2) return _clearStates();
+    if (query == _lastQuery) return;
+    _lastQuery = query;
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () => _fetchBrands(searchKey: query));
   }
+
+  Future<void> _fetchBrands({String searchKey = '', bool isPaginate = false}) async {
+    if (_paginate.pageLoader) return;
+    _paginate.pageLoader = isPaginate;
+    if (searchKey.isNotEmpty) _paginate = Paginate();
+    setState(() {});
+    final repository = sl<PublicRepository>();
+    final currentRequest = ++_searchCounter;
+    final query = _search.text.isEmpty ? '' : '&query=$searchKey';
+    final params = '?size=$LENGTH_30&page=${_paginate.page}$query'.trim();
+    final response = searchKey.isEmpty ? await repository.fetchAllBrands(params) : await repository.fetchSearchBrands(params);
+    if (currentRequest != _searchCounter) return;
+    if (_paginate.page == 1) _brands.clear();
+    _paginate.length = response.length;
+    if (_paginate.length >= LENGTH_30) _paginate.page++;
+    if (response.isNotEmpty) _brands.addAll(response);
+    _paginate.pageLoader = false;
+    setState(() => _loader = false);
+    _scrollControl.addListener(_brandPaginationCheck);
+  }
+
+  void _brandPaginationCheck() {
+    // print(_scrollControl.hasClients);
+    // if (!_scrollControl.hasClients) return;
+    final position = _scrollControl.position;
+    final isPosition70 = position.pixels >= position.maxScrollExtent * 0.75;
+    if (isPosition70 && _paginate.length == LENGTH_30) _fetchBrands(isPaginate: true);
+  }
+
+  /*void _clearStates() {
+    _brands.clear();
+    _lastQuery = '';
+    setState(() {});
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -81,19 +131,18 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
         children: [
           SheetHeader1(label: 'select_brands'.recast),
           const SizedBox(height: 16),
-          if (AppPreferences.brands.isNotEmpty)
-            InputField(
-              padding: 20,
-              cursorHeight: 14,
-              controller: _search,
-              fillColor: skyBlue,
-              hintText: 'search_by_brand_name'.recast,
-              focusNode: _focusNode,
-              onChanged: (v) => setState(() {}),
-              prefixIcon: PrefixMenu(icon: Assets.svg1.search_2, isFocus: _focusNode.hasFocus),
-            ),
+          InputField(
+            padding: 20,
+            cursorHeight: 14,
+            controller: _search,
+            fillColor: skyBlue,
+            hintText: 'search_by_brand_name'.recast,
+            focusNode: _focusNode,
+            onChanged: _onDebounceSearch,
+            prefixIcon: PrefixMenu(icon: Assets.svg1.search_2, isFocus: _focusNode.hasFocus),
+          ),
           Expanded(child: Stack(children: [_screenView(context), if (_loader) const ScreenLoader()])),
-          if (AppPreferences.brands.isNotEmpty) NavButtonBox(loader: _loader, childHeight: 42, child: _actionButtons),
+          if (_brands.isNotEmpty) NavButtonBox(loader: _loader, childHeight: 42, child: _actionButtons),
         ],
       ),
     );
@@ -134,15 +183,15 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   Widget _screenView(BuildContext context) {
     if (_loader) return const SizedBox.shrink();
-    if (AppPreferences.brands.isEmpty) return _NoBrandFound();
-    var brands = Brand.brands_by_name(AppPreferences.brands, _search.text);
+    if (_brands.isEmpty) return _NoBrandFound();
+    // var brands = Brand.brands_by_name(AppPreferences.brands, _search.text);
     return ListView(
       shrinkWrap: true,
-      controller: ScrollController(),
+      controller: _scrollControl,
       clipBehavior: Clip.antiAlias,
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      children: brands.isEmpty
+      children: _brands.isEmpty
           ? [
               const SizedBox(height: 20),
               _NoBrandFound(),
@@ -150,7 +199,9 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
             ]
           : [
               const SizedBox(height: 20),
-              BrandsList(brands: brands, selectedItems: _selectedBrands, onChanged: _onSelectBrand),
+              BrandsList(brands: _brands, selectedItems: _selectedBrands, onChanged: _onSelectBrand),
+              if (_paginate.pageLoader) const SizedBox(height: 24),
+              if (_paginate.pageLoader) Center(child: ButtonLoader()),
               SizedBox(height: BOTTOM_GAP),
             ],
     );

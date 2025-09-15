@@ -112,7 +112,7 @@ class InputField extends StatelessWidget {
         onChanged: onChanged,
         inputFormatters: inputFormatters,
         onSaved: controller != null ? (val) => controller?.text = val! : null,
-        style: TextStyles.text14_700.copyWith(color: textColor.colorOpacity(_is_disabled ? 0.7 : 1), height: 1, fontSize: fontSize),
+        style: TextStyles.text14_700.copyWith(color: textColor.colorOpacity(_is_disabled ? 0.7 : 1), height: 1.3, fontSize: fontSize),
         onEditingComplete: () => _onEditingComplete(context),
         onTapOutside: (event) => _onTapOutside(context, event),
         textAlignVertical: TextAlignVertical.top,

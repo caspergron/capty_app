@@ -23,3 +23,17 @@ class PriceInputFormatter extends TextInputFormatter {
     return newValue;
   }
 }
+
+class FloatNumberInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final text = newValue.text.trim();
+    if (text.isEmpty) return newValue;
+    final regex = RegExp(r'^\d*\.?\d*$');
+    if (!regex.hasMatch(text)) return oldValue;
+    final parsed = double.tryParse(text);
+    if (parsed == null) return oldValue;
+    if (parsed <= 0) return oldValue;
+    return newValue;
+  }
+}

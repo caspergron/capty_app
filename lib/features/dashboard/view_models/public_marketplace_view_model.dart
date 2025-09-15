@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
+import 'package:app/features/dashboard/components/public_sales_ad_info_dialog.dart';
+import 'package:app/libraries/locations.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
+import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/system/loader.dart';
 import 'package:app/repository/public_repo.dart';
@@ -25,12 +30,24 @@ class PublicMarketplaceViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchMarketplaceDiscsByCountry(int countryId) async {
-    // var coordinates = await sl<Locations>().fetchLocationPermission();
-    // var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    // var params = '&page=1&country_id=$countryId$locationParams';
-    var params = '&page=1&sort_by=country&country_id=$countryId';
+    var coordinates = await sl<Locations>().fetchLocationPermission();
+    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    // var params = '&page=1&sort_by=country&country_id=$countryId';
+    var params = '&page=1&sort_by=country&country_id=$countryId$locationParams'.trim();
     var response = await sl<PublicRepository>().fetchSalesAdsByCountry(params);
     if (response.isNotEmpty) categories = response;
+    loader = Loader(initial: false, common: false);
+    notifyListeners();
+  }
+
+  Future<void> fetchMarketplaceDiscDetails(SalesAd salesAd) async {
+    loader.common = true;
+    notifyListeners();
+    var coordinates = await sl<Locations>().fetchLocationPermission();
+    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    var params = '${salesAd.id!}$locationParams'.trim();
+    var response = await sl<PublicRepository>().fetchMarketplaceDetails(params);
+    if (response != null) unawaited(publicSalesAdInfoDialog(disc: response));
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }

@@ -21,9 +21,11 @@ class _PublicApis {
   String translations = '$_SERVER/language/get-translation?language_code='; // en
 
   String allBrands = '$_SERVER/disc-brand/list-priority';
+  String searchBrands = '$_SERVER/disc-brand/search';
 
   String appStatistics = '$_SERVER/statistics';
   String marketplaceDiscsByCountry = '$_SERVER/market-place-disc-no-auth/list?size=$LENGTH_20';
+  String marketplaceDetails = '$_SERVER/market-place-disc-no-auth/show?sales_ad_id='; // 2
 
   String findClub = '$_SERVER/club/find-club'; // ?latitude=40.7300&longitude=-73.97700
   String addInWaitlist = '$_SERVER/user/wait_lists';

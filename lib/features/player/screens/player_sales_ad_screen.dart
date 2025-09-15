@@ -7,7 +7,7 @@ import 'package:app/components/menus/back_menu.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
-import 'package:app/features/marketplace/units/marketplace_category_list.dart';
+import 'package:app/features/marketplace_management/marketplace/units/marketplace_category_list.dart';
 import 'package:app/features/player/view_models/player_sales_ad_view_model.dart';
 import 'package:app/models/user/user.dart';
 import 'package:app/preferences/user_preferences.dart';

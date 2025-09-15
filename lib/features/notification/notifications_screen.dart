@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/constants/date_formats.dart';
@@ -22,8 +18,10 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-const _TABS_LIST = ['notifications', 'messages'];
+const _TABS_LIST = ['messages', 'notifications'];
 
 class NotificationsScreen extends StatefulWidget {
   @override
@@ -97,7 +95,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> with SingleTi
             child: TabBarView(
               controller: _tabController,
               physics: const BouncingScrollPhysics(),
-              children: [_notificationView, _messageFeedsView],
+              children: [_messageFeedsView, _notificationView],
             ),
           ),
       ],

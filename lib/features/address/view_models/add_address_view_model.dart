@@ -37,8 +37,12 @@ class AddAddressViewModel with ChangeNotifier {
       var coordinates = position.is_coordinate ? position : await google.coordinatesOfACountry(countryCode: country.code!);
       if (coordinates?.is_coordinate == true) centerLocation = coordinates!;
       notifyListeners();
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (coordinates?.is_coordinate == true) centerLocation = coordinates!;
+      notifyListeners();
     } else {
-      addressInfo = {
+      await _setInitStatesForUpdateAddress(item);
+      /*addressInfo = {
         'address': item.addressLine1,
         'city': item.city,
         'coordinates': item.coordinates,
@@ -50,6 +54,38 @@ class AddAddressViewModel with ChangeNotifier {
       var coordinates = item.is_coordinate ? item.coordinates : await google.coordinatesOfACountry(countryCode: country.code!);
       if (coordinates?.is_coordinate == true) centerLocation = coordinates!;
       notifyListeners();
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (coordinates?.is_coordinate == true) centerLocation = coordinates!;
+      notifyListeners();
+      print('print: item called -> ${centerLocation.lat}');*/
+    }
+  }
+
+  Future<void> _setInitStatesForUpdateAddress(Address item) async {
+    addressInfo = {
+      'address': item.addressLine1,
+      'city': item.city,
+      'coordinates': item.coordinates,
+      'state': item.state,
+      'postal_code': item.zipCode,
+      'place_id': item.placeId,
+    };
+    var google = sl<GoogleRepository>();
+    country = item.country?.id == null ? UserPreferences.user.country_item : item.country!;
+    var coordinates = item.is_coordinate ? item.coordinates : await google.coordinatesOfACountry(countryCode: country.code!);
+
+    if (coordinates?.is_coordinate == true) {
+      centerLocation = coordinates!;
+      // print('print: setting centerLocation -> ${centerLocation.lat}, ${centerLocation.lng}');
+      notifyListeners();
+
+      // Add a longer delay to ensure the widget receives the updated coordinates
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      // Double-check that centerLocation is still valid and notify again if needed
+      if (centerLocation.is_coordinate) {
+        notifyListeners();
+      }
     }
   }
 

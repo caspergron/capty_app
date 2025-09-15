@@ -77,11 +77,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   List<Widget> _screenView(BuildContext context) {
     var icon = Assets.svg1.close_2;
     return [
-      SizedBox(
-        width: SizeConfig.width,
-        height: SizeConfig.height,
-        child: MapAddressPicker(coordinates: _modelData.centerLocation, onMoveCamera: _onCameraMove),
-      ),
+      Positioned.fill(child: MapAddressPicker(coordinates: _modelData.centerLocation, onMoveCamera: _onCameraMove)),
       Positioned(left: 16, top: SizeConfig.statusBar + 12, child: const BackMenu()),
       Positioned(
         left: 20,
@@ -124,25 +120,24 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   Future<void> _onCameraMove(Coordinates coordinates) async {
+    if (_viewModel.centerLocation.lat == coordinates.lat && _viewModel.centerLocation.lng == coordinates.lng) return;
     setState(() => _viewModel.centerLocation = coordinates);
     var response = await _viewModel.fetchAddressInfoByCoordinates(coordinates);
     _search.text = '';
-    // if (response == null) return;
     if (response == null) {
       if (_isFirst) return setState(() => _isFirst = false);
       return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
     }
     _search.text = response['address'];
-    FocusScope.of(context).unfocus();
+    if (mounted) FocusScope.of(context).unfocus();
     _viewModel.suggestions.clear();
-    setState(() {});
   }
 
   void _onClose() {
     _search.clear();
     _viewModel.suggestions.clear();
     _viewModel.addressInfo = null;
-    setState(() {});
+    // setState(() {});
   }
 
   Future<void> _onPlaceItem(int index) async {

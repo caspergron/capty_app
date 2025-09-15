@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'package:app/animations/fade_animation.dart';
-import 'package:app/components/app_lists/menu_horizontal_list.dart';
+import 'package:app/components/app_lists/data_model_menu_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -17,6 +17,7 @@ import 'package:app/features/leaderboard/components/leaderboard_dialog.dart';
 import 'package:app/features/leaderboard/leaderboard_view_model.dart';
 import 'package:app/features/leaderboard/units/players_list.dart';
 import 'package:app/libraries/share_module.dart';
+import 'package:app/models/system/data_model.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/services/app_analytics.dart';
 import 'package:app/services/routes.dart';
@@ -37,6 +38,7 @@ class LeaderboardScreen extends StatefulWidget {
 }
 
 class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTickerProviderStateMixin {
+  var _tabIndex = 0;
   var _viewModel = LeaderboardViewModel();
   var _modelData = LeaderboardViewModel();
   late TabController _tabController;
@@ -46,6 +48,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
     sl<AppAnalytics>().screenView('leaderboard-screen');
     sl<AppAnalytics>().logEvent(name: 'leaderboard_view');
     _tabController = TabController(length: _TABS_LIST.length, vsync: this);
+    _tabController.addListener(() => setState(() => _tabIndex = _tabController.index));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _viewModel.initViewModel());
     super.initState();
   }
@@ -82,6 +85,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
   }
 
   Widget _screenView(BuildContext context) {
+    var label = _tabIndex == 0 ? _modelData.clubMenu.label.recast : _modelData.friendMenu.label.recast;
+    final menuValue = _tabIndex == 0 ? _modelData.clubMenu.value : _modelData.friendMenu.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -89,14 +94,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
         Row(
           children: [
             SizedBox(width: Dimensions.screen_padding),
-            Text('pdga_rating'.recast, style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500, height: 1)),
+            Text(label, style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500, height: 1)),
             const SizedBox(width: 10),
-            InkWell(onTap: leaderboardDialog, child: SvgImage(image: Assets.svg1.info, color: primary, height: 24)),
+            InkWell(onTap: () => leaderboardDialog(menu: menuValue), child: SvgImage(image: Assets.svg1.info, color: primary, height: 24)),
             SizedBox(width: Dimensions.screen_padding),
           ],
         ),
         const SizedBox(height: 10),
-        if (_modelData.tags.isNotEmpty) MenuHorizontalList(menuItems: _modelData.tags, menu: _modelData.tag, onTap: _viewModel.onTag),
         Container(
           height: 38,
           margin: EdgeInsets.symmetric(horizontal: Dimensions.screen_padding),
@@ -132,11 +136,14 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
       padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
       children: [
-        const SizedBox(height: 12),
+        const SizedBox(height: 02),
+        DataModelMenuList(menu: _modelData.clubMenu, menuItems: LEADERBOARD_CATEGORY_LIST, onTap: _modelData.onClubMenu),
+        const SizedBox(height: 14),
         PlayersList(
           topPlayers: topPlayers,
           players: otherPlayers,
           gap: Dimensions.screen_padding,
+          menu: _modelData.clubMenu.value.toKey,
           onItem: (item) => Routes.user.player_profile(playerId: item.id!).push(),
         ),
         if (otherPlayers.isEmpty) _inviteApplication(true),
@@ -156,11 +163,14 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
       padding: EdgeInsets.zero,
       physics: const BouncingScrollPhysics(),
       children: [
-        const SizedBox(height: 10),
+        const SizedBox(height: 02),
+        DataModelMenuList(menu: _modelData.friendMenu, menuItems: LEADERBOARD_CATEGORY_LIST, onTap: _modelData.onFriendMenu),
+        const SizedBox(height: 14),
         PlayersList(
-          topPlayers: topPlayers,
           players: otherPlayers,
+          topPlayers: topPlayers,
           gap: Dimensions.screen_padding,
+          menu: _modelData.friendMenu.value.toKey,
           onItem: (item) => Routes.user.player_profile(playerId: item.id!).push(),
         ),
         if (otherPlayers.isEmpty) _inviteApplication(false),
@@ -213,7 +223,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                 text: isClub ? 'share_the_app_with_other_members_of'.recast : 'share_the_app_with_your_friends'.recast,
                 children: [
                   const TextSpan(text: ' '),
-                  TextSpan(text: _modelData.clubLeaderboard.clubName ?? ''),
+                  TextSpan(text: isClub ? (_modelData.clubLeaderboard.clubName ?? '') : ''),
                   const TextSpan(text: ' '),
                   TextSpan(text: 'to_see_more_people_on_this_leaderboard'.recast),
                 ],

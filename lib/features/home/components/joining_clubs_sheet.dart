@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:app/components/app_lists/nearest_clubs_list.dart';
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
@@ -14,6 +13,7 @@ import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
 import 'package:app/features/home/home_view_model.dart';
+import 'package:app/features/home/units/nearest_clubs_list.dart';
 import 'package:app/libraries/locations.dart';
 import 'package:app/models/club/club.dart';
 import 'package:app/models/system/loader.dart';

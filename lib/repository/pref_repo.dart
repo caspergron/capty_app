@@ -1,5 +1,5 @@
 import 'package:app/di.dart';
-import 'package:app/extensions/flutter_ext.dart';
+import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/libraries/flush_popup.dart';
@@ -46,8 +46,11 @@ class PreferencesRepository {
     var endpoint = ApiUrl.pref.suggestedFeaturesList;
     var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var featureApi = FeaturesApi.fromJson(apiResponse.response);
-    return featureApi.features.haveList ? featureApi.features! : [];
+    final featureApi = FeaturesApi.fromJson(apiResponse.response);
+    final features = featureApi.features ?? [];
+    if (features.isEmpty) return [];
+    features.sort((item1, item2) => item2.totalVotes.nullToInt.compareTo(item1.totalVotes.nullToInt));
+    return features;
   }
 
   Future<Feature?> createSuggestFeature(Map<String, dynamic> body) async {

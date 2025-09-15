@@ -10,7 +10,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/address/components/shipping_update_info_dialog.dart';
 import 'package:app/features/address/utils/address_list.dart';
 import 'package:app/features/address/view_models/seller_settings_view_model.dart';
-import 'package:app/features/discs/view_models/create_sales_ad_view_model.dart';
+import 'package:app/features/marketplace_management/create_sales_ad/create_sales_ad_view_model.dart';
 import 'package:app/models/address/address.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
@@ -89,6 +89,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
         homeAddress == null
             ? _AddAddressOption(label: 'add_your_home_address', onTap: Routes.user.add_address(address: Address(label: 'home')).push)
             : AddressList(
+                isSelectable: widget.isSelectable,
                 addressList: [homeAddress],
                 onItem: (item, index) => !widget.isSelectable ? null : _onSelect(item),
                 onDelete: (item, index) => _viewModel.deleteAddress(item),
@@ -99,6 +100,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
         const SizedBox(height: 10),
         if (otherAddresses.isNotEmpty)
           AddressList(
+            isSelectable: widget.isSelectable,
             addressList: otherAddresses,
             onItem: (item, index) => !widget.isSelectable ? null : _onSelect(item),
             onDelete: (item, index) => _viewModel.deleteAddress(item),

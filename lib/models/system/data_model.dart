@@ -62,6 +62,12 @@ List<DataModel> CHAT_SUGGESTIONS = [
 
 List<DataModel> SORT_BY_LIST = [
   DataModel(label: 'newest', value: 'newest'),
-  // DataModel( label: 'distance', value: 'distance'),
-  DataModel(label: 'popularity', value: 'popularity'),
+// DataModel( label: 'distance', value: 'distance'),
+  DataModel(label: 'popularity', value: 'popularity')
+];
+
+List<DataModel> LEADERBOARD_CATEGORY_LIST = [
+  DataModel(label: 'pdga_rating', value: 'rating'),
+  DataModel(label: 'monthly_improvement', value: 'improvement'),
+  DataModel(label: 'yearly_improvement', value: 'yearly_improvement')
 ];

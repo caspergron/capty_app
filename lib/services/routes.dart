@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/features/address/screens/add_address_screen.dart';
 import 'package:app/features/address/screens/seller_settings_screen.dart';
 import 'package:app/features/auth/screens/otp_screen.dart';
@@ -9,6 +7,7 @@ import 'package:app/features/auth/screens/set_profile_screen_3.dart';
 import 'package:app/features/auth/screens/set_profile_screen_4.dart';
 import 'package:app/features/auth/screens/sign_in_screen.dart';
 import 'package:app/features/auth/screens/signed_up_screen.dart';
+import 'package:app/features/buddies/buddies_screen.dart';
 import 'package:app/features/chat/chat_screen.dart';
 import 'package:app/features/club/screens/club_event_screen.dart';
 import 'package:app/features/club/screens/club_screen.dart';
@@ -16,15 +15,14 @@ import 'package:app/features/club/screens/club_settings_screen.dart';
 import 'package:app/features/club/screens/create_club_screen.dart';
 import 'package:app/features/dashboard/screens/dashboard_screen.dart';
 import 'package:app/features/dashboard/screens/public_marketplace_screen.dart';
-import 'package:app/features/discs/screens/add_disc_screen.dart';
-import 'package:app/features/discs/screens/add_wishlist_screen.dart';
-import 'package:app/features/discs/screens/ai_disc_suggestion_screen.dart';
-import 'package:app/features/discs/screens/create_sales_ad_screen.dart';
-import 'package:app/features/discs/screens/created_disc_screen.dart';
-import 'package:app/features/discs/screens/pgda_discs_screen.dart';
-import 'package:app/features/discs/screens/recommended_disc_screen.dart';
-import 'package:app/features/discs/screens/request_disc_screen.dart';
-import 'package:app/features/discs/screens/search_disc_screen.dart';
+import 'package:app/features/disc_management/add_disc/add_disc_screen.dart';
+import 'package:app/features/disc_management/add_wishlist/screens/add_wishlist_screen.dart';
+import 'package:app/features/disc_management/add_wishlist/screens/pgda_discs_screen.dart';
+import 'package:app/features/disc_management/ai_suggestion/ai_disc_suggestion_screen.dart';
+import 'package:app/features/disc_management/ai_suggestion/recommended_disc_screen.dart';
+import 'package:app/features/disc_management/created_disc/created_disc_screen.dart';
+import 'package:app/features/disc_management/request_disc/request_disc_screen.dart';
+import 'package:app/features/disc_management/search_disc/search_disc_screen.dart';
 import 'package:app/features/friends/screens/add_friend_screen.dart';
 import 'package:app/features/friends/screens/friends_screen.dart';
 import 'package:app/features/graph/screens/flight_path_screen.dart';
@@ -32,7 +30,8 @@ import 'package:app/features/graph/screens/grid_path_screen.dart';
 import 'package:app/features/intro/introduction_screen.dart';
 import 'package:app/features/landing/landing_screen.dart';
 import 'package:app/features/leaderboard/leaderboard_screen.dart';
-import 'package:app/features/marketplace/screens/market_details_screen.dart';
+import 'package:app/features/marketplace_management/create_sales_ad/create_sales_ad_screen.dart';
+import 'package:app/features/marketplace_management/marketplace_details/market_details_screen.dart';
 import 'package:app/features/notification/notifications_screen.dart';
 import 'package:app/features/notify_pref/notify_pref_screen.dart';
 import 'package:app/features/player/screens/player_profile_screen.dart';
@@ -60,6 +59,7 @@ import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/settings/settings.dart';
 import 'package:app/models/user/user.dart';
+import 'package:flutter/material.dart';
 
 class Routes {
   static _AuthRoutes auth = _AuthRoutes();
@@ -114,6 +114,8 @@ class _UserRoutes {
   Widget market_details({required SalesAd salesAd, bool isDelay = false}) => MarketDetailsScreen(salesAd: salesAd, isDelay: isDelay);
 
   Widget chat({required ChatBuddy buddy}) => ChatScreen(buddy: buddy);
+  Widget buddies() => BuddiesScreen();
+
   Widget settings() => SettingsScreen();
   Widget notify_pref({required Settings settings}) => NotifyPrefScreen(settings: settings);
   Widget report_problem() => ReportProblemScreen();

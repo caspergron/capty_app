@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/animations/tween_list_item.dart';
-import 'package:app/components/app_lists/new_messages_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/drawers/app_drawer.dart';
 import 'package:app/components/loaders/screen_loader.dart';
@@ -18,6 +13,7 @@ import 'package:app/extensions/string_ext.dart';
 import 'package:app/features/home/components/joining_clubs_sheet.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/features/home/units/closest_club_events.dart';
+import 'package:app/features/home/units/new_messages_list.dart';
 import 'package:app/features/landing/landing_screen.dart';
 import 'package:app/features/landing/landing_view_model.dart';
 import 'package:app/features/notification/notifications_view_model.dart';
@@ -34,6 +30,8 @@ import 'package:app/utils/assets.dart';
 import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

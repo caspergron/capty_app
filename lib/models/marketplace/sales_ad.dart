@@ -23,6 +23,7 @@ class SalesAd {
   String? soldThrough;
   String? soldThroughDetails;
   String? notes;
+  double? distance;
   UserDisc? userDisc;
   SalesAdType? salesAdType;
   Address? address;
@@ -30,11 +31,11 @@ class SalesAd {
   List<Tag>? specialityDiscs;
   EndUser? sellerInfo;
 
-  bool get is_shipping => isShipping != null && isShipping == 1;
-
+  // bool get is_shipping => isShipping != null && isShipping == 1;
   // bool get is_wishListed => wishlistId != null;
+  int get distance_number => distance == null ? 0 : distance!.toInt();
   bool get is_favourite => isFavorite != null && isFavorite == 1;
-  bool get is_my_disc => userDisc?.userId != null && (userDisc?.userId == UserPreferences.user.id);
+  bool get is_my_disc => sellerInfo?.id != null && (sellerInfo?.id.nullToInt == UserPreferences.user.id);
   int? get condition_value => usedRange == null ? null : (usedRange == 0 ? 0 : usedRange!.toInt() - 1);
   String get currency_code => currency?.code ?? '';
   String get condition_number => usedRange == null || usedRange == 0 ? '0' : usedRange!.toInt().formatInt;
@@ -54,6 +55,7 @@ class SalesAd {
     this.soldThrough,
     this.soldThroughDetails,
     this.notes,
+    this.distance,
     this.userDisc,
     this.salesAdType,
     this.address,
@@ -77,6 +79,7 @@ class SalesAd {
     soldThrough = json['sold_through'];
     soldThroughDetails = json['sold_through_details'];
     notes = json['notes'];
+    distance = json['distance'] == null ? 0 : double.parse(json['distance'].toString());
     userDisc = json['user_disc'] != null ? UserDisc.fromJson(json['user_disc']) : null;
     salesAdType = json['sales_ad_type'] != null ? SalesAdType.fromJson(json['sales_ad_type']) : null;
     address = json['address'] != null ? Address.fromJson(json['address']) : null;
@@ -102,6 +105,7 @@ class SalesAd {
     map['sold_through'] = soldThrough;
     map['sold_through_details'] = soldThroughDetails;
     map['notes'] = notes;
+    map['distance'] = distance;
     if (userDisc != null) map['user_disc'] = userDisc?.toJson();
     if (salesAdType != null) map['sales_ad_type'] = salesAdType?.toJson();
     if (address != null) map['address'] = address?.toJson();
@@ -123,8 +127,8 @@ class SalesAd {
         'sales_ad_id': id,
         'seller_id': userId,
         'user_disc_id': userDisc?.id,
-        'parent_disc_id': userDisc?.parentDisc?.id,
-        'disc_name': userDisc?.parentDisc?.name,
+        'parent_disc_id': userDisc?.parentDiscId,
+        'disc_name': userDisc?.name,
         'image': userDisc?.media?.url,
         'price': price,
         'address_id': address?.id,

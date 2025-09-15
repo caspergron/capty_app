@@ -9,11 +9,11 @@ import 'package:app/features/auth/view_models/otp_view_model.dart';
 import 'package:app/features/auth/view_models/set_profile_view_model.dart';
 import 'package:app/features/auth/view_models/sign_in_view_model.dart';
 import 'package:app/features/club/view_models/club_view_model.dart';
-import 'package:app/features/discs/view_models/discs_view_model.dart';
+import 'package:app/features/disc_management/discs/discs_view_model.dart';
 import 'package:app/features/friends/view_models/friends_view_model.dart';
 import 'package:app/features/home/home_view_model.dart';
 import 'package:app/features/landing/landing_view_model.dart';
-import 'package:app/features/marketplace/view_models/marketplace_view_model.dart';
+import 'package:app/features/marketplace_management/marketplace/marketplace_view_model.dart';
 import 'package:app/interfaces/api_interceptor.dart';
 import 'package:app/libraries/flush_popup.dart';
 import 'package:app/libraries/formatters.dart';
@@ -26,6 +26,7 @@ import 'package:app/models/common/tags_api.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/models/marketplace/marketplace_api.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
+import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/models/public/app_statistics.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/models/public/country_api.dart';
@@ -135,10 +136,26 @@ class PublicRepository {
     return marketplaceApi.categories.haveList ? marketplaceApi.categories! : [];
   }
 
-  Future<List<Brand>> fetchAllBrands() async {
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.allBrands);
+  Future<SalesAd?> fetchMarketplaceDetails(String params) async {
+    var endpoint = '${ApiUrl.public.marketplaceDetails}$params';
+    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return null;
+    return SalesAd.fromJson(apiResponse.response['data']);
+  }
+
+  Future<List<Brand>> fetchAllBrands(String params) async {
+    final endpoint = '${ApiUrl.public.allBrands}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var brandsApi = BrandsApi.fromJson(apiResponse.response);
+    final brandsApi = BrandsApi.fromJson(apiResponse.response);
+    return brandsApi.brands ?? [];
+  }
+
+  Future<List<Brand>> fetchSearchBrands(String params) async {
+    final endpoint = '${ApiUrl.public.searchBrands}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    if (apiResponse.status != 200) return [];
+    final brandsApi = BrandsApi.fromJson(apiResponse.response);
     return brandsApi.brands ?? [];
   }
 

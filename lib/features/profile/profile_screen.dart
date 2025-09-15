@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:app/animations/tween_list_item.dart';
-import 'package:app/components/app_lists/sales_ads_list.dart';
-import 'package:app/components/app_lists/upcoming_tournaments_list.dart';
+import 'package:app/components/app_lists/marketplace_disc_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
 import 'package:app/components/sheets/image_option_sheet.dart';
+import 'package:app/constants/data_constants.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/player/units/upcoming_tournaments_list.dart';
 import 'package:app/features/profile/components/pofile_edit_dialog.dart';
 import 'package:app/features/profile/profile_view_model.dart';
+import 'package:app/features/profile/units/profile_info.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/fonts.dart';
@@ -117,9 +119,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _ProfileInfo(label: 'pdga_rating'.recast, value: (person.pdgaRating ?? 0).toDouble()),
-                        _ProfileInfo(label: 'club_point'.recast),
-                        _ProfileInfo(label: 'total_club'.recast, value: (person.totalClub ?? 0).toDouble()),
+                        ProfileInfo(label: 'pdga_rating'.recast, value: (person.pdgaRating ?? 0).toDouble()),
+                        ProfileInfo(label: 'club_point'.recast),
+                        ProfileInfo(label: 'total_club'.recast, value: (person.totalClub ?? 0).toDouble()),
                       ],
                     ),
                   ),
@@ -246,49 +248,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         const SizedBox(height: 24),
-        if (_modelData.upcomingTournaments.isNotEmpty)
-          UpcomingTournamentsList(
-            label: "${_modelData.person.first_name}'s",
-            tournaments: _modelData.upcomingTournaments,
-          ),
-        if (_modelData.salesAdDiscs.isNotEmpty)
-          SalesAdsList(
-            label: "${_modelData.person.first_name}'s",
-            salesAdsList: _modelData.salesAdDiscs,
-            onShowMore: () => Routes.user.player_sale_ads(player: _modelData.person).push(),
-            onItem: (item) => Routes.user.market_details(salesAd: item).push(),
-          ),
+        if (_modelData.upcomingTournaments.isNotEmpty) ..._upcomingTournaments,
+        if (_modelData.salesAdDiscs.isNotEmpty) ..._userSalesAdDiscs,
         SizedBox(height: BOTTOM_GAP),
       ],
     );
   }
-}
 
-class _ProfileInfo extends StatelessWidget {
-  final String label;
-  final double value;
+  List<Widget> get _upcomingTournaments {
+    final gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final label = '${_modelData.person.first_name}${'extra_s'.recast} ${'upcoming_tournaments'.recast}'.trim();
+    return [
+      Padding(padding: gap, child: Text(label, style: TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54))),
+      const SizedBox(height: 08),
+      UpcomingTournamentsList(tournaments: _modelData.upcomingTournaments),
+    ];
+  }
 
-  const _ProfileInfo({this.value = 0, this.label = ''});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          value.formatDouble,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyles.text24_600.copyWith(color: primary, fontWeight: w500),
-        ),
-        Text(
-          label,
-          maxLines: 1,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyles.text12_600.copyWith(color: primary, fontWeight: w400),
-        ),
-      ],
-    );
+  List<Widget> get _userSalesAdDiscs {
+    final salesAdsList = _modelData.salesAdDiscs;
+    final label = '${_modelData.person.first_name}${'extra_s'.recast} ${'sales_ads'.recast}'.trim();
+    final labelStyle = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
+    final showMoreLabel = Text('show_more'.recast, style: TextStyles.text16_700.copyWith(color: lightBlue, letterSpacing: 0.54));
+    return [
+      Row(
+        children: [
+          SizedBox(width: Dimensions.screen_padding),
+          Expanded(child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: labelStyle)),
+          const SizedBox(width: 08),
+          if (salesAdsList.length == LENGTH_20)
+            InkWell(onTap: () => Routes.user.player_sale_ads(player: _modelData.person).push(), child: showMoreLabel),
+          SizedBox(width: Dimensions.screen_padding),
+        ],
+      ),
+      const SizedBox(height: 08),
+      MarketplaceDiscList(discs: salesAdsList, onTap: (item) => Routes.user.market_details(salesAd: item).push()),
+    ];
   }
 }

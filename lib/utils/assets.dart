@@ -61,6 +61,7 @@ class _SvgIcons1 {
   String caret_right = '$_SVG_ICONS_1/caret_right.svg';
   String challenge = '$_SVG_ICONS_1/challenge.svg';
   String chat_circle = '$_SVG_ICONS_1/chat_circle.svg';
+  String chats = '$_SVG_ICONS_1/chats.svg';
   String check_square = '$_SVG_ICONS_1/check_square.svg';
   String clock = '$_SVG_ICONS_1/clock.svg';
   String close_1 = '$_SVG_ICONS_1/close_1.svg';
@@ -77,6 +78,7 @@ class _SvgIcons1 {
   String disc_3 = '$_SVG_ICONS_1/disc_3.svg';
   String disc_4 = '$_SVG_ICONS_1/disc_4.svg';
   String disc_plus = '$_SVG_ICONS_1/disc_plus.svg';
+  String dna = '$_SVG_ICONS_1/dna.svg';
   String dollar_circle = '$_SVG_ICONS_1/dollar_circle.svg';
   // String dots_three_vertical = '$_SVG_ICONS_1/dots_three_vertical.svg';
   // String dropdown = '$_SVG_ICONS_1/dropdown.svg';

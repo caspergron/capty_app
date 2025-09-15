@@ -9,9 +9,8 @@ import 'package:app/components/menus/capty_menu.dart';
 import 'package:app/components/menus/hamburger_menu.dart';
 import 'package:app/components/menus/home_menu.dart';
 import 'package:app/extensions/number_ext.dart';
-import 'package:app/features/dashboard/components/public_sales_ad_info_dialog.dart';
 import 'package:app/features/dashboard/view_models/public_marketplace_view_model.dart';
-import 'package:app/features/marketplace/units/marketplace_category_list.dart';
+import 'package:app/features/marketplace_management/marketplace/units/marketplace_category_list.dart';
 import 'package:app/models/public/country.dart';
 import 'package:app/themes/gradients.dart';
 import 'package:app/utils/dimensions.dart';
@@ -81,7 +80,10 @@ class _PublicMarketplaceScreenState extends State<PublicMarketplaceScreen> {
       physics: const BouncingScrollPhysics(),
       children: [
         const SizedBox(height: 14),
-        MarketplaceCategoryList(categories: _modelData.categories, onDiscItem: (v) => publicSalesAdInfoDialog(disc: v)),
+        MarketplaceCategoryList(
+          categories: _modelData.categories,
+          onDiscItem: (v) => _viewModel.fetchMarketplaceDiscDetails(v),
+        ),
         SizedBox(height: BOTTOM_GAP),
       ],
     );

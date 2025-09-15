@@ -3,11 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:http/http.dart' as http;
-import 'package:sentry_flutter/sentry_flutter.dart';
-
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
@@ -16,6 +11,9 @@ import 'package:app/models/system/api_response.dart';
 import 'package:app/preferences/app_preferences.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _200 = 200;
 const _300 = 300;
@@ -65,7 +63,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
@@ -96,7 +94,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
@@ -127,7 +125,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
@@ -158,7 +156,7 @@ class HttpModule implements ApiInterceptor {
     } on SocketException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));
       client.close();
-      ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
+      // ToastPopup.onWarning(message: 'no_internet_connection_please_check_your_network'.recast);
       return _exceptionResponse(error.toString(), endpoint);
     } on TimeoutException catch (error, stackTrace) {
       unawaited(_sentryException(error, stackTrace));

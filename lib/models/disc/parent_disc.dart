@@ -2,6 +2,8 @@ import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/media.dart';
 import 'package:app/models/common/tag.dart';
+import 'package:app/models/disc/user_disc.dart';
+import 'package:app/preferences/user_preferences.dart';
 
 class ParentDisc {
   int? id;
@@ -84,5 +86,21 @@ class ParentDisc {
     if (brand != null) map['brand'] = brand?.toJson();
     if (mediaList != null) map['media'] = mediaList?.map((v) => v.toJson()).toList();
     return map;
+  }
+
+  UserDisc get parent_disc_to_user_disc {
+    return UserDisc(
+      userId: UserPreferences.user.id,
+      parentDiscId: id,
+      name: name,
+      type: type,
+      speed: speed,
+      glide: glide,
+      turn: turn,
+      fade: fade,
+      color: color,
+      media: media,
+      brand: brand,
+    );
   }
 }
