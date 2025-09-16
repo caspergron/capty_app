@@ -149,7 +149,7 @@ class AppDrawer extends StatelessWidget {
             : _DrawerItem(label: 'login'.recast, icon: Assets.svg1.sign_in, onTap: Routes.auth.sign_in().push),
         if (authStatus) ...[
           const SizedBox(height: 10),
-          _DrawerItem(label: 'sign_out'.recast.toUpper, color: orange, icon: Assets.svg1.logout, onTap: logoutDialog),
+          _DrawerItem(label: 'sign_out'.recast.toUpper, color: error, icon: Assets.svg1.logout, onTap: logoutDialog),
         ],
         SizedBox(height: BOTTOM_GAP + 10),
       ],

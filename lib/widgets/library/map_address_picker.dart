@@ -1,21 +1,20 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/models/map/coordinates.dart';
 import 'package:app/utils/assets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapAddressPicker extends StatefulWidget {
   final Coordinates coordinates;
   final bool zoomEnabled;
   final Function(Coordinates) onMoveCamera;
-  const MapAddressPicker({required this.coordinates, required this.onMoveCamera, this.zoomEnabled = false});
+  final double zoom;
+  const MapAddressPicker({required this.coordinates, required this.onMoveCamera, this.zoomEnabled = false, this.zoom = 12});
 
   @override
   State<MapAddressPicker> createState() => _MapAddressPickerState();
@@ -71,11 +70,11 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
     return GoogleMap(
       style: _mapStyle,
       markers: _markers,
-      zoomControlsEnabled: widget.zoomEnabled,
-      onMapCreated: _initializeMapController,
-      initialCameraPosition: CameraPosition(target: LatLng(_coordinates.lat!, _coordinates.lng!), zoom: 15),
       onCameraMove: _onCameraMove,
       onCameraIdle: _onCameraIdle,
+      // zoomControlsEnabled: widget.zoomEnabled,
+      onMapCreated: _initializeMapController,
+      initialCameraPosition: CameraPosition(target: LatLng(_coordinates.lat!, _coordinates.lng!), zoom: widget.zoom),
       myLocationButtonEnabled: false,
     );
   }
@@ -140,6 +139,6 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
     if (_mapController == null) return;
     // print('print: Updating camera position to -> ${_coordinates.lat}, ${_coordinates.lng}');
     final position = LatLng(_coordinates.lat!, _coordinates.lng!);
-    _mapController!.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: position, zoom: 15)));
+    _mapController!.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: position, zoom: widget.zoom)));
   }
 }

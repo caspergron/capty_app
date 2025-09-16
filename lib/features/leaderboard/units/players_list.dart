@@ -80,7 +80,7 @@ class PlayersList extends StatelessWidget {
                 height: 32,
                 background: mediumBlue,
                 image: item.media?.url,
-                placeholder: const FadingCircle(size: 20),
+                placeholder: const FadingCircle(size: 20, color: white),
                 errorWidget: SvgImage(image: Assets.svg1.coach, color: primary, height: 24),
               ),
               const SizedBox(width: 08),

@@ -1,9 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/loaders/positioned_loader.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
@@ -30,6 +26,8 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Future<void> joiningClubsSheet() async {
   var context = navigatorKey.currentState!.context;
@@ -182,10 +180,8 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     minimizeKeyboard();
     if (_search.text.isEmpty) return;
     var coordinates = await sl<Locations>().fetchLocationPermission();
-    if (!coordinates.is_coordinate) return _onDisabledLocation(false);
     setState(() => _loader.common = true);
-    // var body = {'name': _search.text, 'latitude': '56.3876239', 'longitude': '9.7604105'};
-    var body = {'name': _search.text, 'latitude': coordinates.lat, 'longitude': coordinates.lng};
+    var body = {'name': _search.text, 'latitude': coordinates.lat ?? 0, 'longitude': coordinates.lng ?? 0};
     var response = await sl<ClubRepository>().searchClubs(body);
     _searchedClubs.clear();
     if (response.isNotEmpty) _searchedClubs = response;
