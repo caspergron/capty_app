@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
@@ -12,7 +14,6 @@ import 'package:app/models/user/user.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/storage_service.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:flutter/foundation.dart';
 
 class AuthRepository {
   Future<Map<String, dynamic>?> sendOtp(

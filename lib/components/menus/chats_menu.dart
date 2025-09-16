@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/features/buddies/buddies_view_model.dart';
@@ -6,8 +10,6 @@ import 'package:app/services/routes.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ChatsMenu extends StatelessWidget {
   final Color color;

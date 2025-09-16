@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
+
 import 'package:app/components/dialogs/live_app_dialog.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
@@ -17,9 +22,6 @@ import 'package:app/services/api_status.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/services/storage_service.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class LandingViewModel with ChangeNotifier {
   var index = 0;

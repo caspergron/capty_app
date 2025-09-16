@@ -1,5 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
+import 'package:convex_bottom_bar/convex_bottom_bar.dart' as convex;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:provider/provider.dart';
+
 import 'package:app/components/dialogs/app_exit_dialog.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -20,10 +26,6 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/core/spinner_menu.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart' as convex;
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LandingScreen extends StatefulWidget {
   static final GlobalKey<_LandingScreenState> landingKey = GlobalKey<_LandingScreenState>();

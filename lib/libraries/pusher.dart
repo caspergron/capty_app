@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
+import 'package:provider/provider.dart';
+import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -7,10 +12,6 @@ import 'package:app/features/buddies/buddies_view_model.dart';
 import 'package:app/features/chat/chat_view_model.dart';
 import 'package:app/models/chat/chat_message.dart';
 import 'package:app/services/storage_service.dart';
-import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
-
 import '../constants/app_constants.dart';
 
 class Pusher {

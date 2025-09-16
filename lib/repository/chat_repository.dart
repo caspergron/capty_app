@@ -1,3 +1,5 @@
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -10,7 +12,6 @@ import 'package:app/models/chat/chat_message.dart';
 import 'package:app/models/chat/chats_api.dart';
 import 'package:app/models/chat/conversation_api.dart';
 import 'package:app/utils/api_url.dart';
-import 'package:provider/provider.dart';
 
 class ChatRepository {
   Future<bool> setOnlineStatus({required bool status}) async {

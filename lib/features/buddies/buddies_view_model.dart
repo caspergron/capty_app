@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/constants/app_keys.dart';
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
@@ -10,8 +14,6 @@ import 'package:app/models/system/loader.dart';
 import 'package:app/models/system/paginate.dart';
 import 'package:app/preferences/user_preferences.dart';
 import 'package:app/repository/chat_repository.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class BuddiesViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

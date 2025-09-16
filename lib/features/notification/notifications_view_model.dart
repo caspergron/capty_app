@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
@@ -10,7 +12,6 @@ import 'package:app/models/system/loader.dart';
 import 'package:app/models/user/notification.dart' as notify;
 import 'package:app/repository/notifiation_repo.dart';
 import 'package:app/services/routes.dart';
-import 'package:flutter/material.dart';
 
 class NotificationsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;

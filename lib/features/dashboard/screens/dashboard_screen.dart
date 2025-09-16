@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/dialogs/app_exit_dialog.dart';
@@ -25,8 +29,6 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
