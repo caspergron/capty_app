@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:app/di.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -14,6 +12,7 @@ import 'package:app/repository/auth_repo.dart';
 import 'package:app/repository/public_repo.dart';
 import 'package:app/services/routes.dart';
 import 'package:app/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
 
 class SignInViewModel with ChangeNotifier {
   var loader = true;

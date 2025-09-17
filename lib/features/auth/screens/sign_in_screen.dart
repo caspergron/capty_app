@@ -1,9 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/components/dialogs/change_language_dialog.dart';
@@ -30,6 +26,8 @@ import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/ui/phone_prefix.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
   @override

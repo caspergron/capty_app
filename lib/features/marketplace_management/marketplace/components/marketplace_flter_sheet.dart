@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/disc_speciality_list.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -13,6 +11,7 @@ import 'package:app/constants/app_keys.dart';
 import 'package:app/extensions/flutter_ext.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
+import 'package:app/features/marketplace_management/create_sales_ad/units/sort_by_list.dart';
 import 'package:app/libraries/toasts_popups.dart';
 import 'package:app/models/common/brand.dart';
 import 'package:app/models/common/tag.dart';
@@ -30,15 +29,16 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
+import 'package:flutter/material.dart';
 
 var _BRAND = DataModel(label: 'brand');
 var _TYPE = DataModel(label: 'type', valueInt: 2);
 var _TAGS = DataModel(label: 'tags', valueInt: 4);
 var _FLIGHT_PATH = DataModel(label: 'flight_numbers', valueInt: 6);
-// var _CONDITION = DataModel(label: 'condition', valueInt: 7);
-// var _WEIGHT = DataModel(label: 'weight', valueInt: 9);
-// var _PRICE = DataModel(label: 'price', valueInt: 11);
-// var _SORT_BY = DataModel(label: 'sort_by', valueInt: 7);
+var _CONDITION = DataModel(label: 'condition', valueInt: 7);
+var _WEIGHT = DataModel(label: 'weight', valueInt: 9);
+var _PRICE = DataModel(label: 'price', valueInt: 11);
+var _SORT_BY = DataModel(label: 'sort_by', valueInt: 7);
 
 Future<void> marketplaceFilterSheet({required MarketplaceFilter filterOption, Function(MarketplaceFilter)? onFilter}) async {
   var context = navigatorKey.currentState!.context;
@@ -69,14 +69,14 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   var _types = <Tag>[];
   var _brands = <Brand>[];
   var _tags = <Tag>[];
-  // var _sortBy = DataModel();
+  var _sortBy = DataModel();
   var _speed = const RangeValues(1, 15);
   var _glide = const RangeValues(0, 7);
   var _turn = const RangeValues(-5, 1);
   var _fade = const RangeValues(0, 5);
-  // var _condition = const RangeValues(0, 10);
-  // var _weight = const RangeValues(100, 200);
-  // var _price = const RangeValues(0, 1000);
+  var _condition = const RangeValues(0, 10);
+  var _weight = const RangeValues(0, 200);
+  var _price = const RangeValues(0, 1000);
 
   @override
   void initState() {
@@ -88,7 +88,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _setInitialStates() {
-    // final sortBy = widget.filterOption.sortBy;
+    final sortBy = widget.filterOption.sortBy;
     _types = widget.filterOption.types;
     _brands = widget.filterOption.brands;
     _tags = widget.filterOption.tags;
@@ -96,10 +96,11 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     _glide = widget.filterOption.glide;
     _turn = widget.filterOption.turn;
     _fade = widget.filterOption.fade;
-    // _condition = widget.filterOption.condition;
-    // _weight = widget.filterOption.weight;
-    // _price = widget.filterOption.price;
-    // if (sortBy != null) _sortBy = sortBy;
+    _condition = widget.filterOption.condition;
+    _weight = widget.filterOption.weight;
+    _price = widget.filterOption.price;
+
+    if (sortBy != null) _sortBy = sortBy;
   }
 
   Future<void> _fetchSpecialDiscTags() async => AppPreferences.fetchSpecialDiscTags();
@@ -111,13 +112,18 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   @override
   void dispose() {
+    _loader = true;
     _types = [];
     _brands = [];
     _tags = [];
+    _sortBy = DataModel();
     _speed = const RangeValues(1, 15);
     _glide = const RangeValues(0, 7);
     _turn = const RangeValues(-5, 1);
     _fade = const RangeValues(0, 5);
+    _condition = const RangeValues(0, 10);
+    _weight = const RangeValues(0, 200);
+    _price = const RangeValues(0, 1000);
     super.dispose();
   }
 
@@ -181,9 +187,9 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     var typeLabels = _types.isEmpty ? <String>[] : _types.map((e) => e.displayName ?? '').toList();
     var brandLabels = _brands.isEmpty ? <String>[] : _brands.map((e) => e.name ?? '').toList();
     var tagLabels = _tags.isEmpty ? <String>[] : _tags.map((e) => e.displayName ?? '').toList();
-    // var priceLabelValue = '${'from'.recast}: ${_price.start.toInt()} ${'to'.recast} ${_price.end.toInt()}';
-    // var weightLabelValue = '${'from'.recast}: ${_weight.start.toInt()} ${'to'.recast} ${_weight.end.toInt()}';
-    // var conditionLabelValue = '${'from'.recast}: ${_condition.end.toInt()} ${'to'.recast} ${_condition.start.toInt()}';
+    var priceLabelValue = '${'from'.recast}: ${_price.start.round()} ${'to'.recast} ${_price.end.round()}';
+    var weightLabelValue = '${'from'.recast}: ${_weight.start.round()} ${'to'.recast} ${_weight.end.round()}';
+    var conditionLabelValue = '${'from'.recast}: ${10 - _condition.start.round()} ${'to'.recast} ${10 - _condition.end.round()}';
     return ListView(
       controller: ScrollController(),
       clipBehavior: Clip.antiAlias,
@@ -229,24 +235,23 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
         const SizedBox(height: 16),
         _ExpansionLabel(item: _FLIGHT_PATH, list: Column(crossAxisAlignment: CrossAxisAlignment.start, children: _flightPathSections)),
         const SizedBox(height: 16),
-        /*_ExpansionLabel(
+        _ExpansionLabel(
           item: _CONDITION,
           list: _RangeSliderOption(
             index: 8,
             maxValue: 10,
-            // isOpposite: true,
+            isOpposite: true,
             rangeValue: _condition,
             label: 'range_10_0'.recast,
             labelValue: conditionLabelValue,
-            onChanged: (v) => setState(() => _condition = v),
+            onChanged: (v) => setState(() => _condition = RangeValues(v.start.round().toDouble(), v.end.round().toDouble())),
           ),
         ),
-        const SizedBox(height: 16),*/
-        /*_ExpansionLabel(
+        const SizedBox(height: 16),
+        _ExpansionLabel(
           item: _WEIGHT,
           list: _RangeSliderOption(
             index: 10,
-            minValue: 100,
             maxValue: 200,
             rangeValue: _weight,
             label: 'range_100_200'.recast,
@@ -254,8 +259,8 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
             onChanged: (v) => setState(() => _weight = v),
           ),
         ),
-        const SizedBox(height: 16),*/
-        /*_ExpansionLabel(
+        const SizedBox(height: 16),
+        _ExpansionLabel(
           item: _PRICE,
           list: _RangeSliderOption(
             index: 12,
@@ -266,13 +271,13 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
             onChanged: (v) => setState(() => _price = v),
           ),
         ),
-        const SizedBox(height: 16),*/
-        /*_ExpansionLabel(
+        const SizedBox(height: 16),
+        _ExpansionLabel(
           item: _SORT_BY,
           isExpanded: false,
           list: SortByList(selectedItems: _sortBy.value.isEmpty ? [] : [_sortBy], onSelect: _onSelectSortBy),
         ),
-        const SizedBox(height: 16),*/
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -344,19 +349,19 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     setState(() {});
   }
 
-  /*void _onSelectSortBy(DataModel item) {
+  void _onSelectSortBy(DataModel item) {
     _sortBy = DataModel();
     _sortBy = item;
     setState(() {});
-  }*/
+  }
 
   bool get _isValidated {
     final invalidFlight1 = (_speed.start == 1 && _speed.end == 15) && (_glide.start == 0 && _glide.end == 7);
     final invalidFlight2 = (_turn.start == -5 && _turn.end == 1) && (_fade.start == 0 && _fade.end == 5);
-    // final conditionPaths = _condition.start == 0 && _condition.end == 10;
-    // final weightAndPricePaths = (_weight.start == 100 && _weight.end == 200) && (_price.start == 0 && _price.end == 1000);
-    final invalidLists = _types.isEmpty && _brands.isEmpty && _tags.isEmpty /*&& _sortBy.value.toKey.isEmpty*/;
-    var isInvalid = invalidFlight1 && invalidFlight2 && invalidLists /*&& conditionPaths && weightAndPricePaths*/;
+    final conditionPaths = _condition.start == 0 && _condition.end == 10;
+    final weightAndPricePaths = (_weight.start == 0 && _weight.end == 200) && (_price.start == 0 && _price.end == 1000);
+    final invalidLists = _types.isEmpty && _brands.isEmpty && _tags.isEmpty && _sortBy.value.toKey.isEmpty;
+    var isInvalid = invalidFlight1 && invalidFlight2 && invalidLists && conditionPaths && weightAndPricePaths;
     return !isInvalid;
   }
 
@@ -365,22 +370,21 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     final typeIds = _types.isEmpty ? <int>[] : _types.map((e) => e.id.nullToInt).toList();
     final tagIds = _tags.isEmpty ? <int>[] : _tags.map((e) => e.id.nullToInt).toList();
     final brandIds = _brands.isEmpty ? <int>[] : _brands.map((e) => e.id.nullToInt).toList();
-    // final sortByParam = _sortBy.value.isEmpty ? '' : '&sort_by=${_sortBy.value}';
+    final sortByParam = _sortBy.value.isEmpty ? '' : '&sort_by=${_sortBy.value}';
     final tagParam = tagIds.isEmpty ? '' : '&tag_ids=$tagIds';
     final typeParam = typeIds.isEmpty ? '' : '&type_ids=$typeIds';
     final brandParam = brandIds.isEmpty ? '' : '&brand_ids=$brandIds';
-    final speedParam = {'from': _speed.start.toInt(), 'to': _speed.end.toInt()};
-    final glideParam = {'from': _glide.start.toInt(), 'to': _glide.end.toInt()};
-    final turnParam = {'from': _turn.start.toInt(), 'to': _turn.end.toInt()};
-    final fadeParam = {'from': _fade.start.toInt(), 'to': _fade.end.toInt()};
+    final speedParam = {'from': _speed.start.round(), 'to': _speed.end.round()};
+    final glideParam = {'from': _glide.start.round(), 'to': _glide.end.round()};
+    final turnParam = {'from': _turn.start.round(), 'to': _turn.end.round()};
+    final fadeParam = {'from': _fade.start.round(), 'to': _fade.end.round()};
     final flightParams = {'speed': speedParam, 'glide': glideParam, 'turn': turnParam, 'fade': fadeParam};
-    final flightParameters = '&flight=${jsonEncode(flightParams)}';
-    // final conditionParam = jsonEncode({'from': _condition.start.toInt(), 'to': _condition.end.toInt()});
-    // final weightParam = jsonEncode({'from': _weight.start.toInt(), 'to': _weight.end.toInt()});
-    // final priceParam = jsonEncode({'from': _price.start.toInt(), 'to': _price.end.toInt()});
-    // final flightParameters = '&flight=${jsonEncode(flightParams)}&condition=$conditionParam&weight=$weightParam&price=$priceParam';
-    // final parameters = '&enable_custom_sort=true$tagParam$typeParam$brandParam$sortByParam$flightParameters'.trim();
-    final parameters = '&enable_custom_sort=true$tagParam$typeParam$brandParam$flightParameters'.trim();
+    final conditionParam = jsonEncode({'from': 10 - _condition.end.round(), 'to': 10 - _condition.start.round()});
+    final weightParam = jsonEncode({'from': _weight.start.round(), 'to': _weight.end.round()});
+    final priceParam = jsonEncode({'from': _price.start.round(), 'to': _price.end.round()});
+    final flightParameters = '&flight=${jsonEncode(flightParams)}&used_range=$conditionParam&weight=$weightParam&price=$priceParam';
+    final parameters = '&enable_custom_sort=true$tagParam$typeParam$brandParam$sortByParam$flightParameters'.trim();
+    print(parameters);
     final filter = MarketplaceFilter(
       types: _types,
       tags: _tags,
@@ -389,10 +393,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
       glide: _glide,
       turn: _turn,
       fade: _fade,
-      // condition: _condition,
-      // price: _price,
-      // weight: _weight,
-      // sortBy: _sortBy,
+      condition: _condition,
+      price: _price,
+      weight: _weight,
+      sortBy: _sortBy,
       parameters: parameters,
     );
     if (widget.onFilter != null) widget.onFilter!(filter);
@@ -425,10 +429,11 @@ class _RangeSliderOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final min_value = isOpposite ? maxValue.formatDouble : minValue.formatDouble;
     final max_value = isOpposite ? minValue.formatDouble : maxValue.formatDouble;
-    final minTextWidget = Text(min_value, style: TextStyles.text12_600.copyWith(color: white, fontSize: 11));
-    final maxTextWidget = Text(max_value, style: TextStyles.text12_600.copyWith(color: white, fontSize: 11));
-    final minTooltipLabel = '${(isOpposite ? rangeValue.end : rangeValue.start).round()}';
-    final maxTooltipLabel = '${(isOpposite ? rangeValue.start : rangeValue.end).round()}';
+    final style = TextStyles.text12_600.copyWith(color: white, fontSize: 10, height: 1);
+    final minTextWidget = Text(min_value, style: style);
+    final maxTextWidget = Text(max_value == '1000' ? '1k'.recast : max_value, style: style);
+    final minTooltipLabel = '${(isOpposite ? maxValue - rangeValue.start : rangeValue.start).round()}';
+    final maxTooltipLabel = '${(isOpposite ? maxValue - rangeValue.end : rangeValue.end).round()}';
     return TweenListItem(
       index: index,
       child: Column(

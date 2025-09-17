@@ -1103,6 +1103,7 @@ const APP_STRINGS = {
   'we_grab_the_pdga_rating_you_had_last_month_and_then_we_calculate_your_improvement':
       'We grab the PDGA rating you had last month and then we calculate your improvement.',
   // New Translations
+  '1k': '1k',
   '': '',
 };
 

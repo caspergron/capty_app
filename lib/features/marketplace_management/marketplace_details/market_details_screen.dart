@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/app_lists/disc_speciality_list.dart';
 import 'package:app/components/app_lists/marketplace_disc_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -29,6 +25,8 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MarketDetailsScreen extends StatefulWidget {
   final bool isDelay;

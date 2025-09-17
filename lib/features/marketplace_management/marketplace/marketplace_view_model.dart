@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -23,6 +21,7 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/app_analytics.dart';
+import 'package:flutter/cupertino.dart';
 
 class MarketplaceViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -226,6 +225,25 @@ class MarketplaceViewModel with ChangeNotifier {
       }
     }
   }
+
+  /*void _updateMarketplaceData(List<MarketplaceCategory> responseList) {
+    for (final entry in categories.asMap().entries) {
+      final catIndex = entry.key;
+      final catItem = entry.value;
+      final newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
+      if (newIndex >= 0) {
+        final newItem = responseList[newIndex];
+        categories[catIndex].salesAds ??= [];
+        final existingIds = categories[catIndex].salesAds!.map((e) => e.id).toSet();
+        final uniqueDiscs = newItem.discs.where((disc) => !existingIds.contains(disc.id)).toList();
+        categories[catIndex].salesAds!.addAll(uniqueDiscs);
+        categories[catIndex].pagination = newItem.pagination;
+        final newLength = newItem.discs.length;
+        categories[catIndex].paginate?.length = newLength;
+        if (newLength >= LENGTH_10) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
+      }
+    }
+  }*/
 
   Future<void> _marketplacePaginationCheck() async {
     if (categories.isEmpty) return;
