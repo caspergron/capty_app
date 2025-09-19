@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
 import 'package:app/components/dialogs/delete_account_dialog.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -22,6 +18,8 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/flutter_switch.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -94,6 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           label: 'language'.recast,
           description: '${'your_preferred_language_is'.recast} ${language.name}',
           onTap: () => languagesSheet(language: language, onLanguage: _viewModel.onLanguage),
+          // onTap: () => Routes.user.club_settings(club: Provider.of<ClubViewModel>(context, listen: false).club).push(),
         ),
         const SizedBox(height: 12),
         /*_SettingsOption2(

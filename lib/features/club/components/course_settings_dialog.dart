@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/constants/app_keys.dart';
@@ -22,6 +20,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/icon_box.dart';
+import 'package:flutter/material.dart';
 
 Future<void> courseSettingsDialog({required Club club, Function()? onConnect, Function(Club)? onUpdate}) async {
   var context = navigatorKey.currentState!.context;
@@ -73,13 +72,14 @@ class _DialogView extends StatelessWidget {
           style: TextStyles.text18_700.copyWith(color: lightBlue, fontWeight: w500),
         ),
         const SizedBox(height: 08),
-        _CoursesList(
-          homeCourse: club.homeCourse!,
-          courses: [club.homeCourse!],
-          onDelete: _onDeleteCourse,
-          onSetHome: _onSetHomeCourse,
-          // selectedCourses: _modelData.selectedCourses,
-        ),
+        if (club.homeCourse != null)
+          _CoursesList(
+            homeCourse: club.homeCourse!,
+            courses: [club.homeCourse!],
+            onDelete: _onDeleteCourse,
+            onSetHome: _onSetHomeCourse,
+            // selectedCourses: _modelData.selectedCourses,
+          ),
         const SizedBox(height: 40),
         Center(
           child: ElevateButton(

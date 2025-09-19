@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/components/headers/sheet_header_1.dart';
-import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/extensions/number_ext.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -14,6 +11,7 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
+import 'package:flutter/material.dart';
 
 Future<void> courseSelectionSheet({required Club club}) async {
   var context = navigatorKey.currentState!.context;
@@ -69,7 +67,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
           SheetHeader1(label: 'connect_new_course'.recast),
           const SizedBox(height: 16),
           if (_courses.isNotEmpty) Padding(padding: padding, child: Text('nearby_courses_within_50_km'.recast, style: style)),
-          Expanded(child: Stack(children: [_screenView(context), if (_loader) const ScreenLoader()])),
+          Expanded(
+              child: Stack(children: [
+            _screenView(context), /*if (_loader) const ScreenLoader()*/
+          ])),
           if (_courses.isNotEmpty) SizedBox(height: BOTTOM_GAP),
         ],
       ),

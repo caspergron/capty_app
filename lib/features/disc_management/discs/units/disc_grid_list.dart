@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/data_constants.dart';
@@ -15,6 +13,7 @@ import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
+import 'package:flutter/material.dart';
 
 class DiscGridList extends StatelessWidget {
   final double gap;
@@ -53,7 +52,7 @@ class DiscGridList extends StatelessWidget {
     var spacing = 6.0;
     var totalSpacing = (crossAxisCount - 1) * spacing;
     var usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
-    var itemHeight = 256;
+    var itemHeight = 258;
     var aspectRatio = usableWidth / itemHeight;
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 4,
