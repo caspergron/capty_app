@@ -45,9 +45,9 @@ import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/view/color_view.dart';
 
 Future<void> editDiscDialog({required UserDisc disc, Function(UserDisc)? onSave}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(disc, onSave));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(disc, onSave));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Edit Disc Dialog',
@@ -100,7 +100,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   void _setInitialStates() {
-    var disc = widget.disc;
+    final disc = widget.disc;
     _brand.text = disc.brand?.name ?? 'n/a'.recast;
     _model.text = disc.name ?? 'n/a'.recast;
     _speed.text = '${disc.speed == null ? 0 : disc.speed.formatDouble}';
@@ -115,26 +115,26 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _fetchPlasticsByDiscBrandId() async {
     if (widget.disc.brand?.id == null) return;
-    var response = await sl<DiscRepository>().plasticsByDiscBrandId(widget.disc.brand!.id!);
+    final response = await sl<DiscRepository>().plasticsByDiscBrandId(widget.disc.brand!.id!);
     if (response.isNotEmpty) _plastics = response;
-    var invalidPlastic = _plastics.isEmpty || widget.disc.plastic?.id == null;
-    var index = invalidPlastic ? -1 : _plastics.indexWhere((item) => item.id == widget.disc.plastic?.id);
+    final invalidPlastic = _plastics.isEmpty || widget.disc.plastic?.id == null;
+    final index = invalidPlastic ? -1 : _plastics.indexWhere((item) => item.id == widget.disc.plastic?.id);
     if (index >= 0) _plastic = _plastics[index];
     setState(() {});
   }
 
   Future<void> _fetchAllDiscBags() async {
-    var response = await sl<DiscBagRepository>().fetchDiscBags();
+    final response = await sl<DiscBagRepository>().fetchDiscBags();
     if (response.isNotEmpty) _discBags = response;
-    var invalidBag = _discBags.isEmpty || widget.disc.bagId == null;
-    var index = invalidBag ? -1 : _discBags.indexWhere((item) => item.id == widget.disc.bagId);
+    final invalidBag = _discBags.isEmpty || widget.disc.bagId == null;
+    final index = invalidBag ? -1 : _discBags.indexWhere((item) => item.id == widget.disc.bagId);
     if (index >= 0) _discBag = _discBags[index];
     setState(() => _loader = false);
   }
 
   @override
   Widget build(BuildContext context) {
-    var stackList = [_screenView(context), if (_loader) const PositionedLoader()];
+    final stackList = [_screenView(context), if (_loader) const PositionedLoader()];
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
@@ -444,7 +444,7 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _onImage(File fileImage) async {
     setState(() => _loader = true);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
     if (docFiles.isEmpty) return setState(() => _loader = false);
     _discFile = docFiles.first;
     if (_discFile.unit8List == null) return setState(() => _loader = false);
@@ -459,28 +459,28 @@ class _DialogViewState extends State<_DialogView> {
     if (_turn.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_turn'.recast);
     if (_fade.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_fade'.recast);
     if (_discBag.id == null) return FlushPopup.onWarning(message: 'please_select_a_bag_for_your_disc'.recast);
-    var invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.disc.media?.id == null;
+    final invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.disc.media?.id == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
     _onUpdateDisc();
   }
 
   Future<int?> _fetchMediaId() async {
     if (_discFile.file == null) return widget.disc.media?.id;
-    var base64 = 'data:image/jpeg;base64,${_discFile.base64}';
-    var mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
-    var response = await sl<UserRepository>().uploadBase64Media(mediaBody);
+    final base64 = 'data:image/jpeg;base64,${_discFile.base64}';
+    final mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
+    final response = await sl<UserRepository>().uploadBase64Media(mediaBody);
     return response?.id;
   }
 
   Future<void> _onUpdateDisc() async {
     setState(() => _loader = true);
     var mediaId = null as int?;
-    var isMediaUpload = _colorOrImage == 'image';
+    final isMediaUpload = _colorOrImage == 'image';
     if (isMediaUpload) mediaId = await _fetchMediaId();
     if (isMediaUpload && mediaId == null) return setState(() => _loader = false);
-    var body = _updateDiscBody;
+    final body = _updateDiscBody;
     body.addAll({'media_id': isMediaUpload ? mediaId : null});
-    var response = await sl<DiscRepository>().updateUserDisc(widget.disc.id!, body);
+    final response = await sl<DiscRepository>().updateUserDisc(widget.disc.id!, body);
     if (response == null) return setState(() => _loader = false);
     setState(() => _loader = false);
     if (widget.onSave != null) widget.onSave!(response);
@@ -488,9 +488,9 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Map<String, dynamic> get _updateDiscBody {
-    var parentDiscId = widget.disc.parentDiscId;
-    var isMediaUpload = _colorOrImage == 'image';
-    var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
+    final parentDiscId = widget.disc.parentDiscId;
+    final isMediaUpload = _colorOrImage == 'image';
+    final colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
     return {
       'disc_id': parentDiscId,
       'weight': _weight.text,

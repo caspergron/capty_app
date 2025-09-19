@@ -55,16 +55,16 @@ class ClubViewModel with ChangeNotifier {
   }
 
   Future<void> fetchUserClubs(bool isHome) async {
-    var response = await sl<ClubRepository>().fetchUserClubs();
+    final response = await sl<ClubRepository>().fetchUserClubs();
     if (response.isNotEmpty) clubs = response;
     notifyListeners();
     if (isHome) await fetchDefaultClub();
   }
 
   Future<void> fetchDefaultClub() async {
-    var response = await sl<ClubRepository>().fetchDefaultClubInfo();
+    final response = await sl<ClubRepository>().fetchDefaultClubInfo();
     if (response != null) club = response;
-    var index = clubs.isEmpty || club.id == null ? -1 : clubs.indexWhere((element) => element.id == club.id);
+    final index = clubs.isEmpty || club.id == null ? -1 : clubs.indexWhere((element) => element.id == club.id);
     if (index >= 0) clubs[index] = club;
     if (club.id != null) await fetchSellingDiscs();
     notifyListeners();
@@ -74,7 +74,7 @@ class ClubViewModel with ChangeNotifier {
   Future<void> _fetchClubDetails(Club item) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<ClubRepository>().fetchClubDetails(item);
+    final response = await sl<ClubRepository>().fetchClubDetails(item);
     if (response != null) club = response;
     await fetchSellingDiscs();
     loader.common = false;
@@ -94,10 +94,10 @@ class ClubViewModel with ChangeNotifier {
   }*/
 
   Future<void> fetchSellingDiscs() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '&club_id=${club.id}&page=1$locationParams';
-    var response = await sl<MarketplaceRepository>().fetchSalesDiscsByClub(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '&club_id=${club.id}&page=1$locationParams';
+    final response = await sl<MarketplaceRepository>().fetchSalesDiscsByClub(params);
     salesAdDiscs.clear();
     if (response.isNotEmpty) salesAdDiscs = response;
     notifyListeners();
@@ -106,7 +106,7 @@ class ClubViewModel with ChangeNotifier {
   Future<void> onScheduleEvent(Map<String, dynamic> body) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<ClubRepository>().createClubEvent(body);
+    final response = await sl<ClubRepository>().createClubEvent(body);
     if (response != null) club.events?.insert(0, response);
     loader.common = false;
     notifyListeners();

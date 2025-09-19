@@ -22,9 +22,9 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 
 Future<void> plasticsSheet({required Plastic plastic, required List<Plastic> plastics, required Function(Plastic)? onChanged}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = _BottomSheetView(plastic, plastics, onChanged);
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = _BottomSheetView(plastic, plastics, onChanged);
 
   await showModalBottomSheet(
     context: context,
@@ -48,9 +48,9 @@ class _BottomSheetView extends StatefulWidget {
 }
 
 class _BottomSheetViewState extends State<_BottomSheetView> {
-  var _loader = false;
-  var _focusNode = FocusNode();
-  var _search = TextEditingController();
+  final _loader = false;
+  final _focusNode = FocusNode();
+  final _search = TextEditingController();
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       height: 75.height,
       width: SizeConfig.width,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +102,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   Widget _screenView(BuildContext context) {
     if (_loader) return const SizedBox.shrink();
     if (widget.plastics.isEmpty) return _NoPlasticFound();
-    var plastics = Plastic.plastics_by_name(widget.plastics, _search.text);
+    final plastics = Plastic.plastics_by_name(widget.plastics, _search.text);
     return ListView(
       shrinkWrap: true,
       controller: ScrollController(),
@@ -143,8 +143,8 @@ class _PlasticsList extends StatelessWidget {
   }
 
   Widget _plasticItemCard(BuildContext context, int index) {
-    var item = plastics[index];
-    var selected = plastic.id != null && plastic.id == item.id;
+    final item = plastics[index];
+    final selected = plastic.id != null && plastic.id == item.id;
     return InkWell(
       onTap: () => onChanged == null ? null : onChanged!(item),
       child: Container(
@@ -179,7 +179,7 @@ class _PlasticsList extends StatelessWidget {
 class _NoPlasticFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var description = 'we_could_not_find_any_plastic_right_now_please_try_again_later'.recast;
+    final description = 'we_could_not_find_any_plastic_right_now_please_try_again_later'.recast;
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(

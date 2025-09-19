@@ -43,9 +43,9 @@ import 'package:app/widgets/view/color_view.dart';
 import 'package:app/widgets/view/unit_suffix.dart';
 
 Future<void> editWishlistDisc({required Wishlist wishlist, bool isUpdateAndAdd = false, Function(Wishlist, bool)? onSave}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(wishlist, isUpdateAndAdd, onSave));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(wishlist, isUpdateAndAdd, onSave));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Edit Wishlist Disc Dialog',
@@ -92,8 +92,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   void _setInitialStates() {
-    var userDisc = widget.wishlist.userDisc;
-    var parentDisc = widget.wishlist.disc;
+    final userDisc = widget.wishlist.userDisc;
+    final parentDisc = widget.wishlist.disc;
     _brand.text = parentDisc?.brand?.name ?? 'n/a'.recast;
     _model.text = parentDisc?.name ?? 'n/a'.recast;
     _weight.text = '${userDisc?.weight == null ? 0 : userDisc?.weight.formatDouble}';
@@ -103,18 +103,18 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Future<void> _fetchPlasticsByDiscBrandId() async {
-    var brandId = widget.wishlist.disc?.discBrandId;
-    var plasticId = widget.wishlist.userDisc?.plastic?.id;
-    var response = await sl<DiscRepository>().plasticsByDiscBrandId(brandId!);
+    final brandId = widget.wishlist.disc?.discBrandId;
+    final plasticId = widget.wishlist.userDisc?.plastic?.id;
+    final response = await sl<DiscRepository>().plasticsByDiscBrandId(brandId!);
     if (response.isNotEmpty) _plastics = response;
-    var index = _plastics.isEmpty || plasticId == null ? -1 : _plastics.indexWhere((item) => item.id == plasticId);
+    final index = _plastics.isEmpty || plasticId == null ? -1 : _plastics.indexWhere((item) => item.id == plasticId);
     if (index >= 0) _plastic = _plastics[index];
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    var stackList = [_screenView(context), if (_loader) const PositionedLoader()];
+    final stackList = [_screenView(context), if (_loader) const PositionedLoader()];
     return Container(
       width: Dimensions.dialog_width,
       padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding, vertical: Dimensions.dialog_padding),
@@ -124,7 +124,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var wishlist = widget.wishlist;
+    final wishlist = widget.wishlist;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +320,7 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _onImage(File fileImage) async {
     setState(() => _loader = true);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
     if (docFiles.isEmpty) return setState(() => _loader = false);
     _discFile = docFiles.first;
     if (_discFile.unit8List == null) return setState(() => _loader = false);
@@ -330,34 +330,34 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   void _onSave() {
-    var invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.wishlist.userDisc?.media?.id == null;
+    final invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.wishlist.userDisc?.media?.id == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
     _onUpdateWishlistDisc();
   }
 
   void _onSaveAndAddToWishlist() {
-    var invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.wishlist.userDisc?.media?.id == null;
+    final invalidImage = _colorOrImage == 'image' && _discFile.file == null && widget.wishlist.userDisc?.media?.id == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
     _onAddAndUpdateWishlistDisc();
   }
 
   Future<int?> _fetchMediaId() async {
     if (_discFile.file == null) return widget.wishlist.userDisc?.media?.id;
-    var base64 = 'data:image/jpeg;base64,${_discFile.base64}';
-    var mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
-    var response = await sl<UserRepository>().uploadBase64Media(mediaBody);
+    final base64 = 'data:image/jpeg;base64,${_discFile.base64}';
+    final mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
+    final response = await sl<UserRepository>().uploadBase64Media(mediaBody);
     return response?.id;
   }
 
   Future<void> _onUpdateWishlistDisc() async {
     setState(() => _loader = true);
     var mediaId = null as int?;
-    var isMediaUpload = _colorOrImage == 'image';
+    final isMediaUpload = _colorOrImage == 'image';
     if (isMediaUpload) mediaId = await _fetchMediaId();
     if (isMediaUpload && mediaId == null) return setState(() => _loader = false);
-    var body = _updateDiscBody;
+    final body = _updateDiscBody;
     if (isMediaUpload) body.addAll({'media_id': mediaId});
-    var response = await sl<DiscRepository>().updateWishlistDisc(body);
+    final response = await sl<DiscRepository>().updateWishlistDisc(body);
     if (response == null) return setState(() => _loader = false);
     if (widget.onSave != null) widget.onSave!(response, false);
     backToPrevious();
@@ -366,23 +366,23 @@ class _DialogViewState extends State<_DialogView> {
   Future<void> _onAddAndUpdateWishlistDisc() async {
     setState(() => _loader = true);
     var mediaId = null as int?;
-    var isMediaUpload = _colorOrImage == 'image';
+    final isMediaUpload = _colorOrImage == 'image';
     if (isMediaUpload) mediaId = await _fetchMediaId();
     if (isMediaUpload && mediaId == null) return setState(() => _loader = false);
-    var body = _createDiscBody;
+    final body = _createDiscBody;
     if (isMediaUpload) body.addAll({'media_id': mediaId});
-    var response = await sl<DiscRepository>().createWishlistWithUserDisc(body);
+    final response = await sl<DiscRepository>().createWishlistWithUserDisc(body);
     if (response == null) return setState(() => _loader = false);
     if (widget.onSave != null) widget.onSave!(response, true);
     backToPrevious();
   }
 
   Map<String, dynamic> get _updateDiscBody {
-    var userDisc = widget.wishlist.userDisc;
-    var parentDisc = widget.wishlist.disc;
-    var userDiscId = widget.wishlist.userDisc?.id;
-    var isMediaUpload = _colorOrImage == 'image';
-    var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
+    final userDisc = widget.wishlist.userDisc;
+    final parentDisc = widget.wishlist.disc;
+    final userDiscId = widget.wishlist.userDisc?.id;
+    final isMediaUpload = _colorOrImage == 'image';
+    final colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
     return {
       'disc_id': parentDisc?.id,
       'weight': _weight.text,
@@ -399,10 +399,10 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Map<String, dynamic> get _createDiscBody {
-    var userDisc = widget.wishlist.userDisc;
-    var parentDisc = widget.wishlist.disc;
-    var isMediaUpload = _colorOrImage == 'image';
-    var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
+    final userDisc = widget.wishlist.userDisc;
+    final parentDisc = widget.wishlist.disc;
+    final isMediaUpload = _colorOrImage == 'image';
+    final colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
     return {
       'disc_id': parentDisc?.id,
       'weight': _weight.text,

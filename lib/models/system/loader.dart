@@ -7,7 +7,7 @@ class Loader {
   Loader({this.initial = true, this.common = true});
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['initial'] = initial;
     map['common'] = common;
     return map;

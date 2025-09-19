@@ -13,8 +13,8 @@ import 'package:app/widgets/core/memory_image.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
-var _CAMERA = DataModel(label: 'camera', icon: Assets.svg1.camera, value: 'camera', valueInt: 0xFFF49B34);
-var _GALLERY = DataModel(label: 'gallery', icon: Assets.svg1.image_square, value: 'gallery', valueInt: 0xFF00246B);
+final _CAMERA = DataModel(label: 'camera', icon: Assets.svg1.camera, value: 'camera', valueInt: 0xFFF49B34);
+final _GALLERY = DataModel(label: 'gallery', icon: Assets.svg1.image_square, value: 'gallery', valueInt: 0xFF00246B);
 
 class DocumentSelection extends StatelessWidget {
   final int imageLoadCount;
@@ -35,15 +35,15 @@ class DocumentSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var radius = const Radius.circular(08);
-    var camera = _MenuBox(item: _CAMERA, onTap: onCamera, isUploadType: isUploadType);
-    var gallery = _MenuBox(item: _GALLERY, onTap: onGallery, isUploadType: isUploadType);
-    var imageListTop = images.isEmpty ? 0.0 : 12.0;
-    var imageListBottom = isUploadType ? 0.0 : 8.0;
+    const radius = Radius.circular(08);
+    final camera = _MenuBox(item: _CAMERA, onTap: onCamera, isUploadType: isUploadType);
+    final gallery = _MenuBox(item: _GALLERY, onTap: onGallery, isUploadType: isUploadType);
+    final imageListTop = images.isEmpty ? 0.0 : 12.0;
+    final imageListBottom = isUploadType ? 0.0 : 8.0;
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(color: lightBlue, borderRadius: BorderRadius.only(topLeft: radius, topRight: radius)),
+      decoration: const BoxDecoration(color: lightBlue, borderRadius: BorderRadius.only(topLeft: radius, topRight: radius)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -79,9 +79,9 @@ class DocumentSelection extends StatelessWidget {
   }
 
   Widget _imageItemCard(BuildContext context, int index) {
-    var image = images[index];
-    var closeIcon = SvgImage(image: Assets.svg1.close_1, color: dark, height: 12);
-    var errorIcon = SvgImage(image: Assets.svg1.image_square, height: 40, color: lightBlue.colorOpacity(0.5));
+    final image = images[index];
+    final closeIcon = SvgImage(image: Assets.svg1.close_1, color: dark, height: 12);
+    final errorIcon = SvgImage(image: Assets.svg1.image_square, height: 40, color: lightBlue.colorOpacity(0.5));
     return Container(
       width: 110,
       height: 76,

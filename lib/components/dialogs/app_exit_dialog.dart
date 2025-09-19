@@ -18,7 +18,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> appExitDialog() async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('app-exit-popup');
   await showGeneralDialog(
     context: context,

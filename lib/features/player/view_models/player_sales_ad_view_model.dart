@@ -38,16 +38,16 @@ class PlayerSalesAdViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchPlayerSalesAdDiscs({required int playerId, bool isLoader = false, bool isPaginate = false, int index = 0}) async {
-    var invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
+    final invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
     if (invalidApiCall) return;
     loader.common = isLoader;
     if (categories.isNotEmpty) categories[index].paginate?.pageLoader = isPaginate;
     notifyListeners();
     final coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
-    var params = '$playerId&page=$pageNumber$locationParams';
-    var response = await sl<PlayerRepository>().fetchAllSalesAdDiscs(params);
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
+    final params = '$playerId&page=$pageNumber$locationParams';
+    final response = await sl<PlayerRepository>().fetchAllSalesAdDiscs(params);
     if (isLoader) categories.clear();
     if (response.isEmpty) return _stopLoader();
     pageNumber == 1 ? categories = response : _updateSalesAdsData(response);
@@ -60,13 +60,13 @@ class PlayerSalesAdViewModel with ChangeNotifier {
     for (final entry in categories.asMap().entries) {
       final catIndex = entry.key;
       final catItem = entry.value;
-      var newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
+      final newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
       if (newIndex >= 0) {
-        var newItem = responseList[newIndex];
+        final newItem = responseList[newIndex];
         categories[catIndex].salesAds ??= [];
         categories[catIndex].salesAds!.addAll(newItem.discs);
         categories[catIndex].pagination = newItem.pagination;
-        var newLength = newItem.discs.length;
+        final newLength = newItem.discs.length;
         categories[catIndex].paginate?.length = newLength;
         if (newLength >= LENGTH_10) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
       }
@@ -75,7 +75,7 @@ class PlayerSalesAdViewModel with ChangeNotifier {
 
   Future<void> _salesAdsPaginationCheck({required int playerId}) async {
     if (categories.isEmpty) return;
-    for (var entry in categories.asMap().entries) {
+    for (final entry in categories.asMap().entries) {
       final index = entry.key;
       final category = entry.value;
       final scrollController = category.scrollControl;
@@ -94,9 +94,9 @@ class PlayerSalesAdViewModel with ChangeNotifier {
   Future<void> onSetAsFavourite(SalesAd item) async {
     loader.common = true;
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
-    var body = {'sales_ad_id': item.id};
-    var response = await sl<MarketplaceRepository>().setMarketplaceDiscAsFavourite(body);
+    final context = navigatorKey.currentState!.context;
+    final body = {'sales_ad_id': item.id};
+    final response = await sl<MarketplaceRepository>().setMarketplaceDiscAsFavourite(body);
     if (!response) return _stopLoader();
     _updateFavStatusInMarketplaceData(item: item, isFav: true);
     Provider.of<MarketplaceViewModel>(context, listen: false).updateFavStatusInMarketplaceData(item: item, isFav: true);
@@ -107,8 +107,8 @@ class PlayerSalesAdViewModel with ChangeNotifier {
   Future<void> onRemoveFromFavourite(SalesAd item) async {
     loader.common = true;
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<MarketplaceRepository>().removeMarketplaceDiscFromFavourite(item.id!);
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<MarketplaceRepository>().removeMarketplaceDiscFromFavourite(item.id!);
     if (!response) return _stopLoader();
     _updateFavStatusInMarketplaceData(item: item);
     Provider.of<MarketplaceViewModel>(context, listen: false).updateFavStatusInFavouriteData(item: item);
@@ -118,10 +118,10 @@ class PlayerSalesAdViewModel with ChangeNotifier {
 
   void _updateFavStatusInMarketplaceData({required SalesAd item, bool isFav = false}) {
     if (categories.isEmpty) return;
-    var isFavorite = isFav ? 1 : 0;
+    final isFavorite = isFav ? 1 : 0;
     categories.asMap().forEach((index, category) {
-      var discsList = category.discs;
-      var adIndex = discsList.indexWhere((element) => element.id == item.id);
+      final discsList = category.discs;
+      final adIndex = discsList.indexWhere((element) => element.id == item.id);
       if (adIndex >= 0) categories[index].salesAds?[adIndex].isFavorite = isFavorite;
     });
     notifyListeners();

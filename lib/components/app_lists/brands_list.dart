@@ -29,10 +29,10 @@ class BrandsList extends StatelessWidget {
   }
 
   Widget _brandItemCard(BuildContext context, int index) {
-    var item = brands[index];
-    var selected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
-    var checkIcon = SvgImage(image: Assets.svg1.tick, color: lightBlue, height: 18);
-    var border = const Border(bottom: BorderSide(color: lightBlue, width: 0.5));
+    final item = brands[index];
+    final selected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
+    final checkIcon = SvgImage(image: Assets.svg1.tick, color: lightBlue, height: 18);
+    const border = Border(bottom: BorderSide(color: lightBlue, width: 0.5));
     return InkWell(
       onTap: () => onChanged == null ? null : onChanged!(item),
       child: Container(

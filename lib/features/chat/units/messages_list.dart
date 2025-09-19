@@ -41,16 +41,16 @@ class MessagesList extends StatelessWidget {
   }
 
   bool _isDateMessage(int index) {
-    var message = messages[index];
+    final message = messages[index];
     if (message.createdAt == null) return false;
     if (index == 0) return true;
-    var previousMessage = messages[index - 1];
+    final previousMessage = messages[index - 1];
     if (previousMessage.createdAt == null) return false;
     return !DateUtils.isSameDay(message.createdAt!.parseDate, previousMessage.createdAt!.parseDate);
   }
 
   String _messageDate(String date) {
-    var difference = currentDate.difference(date.parseDate).inDays;
+    final difference = currentDate.difference(date.parseDate).inDays;
     switch (difference) {
       case 0:
         return 'today';
@@ -74,18 +74,18 @@ class MessagesList extends StatelessWidget {
   bool _isSameUser(int? userId1, int? userId2) => userId1 == null || userId2 == null ? true : userId1 == userId2;
 
   bool _isShowTime(int index) {
-    var message = messages[index];
+    final message = messages[index];
     if (message.createdAt == null) return false;
     if (index == messages.length - 1) return true;
     return !_isSameUser(message.senderId, messages[index + 1].senderId);
   }
 
   Widget _messageItemCard(BuildContext context, int index) {
-    var item = messages[index];
-    var isMe = item.senderId == sender.id;
-    var isDateMessage = _isDateMessage(index);
-    var isShowTime = _isShowTime(index);
-    var time = Formatters.formatTime(item.sendTime);
+    final item = messages[index];
+    final isMe = item.senderId == sender.id;
+    final isDateMessage = _isDateMessage(index);
+    final isShowTime = _isShowTime(index);
+    final time = Formatters.formatTime(item.sendTime);
     return Container(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       margin: EdgeInsets.only(bottom: index == messages.length - 1 ? 20 : (!isShowTime ? 6 : 16)),
@@ -107,8 +107,8 @@ class MessagesList extends StatelessWidget {
             ),
           ),
           Builder(builder: (context) {
-            var padding = const EdgeInsets.only(top: 02);
-            var style = TextStyles.text12_600.copyWith(color: primary, fontWeight: w500);
+            const padding = EdgeInsets.only(top: 02);
+            final style = TextStyles.text12_600.copyWith(color: primary, fontWeight: w500);
             if (item.chatStatus.toKey.isEmpty) {
               return Padding(padding: padding, child: Text('${'sending'.recast}...', style: style));
             } else if (item.chatStatus.toKey == 'error'.toKey) {
@@ -126,11 +126,11 @@ class MessagesList extends StatelessWidget {
   }
 
   BoxDecoration _boxDecoration(int index, bool isMe) {
-    var radius = const Radius.circular(10);
-    var isNextSame = index != messages.length - 1 && _isSameUser(messages[index].id, messages[index + 1].id);
-    var left = isMe || (!isMe && isNextSame) ? radius : Radius.zero;
-    var right = !isMe || (isMe && isNextSame) ? radius : Radius.zero;
-    var borderRadius = BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: left, bottomRight: right);
+    const radius = Radius.circular(10);
+    final isNextSame = index != messages.length - 1 && _isSameUser(messages[index].id, messages[index + 1].id);
+    final left = isMe || (!isMe && isNextSame) ? radius : Radius.zero;
+    final right = !isMe || (isMe && isNextSame) ? radius : Radius.zero;
+    final borderRadius = BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: left, bottomRight: right);
     return BoxDecoration(color: isMe ? primary : lightBlue, borderRadius: borderRadius);
   }
 
@@ -151,15 +151,15 @@ class MessagesList extends StatelessWidget {
 
   Widget _chatMessage(String? message, bool isMe) {
     if (message.toKey.isEmpty) return const SizedBox.shrink();
-    // var align = isMe ? TextAlign.left : TextAlign.left;
-    var style = TextStyles.text14_400.copyWith(color: isMe ? lightBlue : primary, height: 1);
+    // final align = isMe ? TextAlign.left : TextAlign.left;
+    final style = TextStyles.text14_400.copyWith(color: isMe ? lightBlue : primary, height: 1);
     return Text(message!, textAlign: TextAlign.left, style: style);
   }
 
   Widget _messageImageList(ChatMessage chat, bool isMe) {
-    var imageList = chat.chat_images;
+    final imageList = chat.chat_images;
     if (imageList.isEmpty) return const SizedBox.shrink();
-    var padding = EdgeInsets.only(bottom: chat.message.toKey.isEmpty ? 0 : 08);
+    final padding = EdgeInsets.only(bottom: chat.message.toKey.isEmpty ? 0 : 08);
     if (imageList.length == 1) return Padding(padding: padding, child: _imageItemCard(imageList.first, chat.chat_status, true, isMe));
     return GridView.builder(
       padding: padding,
@@ -182,9 +182,9 @@ class MessagesList extends StatelessWidget {
   }
 
   Widget _imageItemCard(ChatContent image, bool isSent, bool isSingle, bool isMe) {
-    var color = (isMe ? lightBlue : primary).colorOpacity(0.4);
-    var size = const Size(double.infinity, double.infinity);
-    var errorIcon = SvgImage(image: Assets.svg1.image_square, height: 28, color: color);
+    final color = (isMe ? lightBlue : primary).colorOpacity(0.4);
+    const size = Size(double.infinity, double.infinity);
+    final errorIcon = SvgImage(image: Assets.svg1.image_square, height: 28, color: color);
     return isSent
         ? ImageNetwork(
             radius: 6,
@@ -215,7 +215,7 @@ class _DiscCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userDisc = salesAd.userDisc;
+    final userDisc = salesAd.userDisc;
     return Container(
       margin: const EdgeInsets.only(bottom: 06),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

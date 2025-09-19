@@ -24,8 +24,8 @@ class WaitlistViewModel with ChangeNotifier {
   Future<void> onSubmit(String name, String email) async {
     loader = true;
     notifyListeners();
-    var body = {'name': name, 'email': email, 'phone': null, 'country_code': country?.code, 'country_name': country?.name};
-    var response = await sl<PublicRepository>().addInWaitlist(body);
+    final body = {'name': name, 'email': email, 'phone': null, 'country_code': country?.code, 'country_name': country?.name};
+    final response = await sl<PublicRepository>().addInWaitlist(body);
     if (response) unawaited(successWaitlistDialog(name: name));
     loader = false;
     notifyListeners();

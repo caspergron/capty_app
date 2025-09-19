@@ -73,7 +73,7 @@ class TestViewModel extends ChangeNotifier {
     // Small delay feels nicer
     await Future.delayed(const Duration(milliseconds: 150));
 
-    for (var i = 0; i < discs.length; i++) {
+    for (final i = 0; i < discs.length; i++) {
       if (_disposed) break;
       final d = discs[i];
 

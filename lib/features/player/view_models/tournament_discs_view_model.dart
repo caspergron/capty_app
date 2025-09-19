@@ -46,14 +46,14 @@ class TournamentDiscsViewModel with ChangeNotifier {
 
   Future<void> _fetchTournamentDiscsByCategory(
       {required int playerId, bool isLoader = false, bool isPaginate = false, int index = 0}) async {
-    var invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
+    final invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
     if (invalidApiCall) return;
     loader.common = isLoader;
     if (categories.isNotEmpty) categories[index].paginate?.pageLoader = isPaginate;
     notifyListeners();
-    var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
-    var params = '$playerId&page=$pageNumber';
-    var response = await sl<PlayerRepository>().fetchTournamentDiscsByCategory(params: params);
+    final pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
+    final params = '$playerId&page=$pageNumber';
+    final response = await sl<PlayerRepository>().fetchTournamentDiscsByCategory(params: params);
     if (isLoader) categories.clear();
     if (response.isEmpty) return _stopLoader();
     pageNumber == 1 ? categories = response : _updateMarketplaceData(response);
@@ -66,13 +66,13 @@ class TournamentDiscsViewModel with ChangeNotifier {
     for (final entry in categories.asMap().entries) {
       final catIndex = entry.key;
       final catItem = entry.value;
-      var newIndex = responseList.indexWhere((element) => element.name?.toKey == catItem.name.toKey);
+      final newIndex = responseList.indexWhere((element) => element.name?.toKey == catItem.name.toKey);
       if (newIndex >= 0) {
-        var newItem = responseList[newIndex];
+        final newItem = responseList[newIndex];
         categories[catIndex].userDiscs ??= [];
         categories[catIndex].userDiscs!.addAll(newItem.discs);
         categories[catIndex].pagination = newItem.pagination;
-        var newLength = newItem.discs.length;
+        final newLength = newItem.discs.length;
         categories[catIndex].paginate?.length = newLength;
         if (newLength >= LENGTH_10) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
       }
@@ -81,7 +81,7 @@ class TournamentDiscsViewModel with ChangeNotifier {
 
   Future<void> _paginationCheck({required int playerId}) async {
     if (categories.isEmpty) return;
-    for (var entry in categories.asMap().entries) {
+    for (final entry in categories.asMap().entries) {
       final index = entry.key;
       final category = entry.value;
       final scrollController = category.scrollControl;
@@ -102,7 +102,7 @@ class TournamentDiscsViewModel with ChangeNotifier {
   Future<void> onDiscItem(UserDisc item, bool isMySelf) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscRepository>().fetchUserDiscDetails(item.id!);
+    final response = await sl<DiscRepository>().fetchUserDiscDetails(item.id!);
     loader.common = false;
     if (response == null) return notifyListeners();
     unawaited(discInfoDialog(
@@ -118,8 +118,8 @@ class TournamentDiscsViewModel with ChangeNotifier {
   Future<void> onDeleteDisc(UserDisc item) async {
     loader.common = true;
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<DiscRepository>().deleteUserDisc(item.id!);
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<DiscRepository>().deleteUserDisc(item.id!);
     loader.common = false;
     if (!response) return notifyListeners();
     unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchAllDiscBags());
@@ -129,20 +129,20 @@ class TournamentDiscsViewModel with ChangeNotifier {
 
   Future<void> _onUpdateDisc(UserDisc item) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     _updateUserDiscFromCategoryData(item: item, isDelete: false);
     unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchAllDiscBags());
     FlushPopup.onInfo(message: 'disc_update_successfully'.recast);
     notifyListeners();
   }
 
-  void _updateUserDiscFromCategoryData({required UserDisc item, var isDelete = true}) {
+  void _updateUserDiscFromCategoryData({required UserDisc item, final isDelete = true}) {
     if (categories.isEmpty) return;
     categories.asMap().forEach((index, category) {
-      var discsList = category.discs;
-      var adIndex = discsList.indexWhere((element) => element.id == item.id);
-      var shouldUpdate = adIndex >= 0 && (isDelete == false && item.bagId == discsList[adIndex].bagId);
-      var shouldDelete = adIndex >= 0 && (isDelete == true || (isDelete == false && item.bagId != discsList[adIndex].bagId));
+      final discsList = category.discs;
+      final adIndex = discsList.indexWhere((element) => element.id == item.id);
+      final shouldUpdate = adIndex >= 0 && (isDelete == false && item.bagId == discsList[adIndex].bagId);
+      final shouldDelete = adIndex >= 0 && (isDelete == true || (isDelete == false && item.bagId != discsList[adIndex].bagId));
       if (shouldUpdate) categories[index].userDiscs?[adIndex] = item;
       if (shouldDelete) categories[index].userDiscs?.removeAt(adIndex);
     });

@@ -39,7 +39,7 @@ class LandingScreen extends StatefulWidget {
 class _LandingScreenState extends State<LandingScreen> with TickerProviderStateMixin {
   var _viewModel = LandingViewModel();
   var _modelData = LandingViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
 
   @override
@@ -50,7 +50,7 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await sl<Permissions>().getLocationPermission();
       await sl<AppUpdater>().checkAppForceUpdate();
-      var message = await FirebaseMessaging.instance.getInitialMessage();
+      final message = await FirebaseMessaging.instance.getInitialMessage();
       _viewModel.initViewModel(widget.index, message);
     });
     super.initState();
@@ -157,14 +157,14 @@ class _LandingScreenState extends State<LandingScreen> with TickerProviderStateM
   }
 
   convex.TabItem<dynamic> _navbarItem(MapEntry<int, DataModel> entry) {
-    var index = entry.key;
-    var model = entry.value;
+    final index = entry.key;
+    final model = entry.value;
     if (index == 2) {
-      var decoration = const BoxDecoration(shape: BoxShape.circle, color: orange);
-      var plusIcon = SvgImage(image: model.icon, height: 32, color: lightBlue);
+      const decoration = BoxDecoration(shape: BoxShape.circle, color: orange);
+      final plusIcon = SvgImage(image: model.icon, height: 32, color: lightBlue);
       return convex.TabItem(icon: Container(decoration: decoration, alignment: Alignment.center, child: plusIcon));
     }
-    var topGap = const EdgeInsets.only(top: 04, bottom: 04);
+    const topGap = EdgeInsets.only(top: 04, bottom: 04);
     return convex.TabItem(
       title: model.label.recast,
       fontFamily: roboto,

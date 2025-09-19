@@ -24,8 +24,8 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> clubMembersSheet({required Club club}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -60,7 +60,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   Future<void> _fetchAllClubMembers() async {
-    var response = await sl<ClubRepository>().fetchClubMembers(widget.club.id!);
+    final response = await sl<ClubRepository>().fetchClubMembers(widget.club.id!);
     if (response.isNotEmpty) _members = response;
     setState(() => _loader = false);
   }
@@ -70,7 +70,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       height: 70.height,
       width: SizeConfig.width,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +97,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   Widget _screenView(BuildContext context) {
     if (_loader) return const SizedBox.shrink();
     if (_members.isEmpty) return _noMemberFound;
-    var clubMembers = User.users_by_name(_members, _search.text);
+    final clubMembers = User.users_by_name(_members, _search.text);
     return ListView(
       shrinkWrap: true,
       controller: ScrollController(),
@@ -116,12 +116,12 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   void _onViewProfile(User item) {
     backToPrevious();
-    var isMe = UserPreferences.user.id == item.id;
+    final isMe = UserPreferences.user.id == item.id;
     isMe ? Routes.user.profile().push() : Routes.user.player_profile(playerId: item.id!).push();
   }
 
   Widget get _noMemberFound {
-    var description = 'club_member_not_found_please_recheck_entered_information'.recast;
+    final description = 'club_member_not_found_please_recheck_entered_information'.recast;
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(

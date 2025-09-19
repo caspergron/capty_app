@@ -41,8 +41,8 @@ class LeaderboardViewModel with ChangeNotifier {
   Future<void> _fetchClubLeaderboards() async {
     loader.common = true;
     notifyListeners();
-    var sortKey = clubMenu.value;
-    var response = await sl<LeaderboardRepository>().fetchClubBasedLeaderboard(sortKey: sortKey);
+    final sortKey = clubMenu.value;
+    final response = await sl<LeaderboardRepository>().fetchClubBasedLeaderboard(sortKey: sortKey);
     clubLeaderboard = Leaderboard();
     if (response != null) clubLeaderboard = response;
     loader = Loader(initial: false, common: false);
@@ -52,8 +52,8 @@ class LeaderboardViewModel with ChangeNotifier {
   Future<void> _fetchMyFriendLeaderboards({bool isFirst = true}) async {
     if (!isFirst) loader.common = true;
     if (!isFirst) notifyListeners();
-    var sortKey = friendMenu.value;
-    var response = await sl<LeaderboardRepository>().fetchFriendBasedLeaderboard(sortKey: sortKey);
+    final sortKey = friendMenu.value;
+    final response = await sl<LeaderboardRepository>().fetchFriendBasedLeaderboard(sortKey: sortKey);
     friendLeaderboard = Leaderboard();
     if (response != null) friendLeaderboard = response;
     if (!isFirst) loader = Loader(initial: false, common: false);

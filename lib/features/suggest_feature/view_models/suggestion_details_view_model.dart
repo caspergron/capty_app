@@ -31,7 +31,7 @@ class SuggestionDetailsViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchSuggestedFeatures() async {
-    // var response = await sl<PreferencesRepository>().fetchFeatureDetails(feature);
+    // final response = await sl<PreferencesRepository>().fetchFeatureDetails(feature);
     // if (response != null) feature = response;
     loader = false;
     notifyListeners();
@@ -42,9 +42,9 @@ class SuggestionDetailsViewModel with ChangeNotifier {
     if (feature.is_voted) return FlushPopup.onWarning(message: 'you_already_vote_on_this_feature'.recast);
     loader = true;
     notifyListeners();
-    var body = {'feature_id': feature.id};
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<PreferencesRepository>().voteOnAFeature(body);
+    final body = {'feature_id': feature.id};
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<PreferencesRepository>().voteOnAFeature(body);
     if (response != null) feature = response;
     if (response != null) Provider.of<SuggestFeatureViewModel>(context, listen: false).updateVote(response);
     loader = false;
@@ -53,7 +53,7 @@ class SuggestionDetailsViewModel with ChangeNotifier {
 
   Future<void> scrollDown() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    var duration = const Duration(milliseconds: 500);
+    const duration = Duration(milliseconds: 500);
     if (!scrollControl.hasClients) return;
     await scrollControl.animateTo(scrollControl.position.maxScrollExtent, duration: duration, curve: Curves.linear);
   }
@@ -61,9 +61,9 @@ class SuggestionDetailsViewModel with ChangeNotifier {
   Future<void> onPostFeedback(String feedback) async {
     loader = true;
     notifyListeners();
-    var body = {'feature_id': feature.id, 'message': feedback};
+    final body = {'feature_id': feature.id, 'message': feedback};
     if (kDebugMode) print(body);
-    var response = await sl<PreferencesRepository>().postFeatureComment(body);
+    final response = await sl<PreferencesRepository>().postFeatureComment(body);
     if (response != null) feature.comments?.add(response);
     if (response != null) unawaited(scrollDown());
     loader = false;

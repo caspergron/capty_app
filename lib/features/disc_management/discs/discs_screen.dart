@@ -38,8 +38,8 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 
 const _TABS_LIST = ['your_discs', 'wishlist'];
-var _All_BAG = DiscBag(id: 1000001, name: 'all');
-var _NEW_BAG = DiscBag(id: 1000002, name: 'plus_new_bag');
+final _All_BAG = DiscBag(id: 1000001, name: 'all');
+final _NEW_BAG = DiscBag(id: 1000002, name: 'plus_new_bag');
 
 class DiscsScreen extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
   var _tabIndex = 0;
   var _viewModel = DiscsViewModel();
   var _modelData = DiscsViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
 
   @override
@@ -71,8 +71,8 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    // var selectedDiscs = _modelData.selectedDiscs;
-    var loader = _modelData.loader.loader;
+    // final selectedDiscs = _modelData.selectedDiscs;
+    final loader = _modelData.loader.loader;
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: AppDrawer(),
@@ -92,7 +92,7 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
   }
 
   Widget _screenView(BuildContext context) {
-    var bagDiscs = _modelData.discBag.id == _All_BAG.id ? _modelData.allDiscs : _modelData.discBag.userDiscs ?? <UserDisc>[];
+    final bagDiscs = _modelData.discBag.id == _All_BAG.id ? _modelData.allDiscs : _modelData.discBag.userDiscs ?? <UserDisc>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,30 +156,30 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
   }
 
   void _onGridPath() {
-    var allDiscs = _modelData.allDiscs;
-    var allBag = DiscBag(id: 1000001, name: 'all_bag', displayName: 'all_bag', userDiscs: allDiscs, discCount: allDiscs.length);
-    var bagsForGridPath = [allBag, ..._modelData.discBags];
+    final allDiscs = _modelData.allDiscs;
+    final allBag = DiscBag(id: 1000001, name: 'all_bag', displayName: 'all_bag', userDiscs: allDiscs, discCount: allDiscs.length);
+    final bagsForGridPath = [allBag, ..._modelData.discBags];
     var bagIndex = 0;
     if (_modelData.discBag.id != _All_BAG.id) {
-      var findIndex = _modelData.discBags.indexWhere((element) => element.id == _modelData.discBag.id);
+      final findIndex = _modelData.discBags.indexWhere((element) => element.id == _modelData.discBag.id);
       bagIndex = findIndex < 0 ? 0 : findIndex + 1;
     }
     Routes.user.grid_path(bags: bagsForGridPath, index: bagIndex).push();
   }
 
   void _onAcceptDragDisc(UserDisc disc, DiscBag targetBag) {
-    var isInvalidBag = targetBag.id == _All_BAG.id || targetBag.id == _NEW_BAG.id;
+    final isInvalidBag = targetBag.id == _All_BAG.id || targetBag.id == _NEW_BAG.id;
     if (isInvalidBag) return FlushPopup.onInfo(message: 'you_can_not_move_disc_on_this_bag'.recast);
-    var message = '${disc.name ?? 'this_disc'.recast} ${'already_in'.recast} ${targetBag.name ?? 'this_bag'.recast}';
+    final message = '${disc.name ?? 'this_disc'.recast} ${'already_in'.recast} ${targetBag.name ?? 'this_bag'.recast}';
     if (disc.bagId == targetBag.id) return FlushPopup.onInfo(message: message);
-    var bodyParams = {'user_disc_id': disc.id, 'to_bag_id': targetBag.id};
+    final bodyParams = {'user_disc_id': disc.id, 'to_bag_id': targetBag.id};
     _viewModel.onMoveDiscToAnotherBag(bodyParams, targetBag.bag_menu_display_name);
   }
 
   Widget get _yourDiscView {
-    var bagDiscs = _modelData.discBag.id == _All_BAG.id ? _modelData.allDiscs : _modelData.discBag.userDiscs ?? <UserDisc>[];
+    final bagDiscs = _modelData.discBag.id == _All_BAG.id ? _modelData.allDiscs : _modelData.discBag.userDiscs ?? <UserDisc>[];
     if (bagDiscs.isEmpty) return _noDiscFound(tabIndex: 0);
-    var discList = [UserDisc(id: DEFAULT_ID), if (bagDiscs.isNotEmpty) ...bagDiscs];
+    final discList = [UserDisc(id: DEFAULT_ID), if (bagDiscs.isNotEmpty) ...bagDiscs];
     return DiscGridList(
       discList: discList,
       gap: Dimensions.screen_padding,
@@ -191,16 +191,16 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
   }
 
   /*void _onSelectYourDisc(UserDisc item, int itemIndex) {
-    var selectedItems = _modelData.selectedDiscs;
-    var index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
+    final selectedItems = _modelData.selectedDiscs;
+    final index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
     index < 0 ? _modelData.selectedDiscs.add(item) : _modelData.selectedDiscs.removeAt(index);
     setState(() {});
   }*/
 
   Widget get _wishlistView {
-    var wishlistDiscs = _modelData.wishlistDiscs;
+    final wishlistDiscs = _modelData.wishlistDiscs;
     if (wishlistDiscs.isEmpty) return _noDiscFound(tabIndex: 1);
-    var discList = [Wishlist(id: DEFAULT_ID), if (wishlistDiscs.isNotEmpty) ...wishlistDiscs];
+    final discList = [Wishlist(id: DEFAULT_ID), if (wishlistDiscs.isNotEmpty) ...wishlistDiscs];
     return WishlistGridList(
       wishlistItems: discList,
       gap: Dimensions.screen_padding,
@@ -218,11 +218,11 @@ class _DiscsScreenState extends State<DiscsScreen> with SingleTickerProviderStat
       );
 
   Widget _noDiscFound({required int tabIndex}) {
-    var label = tabIndex == 0 ? 'no_disc_found' : 'no_wishlist_disc_found';
-    var subLabel = tabIndex == 0
+    final label = tabIndex == 0 ? 'no_disc_found' : 'no_wishlist_disc_found';
+    final subLabel = tabIndex == 0
         ? 'you_have_no_disc_available_now_please_add_your_disc'
         : 'you_have_no_disc_available_now_please_add_your_wishlist_disc';
-    var buttonLabel = tabIndex == 0 ? 'add_disc' : 'add_wishlist_disc';
+    final buttonLabel = tabIndex == 0 ? 'add_disc' : 'add_wishlist_disc';
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(

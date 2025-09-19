@@ -27,7 +27,7 @@ class DashboardViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchStatistics() async {
-    var response = await sl<PublicRepository>().fetchAppStatistics();
+    final response = await sl<PublicRepository>().fetchAppStatistics();
     if (response != null) statistics = response;
     loader = false;
     notifyListeners();

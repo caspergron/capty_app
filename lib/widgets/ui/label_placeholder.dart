@@ -36,7 +36,7 @@ class LabelPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var boxBorder = border == transparent ? null : Border.all(color: border);
+    final boxBorder = border == transparent ? null : Border.all(color: border);
     return InkWell(
       onTap: onTap,
       child: Container(

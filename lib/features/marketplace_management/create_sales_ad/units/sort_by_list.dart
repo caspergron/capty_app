@@ -30,8 +30,8 @@ class SortByList extends StatelessWidget {
   }
 
   Widget _sortByItemCard(BuildContext context, int index) {
-    var item = SORT_BY_LIST[index];
-    var selected = selectedItems.isNotEmpty && selectedItems.any((element) => element.value == item.value);
+    final item = SORT_BY_LIST[index];
+    final selected = selectedItems.isNotEmpty && selectedItems.any((element) => element.value == item.value);
     return InkWell(
       onTap: onSelect == null ? null : () => onSelect!(item),
       child: TweenListItem(

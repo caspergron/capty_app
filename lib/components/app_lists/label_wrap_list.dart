@@ -22,9 +22,9 @@ class LabelWrapList extends StatelessWidget {
   }
 
   Widget _listItemCard(int index) {
-    var item = items[index];
-    var label = Text(item, style: TextStyles.text14_500.copyWith(color: primary, height: 1, fontSize: fontSize));
-    var icon = SvgImage(image: Assets.svg1.close_2, color: primary, height: 14);
+    final item = items[index];
+    final label = Text(item, style: TextStyles.text14_500.copyWith(color: primary, height: 1, fontSize: fontSize));
+    final icon = SvgImage(image: Assets.svg1.close_2, color: primary, height: 14);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 05, vertical: 05),
       decoration: BoxDecoration(color: lightBlue, borderRadius: BorderRadius.circular(03)),

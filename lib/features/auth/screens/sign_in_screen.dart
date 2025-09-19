@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/components/dialogs/change_language_dialog.dart';
@@ -26,8 +30,6 @@ import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 import 'package:app/widgets/ui/phone_prefix.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -64,9 +66,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = const BorderRadius.only(topLeft: Radius.circular(60));
-    var decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
-    var style = TextStyles.text14_400.copyWith(color: lightBlue, decoration: TextDecoration.underline);
+    const borderRadius = BorderRadius.only(topLeft: Radius.circular(60));
+    const decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
+    final style = TextStyles.text14_400.copyWith(color: lightBlue, decoration: TextDecoration.underline);
     return Scaffold(
       backgroundColor: skyBlue,
       body: Container(
@@ -209,14 +211,14 @@ class _SignInScreenState extends State<SignInScreen> {
   void _onChangeCountry(Country item) {
     if (_modelData.country.id == item.id) return;
     setState(() => _modelData.country = item);
-    var langKey = item.appLanguage.toKey;
+    final langKey = item.appLanguage.toKey;
     if (langKey.isEmpty || langKey == AppPreferences.language.code.toKey) return;
     changeLanguageDialog(country: item, onProceed: (languageItem) => _viewModel.onChangeLanguage(languageItem));
   }
 
   void _onSignInWithEmail() {
     minimizeKeyboard();
-    var invalidPhone = sl<Validators>().phone(_phone.text, _modelData.country);
+    final invalidPhone = sl<Validators>().phone(_phone.text, _modelData.country);
     if (invalidPhone != null) return FlushPopup.onWarning(message: invalidPhone);
     if (!_modelData.isPolicy) return FlushPopup.onWarning(message: 'please_accept_our_terms_and_conditions'.recast);
     _viewModel.onSignIn(_phone.text.trim());

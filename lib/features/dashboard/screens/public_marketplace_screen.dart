@@ -28,7 +28,7 @@ class PublicMarketplaceScreen extends StatefulWidget {
 class _PublicMarketplaceScreenState extends State<PublicMarketplaceScreen> {
   var _viewModel = PublicMarketplaceViewModel();
   var _modelData = PublicMarketplaceViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {

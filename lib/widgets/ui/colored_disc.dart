@@ -30,9 +30,9 @@ class ColoredDisc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var shadow = BoxShadow(color: _shadowColor.colorOpacity(0.4), blurRadius: elevation, offset: Offset(0, elevation / 2));
-    var radialGradient = RadialGradient(colors: [discColor.colorOpacity(0.9), discColor, _rimColor], stops: const [0.0, 0.7, 1.0]);
-    var linearGradient = LinearGradient(colors: [Colors.white.colorOpacity(0.3), Colors.transparent]);
+    final shadow = BoxShadow(color: _shadowColor.colorOpacity(0.4), blurRadius: elevation, offset: Offset(0, elevation / 2));
+    final radialGradient = RadialGradient(colors: [discColor.colorOpacity(0.9), discColor, _rimColor], stops: const [0.0, 0.7, 1.0]);
+    final linearGradient = LinearGradient(colors: [Colors.white.colorOpacity(0.3), Colors.transparent]);
     return Container(
       width: size,
       height: size,

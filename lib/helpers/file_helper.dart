@@ -19,7 +19,7 @@ class FileHelper {
 
   /*String getFileBasedIcon(String? path) {
     if (path == null) return Assets.svg1.file_text;
-    var fileType = getFileType(path).toLower;
+    final fileType = getFileType(path).toLower;
     return fileType == 'png' || fileType == 'jpg' || fileType == 'jpeg' || fileType == 'bmp'
         ? Assets.svg1.image_square
         : Assets.svg1.file_text;
@@ -47,12 +47,12 @@ class FileHelper {
     List<DocFile> proofFiles = [];
     if (!files.haveList) return proofFiles;
     for (File item in files) {
-      // var fileType = getFileType(item.path);
-      var isValid = true /*FILE_EXTENSIONS.contains(fileType)*/;
-      var isLarge = await isLargeFile(item);
-      var unit8list = await sl<ImageService>().fileToUnit8List(item);
-      var b64 = base64.encode(unit8list!);
-      var sizeInBytes = await item.length();
+      // final fileType = getFileType(item.path);
+      const isValid = true /*FILE_EXTENSIONS.contains(fileType)*/;
+      final isLarge = await isLargeFile(item);
+      final unit8list = await sl<ImageService>().fileToUnit8List(item);
+      final b64 = base64.encode(unit8list!);
+      final sizeInBytes = await item.length();
       proofFiles.add(DocFile(file: item, isLarge: isLarge, base64: b64, isValid: isValid, unit8List: unit8list, size: sizeInBytes));
     }
     return proofFiles;

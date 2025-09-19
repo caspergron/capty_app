@@ -45,7 +45,7 @@ class FriendsScreen extends StatefulWidget {
 class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProviderStateMixin {
   var _viewModel = FriendsViewModel();
   var _modelData = FriendsViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
 
   @override
@@ -72,7 +72,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    var homeBasedMenus = [const BellMenu(), ACTION_GAP, HamburgerMenu(scaffoldKey: _scaffoldKey), ACTION_SIZE];
+    final homeBasedMenus = [const BellMenu(), ACTION_GAP, HamburgerMenu(scaffoldKey: _scaffoldKey), ACTION_SIZE];
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: AppDrawer(),
@@ -125,7 +125,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
 
   Widget get _yourFriendCard {
     if (_modelData.friends.isEmpty) return const SizedBox.shrink();
-    var style = TextStyles.text14_500.copyWith(color: lightBlue, height: 1);
+    final style = TextStyles.text14_500.copyWith(color: lightBlue, height: 1);
     return Container(
       width: double.infinity,
       key: const Key('player--1'),
@@ -185,8 +185,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   }
 }
 
-var _FRIEND_NOT_FOUND = DataModel(label: 'no_friend_found', value: 'you_have_not_added_any_friends_yet_add_your_first_friend_now');
-var _REQUEST_NOT_FOUND = DataModel(label: 'no_request_found', value: 'no_requests_are_available_in_your_list_please_add_your_friend');
+final _FRIEND_NOT_FOUND = DataModel(label: 'no_friend_found', value: 'you_have_not_added_any_friends_yet_add_your_first_friend_now');
+final _REQUEST_NOT_FOUND = DataModel(label: 'no_request_found', value: 'no_requests_are_available_in_your_list_please_add_your_friend');
 
 class _NoFriendFound extends StatelessWidget {
   final DataModel model;

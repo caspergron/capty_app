@@ -135,9 +135,9 @@ class _WaitlistScreenState extends State<WaitlistScreen> {
 
   void _onSubmit() {
     minimizeKeyboard();
-    var invalidName = sl<Validators>().fullName(_name.text);
+    final invalidName = sl<Validators>().fullName(_name.text);
     if (invalidName != null) return FlushPopup.onWarning(message: invalidName);
-    var invalidEmail = sl<Validators>().email(_email.text);
+    final invalidEmail = sl<Validators>().email(_email.text);
     if (invalidEmail != null) return FlushPopup.onWarning(message: invalidEmail);
     if (_modelData.country == null) return FlushPopup.onWarning(message: 'please_select_your_country'.recast);
     _viewModel.onSubmit(_name.text.toKey, _email.text.toKey);

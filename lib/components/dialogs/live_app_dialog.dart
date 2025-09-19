@@ -19,7 +19,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> liveAppDialog() async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   ApiStatus.instance.releasePopup = true;
   // sl<AppAnalytics>().screenView('app-exit-popup');
   await showGeneralDialog(

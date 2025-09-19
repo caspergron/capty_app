@@ -36,7 +36,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   var _modelData = ProfileViewModel();
   var _viewModel = ProfileViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -72,11 +72,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var radius = const Radius.circular(12);
-    var borderSide = const BorderSide(color: primary, width: 2);
-    var borderAll = Border.all(color: primary, width: 2);
-    var person = _modelData.person;
-    var isRatingSection = person.is_pdga_or_total_club;
+    const radius = Radius.circular(12);
+    const borderSide = BorderSide(color: primary, width: 2);
+    final borderAll = Border.all(color: primary, width: 2);
+    final person = _modelData.person;
+    final isRatingSection = person.is_pdga_or_total_club;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -95,8 +95,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 12.width),
                 decoration: BoxDecoration(
                   image: DecorationImage(image: AssetImage(Assets.png_image.winner_cup_2), fit: BoxFit.fill),
-                  borderRadius: BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: radius, bottomRight: radius),
-                  border: Border(left: borderSide, right: borderSide, top: borderSide, bottom: borderSide),
+                  borderRadius: const BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: radius, bottomRight: radius),
+                  border: const Border(left: borderSide, right: borderSide, top: borderSide, bottom: borderSide),
                 ),
                 child: SvgImage(image: Assets.svg3.shield, height: 40.height, color: primary),
               ),
@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 12.width),
                     padding: const EdgeInsets.symmetric(vertical: 04, horizontal: 12),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: skyBlue,
                       borderRadius: BorderRadius.only(bottomLeft: radius, bottomRight: radius),
                       border: Border(left: borderSide, right: borderSide, bottom: borderSide),

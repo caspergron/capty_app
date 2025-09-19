@@ -24,9 +24,9 @@ class SetProfileScreen4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var modelData = Provider.of<SetProfileViewModel>(context);
-    var borderRadius = const BorderRadius.only(topLeft: Radius.circular(60));
-    var decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
+    final modelData = Provider.of<SetProfileViewModel>(context);
+    const borderRadius = BorderRadius.only(topLeft: Radius.circular(60));
+    const decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
     return Scaffold(
       backgroundColor: skyBlue,
       body: Container(
@@ -74,8 +74,8 @@ class SetProfileScreen4 extends StatelessWidget {
   }
 
   Widget _screenView(BuildContext context) {
-    var modelData = Provider.of<SetProfileViewModel>(context);
-    var isImage = modelData.avatar.unit8List != null;
+    final modelData = Provider.of<SetProfileViewModel>(context);
+    final isImage = modelData.avatar.unit8List != null;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,

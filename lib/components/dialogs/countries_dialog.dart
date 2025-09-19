@@ -24,9 +24,9 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/exception/no_country_found.dart';
 
 Future<void> countriesDialog({required Country country, required Function(Country) onChanged}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('club-management-popup');
-  var child = Align(child: _DialogView(country, onChanged));
+  final child = Align(child: _DialogView(country, onChanged));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Countries Dialog',
@@ -118,7 +118,7 @@ class _DialogViewState extends State<_DialogView> {
   Widget _countriesView(BuildContext context) {
     if (_loader) return const SizedBox.shrink();
     if (AppPreferences.countries.isEmpty) return NoCountryFound();
-    var countries = Country.countries_by_name(AppPreferences.countries, _search.text);
+    final countries = Country.countries_by_name(AppPreferences.countries, _search.text);
     return ListView(
       shrinkWrap: true,
       controller: ScrollController(),

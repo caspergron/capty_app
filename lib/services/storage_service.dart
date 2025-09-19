@@ -7,7 +7,7 @@ import 'package:app/libraries/local_storage.dart';
 import 'package:app/models/public/language.dart';
 import 'package:app/models/user/user.dart';
 
-var _storage = sl<LocalStorage>();
+final _storage = sl<LocalStorage>();
 
 class StorageService {
   bool _hasData(String key) => _storage.hasLocalData(key: key);

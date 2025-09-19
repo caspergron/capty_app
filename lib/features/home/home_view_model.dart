@@ -43,23 +43,23 @@ class HomeViewModel with ChangeNotifier {
 
   Future<void> fetchDashboardCount({bool isDelay = false}) async {
     if (isDelay) await Future.delayed(const Duration(milliseconds: 3500));
-    var response = await sl<UserRepository>().fetchDashboardCount();
+    final response = await sl<UserRepository>().fetchDashboardCount();
     if (response != null) dashboardCount = response;
     notifyListeners();
   }
 
   Future<void> fetchDefaultClubInfo() async {
-    var response = await sl<ClubRepository>().fetchDefaultClubInfo();
+    final response = await sl<ClubRepository>().fetchDefaultClubInfo();
     clubInfo = Club();
     if (response != null) clubInfo = response;
     notifyListeners();
   }
 
   Future<void> _fetchClosestClubEvents() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
+    final coordinates = await sl<Locations>().fetchLocationPermission();
     if (!coordinates.is_coordinate) loader = Loader(initial: false, common: false);
     if (!coordinates.is_coordinate) return notifyListeners();
-    var response = await sl<ClubRepository>().findEvents(coordinates);
+    final response = await sl<ClubRepository>().findEvents(coordinates);
     if (response.isNotEmpty) clubEvents = response;
     loader = Loader(initial: false, common: false);
     notifyListeners();

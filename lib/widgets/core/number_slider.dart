@@ -27,7 +27,7 @@ class _NumberSliderState extends State<NumberSlider> {
   void initState() {
     _selectedItem = widget.initialValue;
     _itemList = List.generate(widget.length, (index) => widget.start + index);
-    var initialIndex = _itemList.indexWhere((item) => item == _selectedItem);
+    final initialIndex = _itemList.indexWhere((item) => item == _selectedItem);
     _pageController = PageController(viewportFraction: 0.15, initialPage: initialIndex);
     super.initState();
   }
@@ -42,10 +42,10 @@ class _NumberSliderState extends State<NumberSlider> {
       // pageSnapping: true,
       onPageChanged: _onChanged,
       itemBuilder: (context, index) {
-        var item = _itemList[index];
-        var selected = item == _selectedItem;
-        var opacity = _getOpacity(index);
-        // var scale = _getScale(index);
+        final item = _itemList[index];
+        final selected = item == _selectedItem;
+        final opacity = _getOpacity(index);
+        // final scale = _getScale(index);
         return Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(color: transparent, border: !selected ? null : const Border(left: _BORDER, right: _BORDER)),
@@ -70,8 +70,8 @@ class _NumberSliderState extends State<NumberSlider> {
   }
 
   double _getOpacity(int index) {
-    var selectedIndex = _itemList.indexWhere((item) => item == _selectedItem);
-    var distance = (index - selectedIndex).abs();
+    final selectedIndex = _itemList.indexWhere((item) => item == _selectedItem);
+    final distance = (index - selectedIndex).abs();
     switch (distance) {
       case 0:
         return 1;
@@ -85,8 +85,8 @@ class _NumberSliderState extends State<NumberSlider> {
   }
 
 /*double _getScale(int index) {
-    var selectedIndex = _itemList.indexWhere((item) => item == _selectedItem);
-    var distance = (index - selectedIndex).abs();
+    final selectedIndex = _itemList.indexWhere((item) => item == _selectedItem);
+    final distance = (index - selectedIndex).abs();
     switch (distance) {
       case 0:
         return 200;

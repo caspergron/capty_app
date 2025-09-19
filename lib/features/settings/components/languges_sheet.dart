@@ -16,7 +16,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> languagesSheet({required Language language, Function(Language)? onLanguage}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showModalBottomSheet(
     context: context,
     showDragHandle: false,
@@ -57,13 +57,13 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       height: 60.height,
       width: double.infinity,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Stack(children: [_screenView(context), if (_loader) const PositionedLoader()]),
     );
   }
 
   Widget _screenView(BuildContext context) {
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,10 +115,10 @@ class _LanguageList extends StatelessWidget {
   }
 
   Widget _languageItemCard(BuildContext context, int index) {
-    var item = AppPreferences.languages[index];
-    var selected = language.id != null && language.id == item.id;
-    var checkedIcon = SvgImage(image: Assets.svg2.check_circle, color: lightBlue, height: 18);
-    var isLast = index == AppPreferences.languages.length - 1;
+    final item = AppPreferences.languages[index];
+    final selected = language.id != null && language.id == item.id;
+    final checkedIcon = SvgImage(image: Assets.svg2.check_circle, color: lightBlue, height: 18);
+    final isLast = index == AppPreferences.languages.length - 1;
     return InkWell(
       onTap: onSelect == null ? null : () => onSelect!(item, index),
       child: Container(

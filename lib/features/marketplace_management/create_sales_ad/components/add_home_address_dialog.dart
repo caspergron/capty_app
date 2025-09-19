@@ -18,7 +18,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> addHomeAddressDialog() async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('add-home-address-popup');
   await showGeneralDialog(
     context: context,

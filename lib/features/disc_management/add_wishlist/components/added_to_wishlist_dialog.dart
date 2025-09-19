@@ -15,7 +15,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> addedToWishlistDialog() async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Added To Wishlist Dialog',

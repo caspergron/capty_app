@@ -37,12 +37,12 @@ class DiscSpecialityList extends StatelessWidget {
   }
 
   SliverGridDelegateWithFixedCrossAxisCount get _gridDelegate {
-    var crossAxisCount = 2;
-    var spacing = 6.0;
-    var totalSpacing = (crossAxisCount - 1) * spacing;
-    var usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
-    var itemHeight = 20;
-    var aspectRatio = usableWidth / itemHeight;
+    const crossAxisCount = 2;
+    const spacing = 6.0;
+    const totalSpacing = (crossAxisCount - 1) * spacing;
+    final usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
+    const itemHeight = 20;
+    final aspectRatio = usableWidth / itemHeight;
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
       crossAxisSpacing: 06,
@@ -52,10 +52,10 @@ class DiscSpecialityList extends StatelessWidget {
   }
 
   Widget _discOptionItemCard(BuildContext context, int index) {
-    var item = specialities[index];
-    var selected = selectedSpecialities.isNotEmpty && selectedSpecialities.any((element) => element.id == item.id);
-    var isLight = background == lightBlue;
-    var color = onSelect == null ? lightBlue : (isLight ? primary : lightBlue);
+    final item = specialities[index];
+    final selected = selectedSpecialities.isNotEmpty && selectedSpecialities.any((element) => element.id == item.id);
+    final isLight = background == lightBlue;
+    final color = onSelect == null ? lightBlue : (isLight ? primary : lightBlue);
     return InkWell(
       onTap: onSelect == null ? null : () => onSelect!(item),
       child: TweenListItem(

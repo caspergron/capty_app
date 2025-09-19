@@ -17,7 +17,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> deleteAccountDialog({Function()? onDelete}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('delete-account-popup');
   await showGeneralDialog(
     context: context,

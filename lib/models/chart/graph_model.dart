@@ -11,7 +11,7 @@ class GraphModel {
   GraphModel({this.maxX = 0, this.maxY = 0, this.graphSpots = const [], this.lineBars = const []});
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['max_x'] = maxX;
     map['max_y'] = maxY;
     map['graph_spots'] = graphSpots;

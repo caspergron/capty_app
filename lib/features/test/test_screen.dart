@@ -22,7 +22,7 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
   var _viewModel = TestViewModel();
   var _modelData = TestViewModel();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {

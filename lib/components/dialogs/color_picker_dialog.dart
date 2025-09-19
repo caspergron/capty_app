@@ -18,7 +18,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> colorPickerDialog({required Color? color, required Function(Color) onChanged}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('color-picker-popup');
   await showGeneralDialog(
     context: context,
@@ -124,17 +124,17 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Color _convertRgbToColor(Color rgbColor) {
-    var alpha = rgbColor.a;
-    var red = rgbColor.r;
-    var green = rgbColor.g;
-    var blue = rgbColor.b;
+    final alpha = rgbColor.a;
+    final red = rgbColor.r;
+    final green = rgbColor.g;
+    final blue = rgbColor.b;
 
-    var a = (alpha * 255).toInt();
-    var r = (red * 255).toInt();
-    var g = (green * 255).toInt();
-    var b = (blue * 255).toInt();
+    final a = (alpha * 255).toInt();
+    final r = (red * 255).toInt();
+    final g = (green * 255).toInt();
+    final b = (blue * 255).toInt();
 
-    var colorValue = (a << 24) | (r << 16) | (g << 8) | b;
+    final colorValue = (a << 24) | (r << 16) | (g << 8) | b;
 
     return Color(colorValue);
   }

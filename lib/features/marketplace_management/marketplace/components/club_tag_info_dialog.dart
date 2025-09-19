@@ -17,9 +17,9 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> clubTagInfoDialog({List<Club> clubs = const [], Function()? onPositive}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(clubs, onPositive));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(clubs, onPositive));
   // sl<AppAnalytics>().screenView('club-member-info-popup');
   await showGeneralDialog(
     context: context,
@@ -100,7 +100,7 @@ class _DialogView extends StatelessWidget {
   }
 
   Widget _soldInfoItemCard(BuildContext context, int index) {
-    var item = clubs[index];
+    final item = clubs[index];
     return Container(
       width: double.infinity,
       alignment: Alignment.centerLeft,

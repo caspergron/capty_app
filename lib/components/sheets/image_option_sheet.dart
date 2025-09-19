@@ -19,7 +19,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> imageOptionSheet({required Function(File) onFile, String cropType = 'circle'}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('upload-method-sheet');
   await showModalBottomSheet(
     context: context,
@@ -41,7 +41,7 @@ class _BottomSheetView extends StatelessWidget {
     return Container(
       width: SizeConfig.width,
       child: _screenView(context),
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
     );
   }
 
@@ -81,21 +81,21 @@ class _BottomSheetView extends StatelessWidget {
   }
 
   Future<void> _onCameraImage() async {
-    var file = await sl<ImagePickers>().imageFromCamera();
+    final file = await sl<ImagePickers>().imageFromCamera();
     if (file == null) return backToPrevious();
-    var cropped = await sl<ImageCroppers>().cropImage(image: file, cropType: cropType);
+    final cropped = await sl<ImageCroppers>().cropImage(image: file, cropType: cropType);
     if (cropped == null) return backToPrevious();
-    var compressed = await sl<FileCompressor>().compressFileImage(image: cropped);
+    final compressed = await sl<FileCompressor>().compressFileImage(image: cropped);
     backToPrevious();
     onFile(compressed);
   }
 
   Future<void> _onGalleryImage() async {
-    var file = await sl<ImagePickers>().singleImageFromGallery();
+    final file = await sl<ImagePickers>().singleImageFromGallery();
     if (file == null) return backToPrevious();
-    var cropped = await sl<ImageCroppers>().cropImage(image: file, cropType: cropType);
+    final cropped = await sl<ImageCroppers>().cropImage(image: file, cropType: cropType);
     if (cropped == null) return backToPrevious();
-    var compressed = await sl<FileCompressor>().compressFileImage(image: cropped);
+    final compressed = await sl<FileCompressor>().compressFileImage(image: cropped);
     backToPrevious();
     onFile(compressed);
   }

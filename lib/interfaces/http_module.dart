@@ -3,6 +3,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
 import 'package:app/interfaces/api_interceptor.dart';
@@ -11,9 +16,6 @@ import 'package:app/models/system/api_response.dart';
 import 'package:app/preferences/app_preferences.dart';
 import 'package:app/services/auth_service.dart';
 import 'package:app/services/storage_service.dart';
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _200 = 200;
 const _300 = 300;
@@ -27,7 +29,7 @@ class HttpModule implements ApiInterceptor {
     HttpClient client = HttpClient();
     if (kDebugMode) print('get: $endpoint');
     try {
-      var uri = Uri.parse(endpoint);
+      final uri = Uri.parse(endpoint);
       http.Response response = await http.get(uri, headers: await httpHeaders).timeout(_TIMEOUT_DURATION);
       return _returnResponse(response);
     } on SocketException catch (error, stackTrace) {
@@ -56,8 +58,8 @@ class HttpModule implements ApiInterceptor {
     HttpClient client = HttpClient();
     if (kDebugMode) print('post: $endpoint');
     try {
-      var uri = Uri.parse(endpoint);
-      var encodedBody = body == null ? null : json.encode(body);
+      final uri = Uri.parse(endpoint);
+      final encodedBody = body == null ? null : json.encode(body);
       http.Response response = await http.post(uri, body: encodedBody, headers: await httpHeaders).timeout(_TIMEOUT_DURATION);
       return _returnResponse(response);
     } on SocketException catch (error, stackTrace) {
@@ -87,8 +89,8 @@ class HttpModule implements ApiInterceptor {
     if (kDebugMode) print('put: $endpoint');
     if (kDebugMode) log('body: ${body == null ? 'null' : body.toString()}');
     try {
-      var uri = Uri.parse(endpoint);
-      var encodedBody = body == null ? null : json.encode(body);
+      final uri = Uri.parse(endpoint);
+      final encodedBody = body == null ? null : json.encode(body);
       http.Response response = await http.put(uri, body: encodedBody, headers: await httpHeaders).timeout(_TIMEOUT_DURATION);
       return _returnResponse(response);
     } on SocketException catch (error, stackTrace) {
@@ -118,8 +120,8 @@ class HttpModule implements ApiInterceptor {
     if (kDebugMode) print('delete: $endpoint');
     if (kDebugMode) log('body: ${body == null ? 'null' : body.toString()}');
     try {
-      var uri = Uri.parse(endpoint);
-      var encodedBody = body == null ? null : json.encode(body);
+      final uri = Uri.parse(endpoint);
+      final encodedBody = body == null ? null : json.encode(body);
       http.Response response = await http.delete(uri, body: encodedBody, headers: await httpHeaders).timeout(_TIMEOUT_DURATION);
       return _returnResponse(response);
     } on SocketException catch (error, stackTrace) {
@@ -149,8 +151,8 @@ class HttpModule implements ApiInterceptor {
     if (kDebugMode) print('post: $endpoint');
     if (kDebugMode) log('body: ${body == null ? 'null' : body.toString()}');
     try {
-      var uri = Uri.parse(endpoint);
-      var encodedBody = body == null ? null : json.encode(body);
+      final uri = Uri.parse(endpoint);
+      final encodedBody = body == null ? null : json.encode(body);
       http.Response response = await http.patch(uri, body: encodedBody, headers: await httpHeaders).timeout(_TIMEOUT_DURATION);
       return _returnResponse(response);
     } on SocketException catch (error, stackTrace) {
@@ -179,8 +181,8 @@ class HttpModule implements ApiInterceptor {
     HttpClient client = HttpClient();
     try {
       http.StreamedResponse response = await request.send().timeout(_TIMEOUT_DURATION);
-      var responseResult = await response.stream.bytesToString();
-      var returnResponse = http.Response(responseResult, response.statusCode, headers: response.headers, request: response.request);
+      final responseResult = await response.stream.bytesToString();
+      final returnResponse = http.Response(responseResult, response.statusCode, headers: response.headers, request: response.request);
       return _returnResponse(returnResponse);
     } catch (error) {
       if (kDebugMode) print('ERROR::::::$error::::::${request.url.path}');
@@ -201,7 +203,7 @@ class HttpModule implements ApiInterceptor {
     if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}');
     // log('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body.toString()}');
     // if (kDebugMode) print('status-code: $statusCode ::: endpoint: ${response.request?.url}\nresponse-body: ${response.body}');
-    var jsonResponse = response.bodyBytes.isEmpty || response.bodyBytes is String ? null : json.decode(utf8.decode(response.bodyBytes));
+    final jsonResponse = response.bodyBytes.isEmpty || response.bodyBytes is String ? null : json.decode(utf8.decode(response.bodyBytes));
     if (statusCode >= 200 && statusCode <= 299) {
       return ApiResponse(status: jsonResponse['success'] ? _200 : _300, response: jsonResponse);
     } else if (statusCode >= 500 && statusCode <= 599) {
@@ -219,7 +221,7 @@ class HttpModule implements ApiInterceptor {
   }
 
   Future<Map<String, String>> get httpHeaders async {
-    var accessToken = sl<StorageService>().accessToken;
+    final accessToken = sl<StorageService>().accessToken;
     Map<String, String> headers = <String, String>{};
     headers['Accept'] = 'application/json';
     headers['Content-Type'] = 'application/json';

@@ -15,8 +15,8 @@ class CircleLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var iosLoader = CupertinoActivityIndicator(color: color, radius: radius);
-    var androidLoader = CircularProgressIndicator(color: color, backgroundColor: color.colorOpacity(0.3));
+    final iosLoader = CupertinoActivityIndicator(color: color, radius: radius);
+    final androidLoader = CircularProgressIndicator(color: color, backgroundColor: color.colorOpacity(0.3));
     return Platform.isIOS ? iosLoader : Center(child: SizedBox(height: size.height, width: size.width, child: androidLoader));
   }
 }

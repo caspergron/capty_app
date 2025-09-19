@@ -30,9 +30,9 @@ const _DISABLED_NOTIFICATIONS = [
 ];
 
 Future<void> locationTrackingDialog({Function()? onAllow, Function()? onNotAllow}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('location-tracking-popup');
-  var child = Align(child: _DialogView(onAllow, onNotAllow));
+  final child = Align(child: _DialogView(onAllow, onNotAllow));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Location Tracking Dialog',
@@ -93,7 +93,7 @@ class _DialogView extends StatelessWidget {
                 padding: EdgeInsets.only(left: 6.width, right: 20),
                 separatorBuilder: (context, index) => SizedBox(height: index == _ENABLED_NOTIFICATIONS.length - 1 ? 0 : 16),
                 itemBuilder: (context, index) {
-                  var item = _ENABLED_NOTIFICATIONS[index];
+                  final item = _ENABLED_NOTIFICATIONS[index];
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -119,7 +119,7 @@ class _DialogView extends StatelessWidget {
                 padding: EdgeInsets.only(left: 6.width, right: 20),
                 separatorBuilder: (context, index) => SizedBox(height: index == _ENABLED_NOTIFICATIONS.length - 1 ? 0 : 16),
                 itemBuilder: (context, index) {
-                  var item = _DISABLED_NOTIFICATIONS[index];
+                  final item = _DISABLED_NOTIFICATIONS[index];
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -61,8 +61,8 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = const BorderRadius.only(topLeft: Radius.circular(60));
-    var decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
+    const borderRadius = BorderRadius.only(topLeft: Radius.circular(60));
+    const decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
     return Scaffold(
       backgroundColor: skyBlue,
       body: Container(
@@ -124,7 +124,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var country = widget.data['country'] as Country?;
+    final country = widget.data['country'] as Country?;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -181,7 +181,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   void _onConfirmOtp() {
     minimizeKeyboard();
-    var invalidOtp = sl<Validators>().otpCode(_otpCode.text.toKey);
+    final invalidOtp = sl<Validators>().otpCode(_otpCode.text.toKey);
     if (invalidOtp != null) return FlushPopup.onWarning(message: invalidOtp);
     _viewModel.onVerifyOtp(widget.data, _otpCode.text.toKey);
   }

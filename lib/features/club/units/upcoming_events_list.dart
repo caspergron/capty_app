@@ -38,8 +38,8 @@ class UpcomingEventsList extends StatelessWidget {
   }
 
   Widget _clubEventsItemCard(BuildContext context, int index) {
-    var item = events[index];
-    var gap = Dimensions.screen_padding;
+    final item = events[index];
+    final gap = Dimensions.screen_padding;
     return InkWell(
       onTap: Routes.user.club_event(event: item).push,
       child: TweenListItem(

@@ -27,9 +27,9 @@ class SetProfileScreen3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var modelData = Provider.of<SetProfileViewModel>(context);
-    var borderRadius = const BorderRadius.only(topLeft: Radius.circular(60));
-    var decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
+    final modelData = Provider.of<SetProfileViewModel>(context);
+    const borderRadius = BorderRadius.only(topLeft: Radius.circular(60));
+    const decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
     return Scaffold(
       backgroundColor: skyBlue,
       body: Container(
@@ -77,9 +77,9 @@ class SetProfileScreen3 extends StatelessWidget {
   }
 
   Widget _screenView(BuildContext context) {
-    var modelData = Provider.of<SetProfileViewModel>(context);
-    var showToggles = modelData.clubs.isEmpty || modelData.clubs.where((item) => item.is_member).toList().length == 0;
-    var showClubs = modelData.clubs.isNotEmpty && (!modelData.isNoClub && !modelData.isNotMember);
+    final modelData = Provider.of<SetProfileViewModel>(context);
+    final showToggles = modelData.clubs.isEmpty || modelData.clubs.where((item) => item.is_member).toList().length == 0;
+    final showClubs = modelData.clubs.isNotEmpty && (!modelData.isNoClub && !modelData.isNotMember);
     return Column(
       children: [
         SizedBox(height: 4.3.height),

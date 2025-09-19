@@ -44,9 +44,9 @@ import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 
 Future<void> editSalesAdDiscDialog({required SalesAd marketplace, Function(Map<String, dynamic>, DocFile?)? onSave}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(marketplace, onSave));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(marketplace, onSave));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Edit Wishlist Disc Dialog',
@@ -95,8 +95,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   void _setInitialStates() {
-    var marketplace = widget.marketplace;
-    var userDisc = marketplace.userDisc;
+    final marketplace = widget.marketplace;
+    final userDisc = marketplace.userDisc;
     _brand.text = userDisc?.brand?.name ?? 'n/a'.recast;
     _model.text = userDisc?.name ?? 'n/a'.recast;
     _weight.text = '${userDisc?.weight == null ? 0 : userDisc?.weight.formatDouble}';
@@ -109,19 +109,19 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Future<void> _fetchPlasticsByDiscBrandId() async {
-    var discBrandId = widget.marketplace.userDisc?.brand?.id;
+    final discBrandId = widget.marketplace.userDisc?.brand?.id;
     if (discBrandId == null) return;
-    var plasticId = widget.marketplace.userDisc?.plastic?.id;
-    var response = await sl<DiscRepository>().plasticsByDiscBrandId(discBrandId);
+    final plasticId = widget.marketplace.userDisc?.plastic?.id;
+    final response = await sl<DiscRepository>().plasticsByDiscBrandId(discBrandId);
     if (response.isNotEmpty) _plastics = response;
-    var index = _plastics.isEmpty || plasticId == null ? -1 : _plastics.indexWhere((item) => item.id == plasticId);
+    final index = _plastics.isEmpty || plasticId == null ? -1 : _plastics.indexWhere((item) => item.id == plasticId);
     if (index >= 0) _plastic = _plastics[index];
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    var stackList = [_screenView(context), if (_loader) const PositionedLoader()];
+    final stackList = [_screenView(context), if (_loader) const PositionedLoader()];
     return SingleChildScrollView(
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
@@ -134,8 +134,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var intIndex = _usedValue.toInt();
-    var conditionIndex = intIndex > 10 ? 10 : intIndex;
+    final intIndex = _usedValue.toInt();
+    final conditionIndex = intIndex > 10 ? 10 : intIndex;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -384,7 +384,7 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _onImage(File fileImage) async {
     setState(() => _loader = true);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
     if (docFiles.isEmpty) return setState(() => _loader = false);
     _discFile = docFiles.first;
     if (_discFile.unit8List == null) return setState(() => _loader = false);
@@ -396,15 +396,15 @@ class _DialogViewState extends State<_DialogView> {
   Future<void> _onSave() async {
     if (_plastic.id == null) return FlushPopup.onWarning(message: 'please_select_the_plastic_material_of_your_disc'.recast);
     if (_weight.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_weight'.recast);
-    var invalidImage = widget.marketplace.userDisc?.media?.id == null && _discFile.file == null;
+    final invalidImage = widget.marketplace.userDisc?.media?.id == null && _discFile.file == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
-    var marketplace = widget.marketplace;
-    var userDisc = marketplace.userDisc;
-    var userDiscId = userDisc?.id;
-    var parentDiscId = userDisc?.parentDiscId;
-    var colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
-    var specialityIds = _specialTags.isEmpty ? <int>[] : _specialTags.map((e) => e.id ?? DEFAULT_ID).toList();
-    var body = {
+    final marketplace = widget.marketplace;
+    final userDisc = marketplace.userDisc;
+    final userDiscId = userDisc?.id;
+    final parentDiscId = userDisc?.parentDiscId;
+    final colorValue = _color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
+    final specialityIds = _specialTags.isEmpty ? <int>[] : _specialTags.map((e) => e.id ?? DEFAULT_ID).toList();
+    final body = {
       'user_disc_id': userDiscId,
       'parent_disc_id': parentDiscId,
       'used_range': _usedValue.toInt(),
@@ -414,7 +414,7 @@ class _DialogViewState extends State<_DialogView> {
       'notes': _comment.text,
       'tags': specialityIds,
     };
-    var discImage = _discFile.file == null ? null : _discFile;
+    final discImage = _discFile.file == null ? null : _discFile;
     if (widget.onSave != null) widget.onSave!(body, discImage);
     backToPrevious();
   }

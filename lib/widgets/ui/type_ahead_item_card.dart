@@ -17,9 +17,9 @@ class TypeAheadItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var loader = const FadingCircle(size: 20);
-    var style = TextStyles.text14_500.copyWith(color: text, height: 1.1);
-    var error = SvgImage(image: Assets.svg1.image_square, height: 20, color: mediumBlue, fit: BoxFit.cover);
+    const loader = FadingCircle(size: 20);
+    final style = TextStyles.text14_500.copyWith(color: text, height: 1.1);
+    final error = SvgImage(image: Assets.svg1.image_square, height: 20, color: mediumBlue, fit: BoxFit.cover);
     return Container(
       width: double.infinity,
       alignment: Alignment.centerLeft,

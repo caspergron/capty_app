@@ -16,8 +16,8 @@ class Locations {
       permissionStatus = await _location.requestPermission();
       if (permissionStatus != PermissionStatus.granted) return Coordinates();
     }
-    var locationData = await _location.getLocation();
-    var coordinates = Coordinates(lat: locationData.latitude, lng: locationData.longitude);
+    final locationData = await _location.getLocation();
+    final coordinates = Coordinates(lat: locationData.latitude, lng: locationData.longitude);
     UserPreferences.coordinates = coordinates;
     return coordinates;
   }
@@ -30,9 +30,9 @@ class Locations {
   }
 
   /*Future<String?> fetchLocationNameFromCoordinates(Coordinates coordinates) async {
-    var placeMarks = await placemarkFromCoordinates(coordinates.lat!, coordinates.lng!);
+    final placeMarks = await placemarkFromCoordinates(coordinates.lat!, coordinates.lng!);
     if (placeMarks.isEmpty) return null;
-    var placeMark = placeMarks.first;
+    final placeMark = placeMarks.first;
     return placeMark.subLocality;
   }*/
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/loaders/fading_circle.dart';
 import 'package:app/constants/data_constants.dart';
@@ -13,7 +15,6 @@ import 'package:app/widgets/core/rectangle_check_box.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/colored_disc.dart';
-import 'package:flutter/material.dart';
 
 class DiscGridList extends StatelessWidget {
   final double gap;
@@ -48,12 +49,12 @@ class DiscGridList extends StatelessWidget {
   }
 
   SliverGridDelegateWithFixedCrossAxisCount get _gridDelegate {
-    var crossAxisCount = 2;
-    var spacing = 6.0;
-    var totalSpacing = (crossAxisCount - 1) * spacing;
-    var usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
-    var itemHeight = 258;
-    var aspectRatio = usableWidth / itemHeight;
+    const crossAxisCount = 2;
+    const spacing = 6.0;
+    const totalSpacing = (crossAxisCount - 1) * spacing;
+    final usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
+    const itemHeight = 258;
+    final aspectRatio = usableWidth / itemHeight;
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 4,
       crossAxisSpacing: 06,
@@ -74,16 +75,16 @@ class DiscGridList extends StatelessWidget {
   }
 
   Widget _feedBackItem(BuildContext context, int index) {
-    var width = SizeConfig.width / 4 - 6;
+    final width = SizeConfig.width / 4 - 6;
     return Material(color: transparent, child: SizedBox(height: 120, width: width, child: _discItemCard(context, index)));
   }
 
   Widget _discItemCard(BuildContext context, int index) {
-    var item = discList[index];
+    final item = discList[index];
     if (index == 0 && item.id == DEFAULT_ID) return _addDiscItemCard;
-    var isSelected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
-    var decoration = BoxDecoration(color: primary, borderRadius: BorderRadius.circular(8));
-    var checkBox = RectangleCheckBox(color: primary, isChecked: isSelected, onTap: () => onSelect!(item, index));
+    final isSelected = selectedItems.isNotEmpty && selectedItems.any((element) => element.id == item.id);
+    final decoration = BoxDecoration(color: primary, borderRadius: BorderRadius.circular(8));
+    final checkBox = RectangleCheckBox(color: primary, isChecked: isSelected, onTap: () => onSelect!(item, index));
     return TweenListItem(
       index: index,
       twinAnim: TwinAnim.right_to_left,
@@ -176,7 +177,7 @@ class DiscGridList extends StatelessWidget {
   }
 
   Widget _draggedDiscCard(UserDisc item) {
-    var decoration = BoxDecoration(color: orange, borderRadius: BorderRadius.circular(8));
+    final decoration = BoxDecoration(color: orange, borderRadius: BorderRadius.circular(8));
     return Stack(
       children: [
         Align(alignment: Alignment.bottomCenter, child: AspectRatio(aspectRatio: 1.1, child: Container(decoration: decoration))),

@@ -12,7 +12,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/lottie_animation.dart';
 
 Future<void> allSetLoaderSheet({required String desc}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showModalBottomSheet(
     context: context,
     enableDrag: false,

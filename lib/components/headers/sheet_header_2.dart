@@ -17,7 +17,7 @@ class SheetHeader2 extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(color: white, borderRadius: SHEET_RADIUS, boxShadow: const [SHADOW_1]),
+      decoration: const BoxDecoration(color: white, borderRadius: SHEET_RADIUS, boxShadow: [SHADOW_1]),
       child: Column(
         children: [
           const SizedBox(height: 06),

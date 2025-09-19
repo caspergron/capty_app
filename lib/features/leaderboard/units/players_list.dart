@@ -52,8 +52,8 @@ class PlayersList extends StatelessWidget {
   }
 
   Widget _playerItemCard(BuildContext context, int index) {
-    var item = players[index];
-    var isPositive = _arrowIconStatus(item);
+    final item = players[index];
+    final isPositive = _arrowIconStatus(item);
     return InkWell(
       onTap: () => _onItem(item),
       child: TweenListItem(
@@ -110,13 +110,13 @@ class PlayersList extends StatelessWidget {
   }
 
   Widget _topPlayerItemCard(MapEntry<int, PdgaUser> entry) {
-    var index = entry.key;
-    var item = entry.value;
-    var right = index == 0 ? 8.0 : 0.0;
-    var left = index == topPlayers.length - 1 ? 8.0 : 0.0;
-    var isTopper = index == 1;
-    var background = _backgroundColor(index);
-    var isPositive = _arrowIconStatus(item);
+    final index = entry.key;
+    final item = entry.value;
+    final right = index == 0 ? 8.0 : 0.0;
+    final left = index == topPlayers.length - 1 ? 8.0 : 0.0;
+    final isTopper = index == 1;
+    final background = _backgroundColor(index);
+    final isPositive = _arrowIconStatus(item);
     return InkWell(
       onTap: () => _onItem(item),
       child: TweenListItem(

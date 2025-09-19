@@ -16,7 +16,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> betaTestingDialog() async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   ApiStatus.instance.betaPopup = true;
   // sl<AppAnalytics>().screenView('app-exit-popup');
   await showGeneralDialog(

@@ -29,8 +29,8 @@ class MarketDetailsViewModel with ChangeNotifier {
     }
     marketplace = infoItem;
     notifyListeners();
-    var userId = UserPreferences.user.id;
-    var sellerUserId = marketplace.sellerInfo?.id;
+    final userId = UserPreferences.user.id;
+    final sellerUserId = marketplace.sellerInfo?.id;
     unawaited(_fetchDiscDetails());
     if (userId != sellerUserId) unawaited(_fetchMatchedWithSellerInfo());
     if (userId != sellerUserId) unawaited(_fetchSellerAddresses());
@@ -49,49 +49,49 @@ class MarketDetailsViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchDiscDetails() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '${marketplace.id!}$locationParams'.trim();
-    var response = await sl<MarketplaceRepository>().fetchMarketplaceDetails(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '${marketplace.id!}$locationParams'.trim();
+    final response = await sl<MarketplaceRepository>().fetchMarketplaceDetails(params);
     if (response != null) marketplace = response;
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }
 
   Future<void> _fetchMatchedWithSellerInfo() async {
-    var sellerId = marketplace.sellerInfo?.id;
-    var response = await sl<MarketplaceRepository>().fetchMatchedInfoWithSeller(sellerId!);
+    final sellerId = marketplace.sellerInfo?.id;
+    final response = await sl<MarketplaceRepository>().fetchMatchedInfoWithSeller(sellerId!);
     if (response != null) clubTournament = response;
     notifyListeners();
   }
 
   Future<void> _fetchSellerShippingInfo() async {
-    var sellerId = marketplace.sellerInfo?.id;
+    final sellerId = marketplace.sellerInfo?.id;
     if (sellerId == null) return;
-    var response = await sl<AddressRepository>().fetchShippingInfo(sellerId);
+    final response = await sl<AddressRepository>().fetchShippingInfo(sellerId);
     if (response != null) isShipping = response;
     notifyListeners();
   }
 
   Future<void> _storeDiscPopularity() async {
-    var marketplaceId = marketplace.id;
+    final marketplaceId = marketplace.id;
     if (marketplaceId == null) return;
     await sl<MarketplaceRepository>().storeDiscPopularity(marketplaceId);
   }
 
   Future<void> _fetchSellerAddresses() async {
-    var sellerId = marketplace.sellerInfo?.id;
-    var response = await sl<MarketplaceRepository>().fetchSellerAddresses(sellerId!);
+    final sellerId = marketplace.sellerInfo?.id;
+    final response = await sl<MarketplaceRepository>().fetchSellerAddresses(sellerId!);
     sellerAddresses.clear();
     if (response.isNotEmpty) sellerAddresses = response;
     notifyListeners();
   }
 
   Future<void> _fetchMoreMarketplaceDiscsBySeller() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '${marketplace.sellerInfo!.id!}&size=$LENGTH_20&page=1$locationParams';
-    var response = await sl<MarketplaceRepository>().fetchMoreMarketplaceByUser(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '${marketplace.sellerInfo!.id!}&size=$LENGTH_20&page=1$locationParams';
+    final response = await sl<MarketplaceRepository>().fetchMoreMarketplaceByUser(params);
     discList.clear();
     if (response.isNotEmpty) discList = response.where((item) => marketplace.id != null && item.id != marketplace.id).toList();
     loader = Loader(initial: false, common: false);

@@ -9,7 +9,7 @@ class BookmarkMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = 36.0;
+    const size = 36.0;
     return InkWell(
       onTap: onTap,
       child: Container(

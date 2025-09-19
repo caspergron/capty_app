@@ -18,7 +18,7 @@ class ErrorNameInitial extends StatelessWidget {
     if (initial.isEmpty) {
       return Center(child: SvgImage(image: Assets.svg1.user, height: iconSize, color: grey));
     } else {
-      var style = TextStyles.text24_700.copyWith(height: fontHeight, color: grey, fontSize: fontSize, fontWeight: w600);
+      final style = TextStyles.text24_700.copyWith(height: fontHeight, color: grey, fontSize: fontSize, fontWeight: w600);
       return Center(child: Text(initial, style: style));
     }
   }

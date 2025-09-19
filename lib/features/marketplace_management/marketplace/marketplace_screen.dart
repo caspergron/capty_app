@@ -168,9 +168,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
   }
 
   Widget get _discListingView {
-    var categories = _modelData.categories;
-    var showTags = _modelData.tags.isNotEmpty && _modelData.searchKey.isEmpty;
-    var searchLabel = '${'search_result_for'.recast}: ${_modelData.searchKey}';
+    final categories = _modelData.categories;
+    final showTags = _modelData.tags.isNotEmpty && _modelData.searchKey.isEmpty;
+    final searchLabel = '${'search_result_for'.recast}: ${_modelData.searchKey}';
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -215,10 +215,10 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
   void _onTag(Tag item) {
     if (_modelData.tag.id.nullToInt == item.id.nullToInt) return;
     if (item.name.toKey == 'club'.toKey) {
-      var clubs = _modelData.clubTournament.clubs ?? [];
+      final clubs = _modelData.clubTournament.clubs ?? [];
       clubs.isEmpty ? _viewModel.onTag(item) : clubTagInfoDialog(clubs: clubs, onPositive: () => _viewModel.onTag(item));
     } else if (item.name.toKey == 'tournament') {
-      var tournaments = _modelData.clubTournament.tournaments ?? [];
+      final tournaments = _modelData.clubTournament.tournaments ?? [];
       if (tournaments.isEmpty) return _viewModel.onTag(item);
       tournamentTagInfoDialog(tournaments: tournaments, onPositive: () => _viewModel.onTag(item));
     } else {
@@ -228,7 +228,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
 
   Widget get _yourAdsView {
     if (_modelData.salesAdDiscs.isEmpty) return _NoSalesAdFound();
-    var discList = [SalesAd(id: DEFAULT_ID), if (_modelData.salesAdDiscs.isNotEmpty) ..._modelData.salesAdDiscs];
+    final discList = [SalesAd(id: DEFAULT_ID), if (_modelData.salesAdDiscs.isNotEmpty) ..._modelData.salesAdDiscs];
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -253,7 +253,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> with SingleTicker
       );
 
   Widget get _favouriteDiscsView {
-    var categories = _modelData.favCategories;
+    final categories = _modelData.favCategories;
     if (categories.isEmpty) return NoDiscFound(height: 09.height, label: 'no_favourite_disc_found');
     return ListView(
       shrinkWrap: true,

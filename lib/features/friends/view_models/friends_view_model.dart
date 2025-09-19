@@ -30,7 +30,7 @@ class FriendsViewModel with ChangeNotifier {
   void updateUi() => notifyListeners();
 
   Future<void> _fetchFriends() async {
-    var response = await sl<FriendRepository>().fetchAllFriends();
+    final response = await sl<FriendRepository>().fetchAllFriends();
     friends.clear();
     if (response.isNotEmpty) friends = response;
     loader = Loader(initial: false, common: false);
@@ -38,7 +38,7 @@ class FriendsViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchFriendRequests() async {
-    var response = await sl<FriendRepository>().fetchAllFriendRequests();
+    final response = await sl<FriendRepository>().fetchAllFriendRequests();
     friendRequests.clear();
     if (response.isNotEmpty) friendRequests = response;
     notifyListeners();
@@ -47,7 +47,7 @@ class FriendsViewModel with ChangeNotifier {
   Future<void> onDeleteFriend(Friend item, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<FriendRepository>().rejectFriendRequest(item.id!);
+    final response = await sl<FriendRepository>().rejectFriendRequest(item.id!);
     if (response) friends.removeAt(index);
     if (response) FlushPopup.onInfo(message: '${'deleted_successfully'.recast}!!');
     loader.common = false;
@@ -57,7 +57,7 @@ class FriendsViewModel with ChangeNotifier {
   Future<void> onAcceptRequest(Friend item, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<FriendRepository>().acceptFriendRequest(item.id!);
+    final response = await sl<FriendRepository>().acceptFriendRequest(item.id!);
     if (response != null) {
       unawaited(_fetchFriends());
       unawaited(addedFriendDialog(friend: response.requestByUser!));
@@ -70,7 +70,7 @@ class FriendsViewModel with ChangeNotifier {
   Future<void> onRejectRequest(Friend item, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<FriendRepository>().rejectFriendRequest(item.id!);
+    final response = await sl<FriendRepository>().rejectFriendRequest(item.id!);
     if (response) {
       unawaited(_fetchFriends());
       await _fetchFriendRequests();

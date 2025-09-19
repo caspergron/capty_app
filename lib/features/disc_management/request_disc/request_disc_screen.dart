@@ -68,8 +68,8 @@ class _RequestDiscScreenState extends State<RequestDiscScreen> {
   }
 
   Widget get _navbarAction {
-    var label = 'send_request'.recast.toUpper;
-    var style = TextStyles.text14_700.copyWith(color: white, fontWeight: w600, height: 1.15);
+    final label = 'send_request'.recast.toUpper;
+    final style = TextStyles.text14_700.copyWith(color: white, fontWeight: w600, height: 1.15);
     return ElevateButton(radius: 04, height: 42, label: label, loader: _loader, textStyle: style, onTap: _onSendRequest);
   }
 
@@ -139,7 +139,7 @@ class _RequestDiscScreenState extends State<RequestDiscScreen> {
 
   Future<void> _onImage(File fileImage) async {
     setState(() => _loader = true);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
     if (docFiles.isEmpty) return setState(() => _loader = false);
     _docFile = docFiles.first;
     if (_docFile.unit8List == null) return setState(() => _loader = false);
@@ -152,16 +152,16 @@ class _RequestDiscScreenState extends State<RequestDiscScreen> {
     if (_name.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_name_of_your_disc'.recast);
     if (_brand.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_brand_name_of_your_disc'.recast);
     if (_link.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_web_link_of_your_disc'.recast);
-    var isValidLink = sl<RegExps>().urlRegExp.hasMatch(_link.text);
+    final isValidLink = sl<RegExps>().urlRegExp.hasMatch(_link.text);
     if (!isValidLink) return FlushPopup.onWarning(message: 'please_add_a_valid_link'.recast);
     if (_docFile.unit8List == null) return FlushPopup.onWarning(message: 'please_upload_your_disc_image'.recast);
-    var base64 = 'data:image/jpeg;base64,${_docFile.base64}';
-    var mediaBody = {'section': 'disc_request', 'alt_texts': 'user_request_disc', 'type': 'image', 'image': base64};
+    final base64 = 'data:image/jpeg;base64,${_docFile.base64}';
+    final mediaBody = {'section': 'disc_request', 'alt_texts': 'user_request_disc', 'type': 'image', 'image': base64};
     setState(() => _loader = true);
-    var mediaResponse = await sl<UserRepository>().uploadBase64Media(mediaBody);
+    final mediaResponse = await sl<UserRepository>().uploadBase64Media(mediaBody);
     if (mediaResponse == null) return setState(() => _loader = false);
-    var body = {'name': _name.text, 'brand_name': _brand.text, 'online_link': _link.text, 'media_id': mediaResponse.id};
-    var response = await sl<DiscRepository>().requestDisc(body);
+    final body = {'name': _name.text, 'brand_name': _brand.text, 'online_link': _link.text, 'media_id': mediaResponse.id};
+    final response = await sl<DiscRepository>().requestDisc(body);
     if (!response) return setState(() => _loader = false);
     unawaited(discRequestSentDialog());
     setState(() => _loader = false);

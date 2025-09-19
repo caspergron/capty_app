@@ -77,8 +77,8 @@ Future<void> _flutterErrorCatcher() async => FlutterError.onError = _flutterCust
 
 Future<void> _flutterCustomError(FlutterErrorDetails flutterErrorDetails, {bool fatal = false}) async {
   FlutterError.presentError(flutterErrorDetails);
-  var errorType = flutterErrorDetails.exception.toString();
-  var body = {
+  final errorType = flutterErrorDetails.exception.toString();
+  final body = {
     'user_id': UserPreferences.user.id,
     'channel': 'Capty App ${kReleaseMode ? 'Release' : 'Debug'} Mode',
     'app_platform': Platform.isIOS ? 'ios' : 'android',
@@ -106,8 +106,8 @@ void _sentryOptions(SentryFlutterOptions options) {
 
 Future<void> _listenDeepLink() async {
   // await sl<LocalStorage>().removeData(key: DEEPLINK);
-  var appLinks = AppLinks();
-  var deepLink = await appLinks.getInitialLinkString();
+  final appLinks = AppLinks();
+  final deepLink = await appLinks.getInitialLinkString();
   // if (deepLink != null && deepLink.isNotEmpty) sl<StorageService>().setDeeplink(deepLink);
   // if (deepLink != null && deepLink.isNotEmpty) ToastPopup.onToast(message: deepLink);
   if (deepLink != null && deepLink.isNotEmpty) if (kDebugMode) print(deepLink);

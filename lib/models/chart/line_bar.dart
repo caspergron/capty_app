@@ -11,7 +11,7 @@ class LineBar {
   LineBar({this.spots = const [], this.color = warning});
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['spots'] = spots;
     map['color'] = color;
     return map;

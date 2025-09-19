@@ -7,32 +7,32 @@ import 'package:app/utils/api_url.dart';
 
 class GoogleRepository {
   Future<List<dynamic>> fetchPredictions(String input, Coordinates coordinates, String countryCode) async {
-    var headers = {'Accept': 'application/json'};
-    var position = '${coordinates.lat},${coordinates.lng}';
-    var endpoint = '$GOOGLE_API_AUTOCOMPLETE&input=$input&location=$position&radius=2000&components=country:$countryCode';
-    var response = await http.get(Uri.parse(endpoint), headers: headers);
+    final headers = {'Accept': 'application/json'};
+    final position = '${coordinates.lat},${coordinates.lng}';
+    final endpoint = '$GOOGLE_API_AUTOCOMPLETE&input=$input&location=$position&radius=2000&components=country:$countryCode';
+    final response = await http.get(Uri.parse(endpoint), headers: headers);
     if (response.statusCode != 200) return [];
-    var json = jsonDecode(response.body);
+    final json = jsonDecode(response.body);
     return json['predictions'];
   }
 
   Future<Map<String, dynamic>?> addressInfoByPlaceId(String placeId) async {
-    var headers = {'Accept': 'application/json'};
-    var endpoint = '$GOOGLE_API&place_id=$placeId';
-    var response = await http.get(Uri.parse(endpoint), headers: headers);
+    final headers = {'Accept': 'application/json'};
+    final endpoint = '$GOOGLE_API&place_id=$placeId';
+    final response = await http.get(Uri.parse(endpoint), headers: headers);
     if (response.statusCode != 200) return null;
-    var json = jsonDecode(response.body);
+    final json = jsonDecode(response.body);
     if (json['results'] == null || json['results'].isEmpty) return null;
-    var addressData = json['results'][0];
-    var address = addressData['formatted_address'];
-    var position = addressData['geometry']['location'];
-    var coordinates = Coordinates(lat: position['lat'], lng: position['lng']);
-    var components = addressData['address_components'] as List;
+    final addressData = json['results'][0];
+    final address = addressData['formatted_address'];
+    final position = addressData['geometry']['location'];
+    final coordinates = Coordinates(lat: position['lat'], lng: position['lng']);
+    final components = addressData['address_components'] as List;
     var city = '';
     var postalCode = '';
     var state = '';
-    for (var component in components) {
-      var types = component['types'] as List;
+    for (final component in components) {
+      final types = component['types'] as List;
       if (types.contains('locality')) city = component['long_name'];
       if (types.contains('postal_code')) postalCode = component['long_name'];
       if (types.contains('administrative_area_level_1')) state = component['long_name'];
@@ -44,21 +44,21 @@ class GoogleRepository {
   }
 
   Future<Map<String, dynamic>?> addressInfoByCoordinates(Coordinates coordinates) async {
-    var headers = {'Accept': 'application/json'};
-    var endpoint = '$GOOGLE_API&latlng=${coordinates.lat},${coordinates.lng}';
-    var response = await http.get(Uri.parse(endpoint), headers: headers);
+    final headers = {'Accept': 'application/json'};
+    final endpoint = '$GOOGLE_API&latlng=${coordinates.lat},${coordinates.lng}';
+    final response = await http.get(Uri.parse(endpoint), headers: headers);
     if (response.statusCode != 200) return null;
-    var json = jsonDecode(response.body);
+    final json = jsonDecode(response.body);
     if (json['results'] == null || json['results'].isEmpty) return null;
-    var addressData = json['results'][0];
-    var address = addressData['formatted_address'];
-    var placeId = addressData['place_id'] ?? '';
-    var components = addressData['address_components'] as List;
+    final addressData = json['results'][0];
+    final address = addressData['formatted_address'];
+    final placeId = addressData['place_id'] ?? '';
+    final components = addressData['address_components'] as List;
     var city = '';
     var postalCode = '';
     var state = '';
-    for (var component in components) {
-      var types = component['types'] as List;
+    for (final component in components) {
+      final types = component['types'] as List;
       if (types.contains('locality')) city = component['long_name'];
       if (types.contains('postal_code')) postalCode = component['long_name'];
       if (types.contains('administrative_area_level_1')) state = component['long_name'];
@@ -68,24 +68,24 @@ class GoogleRepository {
   }
 
   Future<Coordinates?> coordinatesOfACountry({required String countryCode}) async {
-    var headers = {'Accept': 'application/json'};
-    var endpoint = '$GOOGLE_API&components=country:$countryCode';
-    var response = await http.get(Uri.parse(endpoint), headers: headers);
+    final headers = {'Accept': 'application/json'};
+    final endpoint = '$GOOGLE_API&components=country:$countryCode';
+    final response = await http.get(Uri.parse(endpoint), headers: headers);
     if (response.statusCode != 200) return null;
-    var json = jsonDecode(response.body);
+    final json = jsonDecode(response.body);
     if (json['results'] == null || json['results'].isEmpty) return null;
-    var location = json['results'][0]['geometry']['location'];
-    var coordinates = Coordinates(lat: location['lat'], lng: location['lat']);
+    final location = json['results'][0]['geometry']['location'];
+    final coordinates = Coordinates(lat: location['lat'], lng: location['lat']);
     return coordinates;
   }
 
 /*Future<LatLng?> coordinatesFromPlaceId(String placeId) async {
-    var headers = {'Accept': 'application/json'};
-    var endpoint = '$GOOGLE_API&placeid=$placeId';
-    var response = await http.get(Uri.parse(endpoint), headers: headers);
+    final headers = {'Accept': 'application/json'};
+    final endpoint = '$GOOGLE_API&placeid=$placeId';
+    final response = await http.get(Uri.parse(endpoint), headers: headers);
     if (response.statusCode != 200) return null;
-    var json = jsonDecode(response.body);
-    var locationData = json['result']['geometry']['location'];
+    final json = jsonDecode(response.body);
+    final locationData = json['result']['geometry']['location'];
     return LatLng(locationData['lat'], locationData['lng']);
   }*/
 }

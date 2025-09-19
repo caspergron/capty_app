@@ -31,9 +31,9 @@ class AddressList extends StatelessWidget {
   }
 
   Widget _addressCard(BuildContext context, int index) {
-    var item = addressList[index];
-    var editIcon = SvgImage(image: Assets.svg1.edit, color: warning, height: 20);
-    var deleteIcon = SvgImage(image: Assets.svg1.trash, color: error, height: 20);
+    final item = addressList[index];
+    final editIcon = SvgImage(image: Assets.svg1.edit, color: warning, height: 20);
+    final deleteIcon = SvgImage(image: Assets.svg1.trash, color: error, height: 20);
     // print(item.latitude);
     // print(item.longitude);
     return InkWell(

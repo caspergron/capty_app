@@ -32,7 +32,7 @@ class LinearProgressbar extends StatelessWidget {
   }
 
   Widget _indicator(double value) {
-    var colorValue = AlwaysStoppedAnimation(valueColor);
+    final colorValue = AlwaysStoppedAnimation(valueColor);
     return LinearProgressIndicator(
       value: value.isFinite ? value : 0,
       minHeight: height,

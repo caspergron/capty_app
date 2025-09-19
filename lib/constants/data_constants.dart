@@ -28,10 +28,10 @@ const LENGTH_30 = 30;
 const String DROPDOWN_SPACE = '     ';
 
 /// Default Data
-var DEFAULT_LOADER = Loader();
-var DEFAULT_LANGUAGE = Language(id: 1, name: 'English', code: 'en', flag: 'https://flagcdn.com/au.svg');
-var DROPDOWN_ICON = SvgImage(image: Assets.svg1.caret_down_1, height: 24, color: dark);
-var INITIAL_COORDINATES = Coordinates(lat: 43.653225, lng: -79.383186);
+final DEFAULT_LOADER = Loader();
+final DEFAULT_LANGUAGE = Language(id: 1, name: 'English', code: 'en', flag: 'https://flagcdn.com/au.svg');
+final DROPDOWN_ICON = SvgImage(image: Assets.svg1.caret_down_1, height: 24, color: dark);
+final INITIAL_COORDINATES = Coordinates(lat: 43.653225, lng: -79.383186);
 
 /// Google Map Data
 const ZOOM = 15.0;

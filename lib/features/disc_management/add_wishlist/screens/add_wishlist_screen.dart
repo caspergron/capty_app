@@ -78,7 +78,7 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var gap = Dimensions.screen_padding;
+    final gap = Dimensions.screen_padding;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -173,8 +173,8 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
 
   Future<void> _onWishlist(ParentDisc item, int index) async {
     minimizeKeyboard();
-    var added = item.is_wishListed;
-    var wishlist = Wishlist(id: item.wishlistId, disc: item);
+    final added = item.is_wishListed;
+    final wishlist = Wishlist(id: item.wishlistId, disc: item);
     await Future.delayed(const Duration(milliseconds: 200));
     unawaited(addToWishlistDialog(
       wishlist: wishlist,
@@ -192,10 +192,10 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
   }
 
   List<Widget> get _searchDiscListItems {
-    var isClose = _search.text.isNotEmpty;
-    var title = Text('search_for_the_disc'.recast, style: TextStyles.text18_700.copyWith(color: white));
-    var desc = 'use_the_search_field_and_search_for_the_disc_you_want_to_add'.recast;
-    var subtitle = Text(desc, style: TextStyles.text12_400.copyWith(color: lightBlue));
+    final isClose = _search.text.isNotEmpty;
+    final title = Text('search_for_the_disc'.recast, style: TextStyles.text18_700.copyWith(color: white));
+    final desc = 'use_the_search_field_and_search_for_the_disc_you_want_to_add'.recast;
+    final subtitle = Text(desc, style: TextStyles.text12_400.copyWith(color: lightBlue));
     return [
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,8 +235,8 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
   }
 
   /*List<Widget> get _pgdaApprovedListItems {
-    var title = Text('browse_in_all_pdga_approved_discs'.recast, style: TextStyles.text18_700.copyWith(color: white));
-    var subtitle = Text('be_nerdy_and_browse_in_all_discs'.recast, style: TextStyles.text12_400.copyWith(color: lightBlue));
+    final title = Text('browse_in_all_pdga_approved_discs'.recast, style: TextStyles.text18_700.copyWith(color: white));
+    final subtitle = Text('be_nerdy_and_browse_in_all_discs'.recast, style: TextStyles.text12_400.copyWith(color: lightBlue));
     return [
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,9 +257,9 @@ class _AddWishlistScreenState extends State<AddWishlistScreen> {
   }*/
 
   /*List<Widget> get _askAiListItems {
-    var title = Text('ask_the_ai'.recast, style: TextStyles.text18_700.copyWith(color: white));
-    var desc = 'answer_a_few_questions_and_ai_will_compare'.recast;
-    var subtitle = Text(desc, style: TextStyles.text12_400.copyWith(color: lightBlue));
+    final title = Text('ask_the_ai'.recast, style: TextStyles.text18_700.copyWith(color: white));
+    final desc = 'answer_a_few_questions_and_ai_will_compare'.recast;
+    final subtitle = Text(desc, style: TextStyles.text12_400.copyWith(color: lightBlue));
     return [
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,

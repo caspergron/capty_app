@@ -55,7 +55,7 @@ class _ModifiedSwitchState extends State<FlutterSwitch> with SingleTickerProvide
   void initState() {
     super.initState();
     animationController = AnimationController(vsync: this, value: widget.value ? 1.0 : 0.0, duration: widget.duration);
-    var curveAnimation = CurvedAnimation(parent: animationController, curve: Curves.linear);
+    final curveAnimation = CurvedAnimation(parent: animationController, curve: Curves.linear);
     toggleAnimation = AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerRight).animate(curveAnimation);
   }
 
@@ -104,7 +104,7 @@ class _ModifiedSwitchState extends State<FlutterSwitch> with SingleTickerProvide
       switchColor = widget.inactiveColor;
       switchBorder = widget.inactiveBorder;
     }
-    var radius = BorderRadius.circular(widget.borderRadius);
+    final radius = BorderRadius.circular(widget.borderRadius);
     return Container(
       width: widget.width,
       height: widget.height,

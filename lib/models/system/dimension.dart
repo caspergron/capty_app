@@ -6,7 +6,7 @@ class Dimension {
   Dimension({required this.mobile, this.small, this.tab});
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['small'] = small;
     map['mobile'] = mobile;
     map['tab'] = tab;

@@ -44,8 +44,8 @@ class MarketplaceCategory {
     salesAds = [];
     if (json['sales_ads'] != null) json['sales_ads'].forEach((v) => salesAds?.add(SalesAd.fromJson(v)));
     pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
-    var length = salesAds?.length ?? 0;
-    var isNextPage = length >= LENGTH_10;
+    final length = salesAds?.length ?? 0;
+    final isNextPage = length >= LENGTH_10;
     scrollControl = ScrollController();
     paginate = Paginate(length: length, page: isNextPage ? 2 : 1, pageLoader: isNextPage);
   }

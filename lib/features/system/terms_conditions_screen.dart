@@ -28,19 +28,19 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var views = [_bannerImage, Expanded(child: _screenView)];
+    final views = [_bannerImage, Expanded(child: _screenView)];
     return Scaffold(body: Container(width: SizeConfig.width, height: SizeConfig.height, child: Column(children: views)));
   }
 
   Widget get _bannerImage {
-    var top = SizeConfig.statusBar + (Platform.isIOS ? 08 : 16);
-    var bannerImage = Image.asset(Assets.png_image.terms_condition, width: double.infinity, height: 36.height, fit: BoxFit.cover);
+    final top = SizeConfig.statusBar + (Platform.isIOS ? 08 : 16);
+    final bannerImage = Image.asset(Assets.png_image.terms_condition, width: double.infinity, height: 36.height, fit: BoxFit.cover);
     return Stack(children: [bannerImage, Positioned(top: top, left: 16, child: const BackMenu(iconColor: lightBlue))]);
   }
 
   Widget get _screenView {
-    var capty = SvgImage(image: Assets.app.capty, height: 24, color: primary);
-    var captyName = SvgImage(image: Assets.app.capty_name, height: 24, color: primary);
+    final capty = SvgImage(image: Assets.app.capty, height: 24, color: primary);
+    final captyName = SvgImage(image: Assets.app.capty_name, height: 24, color: primary);
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,

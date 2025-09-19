@@ -85,11 +85,11 @@ class _ExpansionState extends State<Expansion> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    var expansionTileTheme = ExpansionTileTheme.of(context);
-    var closed = !_isExpanded && _controller.isDismissed;
-    var shouldRemoveChildren = closed && !widget.maintainState;
-    var crossAlign = widget.expandedCrossAxisAlignment ?? CrossAxisAlignment.start;
-    var padding = widget.childrenPadding ?? expansionTileTheme.childrenPadding ?? EdgeInsets.zero;
+    final expansionTileTheme = ExpansionTileTheme.of(context);
+    final closed = !_isExpanded && _controller.isDismissed;
+    final shouldRemoveChildren = closed && !widget.maintainState;
+    final crossAlign = widget.expandedCrossAxisAlignment ?? CrossAxisAlignment.start;
+    final padding = widget.childrenPadding ?? expansionTileTheme.childrenPadding ?? EdgeInsets.zero;
     final Widget result = Offstage(
       offstage: closed,
       child: TickerMode(
@@ -105,8 +105,8 @@ class _ExpansionState extends State<Expansion> with SingleTickerProviderStateMix
   }
 
   Widget _buildChildren(BuildContext context, Widget? child) {
-    var height = const SizedBox(height: 4);
-    var isSubTitle = widget.subtitle != null;
+    final height = const SizedBox(height: 4);
+    final isSubTitle = widget.subtitle != null;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[

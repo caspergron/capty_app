@@ -74,9 +74,9 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
 
   Widget _screenView(BuildContext context) {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var addresses = _modelData.addresses;
-    var homeAddress = addresses.isEmpty ? null : addresses.where((item) => item.is_home).toList().firstOrNull;
-    var otherAddresses = addresses.isEmpty ? <Address>[] : addresses.where((item) => !item.is_home).toList();
+    final addresses = _modelData.addresses;
+    final homeAddress = addresses.isEmpty ? null : addresses.where((item) => item.is_home).toList().firstOrNull;
+    final otherAddresses = addresses.isEmpty ? <Address>[] : addresses.where((item) => !item.is_home).toList();
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -152,7 +152,7 @@ class _SellerSettingsScreenState extends State<SellerSettingsScreen> {
   }
 
   void _onSelect(Address item) {
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<CreateSalesAdViewModel>(context, listen: false).updateAddress(item);
     backToPrevious();
   }
@@ -166,7 +166,7 @@ class _AddAddressOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = TextStyles.text14_600.copyWith(color: lightBlue, height: 1);
+    final style = TextStyles.text14_600.copyWith(color: lightBlue, height: 1);
     return InkWell(
       onTap: onTap,
       child: Container(

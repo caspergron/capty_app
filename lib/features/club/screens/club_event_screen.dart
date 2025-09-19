@@ -40,7 +40,7 @@ class ClubEventScreen extends StatefulWidget {
 class _ClubEventScreenState extends State<ClubEventScreen> {
   var _viewModel = ClubEventViewModel();
   var _modelData = ClubEventViewModel();
-  var _scrollControl = ScrollController();
+  final _scrollControl = ScrollController();
 
   @override
   void initState() {
@@ -88,10 +88,10 @@ class _ClubEventScreenState extends State<ClubEventScreen> {
   void _onPostComment() => postCommentSheet(onPost: (v) => _viewModel.onPostComment(v, _scrollControl));
 
   Widget _screenView(BuildContext context) {
-    var event = _modelData.event;
-    var initLoad = _modelData.loader.initial;
-    var date = Formatters.formatDate(DATE_FORMAT_19, event.eventDate);
-    var time = Formatters.formatDate(TIME_FORMAT_1, event.event_datetime);
+    final event = _modelData.event;
+    final initLoad = _modelData.loader.initial;
+    final date = Formatters.formatDate(DATE_FORMAT_19, event.eventDate);
+    final time = Formatters.formatDate(TIME_FORMAT_1, event.event_datetime);
     return ListView(
       shrinkWrap: true,
       controller: _scrollControl,
@@ -220,7 +220,7 @@ class _ClubEventScreenState extends State<ClubEventScreen> {
   }
 
   Widget _playerItemCard(MapEntry<int, String> entry) {
-    // var item = entry.value;
+    // final item = entry.value;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

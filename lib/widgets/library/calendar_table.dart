@@ -92,7 +92,7 @@ class _CalendarTableState extends State<CalendarTable> {
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    var isRangeMode = widget.rangeSelectionMode == RangeSelectionMode.toggledOn;
+    final isRangeMode = widget.rangeSelectionMode == RangeSelectionMode.toggledOn;
     if (isRangeMode) return;
     _selectedDay = selectedDay;
     _focusedDay = focusedDay;

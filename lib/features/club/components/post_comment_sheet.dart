@@ -16,7 +16,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 
 Future<void> postCommentSheet({required Function(String) onPost}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -61,12 +61,12 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
       width: SizeConfig.width,
       padding: EdgeInsets.zero,
       child: _screenView(context),
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
     );
   }
 
   Widget _screenView(BuildContext context) {
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

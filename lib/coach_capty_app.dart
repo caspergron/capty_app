@@ -23,7 +23,7 @@ class CoachCaptyApp extends StatefulWidget {
 }
 
 class _CoachCaptyAppState extends State<CoachCaptyApp> {
-  var _observer = LifecycleObserver();
+  final _observer = LifecycleObserver();
 
   @override
   Widget build(BuildContext context) {

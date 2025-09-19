@@ -20,7 +20,7 @@ import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> addedFriendDialog({required FriendInfo friend, Function()? onDelete}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('added-friend-popup');
   await showGeneralDialog(
     context: context,
@@ -47,9 +47,9 @@ class _DialogView extends StatelessWidget {
   }
 
   Widget _friendScreenView(BuildContext context) {
-    var radius = const Radius.circular(12);
-    var borderSide = const BorderSide(color: primary, width: 2);
-    var borderAll = Border.all(color: primary, width: 2);
+    const radius = Radius.circular(12);
+    const borderSide = BorderSide(color: primary, width: 2);
+    final borderAll = Border.all(color: primary, width: 2);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -62,8 +62,8 @@ class _DialogView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               margin: EdgeInsets.symmetric(horizontal: 02.width),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: radius, topRight: radius),
-                border: Border(left: borderSide, right: borderSide, top: borderSide),
+                borderRadius: const BorderRadius.only(topLeft: radius, topRight: radius),
+                border: const Border(left: borderSide, right: borderSide, top: borderSide),
                 image: DecorationImage(image: AssetImage(Assets.png_image.winner_cup_2), fit: BoxFit.fill),
               ),
               child: SvgImage(image: Assets.svg3.shield, height: 40.height, color: primary),

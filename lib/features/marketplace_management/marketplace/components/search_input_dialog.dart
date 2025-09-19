@@ -19,9 +19,9 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> searchInputDialog({required String searchKey, Function(String)? onFilter}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(searchKey, onFilter));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(searchKey, onFilter));
 
   await showGeneralDialog(
     context: context,
@@ -42,8 +42,8 @@ class _DialogView extends StatefulWidget {
 }
 
 class _DialogViewState extends State<_DialogView> {
-  var _focusNode = FocusNode();
-  var _search = TextEditingController();
+  final _focusNode = FocusNode();
+  final _search = TextEditingController();
 
   @override
   void initState() {

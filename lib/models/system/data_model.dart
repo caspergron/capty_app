@@ -10,7 +10,7 @@ class DataModel {
   DataModel({this.label = '', this.value = '', this.valueInt = 0, this.icon = ''});
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['label'] = label;
     map['value'] = value;
     map['valueInt'] = valueInt;
@@ -19,7 +19,7 @@ class DataModel {
   }
 
   static DataModel handPreference(String value) {
-    var index = HANDS_LIST.indexWhere((item) => item.value.toKey == value.toKey);
+    final index = HANDS_LIST.indexWhere((item) => item.value.toKey == value.toKey);
     return index < 0 ? HANDS_LIST.first : HANDS_LIST[index];
   }
 }
@@ -38,11 +38,11 @@ List<DataModel> SPINNER_MENU_ITEMS = [
   DataModel(label: 'add_a_disc_newline_to_your_bag', value: 'start_a_round', icon: Assets.svg1.disc_plus, valueInt: 3),
 ];
 
-var CAMERA = DataModel(label: 'take_a_photo', icon: Assets.svg1.camera, value: 'camera');
-var GALLERY = DataModel(label: 'upload_from_gallery', icon: Assets.svg1.image_square, value: 'gallery');
+final CAMERA = DataModel(label: 'take_a_photo', icon: Assets.svg1.camera, value: 'camera');
+final GALLERY = DataModel(label: 'upload_from_gallery', icon: Assets.svg1.image_square, value: 'gallery');
 
-var SHARE = DataModel(label: 'share', value: 'share');
-var DELETE = DataModel(label: 'delete', value: 'delete');
+final SHARE = DataModel(label: 'share', value: 'share');
+final DELETE = DataModel(label: 'delete', value: 'delete');
 List<DataModel> RECORD_MENU_LIST = [SHARE, DELETE];
 
 List<DataModel> HANDS_LIST = [DataModel(label: 'Left', value: 'left'), DataModel(label: 'Right', value: 'right')];

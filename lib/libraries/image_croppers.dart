@@ -22,9 +22,9 @@ class ImageCroppers {
   final _imageCropper = ImageCropper();
 
   Future<File?> cropImage({required File image, String cropType = ''}) async {
-    var crop_style = _cropStyle(cropType);
-    var aspect_ratio = _aspectRatio(cropType);
-    var cropped = await _imageCropper.cropImage(
+    final crop_style = _cropStyle(cropType);
+    final aspect_ratio = _aspectRatio(cropType);
+    final cropped = await _imageCropper.cropImage(
       maxHeight: 600,
       maxWidth: 1000,
       compressQuality: 20,
@@ -57,12 +57,12 @@ class ImageCroppers {
     // SystemChrome.setSystemUIOverlayStyle(OVERLAY_STYLE);
     if (cropped == null) return null;
     if (cropType != 'circle_clip') return File(cropped.path);
-    var clippedCircleImage = await _convertToCircular(File(cropped.path));
+    final clippedCircleImage = await _convertToCircular(File(cropped.path));
     return clippedCircleImage;
   }
 
   void resetStatusBarColor() {
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).appBarTheme.foregroundColor,

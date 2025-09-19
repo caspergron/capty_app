@@ -36,7 +36,7 @@ class SignedUpScreen extends StatefulWidget {
 }
 
 class _SignedUpScreenState extends State<SignedUpScreen> {
-  var loader = false;
+  final loader = false;
 
   @override
   void initState() {
@@ -59,11 +59,11 @@ class _SignedUpScreenState extends State<SignedUpScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var user = widget.user;
-    var radius = const Radius.circular(12);
-    var borderSide = const BorderSide(color: primary, width: 2);
-    var borderAll = Border.all(color: primary, width: 2);
-    var isRatingSection = user.is_pdga_or_total_club;
+    final user = widget.user;
+    const radius = Radius.circular(12);
+    const borderSide = BorderSide(color: primary, width: 2);
+    final borderAll = Border.all(color: primary, width: 2);
+    final isRatingSection = user.is_pdga_or_total_club;
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -78,8 +78,8 @@ class _SignedUpScreenState extends State<SignedUpScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 12.width),
                 decoration: BoxDecoration(
                   image: DecorationImage(image: AssetImage(Assets.png_image.winner_cup_2), fit: BoxFit.fill),
-                  borderRadius: BorderRadius.only(topLeft: radius, topRight: radius),
-                  border: Border(left: borderSide, right: borderSide, top: borderSide),
+                  borderRadius: const BorderRadius.only(topLeft: radius, topRight: radius),
+                  border: const Border(left: borderSide, right: borderSide, top: borderSide),
                 ),
                 child: SvgImage(image: Assets.svg3.shield, height: 40.height, color: primary),
               ),
@@ -93,7 +93,7 @@ class _SignedUpScreenState extends State<SignedUpScreen> {
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(horizontal: 12.width),
                     padding: const EdgeInsets.symmetric(vertical: 04, horizontal: 12),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: skyBlue,
                       borderRadius: BorderRadius.only(bottomLeft: radius, bottomRight: radius),
                       border: Border(left: borderSide, right: borderSide, bottom: borderSide),
@@ -202,16 +202,16 @@ class _SignedUpScreenState extends State<SignedUpScreen> {
   }
 
   void _onShare() {
-    var user = widget.user;
-    var isClub = user.clubName != null;
-    var name = user.name ?? 'your_friend'.recast.firstLetterCapital;
-    var title = 'capty_a_disc_golf_marketplace'.recast;
-    var messageLine1 =
+    final user = widget.user;
+    final isClub = user.clubName != null;
+    final name = user.name ?? 'your_friend'.recast.firstLetterCapital;
+    final title = 'capty_a_disc_golf_marketplace'.recast;
+    final messageLine1 =
         '${name.allFirstLetterCapital} ${'just_signed_up_in_capty'.recast} ${!isClub ? '' : '${'and_joined_the_club'.recast} ${user.clubName.allFirstLetterCapital}'}'
             .trim();
-    var messageLine2 = '${'join'.recast} ${name.allFirstLetterCapital} ${'and_compare_pdga_rank_and_buy_sell_disc'.recast}'.trim();
-    var message = '$messageLine1. $messageLine2\n$DEEPLINK_WELCOME';
-    var params = ShareParams(title: title, text: message, previewThumbnail: XFile(Assets.app.capty));
+    final messageLine2 = '${'join'.recast} ${name.allFirstLetterCapital} ${'and_compare_pdga_rank_and_buy_sell_disc'.recast}'.trim();
+    final message = '$messageLine1. $messageLine2\n$DEEPLINK_WELCOME';
+    final params = ShareParams(title: title, text: message, previewThumbnail: XFile(Assets.app.capty));
     sl<ShareModule>().shareUrl(params: params);
   }
 

@@ -27,8 +27,8 @@ class StepperList extends StatelessWidget {
   }
 
   Widget _stepItemCard(BuildContext context, int index) {
-    var isLast = index == totalStep - 1;
-    var isChecked = index + 1 <= step;
+    final isLast = index == totalStep - 1;
+    final isChecked = index + 1 <= step;
     return Row(
       children: [
         Container(

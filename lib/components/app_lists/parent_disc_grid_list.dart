@@ -43,13 +43,13 @@ class ParentDiscGridList extends StatelessWidget {
   }
 
   SliverGridDelegateWithFixedCrossAxisCount get _gridDelegate {
-    var screenWidth = SizeConfig.width;
-    var crossAxisCount = 2;
-    var spacing = 6.0;
-    var totalSpacing = (crossAxisCount - 1) * spacing;
-    var usableWidth = (screenWidth - totalSpacing) / crossAxisCount;
-    var itemHeight = 216;
-    var aspectRatio = usableWidth / itemHeight;
+    final screenWidth = SizeConfig.width;
+    const crossAxisCount = 2;
+    const spacing = 6.0;
+    const totalSpacing = (crossAxisCount - 1) * spacing;
+    final usableWidth = (screenWidth - totalSpacing) / crossAxisCount;
+    const itemHeight = 216;
+    final aspectRatio = usableWidth / itemHeight;
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: crossAxisCount,
       childAspectRatio: aspectRatio,
@@ -59,8 +59,8 @@ class ParentDiscGridList extends StatelessWidget {
   }
 
   Widget _discItemCard(BuildContext context, int index) {
-    var item = discList[index];
-    var discFeatures = [item.speed ?? 0, item.glide ?? 0, item.turn ?? 0, item.fade ?? 0];
+    final item = discList[index];
+    final discFeatures = [item.speed ?? 0, item.glide ?? 0, item.turn ?? 0, item.fade ?? 0];
     return InkWell(
       onTap: onItem == null ? null : () => onItem!(item, index),
       child: TweenListItem(
@@ -112,10 +112,10 @@ class ParentDiscGridList extends StatelessWidget {
   }
 
   Widget _numberListItem(List<double> items, int index) {
-    var item = items[index];
-    var isFirst = index == 0;
-    var isLast = index == items.length - 1;
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final item = items[index];
+    final isFirst = index == 0;
+    final isLast = index == items.length - 1;
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

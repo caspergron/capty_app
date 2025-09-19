@@ -14,50 +14,50 @@ import 'package:app/utils/api_url.dart';
 
 class PlayerRepository {
   Future<User?> fetchPlayerProfileInfo(int userId) async {
-    var endpoint = '${ApiUrl.user.playerProfile}$userId';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.playerProfile}$userId';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return User.fromJson(apiResponse.response['data']['user']);
   }
 
   Future<List<SalesAd>> fetchSalesAdDiscs(String params) async {
-    var endpoint = '${ApiUrl.user.playerSalesAds}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.playerSalesAds}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    final salesAdApi = SalesAdApi.fromJson(apiResponse.response);
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 
   Future<List<MarketplaceCategory>> fetchAllSalesAdDiscs(String params) async {
-    var endpoint = '${ApiUrl.user.playerAllSalesAds}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.playerAllSalesAds}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
-    var categories = marketplaceApi.categories ?? [];
+    final marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
+    final categories = marketplaceApi.categories ?? [];
     return categories;
   }
 
   /*Future<List<UserDisc>> fetchPlayerTournamentDiscs(int userId) async {
-    var endpoint = '${ApiUrl.user.playerTournamentBag}$userId';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.playerTournamentBag}$userId';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var discBag = DiscBag.fromJson(apiResponse.response['data']);
+    final discBag = DiscBag.fromJson(apiResponse.response['data']);
     return discBag.userDiscs ?? [];
   }*/
 
   Future<List<Tournament>> fetchPlayerTournamentInfo(int userId) async {
-    var endpoint = '${ApiUrl.user.playerTournamentInfo}$userId';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.playerTournamentInfo}$userId';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var tournamentApi = TournamentApi.fromJson(apiResponse.response);
+    final tournamentApi = TournamentApi.fromJson(apiResponse.response);
     return tournamentApi.tournaments ?? [];
   }
 
   Future<List<UserDiscCategory>> fetchTournamentDiscsByCategory({String params = ''}) async {
-    var endpoint = '${ApiUrl.user.playerAllTournamentDiscs}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.playerAllTournamentDiscs}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var categoryApi = UserDiscCategoryApi.fromJson(apiResponse.response);
+    final categoryApi = UserDiscCategoryApi.fromJson(apiResponse.response);
     return categoryApi.categories ?? [];
   }
 }

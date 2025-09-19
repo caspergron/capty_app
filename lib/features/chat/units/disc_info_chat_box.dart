@@ -17,7 +17,7 @@ class DiscInfoChatBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userDisc = salesAd.userDisc;
+    final userDisc = salesAd.userDisc;
     return Container(
       margin: const EdgeInsets.only(bottom: 06),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

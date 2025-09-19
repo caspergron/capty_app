@@ -11,7 +11,7 @@ class CaptyIconMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var icon = SvgImage(image: Assets.app.capty, color: color, height: 22);
+    final icon = SvgImage(image: Assets.app.capty, color: color, height: 22);
     return InkWell(onTap: onTap, child: Center(child: icon));
   }
 }

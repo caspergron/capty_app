@@ -60,8 +60,8 @@ class ParentDiscCategory {
     parentDiscs = [];
     if (json['discs'] != null) json['discs'].forEach((v) => parentDiscs?.add(ParentDisc.fromJson(v)));
     pagination = json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null;
-    var length = parentDiscs?.length ?? 0;
-    var isNextPage = length >= LENGTH_10;
+    final length = parentDiscs?.length ?? 0;
+    final isNextPage = length >= LENGTH_10;
     scrollControl = ScrollController();
     paginate = Paginate(length: length, page: isNextPage ? 2 : 1, pageLoader: isNextPage);
   }

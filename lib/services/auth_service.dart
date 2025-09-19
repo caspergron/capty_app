@@ -37,14 +37,14 @@ class AuthService {
   }
 
   void setUserPreferences() {
-    var user = sl<StorageService>().user;
+    final user = sl<StorageService>().user;
     UserPreferences.user = user;
     if (user.currency?.id != null) UserPreferences.currency = user.currency!;
     if (user.currency?.id != null) UserPreferences.currencyCode = user.currency!.code!;
   }
 
   void setUserInfo(AuthApi authApi, {bool isToken = true}) {
-    var user = authApi.user!;
+    final user = authApi.user!;
     UserPreferences.user = user;
     sl<StorageService>().setUser(user);
     if (user.currency?.id != null) UserPreferences.currency = user.currency!;
@@ -66,7 +66,7 @@ class AuthService {
     sl<StorageService>().removeData(key: ACCESS_TOKEN);
     sl<StorageService>().removeData(key: REFRESH_TOKEN);
     sl<StorageService>().removeData(key: USER);
-    var context = navigatorKey.currentState?.context;
+    final context = navigatorKey.currentState?.context;
     if (context == null) return;
     Provider.of<SetProfileViewModel>(context, listen: false).clearStates();
     Provider.of<HomeViewModel>(context, listen: false).clearStates();

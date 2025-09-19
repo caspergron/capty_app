@@ -19,9 +19,9 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 
 Future<void> editClubDescSheet({required Club club, Function(Club)? onUpdate}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = _BottomSheetView(club, onUpdate);
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = _BottomSheetView(club, onUpdate);
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -65,13 +65,13 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       width: SizeConfig.width,
       padding: EdgeInsets.zero,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Stack(children: [_screenView(context), if (_loader) const PositionedLoader()]),
     );
   }
 
   Widget _screenView(BuildContext context) {
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

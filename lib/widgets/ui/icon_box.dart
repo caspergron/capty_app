@@ -23,8 +23,8 @@ class IconBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var borderAll = Border.all(color: border);
-    var borderRadius = BorderRadius.circular(radius);
+    final borderAll = Border.all(color: border);
+    final borderRadius = BorderRadius.circular(radius);
     return InkWell(
       onTap: onTap,
       child: Container(

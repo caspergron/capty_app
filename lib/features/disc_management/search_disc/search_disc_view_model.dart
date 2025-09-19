@@ -48,9 +48,9 @@ class SearchDiscViewModel with ChangeNotifier {
 
   Future<void> _fetchSearchDisc(String pattern) async {
     final currentRequest = ++_searchCounter;
-    var body = {'query': pattern};
+    final body = {'query': pattern};
     try {
-      var response = await sl<DiscRepository>().searchDiscByName(body: body);
+      final response = await sl<DiscRepository>().searchDiscByName(body: body);
       if (currentRequest != _searchCounter) return;
       isSearched = true;
       searchedDisc.clear();

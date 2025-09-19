@@ -71,7 +71,7 @@ class _NotifyPrefScreenState extends State<NotifyPrefScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var settings = _modelData.settings;
+    final settings = _modelData.settings;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -109,8 +109,8 @@ class _NotifyPrefScreenState extends State<NotifyPrefScreen> {
   }
 
   Widget get _notificationOption {
-    var settings = _modelData.settings;
-    var style = TextStyles.text14_600.copyWith(color: lightBlue, height: 1.2);
+    final settings = _modelData.settings;
+    final style = TextStyles.text14_600.copyWith(color: lightBlue, height: 1.2);
     return Container(
       width: double.infinity,
       key: const Key('notification--1'),

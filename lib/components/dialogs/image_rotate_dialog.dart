@@ -28,7 +28,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> imageRotateDialog({required File file, required Function(DocFile) onChanged}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('image-rotate-popup');
   await showGeneralDialog(
     context: context,
@@ -83,7 +83,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var percentage = _rotation / 180 * 100;
+    final percentage = _rotation / 180 * 100;
     var displayText = '';
     if (_rotation != 0) {
       if (_rotation > 0) {
@@ -211,7 +211,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Future<void> _onConfirm(File original, double angleDeg) async {
-    var value = angleDeg.toInt();
+    final value = angleDeg.toInt();
     if (value == 0) return backToPrevious();
 
     try {

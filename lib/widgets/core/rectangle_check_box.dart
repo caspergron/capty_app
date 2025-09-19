@@ -25,8 +25,8 @@ class RectangleCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var iconColor = isChecked ? selectedColor : color;
-    var icon = isChecked ? Assets.svg1.check_square : Assets.svg1.square;
+    final iconColor = isChecked ? selectedColor : color;
+    final icon = isChecked ? Assets.svg1.check_square : Assets.svg1.square;
     return InkWell(
       onTap: onTap,
       child: Row(

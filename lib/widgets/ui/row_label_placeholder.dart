@@ -32,7 +32,7 @@ class RowLabelPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var boxBorder = border == Colors.transparent ? null : Border.all(color: border);
+    final boxBorder = border == Colors.transparent ? null : Border.all(color: border);
     return InkWell(
       onTap: onTap,
       child: Container(

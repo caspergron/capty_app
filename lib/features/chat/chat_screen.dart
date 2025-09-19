@@ -71,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var isDelete = _modelData.messages.isNotEmpty;
+    // final isDelete = _modelData.messages.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -90,9 +90,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget get _appbarSection {
-    var name = widget.buddy.name ?? '';
-    var isOnline = _modelData.receiver.is_online;
-    var nameStyle = TextStyles.text14_500.copyWith(color: primary, fontSize: 15, fontWeight: w600);
+    final name = widget.buddy.name ?? '';
+    final isOnline = _modelData.receiver.is_online;
+    final nameStyle = TextStyles.text14_500.copyWith(color: primary, fontSize: 15, fontWeight: w600);
     return Row(
       children: [
         const BackMenu(size: 20),
@@ -133,8 +133,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var gap = Dimensions.screen_padding;
-    // var user = sl<StorageService>().user;
+    final gap = Dimensions.screen_padding;
+    // final user = sl<StorageService>().user;
     return Stack(
       clipBehavior: Clip.antiAlias,
       alignment: _modelData.messages.isNotEmpty ? Alignment.bottomCenter : Alignment.topCenter,
@@ -163,11 +163,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _chatInputArea(BuildContext context) {
-    var radius = const Radius.circular(08);
-    var salesAd = _modelData.receiver.salesAd;
-    var isContent = _modelData.isUploadType || _modelData.images.isNotEmpty;
-    var top = isContent ? Radius.zero : radius;
-    var borderRadius = BorderRadius.only(topLeft: top, topRight: top, bottomLeft: radius, bottomRight: radius);
+    const radius = Radius.circular(08);
+    final salesAd = _modelData.receiver.salesAd;
+    final isContent = _modelData.isUploadType || _modelData.images.isNotEmpty;
+    final top = isContent ? Radius.zero : radius;
+    final borderRadius = BorderRadius.only(topLeft: top, topRight: top, bottomLeft: radius, bottomRight: radius);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,12 +202,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   onTap: _onTapInputField,
                   enabledBorder: lightBlue,
                   focusedBorder: lightBlue,
-                  onChanged: (v) =>setState(() {}),
+                  onChanged: (v) => setState(() {}),
                   controller: _modelData.chatMessage,
                   keyboardType: TextInputType.multiline,
                   textInputAction: TextInputAction.newline,
                   hintText: '${'type_your_message_here'.recast}..',
-                  borderRadius: !isContent ? null : BorderRadius.only(bottomLeft: radius, bottomRight: radius),
+                  borderRadius: !isContent ? null : const BorderRadius.only(bottomLeft: radius, bottomRight: radius),
                   // suffixIcon: Container(padding: const EdgeInsets.symmetric(horizontal: 08), child: _sendButton),
                   // prefixIcon: PrefixMenu(icon: Assets.svg1.paperclip, isFocus: _focusNode.hasFocus, onTap: _onPrefix),
                 ),
@@ -230,9 +230,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget get _sendButton {
-    var isDisabled = _modelData.chatMessage.text.isEmpty /*&& _modelData.images.isEmpty && _modelData.documents.isEmpty*/;
-    var icon = SvgImage(image: Assets.svg1.paper_plane, color: white, height: 18);
-    var circleAvatar = CircleAvatar(radius: 18, backgroundColor: primary, child: icon);
+    final isDisabled = _modelData.chatMessage.text.isEmpty /*&& _modelData.images.isEmpty && _modelData.documents.isEmpty*/;
+    final icon = SvgImage(image: Assets.svg1.paper_plane, color: white, height: 18);
+    final circleAvatar = CircleAvatar(radius: 18, backgroundColor: primary, child: icon);
     return InkWell(onTap: isDisabled ? null : _viewModel.addMessage, child: Opacity(opacity: isDisabled ? 0.3 : 1, child: circleAvatar));
   }
 }

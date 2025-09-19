@@ -30,7 +30,7 @@ class ElevateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle);
+    final title = Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle);
     return InkWell(
       onTap: loader ? null : onTap,
       child: Container(

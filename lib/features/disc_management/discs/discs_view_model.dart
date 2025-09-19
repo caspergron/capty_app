@@ -18,7 +18,7 @@ import 'package:app/repository/disc_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/routes.dart';
 
-var _ALL_CATEGORY = DiscBag(id: 1000001, name: 'all');
+final _ALL_CATEGORY = DiscBag(id: 1000001, name: 'all');
 
 class DiscsViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -49,11 +49,11 @@ class DiscsViewModel with ChangeNotifier {
   }
 
   Future<void> fetchAllDiscBags() async {
-    var response = await sl<DiscBagRepository>().fetchDiscBags();
+    final response = await sl<DiscBagRepository>().fetchDiscBags();
     allDiscs.clear();
     discBags.clear();
     if (response.isNotEmpty) discBags = response;
-    var index = discBag.id == 1000001 || discBag.id == 1000002 ? -1 : discBags.indexWhere((e) => e.id == discBag.id);
+    final index = discBag.id == 1000001 || discBag.id == 1000002 ? -1 : discBags.indexWhere((e) => e.id == discBag.id);
     if (index >= 0) discBag = discBags[index];
     ApiStatus.instance.discs = true;
     loader = Loader(initial: false, common: false);
@@ -63,7 +63,7 @@ class DiscsViewModel with ChangeNotifier {
   Future<void> onCreateDisBag(Map<String, dynamic> body) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscBagRepository>().createDiscBag(body);
+    final response = await sl<DiscBagRepository>().createDiscBag(body);
     if (response != null) discBags.add(response);
     if (response != null && discBags.length == 1 && discBag.id == null) discBag = discBags.first;
     loader.common = false;
@@ -79,7 +79,7 @@ class DiscsViewModel with ChangeNotifier {
   Future<void> onMoveDiscToAnotherBag(Map<String, dynamic> body, String bag) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscBagRepository>().moveDiscToAnotherBag(body);
+    final response = await sl<DiscBagRepository>().moveDiscToAnotherBag(body);
     if (response) await fetchAllDiscBags();
     if (response) FlushPopup.onInfo(message: '${'disc_added_in'.recast} $bag');
     loader.common = false;
@@ -89,7 +89,7 @@ class DiscsViewModel with ChangeNotifier {
   Future<void> onDiscItem(UserDisc item, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscRepository>().fetchUserDiscDetails(item.id!);
+    final response = await sl<DiscRepository>().fetchUserDiscDetails(item.id!);
     loader.common = false;
     if (response == null) return notifyListeners();
     unawaited(discInfoDialog(
@@ -111,12 +111,12 @@ class DiscsViewModel with ChangeNotifier {
   }
 
   Future<void> onDeleteBag(DiscBag item) async {
-    var isSelected = discBag.id != null && discBag.id == item.id;
-    var index = discBags.indexWhere((element) => element.id == item.id);
+    final isSelected = discBag.id != null && discBag.id == item.id;
+    final index = discBags.indexWhere((element) => element.id == item.id);
     if (index < 0) return;
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscBagRepository>().deleteDiscBag(item.id!);
+    final response = await sl<DiscBagRepository>().deleteDiscBag(item.id!);
     loader.common = false;
     if (!response) return notifyListeners();
     await fetchAllDiscBags();
@@ -128,14 +128,14 @@ class DiscsViewModel with ChangeNotifier {
   Future<void> onDeleteDisc(UserDisc item, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscRepository>().deleteUserDisc(item.id!);
+    final response = await sl<DiscRepository>().deleteUserDisc(item.id!);
     if (response) await fetchAllDiscBags();
     loader.common = false;
     notifyListeners();
   }
 
   Future<void> fetchWishlistDiscs() async {
-    var response = await sl<DiscRepository>().fetchWishlistDiscs();
+    final response = await sl<DiscRepository>().fetchWishlistDiscs();
     if (response.isNotEmpty) wishlistDiscs = response;
     notifyListeners();
   }
@@ -143,7 +143,7 @@ class DiscsViewModel with ChangeNotifier {
   Future<void> onRemoveFromWishlist(Wishlist wishlist, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscRepository>().removeFromWishlist(wishlist.id!);
+    final response = await sl<DiscRepository>().removeFromWishlist(wishlist.id!);
     if (response) wishlistDiscs.removeAt(index);
     loader.common = false;
     notifyListeners();
@@ -157,14 +157,14 @@ class DiscsViewModel with ChangeNotifier {
   }
 
   /*Future<void> fetchBagDetails(DiscBag bag) async {
-    var invalidBag = discBags.isEmpty || discBags.where((item) => item.id == bag.id).toList().length < 1;
+    final invalidBag = discBags.isEmpty || discBags.where((item) => item.id == bag.id).toList().length < 1;
     if (invalidBag) return;
     loader.common = true;
     notifyListeners();
-    var response = await sl<DiscBagRepository>().fetchDiscBagDetails(bag);
+    final response = await sl<DiscBagRepository>().fetchDiscBagDetails(bag);
     loader.common = false;
     if (response == null) return notifyListeners();
-    var index = discBags.isEmpty ? -1 : discBags.indexWhere((item) => item.id == bag.id);
+    final index = discBags.isEmpty ? -1 : discBags.indexWhere((item) => item.id == bag.id);
     if (index >= 0) discBags[index] = response;
     if (discBag.id != null && discBag.id == bag.id) discBag = response;
     notifyListeners();

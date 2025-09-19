@@ -86,7 +86,7 @@ class _BuddiesScreenState extends State<BuddiesScreen> {
   }
 
   void _onRead(ChatMessage item, int index) {
-    var date = Formatters.formatDate(DATE_FORMAT_8, '$currentDate');
+    final date = Formatters.formatDate(DATE_FORMAT_8, '$currentDate');
     setState(() => _modelData.messageFeeds[index].readTime = date);
     Routes.user.chat(buddy: item.chat_buddy).push();
   }

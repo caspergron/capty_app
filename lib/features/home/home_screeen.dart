@@ -93,14 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }*/
 
   Widget _screenView(BuildContext context) {
-    var isClub = _modelData.clubInfo.id != null;
-    var user = UserPreferences.user;
-    var clubEvents = _modelData.clubEvents;
-    var isInitLoad = _modelData.loader.initial;
-    var count = _modelData.dashboardCount;
-    var colorFilter = const ColorFilter.mode(primary, BlendMode.lighten);
-    var assetImage = AssetImage(Assets.png_image.challenge_banner);
-    var decorationImage = DecorationImage(image: assetImage, fit: BoxFit.cover, colorFilter: colorFilter);
+    final isClub = _modelData.clubInfo.id != null;
+    final user = UserPreferences.user;
+    final clubEvents = _modelData.clubEvents;
+    final isInitLoad = _modelData.loader.initial;
+    final count = _modelData.dashboardCount;
+    const colorFilter = ColorFilter.mode(primary, BlendMode.lighten);
+    final assetImage = AssetImage(Assets.png_image.challenge_banner);
+    final decorationImage = DecorationImage(image: assetImage, fit: BoxFit.cover, colorFilter: colorFilter);
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -193,15 +193,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onChatMessage(ChatMessage item) {
     Routes.user.chat(buddy: item.chat_buddy).push();
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<BuddiesViewModel>(context, listen: false).setReadStatus(item);
   }
 
   List<ChatMessage> get _newMessages {
-    var messages = _notifyModel.messageFeeds;
+    final messages = _notifyModel.messageFeeds;
     if (messages.isEmpty) return [];
-    var userId = UserPreferences.user.id.nullToInt;
-    var newMessages = messages.where((item) => (item.senderId != userId) && (item.readTime == null)).toList();
+    final userId = UserPreferences.user.id.nullToInt;
+    final newMessages = messages.where((item) => (item.senderId != userId) && (item.readTime == null)).toList();
     return newMessages;
   }
 
@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _onShareLocation() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
+    final coordinates = await sl<Locations>().fetchLocationPermission();
     if (!coordinates.is_coordinate) return;
   }
 }
@@ -248,7 +248,7 @@ class _DashboardInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var arrowIcon = isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down;
+    final arrowIcon = isPositive ? Assets.svg1.arrow_up : Assets.svg1.arrow_down;
     return TweenListItem(
       twinAnim: TwinAnim.right_to_left,
       child: Stack(

@@ -28,7 +28,7 @@ import 'package:app/widgets/ui/label_placeholder.dart';
 const _SPACE20 = '       ';
 
 Future<void> scheduleEventDialog({required Club club, Function(Map<String, dynamic>)? onSchedule}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Schedule Event Dialog',
@@ -62,7 +62,7 @@ class _DialogViewState extends State<_DialogView> {
   @override
   void initState() {
     // sl<AppAnalytics>().screenView('schedule-event-popup');
-    var homeCourse = widget.club.homeCourse;
+    final homeCourse = widget.club.homeCourse;
     _course.text = homeCourse?.id == null ? 'no_course_available_in_this_club'.recast : homeCourse!.name!;
     _focusNodes.forEach((item) => item.addListener(() => setState(() {})));
     super.initState();
@@ -79,7 +79,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var padGap = EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding);
+    final padGap = EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,7 +215,7 @@ class _DialogViewState extends State<_DialogView> {
     if (_time == null) return FlushPopup.onWarning(message: 'please_write_the_time_of_the_event'.recast);
     if (widget.club.homeCourse?.id == null) return FlushPopup.onWarning(message: 'no_course_available_in_this_club'.recast);
     if (_note.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_a_note_for_this_event'.recast);
-    var data = {
+    final data = {
       'name': _title.text,
       'description': _note.text,
       'club_id': widget.club.id,

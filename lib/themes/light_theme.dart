@@ -135,7 +135,7 @@ get _bottomSheetTheme {
     backgroundColor: transparent,
     modalBackgroundColor: transparent,
     clipBehavior: Clip.antiAliasWithSaveLayer,
-    shape: RoundedRectangleBorder(borderRadius: SHEET_RADIUS),
+    shape: const RoundedRectangleBorder(borderRadius: SHEET_RADIUS),
   );
 }
 

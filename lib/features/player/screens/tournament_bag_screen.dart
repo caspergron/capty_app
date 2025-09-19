@@ -58,8 +58,8 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
-    var name = isMe ? 'my'.recast : '${widget.player.first_name}${'extra_s'.recast}';
+    final isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
+    final name = isMe ? 'my'.recast : '${widget.player.first_name}${'extra_s'.recast}';
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -79,19 +79,20 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
   }
 
   Widget get _flightPathMenu {
-    var userId = UserPreferences.user.id;
-    var discs = _allTournamentDiscs;
-    var icon = SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19);
-    var discBag = DiscBag(name: 'tournament_bag', displayName: 'Tournament Bag', userId: userId, userDiscs: discs, discCount: discs.length);
+    final userId = UserPreferences.user.id;
+    final discs = _allTournamentDiscs;
+    final icon = SvgImage(image: Assets.svg1.hash_1, color: lightBlue, height: 19);
+    final discBag =
+        DiscBag(name: 'tournament_bag', displayName: 'Tournament Bag', userId: userId, userDiscs: discs, discCount: discs.length);
     return IconBox(size: 28, background: primary, icon: icon, onTap: Routes.user.grid_path(bags: [discBag]).push);
   }
 
   Widget get _screenView {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
-    var name = isMe ? '' : (widget.player.first_name.isEmpty ? 'this_player'.recast : widget.player.first_name);
-    var label = 'no_tournament_discs_found';
-    var description = isMe ? 'you_have_no_disc_in_your_tournament_bag_please_add_your_disc' : 'has_no_disc_in_the_tournament_bag';
+    final isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
+    final name = isMe ? '' : (widget.player.first_name.isEmpty ? 'this_player'.recast : widget.player.first_name);
+    const label = 'no_tournament_discs_found';
+    final description = isMe ? 'you_have_no_disc_in_your_tournament_bag_please_add_your_disc' : 'has_no_disc_in_the_tournament_bag';
     if (_modelData.categories.isEmpty) return NoDiscFound(height: 10.height, label: label, description: description, name: name);
     return ListView(
       padding: EdgeInsets.zero,
@@ -111,8 +112,8 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
   }
 
   /*void _onSelectYourDisc(UserDisc item) {
-    var selectedItems = _modelData.selectedDiscs;
-    var index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
+    final selectedItems = _modelData.selectedDiscs;
+    final index = selectedItems.isEmpty ? -1 : selectedItems.indexWhere((element) => element.id == item.id);
     index < 0 ? _modelData.selectedDiscs.add(item) : _modelData.selectedDiscs.removeAt(index);
     setState(() {});
   }*/
@@ -121,8 +122,8 @@ class _TournamentBagScreenState extends State<TournamentBagScreen> {
     if (_modelData.categories.isEmpty) return [];
     final Set<int> addedIds = {};
     final List<UserDisc> discs = [];
-    for (var category in _modelData.categories) {
-      for (var disc in category.discs) {
+    for (final category in _modelData.categories) {
+      for (final disc in category.discs) {
         if (!addedIds.contains(disc.id.nullToInt)) {
           addedIds.add(disc.id!);
           discs.add(disc);

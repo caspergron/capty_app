@@ -23,7 +23,7 @@ Future<void> calendarSheet({
   DateTime? startDate,
   DateTime? selectedDate,
 }) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -32,7 +32,7 @@ Future<void> calendarSheet({
     shape: BOTTOM_SHEET_SHAPE,
     clipBehavior: Clip.antiAlias,
     builder: (builder) {
-      var sheetView = _BottomSheetView(firstDate, lastDate, selectedDate, startDate, onConfirm);
+      final sheetView = _BottomSheetView(firstDate, lastDate, selectedDate, startDate, onConfirm);
       return PopScopeNavigator(canPop: false, child: sheetView);
     },
   );
@@ -63,12 +63,12 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 
   @override
   Widget build(BuildContext context) {
-    var decoration = BoxDecoration(color: primary, borderRadius: SHEET_RADIUS);
+    const decoration = BoxDecoration(color: primary, borderRadius: SHEET_RADIUS);
     return Container(width: SizeConfig.width, child: _screenView(context), decoration: decoration);
   }
 
   Widget _screenView(BuildContext context) {
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,10 +106,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _onSelect(DateTime day) {
-    var isInvalid = widget.startDate != null && (day.isBefore(widget.startDate!) || day.isAtSameMomentAs(widget.startDate!));
+    final isInvalid = widget.startDate != null && (day.isBefore(widget.startDate!) || day.isAtSameMomentAs(widget.startDate!));
     if (!isInvalid) return setState(() => _selectedDate = day);
-    var datetime = Formatters.formatDate(DATE_FORMAT_2, '${widget.startDate}');
-    var message = '${'Please_select_the_day_after'.recast} $datetime';
+    final datetime = Formatters.formatDate(DATE_FORMAT_2, '${widget.startDate}');
+    final message = '${'Please_select_the_day_after'.recast} $datetime';
     return FlushPopup.onWarning(message: message);
   }
 

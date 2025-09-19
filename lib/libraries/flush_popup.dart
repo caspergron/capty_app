@@ -10,10 +10,10 @@ import 'package:app/themes/colors.dart';
 import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
-var _SUCCESS = _FLushModel(title: '${'congratulations'.recast}!!', icon: Assets.svg2.check_circle);
-var _WARNING = _FLushModel(title: '${'attention'.recast}!', background: warning, icon: Assets.svg2.danger);
-var _INFO = _FLushModel(title: 'message'.recast, background: info, icon: Assets.svg2.info);
-var _ERROR = _FLushModel(title: '${'error'.recast}!', background: error, icon: Assets.svg2.danger_triangle);
+final _SUCCESS = _FLushModel(title: '${'congratulations'.recast}!!', icon: Assets.svg2.check_circle);
+final _WARNING = _FLushModel(title: '${'attention'.recast}!', background: warning, icon: Assets.svg2.danger);
+final _INFO = _FLushModel(title: 'message'.recast, background: info, icon: Assets.svg2.info);
+final _ERROR = _FLushModel(title: '${'error'.recast}!', background: error, icon: Assets.svg2.danger_triangle);
 
 class FlushPopup {
   static void onSuccess({required String message}) => _showFlushBar(model: _SUCCESS, message: message);
@@ -22,11 +22,11 @@ class FlushPopup {
   static void onError({required String message}) => _showFlushBar(model: _ERROR, message: message);
 
   static void _showFlushBar({required _FLushModel model, required String message}) {
-    var radius = BorderRadius.circular(10);
-    var direction = FlushbarDismissDirection.HORIZONTAL;
-    var padding = const EdgeInsets.symmetric(horizontal: 20, vertical: 15);
-    var margin = EdgeInsets.only(left: 20, right: 20, top: Platform.isAndroid ? 20 : 0);
-    var icon = model.icon.isEmpty ? Assets.svg2.info : model.icon;
+    final radius = BorderRadius.circular(10);
+    const direction = FlushbarDismissDirection.HORIZONTAL;
+    const padding = EdgeInsets.symmetric(horizontal: 20, vertical: 15);
+    final margin = EdgeInsets.only(left: 20, right: 20, top: Platform.isAndroid ? 20 : 0);
+    final icon = model.icon.isEmpty ? Assets.svg2.info : model.icon;
     Flushbar(
       titleSize: 16,
       messageSize: 14,

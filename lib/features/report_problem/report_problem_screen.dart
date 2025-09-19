@@ -132,7 +132,7 @@ class _ReportProblemScreenState extends State<ReportProblemScreen> {
   Future<void> _onReportProblem() async {
     if (_title.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_title_of_report'.recast);
     if (_description.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_description_of_report'.recast);
-    var response = await _viewModel.onSendReport(title: _title.text, description: _description.text);
+    final response = await _viewModel.onSendReport(title: _title.text, description: _description.text);
     if (response) _clearStates();
   }
 }

@@ -51,8 +51,8 @@ class _PlayerSalesAdScreenState extends State<PlayerSalesAdScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
-    var name = isMe ? 'my'.recast : '${widget.player.first_name}${'extra_s'.recast}';
+    final isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
+    final name = isMe ? 'my'.recast : '${widget.player.first_name}${'extra_s'.recast}';
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -72,10 +72,10 @@ class _PlayerSalesAdScreenState extends State<PlayerSalesAdScreen> {
 
   Widget get _screenView {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
-    var name = isMe ? '' : (widget.player.first_name.isEmpty ? 'this_player'.recast : widget.player.first_name);
-    var label = 'no_sales_ad_found';
-    var description = isMe
+    final isMe = widget.player.id != null && widget.player.id == UserPreferences.user.id;
+    final name = isMe ? '' : (widget.player.first_name.isEmpty ? 'this_player'.recast : widget.player.first_name);
+    const label = 'no_sales_ad_found';
+    final description = isMe
         ? 'you_have_no_sales_ad_disc_in_marketplace_please_create_your_sales_ads'
         : 'has_no_available_disc_in_marketplace_please_check_back_later';
     if (_modelData.categories.isEmpty) return NoDiscFound(height: 10.height, description: description, label: label, name: name);

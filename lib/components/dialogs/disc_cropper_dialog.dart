@@ -35,7 +35,7 @@ const _INITIAL_ROTATE = 0.0;
 const _DURATION_50 = Duration(milliseconds: 50);
 
 Future<void> discCropperDialog({required File file, required Function(DocFile) onChanged}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('disc-cropper-popup');
   await showGeneralDialog(
     context: context,
@@ -80,8 +80,8 @@ class _DialogViewState extends State<_DialogView> {
 
   @override
   Widget build(BuildContext context) {
-    var key = '$_isPreview';
-    var sectionView = _isPreview ? _PreviewImage(image: _memoryImage!, onTap: _onPreviewSection) : _cropperScreenView(context);
+    final key = '$_isPreview';
+    final sectionView = _isPreview ? _PreviewImage(image: _memoryImage!, onTap: _onPreviewSection) : _cropperScreenView(context);
     return Container(
       height: _isPreview ? 55.height : 68.height,
       width: Dimensions.dialog_width,
@@ -236,7 +236,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Future<void> _onPreview() async {
-    var croppedBytes = await _cropController.onCropImage();
+    final croppedBytes = await _cropController.onCropImage();
     if (croppedBytes == null) return FlushPopup.onWarning(message: 'image_corrupted_please_try_again'.recast);
     _memoryImage = croppedBytes;
     _isPreview = true;
@@ -247,16 +247,16 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _onConfirm() async {
     setState(() => _loader = true);
-    var croppedImage = await _cropController.onCropImage();
+    final croppedImage = await _cropController.onCropImage();
     if (croppedImage == null) return FlushPopup.onWarning(message: 'image_corrupted_please_try_again'.recast);
     _memoryImage = croppedImage;
     _globalZoom = _zoom;
     _globalRotation = _rotation;
-    var compressed = await sl<FileCompressor>().compressMemoryImage(byteList: croppedImage.bytes, maxMB: 3);
+    final compressed = await sl<FileCompressor>().compressMemoryImage(byteList: croppedImage.bytes, maxMB: 3);
     setState(() => _loader = false);
-    var size = compressed.length ~/ 1024;
-    var base64 = base64Encode(compressed);
-    var docFile = DocFile(base64: base64, unit8List: compressed, size: size, isValid: true, isLarge: false);
+    final size = compressed.length ~/ 1024;
+    final base64 = base64Encode(compressed);
+    final docFile = DocFile(base64: base64, unit8List: compressed, size: size, isValid: true, isLarge: false);
     widget.onChanged(docFile);
     backToPrevious();
   }

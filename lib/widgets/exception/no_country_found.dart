@@ -10,7 +10,7 @@ import 'package:app/widgets/library/svg_image.dart';
 class NoCountryFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var description = 'no_countries_available_now_please_tray_again_later'.recast;
+    final description = 'no_countries_available_now_please_tray_again_later'.recast;
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(

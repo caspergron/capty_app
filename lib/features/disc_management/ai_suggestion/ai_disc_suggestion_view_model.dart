@@ -92,20 +92,20 @@ class AiDiscSuggestionViewModel with ChangeNotifier {
       step++;
       notifyListeners();
     } else if (step == 2) {
-      var strongestItems = strongestList.where((item) => item.valueInt == 1).toList().length;
+      final strongestItems = strongestList.where((item) => item.valueInt == 1).toList().length;
       if (strongestItems != 3) return FlushPopup.onWarning(message: 'please_select_3_option'.recast);
       step++;
       notifyListeners();
     } else if (step == 3) {
-      var stabilityItems = stabilityList.where((item) => item.valueInt == 1).toList().length;
-      var windItems = windList.where((item) => item.valueInt == 1).toList().length;
+      final stabilityItems = stabilityList.where((item) => item.valueInt == 1).toList().length;
+      final windItems = windList.where((item) => item.valueInt == 1).toList().length;
       if (stabilityItems != 1 || windItems != 1) return FlushPopup.onWarning(message: 'please_select_1_option'.recast);
       step++;
       notifyListeners();
     } else {
-      var plasticItems = plasticList.where((item) => item.valueInt == 1).toList().length;
-      var gripItems = gripList.where((item) => item.valueInt == 1).toList().length;
-      var fieldItems = fieldList.where((item) => item.valueInt == 1).toList().length;
+      final plasticItems = plasticList.where((item) => item.valueInt == 1).toList().length;
+      final gripItems = gripList.where((item) => item.valueInt == 1).toList().length;
+      final fieldItems = fieldList.where((item) => item.valueInt == 1).toList().length;
       if (plasticItems != 1 || gripItems != 1 || fieldItems != 1) return FlushPopup.onWarning(message: 'please_select_1_option'.recast);
       _fetchAiSuggestion();
     }

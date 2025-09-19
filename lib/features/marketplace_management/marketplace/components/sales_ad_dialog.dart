@@ -35,9 +35,9 @@ Future<void> salesAdDialog({
   Function(SalesAd)? onEdit,
   Function()? onRemove,
 }) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(marketplace, onPrice, onSold, onEdit, onRemove));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(marketplace, onPrice, onSold, onEdit, onRemove));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Sales Ad Dialog',
@@ -88,9 +88,9 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var marketplace = widget.marketplace;
-    var userDisc = marketplace.userDisc;
-    var isDescription = marketplace.notes.toKey.isNotEmpty;
+    final marketplace = widget.marketplace;
+    final userDisc = marketplace.userDisc;
+    final isDescription = marketplace.notes.toKey.isNotEmpty;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,10 +192,10 @@ class _DialogViewState extends State<_DialogView> {
   Future<void> _onEdit() async {
     if (widget.onEdit == null) return;
     setState(() => _loader = true);
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '${widget.marketplace.id!}$locationParams'.trim();
-    var response = await sl<MarketplaceRepository>().fetchMarketplaceDetails(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '${widget.marketplace.id!}$locationParams'.trim();
+    final response = await sl<MarketplaceRepository>().fetchMarketplaceDetails(params);
     if (response == null) return setState(() => _loader = false);
     backToPrevious();
     widget.onEdit!(response);
@@ -215,20 +215,20 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget get _inputSuffix {
-    var radius = const Radius.circular(04);
+    const radius = Radius.circular(04);
     return Container(
       height: 40,
       width: 80,
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: orange, borderRadius: BorderRadius.only(topRight: radius, bottomRight: radius)),
+      decoration: const BoxDecoration(color: orange, borderRadius: BorderRadius.only(topRight: radius, bottomRight: radius)),
       child: Text('update'.recast.toUpper, style: TextStyles.text14_700.copyWith(color: lightBlue, height: 1.1)),
     );
   }
 
   Widget get _loaderBox {
-    var size = Size(65.width, 65.width);
-    var color = lightBlue.colorOpacity(0.6);
-    var icon = SvgImage(image: Assets.svg1.disc_4, height: 38.width, color: lightBlue);
+    final size = Size(65.width, 65.width);
+    final color = lightBlue.colorOpacity(0.6);
+    final icon = SvgImage(image: Assets.svg1.disc_4, height: 38.width, color: lightBlue);
     return LoaderBox(radius: 08, border: color, boxSize: size, child: icon);
   }
 }

@@ -5,7 +5,7 @@ class ApiResponse {
   ApiResponse({required this.status, required this.response});
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['status'] = status;
     map['response'] = response;
     return map;

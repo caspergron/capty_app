@@ -32,10 +32,10 @@ class NearestClubsList extends StatelessWidget {
   }
 
   Widget _clubItemCard(BuildContext context, int index) {
-    var item = clubs[index];
-    var isJoined = item.is_member;
-    var textColor = background == skyBlue ? primary : lightBlue;
-    var buttonTextColor = background == skyBlue ? (isJoined ? orange : mediumBlue) : (isJoined ? lightBlue : mediumBlue);
+    final item = clubs[index];
+    final isJoined = item.is_member;
+    final textColor = background == skyBlue ? primary : lightBlue;
+    final buttonTextColor = background == skyBlue ? (isJoined ? orange : mediumBlue) : (isJoined ? lightBlue : mediumBlue);
     // print(item.toJson());
     return TweenListItem(
       index: index,

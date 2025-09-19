@@ -32,10 +32,10 @@ class ClosestClubEvents extends StatelessWidget {
   }
 
   List<Widget> get _sectionList {
-    var isTitle = !UserPreferences.coordinates.is_coordinate || events.isNotEmpty;
-    var gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
-    // var style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
-    var label = Text('club_events_close_to_you'.recast, style: TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54));
+    final isTitle = !UserPreferences.coordinates.is_coordinate || events.isNotEmpty;
+    final gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    // final style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
+    final label = Text('club_events_close_to_you'.recast, style: TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54));
     return [if (isTitle) Padding(padding: gap, child: label), if (isTitle) const SizedBox(height: 08), _eventSection];
   }
 
@@ -45,7 +45,7 @@ class ClosestClubEvents extends StatelessWidget {
     } else if (events.isEmpty) {
       return const SizedBox.shrink();
     } else {
-      var bottom = const EdgeInsets.only(bottom: 12);
+      const bottom = EdgeInsets.only(bottom: 12);
       return Padding(padding: bottom, child: ShareLocationView(margin: Dimensions.screen_padding, onShare: onShareLocation));
     }
   }
@@ -62,8 +62,8 @@ class ClosestClubEvents extends StatelessWidget {
   }
 
   Widget _closestClubEventItemCard(BuildContext context, int index) {
-    var item = events[index];
-    var gap = Dimensions.screen_padding;
+    final item = events[index];
+    final gap = Dimensions.screen_padding;
     return InkWell(
       onTap: item.club == null ? null : Routes.user.club(club: item.club!).push,
       child: TweenListItem(

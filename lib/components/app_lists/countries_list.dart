@@ -29,9 +29,9 @@ class CountriesList extends StatelessWidget {
   }
 
   Widget _countryItemCard(Country item, int index, int length) {
-    var selected = country.id != null && country.id == item.id;
-    var checkIcon = SvgImage(image: Assets.svg1.tick, color: lightBlue, height: 18);
-    var border = const Border(bottom: BorderSide(color: lightBlue, width: 0.5));
+    final selected = country.id != null && country.id == item.id;
+    final checkIcon = SvgImage(image: Assets.svg1.tick, color: lightBlue, height: 18);
+    const border = Border(bottom: BorderSide(color: lightBlue, width: 0.5));
     return InkWell(
       onTap: () => onChanged(item),
       child: Container(

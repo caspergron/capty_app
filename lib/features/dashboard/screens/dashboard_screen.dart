@@ -79,7 +79,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var stats = _modelData.statistics;
+    final stats = _modelData.statistics;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,

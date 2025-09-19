@@ -35,7 +35,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var padding = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final padding = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
     return PopScopeNavigator(
       canPop: false,
       child: Scaffold(
@@ -94,7 +94,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   }
 
   Widget _pageViewItemCard(BuildContext context, int index) {
-    var introItem = INTRODUCTION_LIST[_index];
+    final introItem = INTRODUCTION_LIST[_index];
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -125,9 +125,9 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   }
 
   Widget _pointerItemCard(int index) {
-    var selected = _index == index;
-    var margin = EdgeInsets.only(right: index == INTRODUCTION_LIST.length - 1 ? 0 : 04);
-    var decoration = BoxDecoration(color: selected ? lightBlue : mediumBlue, shape: BoxShape.circle);
+    final selected = _index == index;
+    final margin = EdgeInsets.only(right: index == INTRODUCTION_LIST.length - 1 ? 0 : 04);
+    final decoration = BoxDecoration(color: selected ? lightBlue : mediumBlue, shape: BoxShape.circle);
     return InkWell(
       onTap: () => setState(() => _index = index),
       child: Container(width: 10, height: 10, margin: margin, decoration: decoration),

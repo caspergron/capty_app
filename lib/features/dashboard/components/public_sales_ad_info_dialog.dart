@@ -23,9 +23,9 @@ import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> publicSalesAdInfoDialog({required SalesAd disc}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(disc));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(disc));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Public Sales Ad Info Dialog',
@@ -61,10 +61,10 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var userDisc = widget.disc.userDisc;
-    var isDescription = widget.disc.notes.toKey.isNotEmpty;
-    var specialities = widget.disc.specialityDiscs ?? [];
-    var weight = userDisc?.weight == null ? 'n/a'.recast : '${userDisc?.weight.formatDouble} ${'gram'.recast}';
+    final userDisc = widget.disc.userDisc;
+    final isDescription = widget.disc.notes.toKey.isNotEmpty;
+    final specialities = widget.disc.specialityDiscs ?? [];
+    final weight = userDisc?.weight == null ? 'n/a'.recast : '${userDisc?.weight.formatDouble} ${'gram'.recast}';
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,8 +180,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget get _discInfo {
-    var name = widget.disc.userDisc?.name ?? '';
-    var price = '${widget.disc.price.formatDouble} ${widget.disc.currency_code}';
+    final name = widget.disc.userDisc?.name ?? '';
+    final price = '${widget.disc.price.formatDouble} ${widget.disc.currency_code}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 04),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(06)),
@@ -209,7 +209,7 @@ class _DiscInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = TextStyles.text13_600.copyWith(color: lightBlue, fontWeight: w300);
+    final style = TextStyles.text13_600.copyWith(color: lightBlue, fontWeight: w300);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -67,11 +67,11 @@ class AppPreferences {
 
   static Future<String> get fetchUserAgent async {
     if (userAgent.isNotEmpty) return userAgent;
-    var os = Platform.isIOS ? 'iOS' : 'Android';
-    var langCode = sl<StorageService>().language.code ?? 'en';
-    var appVersion = await sl<DeviceInfo>().appVersion;
-    var deviceInfo = '$os/${await sl<DeviceInfo>().deviceVersion}/${await sl<DeviceInfo>().deviceName}';
-    var appInfo = 'capty/$appVersion ${Platform.isIOS ? 'CFNetwork/1474 Darwin' : ''} ($langCode)'.trim();
+    final os = Platform.isIOS ? 'iOS' : 'Android';
+    final langCode = sl<StorageService>().language.code ?? 'en';
+    final appVersion = await sl<DeviceInfo>().appVersion;
+    final deviceInfo = '$os/${await sl<DeviceInfo>().deviceVersion}/${await sl<DeviceInfo>().deviceName}';
+    final appInfo = 'capty/$appVersion ${Platform.isIOS ? 'CFNetwork/1474 Darwin' : ''} ($langCode)'.trim();
     userAgent = '$deviceInfo $appInfo'.trim();
     return userAgent;
   }

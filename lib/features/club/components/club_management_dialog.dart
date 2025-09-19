@@ -23,7 +23,7 @@ import 'package:app/widgets/library/svg_image.dart';
 const _ENABLED_NOTIFICATIONS = ['adjust_club_details', 'edit_club_courses', 'control_other_relevant_club_data'];
 
 Future<void> clubManagementDialog({required Club club, Function()? onJoin}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('club-management-popup');
   await showGeneralDialog(
     context: context,
@@ -41,7 +41,7 @@ class _DialogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _ADMINS = [];
+    final _ADMINS = [];
     return Container(
       height: _ADMINS.isEmpty ? 82.height : SizeConfig.height,
       width: Dimensions.dialog_width + 10,

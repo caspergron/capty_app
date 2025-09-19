@@ -30,8 +30,8 @@ class NotifyPrefViewModel with ChangeNotifier {
   Future<void> onNotification(bool value) async {
     loader = true;
     notifyListeners();
-    var body = {'enable_notifications': value ? 1 : 0};
-    var response = await sl<PreferencesRepository>().updatePreferences(body);
+    final body = {'enable_notifications': value ? 1 : 0};
+    final response = await sl<PreferencesRepository>().updatePreferences(body);
     if (response != null) settings = response;
     if (response != null) _updateSettings(response);
     loader = false;
@@ -42,8 +42,8 @@ class NotifyPrefViewModel with ChangeNotifier {
     if (!settings.enable_notification) return FlushPopup.onInfo(message: 'please_allow_notification_first'.recast);
     loader = true;
     notifyListeners();
-    var body = {'enable_tournament_notification': value ? 1 : 0};
-    var response = await sl<PreferencesRepository>().updatePreferences(body);
+    final body = {'enable_tournament_notification': value ? 1 : 0};
+    final response = await sl<PreferencesRepository>().updatePreferences(body);
     if (response != null) settings = response;
     if (response != null) _updateSettings(response);
     loader = false;
@@ -54,8 +54,8 @@ class NotifyPrefViewModel with ChangeNotifier {
     if (!settings.enable_notification) return FlushPopup.onInfo(message: 'please_allow_notification_first'.recast);
     loader = true;
     notifyListeners();
-    var body = {'enable_club_notification': value ? 1 : 0};
-    var response = await sl<PreferencesRepository>().updatePreferences(body);
+    final body = {'enable_club_notification': value ? 1 : 0};
+    final response = await sl<PreferencesRepository>().updatePreferences(body);
     if (response != null) settings = response;
     if (response != null) _updateSettings(response);
     loader = false;
@@ -66,8 +66,8 @@ class NotifyPrefViewModel with ChangeNotifier {
     if (!settings.enable_notification) return FlushPopup.onInfo(message: 'please_allow_notification_first'.recast);
     loader = true;
     notifyListeners();
-    var body = {'enable_club_event_notification': value ? 1 : 0};
-    var response = await sl<PreferencesRepository>().updatePreferences(body);
+    final body = {'enable_club_event_notification': value ? 1 : 0};
+    final response = await sl<PreferencesRepository>().updatePreferences(body);
     if (response != null) settings = response;
     if (response != null) _updateSettings(response);
     loader = false;
@@ -75,7 +75,7 @@ class NotifyPrefViewModel with ChangeNotifier {
   }
 
   void _updateSettings(Settings item) {
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<SettingsViewModel>(context, listen: false).updateSettings(item);
   }
 }

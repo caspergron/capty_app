@@ -27,8 +27,8 @@ class NewMessagesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
-    var style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
+    final gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,8 +50,8 @@ class NewMessagesList extends StatelessWidget {
   }
 
   Widget _messageItemCard(BuildContext context, int index) {
-    var item = messages[index];
-    var gap = Dimensions.screen_padding;
+    final item = messages[index];
+    final gap = Dimensions.screen_padding;
     return InkWell(
       onTap: () => onTap == null ? null : onTap!(item),
       child: TweenListItem(

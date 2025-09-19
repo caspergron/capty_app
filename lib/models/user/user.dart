@@ -158,7 +158,7 @@ class User {
 
   Country get country_item {
     if (country?.id != null) return country!;
-    var countries = AppPreferences.countries;
+    final countries = AppPreferences.countries;
     if (countries.isEmpty) return Country();
     if (!sl<AuthService>().authStatus || countryId == null) return countries.first;
     return countries.firstWhere((item) => (item.id ?? DEFAULT_ID) == countryId, orElse: () => countries.first);

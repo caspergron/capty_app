@@ -25,7 +25,7 @@ const _DISABLED_NOTIFICATIONS = ['Wesley de Ridder', 'Lance DuBos', 'Shane Egelu
 const _ENABLED_NOTIFICATIONS = ['adjust_club_details', 'edit_club_courses', 'control_other_relevant_club_data'];
 
 Future<void> courseManagementDialog() async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('course-management-popup');
   await showGeneralDialog(
     context: context,

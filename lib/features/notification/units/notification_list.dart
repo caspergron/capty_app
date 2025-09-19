@@ -27,8 +27,8 @@ class NotificationList extends StatelessWidget {
   }
 
   Widget _notificationItemCard(BuildContext context, int index) {
-    var item = notifications[index];
-    var borderSide = const BorderSide(color: mediumBlue);
+    final item = notifications[index];
+    const borderSide = BorderSide(color: mediumBlue);
     return InkWell(
       onTap: () => onRead == null ? null : onRead!(item),
       child: TweenListItem(
@@ -37,7 +37,7 @@ class NotificationList extends StatelessWidget {
           width: double.infinity,
           key: Key('notification-$index'),
           padding: EdgeInsets.only(top: index == 0 ? 0 : 10, bottom: 10),
-          decoration: BoxDecoration(border: index == notifications.length - 1 ? null : Border(bottom: borderSide)),
+          decoration: BoxDecoration(border: index == notifications.length - 1 ? null : const Border(bottom: borderSide)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

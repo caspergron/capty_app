@@ -32,16 +32,16 @@ extension ParseStrngs3 on String? {
 
   String get formatted_phone_number {
     if (this == null || this!.isEmpty) return '';
-    var number = this!.replaceAll('+', '').trim();
-    var expression = sl<RegExps>().spacingTwoDigit;
-    var plus = this!.contains('+') ? '+' : '';
+    final number = this!.replaceAll('+', '').trim();
+    final expression = sl<RegExps>().spacingTwoDigit;
+    final plus = this!.contains('+') ? '+' : '';
     return '$plus${number.replaceAllMapped(expression, (match) => '${match.group(0)} ')}'.trim();
   }
 
   String get recast {
     if (this == null || this!.isEmpty) return '';
     // return APP_STRINGS[this] ?? '';
-    var translations = AppPreferences.translations;
+    final translations = AppPreferences.translations;
     if (translations.isEmpty) return APP_STRINGS[this] ?? '';
     if (!translations.containsKey(this)) return APP_STRINGS[this] ?? '';
     // if (this == 'Save') print('${translations[this!]}');
@@ -57,13 +57,13 @@ extension ParseStrngs4 on String? {
 extension ParseString4 on String? {
   String get fileExtension {
     if (this == null) return '';
-    var index = this!.lastIndexOf('.');
+    final index = this!.lastIndexOf('.');
     if (index < 0 || index + 1 >= this!.length) return this!;
     return this!.substring(index + 1).toLower;
   }
 
   Color get background_color {
-    var primary_color = primary.colorOpacity(0.2);
+    final primary_color = primary.colorOpacity(0.2);
     if (this == null) return primary_color;
     if (this!.isEmpty || this!.length != 1 || !RegExp(r'^[A-Z]$').hasMatch(this!)) return primary_color;
     switch (this!.toUpper) {

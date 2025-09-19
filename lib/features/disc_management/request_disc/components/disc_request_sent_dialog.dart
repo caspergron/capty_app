@@ -15,7 +15,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> discRequestSentDialog() async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('disc-request-sent-dialog');
   await showGeneralDialog(
     context: context,

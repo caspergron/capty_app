@@ -25,76 +25,76 @@ import 'package:app/utils/api_url.dart';
 
 class MarketplaceRepository {
   Future<List<Tag>> fetchSpecialityDiscMenus({int isSpecial = 1}) async {
-    var endpoint = '${ApiUrl.user.tagList}?is_special=$isSpecial';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.tagList}?is_special=$isSpecial';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var tagsApi = TagsApi.fromJson(apiResponse.response);
+    final tagsApi = TagsApi.fromJson(apiResponse.response);
     return tagsApi.tags.haveList ? tagsApi.tags! : [];
   }
 
   Future<List<Tag>> fetchMarketplaceTags({int isHorizontal = 1}) async {
-    var endpoint = '${ApiUrl.user.tagList}?is_horizontal=$isHorizontal';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.tagList}?is_horizontal=$isHorizontal';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var tagsApi = TagsApi.fromJson(apiResponse.response);
-    var tagList = tagsApi.tags ?? [];
+    final tagsApi = TagsApi.fromJson(apiResponse.response);
+    final tagList = tagsApi.tags ?? [];
     if (tagList.isEmpty) return [];
-    var index = tagList.indexWhere((item) => item.name.toKey == 'country'.toKey);
+    final index = tagList.indexWhere((item) => item.name.toKey == 'country'.toKey);
     if (index >= 0) tagList[index].displayName = UserPreferences.user.country?.name ?? 'country'.recast;
     return tagList;
   }
 
   Future<List<MarketplaceCategory>> fetchMarketplaceDiscs({String params = ''}) async {
-    var endpoint = '${ApiUrl.user.marketplaceList}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.marketplaceList}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
-    var categories = marketplaceApi.categories ?? [];
+    final marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
+    final categories = marketplaceApi.categories ?? [];
     return categories;
   }
 
   /*Future<List<MarketplaceCategory>> fetchMarketplaceDiscsByCategory({int page = 1}) async {
-    var endpoint = '${ApiUrl.user.marketplaceList}?size=$LENGTH_08&page=$page';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.marketplaceList}?size=$LENGTH_08&page=$page';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
+    final marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
     return marketplaceApi.categories.haveList ? marketplaceApi.categories! : <MarketplaceCategory>[];
   }*/
 
   Future<List<SalesAd>> fetchMoreMarketplaceByUser(String params) async {
-    var endpoint = '${ApiUrl.user.marketplacesByUser}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.marketplacesByUser}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    final salesAdApi = SalesAdApi.fromJson(apiResponse.response);
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 
   Future<SalesAd?> fetchMarketplaceDetails(String params) async {
-    var endpoint = '${ApiUrl.user.marketplaceDetails}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.marketplaceDetails}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return SalesAd.fromJson(apiResponse.response['data']);
   }
 
   Future<List<SalesAd>> searchInMarketplace(String searchKey) async {
-    var endpoint = '${ApiUrl.user.searchMarketplace}$searchKey';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.searchMarketplace}$searchKey';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    final salesAdApi = SalesAdApi.fromJson(apiResponse.response);
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 
   Future<List<SalesAdType>> fetchSalesAdTypes() async {
-    var endpoint = ApiUrl.user.salesAdTypes;
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = ApiUrl.user.salesAdTypes;
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var salesAdTypeApi = SalesAdTypesApi.fromJson(apiResponse.response);
+    final salesAdTypeApi = SalesAdTypesApi.fromJson(apiResponse.response);
     return salesAdTypeApi.types.haveList ? salesAdTypeApi.types! : [];
   }
 
   Future<List<SalesAd>> fetchSalesAdDiscs(String params) async {
-    var endpoint = '${ApiUrl.user.salesAdList}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.salesAdList}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
     final salesAdApi = SalesAdApi.fromJson(apiResponse.response);
     // final salesAdList = salesAdApi.salesAdList ?? [];
@@ -105,94 +105,94 @@ class MarketplaceRepository {
   }
 
   Future<SalesAd?> createSalesAdDisc(Map<String, dynamic> body) async {
-    var context = navigatorKey.currentState!.context;
-    var endpoint = ApiUrl.user.createSalesAd;
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final context = navigatorKey.currentState!.context;
+    final endpoint = ApiUrl.user.createSalesAd;
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
     return SalesAd.fromJson(apiResponse.response['data']);
   }
 
   Future<SalesAd?> updateSalesAdDisc(int salesAdId, Map<String, dynamic> body) async {
-    var endpoint = '${ApiUrl.user.updateSalesAd}$salesAdId';
-    var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
+    final endpoint = '${ApiUrl.user.updateSalesAd}$salesAdId';
+    final apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
     ToastPopup.onInfo(message: 'disc_updated_successfully'.recast);
     return SalesAd.fromJson(apiResponse.response['data']);
   }
 
   Future<bool> deleteSalesAdDisc(int salesAdId) async {
-    var context = navigatorKey.currentState!.context;
-    var endpoint = '${ApiUrl.user.deleteSalesAd}$salesAdId';
-    var apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
+    final context = navigatorKey.currentState!.context;
+    final endpoint = '${ApiUrl.user.deleteSalesAd}$salesAdId';
+    final apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return false;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
     return true;
   }
 
   Future<List<SalesAd>> fetchSalesDiscsByClub(String params) async {
-    var endpoint = '${ApiUrl.user.salesDiscByClub}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.salesDiscByClub}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var salesAdApi = SalesAdApi.fromJson(apiResponse.response);
+    final salesAdApi = SalesAdApi.fromJson(apiResponse.response);
     return salesAdApi.salesAdList.haveList ? salesAdApi.salesAdList! : [];
   }
 
   Future<String?> fetchShareSalesAdLink() async {
-    var endpoint = ApiUrl.user.shareSalesAd;
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = ApiUrl.user.shareSalesAd;
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return apiResponse.response['data']['link'].toString();
   }
 
   Future<ClubTournamentInfo?> fetchClubTournamentInfo() async {
-    var endpoint = ApiUrl.user.clubTournamentInfo;
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = ApiUrl.user.clubTournamentInfo;
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return ClubTournamentInfo.fromJson(apiResponse.response['data']);
   }
 
   Future<ClubTournamentInfo?> fetchMatchedInfoWithSeller(int sellerId) async {
-    var endpoint = '${ApiUrl.user.matchedInfoWithSeller}$sellerId';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.matchedInfoWithSeller}$sellerId';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return ClubTournamentInfo.fromJson(apiResponse.response['data']);
   }
 
   Future<List<Address>> fetchSellerAddresses(int sellerId) async {
-    var endpoint = '${ApiUrl.user.addressList}?user_id=$sellerId';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.addressList}?user_id=$sellerId';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var addressesApi = AddressApi.fromJson(apiResponse.response);
+    final addressesApi = AddressApi.fromJson(apiResponse.response);
     return addressesApi.addresses.haveList ? addressesApi.addresses! : [];
   }
 
   Future<bool> storeDiscPopularity(int salesAdId) async {
-    var endpoint = ApiUrl.user.popularityCount;
-    var body = {'sales_ad_id': salesAdId};
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final endpoint = ApiUrl.user.popularityCount;
+    final body = {'sales_ad_id': salesAdId};
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     return apiResponse.status == 200;
   }
 
   Future<List<MarketplaceCategory>> fetchMarketplaceFavourites(String params) async {
-    var endpoint = '${ApiUrl.user.marketplaceFavouriteList}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.marketplaceFavouriteList}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
-    var categories = marketplaceApi.categories ?? [];
+    final marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
+    final categories = marketplaceApi.categories ?? [];
     return categories;
   }
 
   Future<bool> setMarketplaceDiscAsFavourite(Map<String, dynamic> body) async {
-    var endpoint = ApiUrl.user.setMarketplaceDiscAsFavourite;
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final endpoint = ApiUrl.user.setMarketplaceDiscAsFavourite;
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return false;
     return true;
   }
 
   Future<bool> removeMarketplaceDiscFromFavourite(int salesAdId) async {
-    var endpoint = '${ApiUrl.user.RemoveMarketplaceDiscFromFavourite}$salesAdId';
-    var apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.RemoveMarketplaceDiscFromFavourite}$salesAdId';
+    final apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return false;
     return true;
   }

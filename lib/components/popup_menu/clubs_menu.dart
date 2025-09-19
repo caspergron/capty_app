@@ -28,14 +28,14 @@ class ClubsMenu extends StatelessWidget {
       iconColor: grey,
       style: ButtonStyle(backgroundColor: WidgetStateProperty.all(skyBlue)),
       itemBuilder: (context) => List.generate(clubs.length, (index) {
-        var menu = clubs[index];
+        final menu = clubs[index];
         return PopupMenuItem(value: menu, height: 34, padding: const EdgeInsets.only(left: 20), child: _itemInfo(menu));
       }).toList(),
     );
   }
 
   Widget _itemInfo(Club menu) {
-    var isSelected = menu.id == item.id;
+    final isSelected = menu.id == item.id;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

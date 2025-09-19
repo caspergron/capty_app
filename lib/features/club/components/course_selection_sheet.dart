@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/components/headers/sheet_header_1.dart';
 import 'package:app/constants/app_keys.dart';
 import 'package:app/extensions/number_ext.dart';
@@ -11,11 +13,10 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
 
 Future<void> courseSelectionSheet({required Club club}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -46,20 +47,20 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   /*Future<void> initViewModel() async {
-    var position = await sl<Locations>().fetchLocationPermission();
-    var response = await sl<ClubRepository>().findNearbyCourses(position);
+    final position = await sl<Locations>().fetchLocationPermission();
+    final response = await sl<ClubRepository>().findNearbyCourses(position);
     _loader = false;
     setState(() {});
   }*/
 
   @override
   Widget build(BuildContext context) {
-    var padding = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
-    var style = TextStyles.text16_600.copyWith(color: lightBlue);
+    final padding = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final style = TextStyles.text16_600.copyWith(color: lightBlue);
     return Container(
       height: 70.height,
       width: SizeConfig.width,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +92,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   Widget get _noCourseFound {
-    var description = 'no_course_found_around_50km_on_your_location_please_try_Again_later'.recast;
+    final description = 'no_course_found_around_50km_on_your_location_please_try_Again_later'.recast;
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(

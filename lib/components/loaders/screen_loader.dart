@@ -29,7 +29,7 @@ class ScreenLoader extends StatelessWidget {
     if (Platform.isIOS) {
       return CupertinoActivityIndicator(color: color, radius: 20);
     } else {
-      var circleLoader = CircularProgressIndicator(color: color, backgroundColor: color.colorOpacity(0.3));
+      final circleLoader = CircularProgressIndicator(color: color, backgroundColor: color.colorOpacity(0.3));
       return SizedBox(height: 36, width: 36, child: circleLoader);
     }
   }

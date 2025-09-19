@@ -33,8 +33,8 @@ class UpcomingTournamentsList extends StatelessWidget {
   }
 
   Widget _tournamentItemCard(BuildContext context, int index) {
-    var item = tournaments[index];
-    var gap = Dimensions.screen_padding;
+    final item = tournaments[index];
+    final gap = Dimensions.screen_padding;
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(item),
       child: TweenListItem(

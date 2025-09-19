@@ -33,9 +33,9 @@ class FriendRequestList extends StatelessWidget {
   }
 
   Widget _friendItemCard(BuildContext context, int index) {
-    var item = friends[index];
-    var myId = UserPreferences.user.id;
-    var sender = myId == item.requestToUser?.id ? item.requestByUser : item.requestToUser;
+    final item = friends[index];
+    final myId = UserPreferences.user.id;
+    final sender = myId == item.requestToUser?.id ? item.requestByUser : item.requestToUser;
     return InkWell(
       onTap: onItem == null ? null : onItem!(item),
       child: TweenListItem(

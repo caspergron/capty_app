@@ -44,12 +44,12 @@ class WishlistGridList extends StatelessWidget {
   }
 
   SliverGridDelegateWithFixedCrossAxisCount get _gridDelegate {
-    var crossAxisCount = 2;
-    var spacing = 6.0;
-    var totalSpacing = (crossAxisCount - 1) * spacing;
-    var usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
-    var itemHeight = 270;
-    var aspectRatio = usableWidth / itemHeight;
+    const crossAxisCount = 2;
+    const spacing = 6.0;
+    const totalSpacing = (crossAxisCount - 1) * spacing;
+    final usableWidth = (SizeConfig.width - totalSpacing) / crossAxisCount;
+    const itemHeight = 270;
+    final aspectRatio = usableWidth / itemHeight;
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 4,
       crossAxisSpacing: 06,
@@ -59,10 +59,10 @@ class WishlistGridList extends StatelessWidget {
   }
 
   Widget _discItemCard(BuildContext context, int index) {
-    var item = wishlistItems[index];
+    final item = wishlistItems[index];
     if (index == 0 && item.id == DEFAULT_ID) return _addDiscItemCard;
-    var decoration = BoxDecoration(color: primary, borderRadius: BorderRadius.circular(8));
-    var rationSection = AspectRatio(aspectRatio: 1.1, child: Container(decoration: decoration));
+    final decoration = BoxDecoration(color: primary, borderRadius: BorderRadius.circular(8));
+    final rationSection = AspectRatio(aspectRatio: 1.1, child: Container(decoration: decoration));
     return TweenListItem(
       index: index,
       twinAnim: TwinAnim.right_to_left,
@@ -74,8 +74,8 @@ class WishlistGridList extends StatelessWidget {
   }
 
   Widget _discInformation(Wishlist item) {
-    var parentDisc = item.disc;
-    var userDisc = item.userDisc;
+    final parentDisc = item.disc;
+    final userDisc = item.userDisc;
     return Container(
       width: double.infinity,
       height: double.infinity,

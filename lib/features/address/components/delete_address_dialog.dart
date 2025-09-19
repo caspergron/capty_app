@@ -14,8 +14,8 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> deleteAddressDialog({Function()? onDelete}) async {
-  var context = navigatorKey.currentState!.context;
-  var child = Align(child: _DialogView(onDelete));
+  final context = navigatorKey.currentState!.context;
+  final child = Align(child: _DialogView(onDelete));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Delete Address Dialog',

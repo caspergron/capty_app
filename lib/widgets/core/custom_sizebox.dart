@@ -10,7 +10,7 @@ class SizeBoxHeight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var height = sl<DimensionHelper>().dimensionSizer(dimension);
+    final height = sl<DimensionHelper>().dimensionSizer(dimension);
     return SizedBox(height: height);
   }
 }
@@ -21,7 +21,7 @@ class SizeBoxWidth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = sl<DimensionHelper>().dimensionSizer(dimension);
+    final width = sl<DimensionHelper>().dimensionSizer(dimension);
     return SizedBox(width: width);
   }
 }

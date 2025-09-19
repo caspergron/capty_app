@@ -31,8 +31,8 @@ class MessageFeedsList extends StatelessWidget {
   }
 
   Widget _messageFeedsItemCard(BuildContext context, int index) {
-    var item = messageFeeds[index];
-    var isUnread = item.is_read == false;
+    final item = messageFeeds[index];
+    final isUnread = item.is_read == false;
     return InkWell(
       onTap: () => onRead == null ? null : onRead!(item, index),
       child: TweenListItem(

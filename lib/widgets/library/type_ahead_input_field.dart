@@ -69,13 +69,13 @@ class TypeAheadInputField<T> extends StatelessWidget {
   }
 
   Widget _notFoundBuilder(BuildContext context) {
-    var child = Text(notFoundText.recast, style: TextStyles.text14_500.copyWith(color: dark));
+    final child = Text(notFoundText.recast, style: TextStyles.text14_500.copyWith(color: dark));
     return Container(height: 50, alignment: Alignment.center, child: child);
   }
 
   Widget _typeAheadLoader(BuildContext context) {
-    var radius = BorderRadius.circular(4);
-    var loader = Container(height: 30, width: double.infinity, decoration: BoxDecoration(color: offWhite2, borderRadius: radius));
+    final radius = BorderRadius.circular(4);
+    final loader = Container(height: 30, width: double.infinity, decoration: BoxDecoration(color: offWhite2, borderRadius: radius));
     return Container(
       height: 90,
       color: white,

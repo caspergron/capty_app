@@ -29,7 +29,7 @@ class SpinnerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (expansionStatus == 2) return const SizedBox.shrink();
-    var isOpen = expansionStatus == 1;
+    final isOpen = expansionStatus == 1;
     return Container(
       height: height * 2,
       width: SizeConfig.width,
@@ -78,8 +78,8 @@ class _PrimaryCircleMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var radianGap = 3.14159 / circleItems.length;
-    var start = radianGap / 2;
+    final radianGap = 3.14159 / circleItems.length;
+    final start = radianGap / 2;
     return ClipRect(
       child: Align(
         heightFactor: 0.5,
@@ -126,7 +126,7 @@ class _EmptyLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var child = Container(width: radius, height: radius, decoration: BoxDecoration(shape: BoxShape.circle, color: color));
+    final child = Container(width: radius, height: radius, decoration: BoxDecoration(shape: BoxShape.circle, color: color));
     return ClipRect(child: Align(heightFactor: 0.5, alignment: Alignment.topCenter, child: child));
   }
 }

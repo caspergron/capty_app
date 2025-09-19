@@ -15,8 +15,8 @@ class ReportProblemViewModel with ChangeNotifier {
   Future<bool> onSendReport({required String title, required String description}) async {
     loader = true;
     notifyListeners();
-    var body = {'title': title, 'description': description};
-    var response = await sl<PreferencesRepository>().createReport(body);
+    final body = {'title': title, 'description': description};
+    final response = await sl<PreferencesRepository>().createReport(body);
     loader = false;
     notifyListeners();
     return response != null;
@@ -26,7 +26,7 @@ class ReportProblemViewModel with ChangeNotifier {
     final keysList = APP_STRINGS.keys.toList();
     final buffer = StringBuffer();
 
-    for (var i = 0; i < keysList.length; i++) {
+    for (final i = 0; i < keysList.length; i++) {
       buffer.write("'${keysList[i]}'");
       if (i != keysList.length - 1) {
         buffer.write(", ");

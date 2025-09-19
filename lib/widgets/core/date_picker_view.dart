@@ -56,7 +56,7 @@ class DatePickerView extends StatelessWidget {
   }
 
   Future<void> _showDatePicker(BuildContext context) async {
-    var picked = await showDatePicker(
+    final picked = await showDatePicker(
         context: context, lastDate: lastDate, firstDate: firstDate, currentDate: currentDate, initialDate: initialDate ?? currentDate);
     if (picked != null && onChanged != null) onChanged!(picked);
   }

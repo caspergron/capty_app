@@ -17,8 +17,8 @@ import 'package:app/utils/assets.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
-// var desc1 = 'Club connection: Wesley De Ridder will attend same tournament as this user';
-// var desc2 = 'Club connection: Wesley De Ridder will attend same tournament as this user';
+// final desc1 = 'Club connection: Wesley De Ridder will attend same tournament as this user';
+// final desc2 = 'Club connection: Wesley De Ridder will attend same tournament as this user';
 
 class MarketplaceDiskInfo extends StatelessWidget {
   final ChatBuddy buddy;
@@ -27,7 +27,7 @@ class MarketplaceDiskInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nameStyle = TextStyles.text16_600.copyWith(color: lightBlue, fontWeight: w500);
+    final nameStyle = TextStyles.text16_600.copyWith(color: lightBlue, fontWeight: w500);
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,
@@ -111,7 +111,7 @@ class MarketplaceDiskInfo extends StatelessWidget {
   }
 
   Widget _discItemCard(BuildContext context, int index) {
-    var item = discs[index];
+    final item = discs[index];
     return TweenListItem(
       index: index,
       twinAnim: TwinAnim.right_to_left,
@@ -139,8 +139,8 @@ class MarketplaceDiskInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var overflow = TextOverflow.ellipsis;
-    var style2 = TextStyles.text14_500.copyWith(color: primary, height: 1);
+    final overflow = TextOverflow.ellipsis;
+    final style2 = TextStyles.text14_500.copyWith(color: primary, height: 1);
     return Column(
       children: [
         CircleImage(

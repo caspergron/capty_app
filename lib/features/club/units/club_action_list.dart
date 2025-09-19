@@ -37,8 +37,8 @@ class ClubActionList extends StatelessWidget {
   }
 
   Widget _clubActionItemCard(BuildContext context, int index) {
-    var item = actions[index];
-    var gap = Dimensions.screen_padding;
+    final item = actions[index];
+    final gap = Dimensions.screen_padding;
     if (kDebugMode) print(item);
     return InkWell(
       // onTap: Routes.user.club(club: item).push,

@@ -35,8 +35,8 @@ class GridPathViewModel with ChangeNotifier {
   Future<void> _fetchGridPathsInfo() async {
     await Future.delayed(const Duration(seconds: 1));
     discBags.forEach((item) {
-      var graph = GraphModel();
-      var discs = item.userDiscs ?? [];
+      final graph = GraphModel();
+      final discs = item.userDiscs ?? [];
       graph.graphSpots = discs.isEmpty ? [] : sl<GraphHelper>().getScatterSpots(discs);
       Map<String, double> maxValues = sl<GraphHelper>().getMaxValuesForGrid(graph.graphSpots);
       graph.maxX = maxValues['max_x']!;
@@ -49,16 +49,16 @@ class GridPathViewModel with ChangeNotifier {
   }
 
   int findScattedIndex(ScatterSpot spot, int tabIndex) {
-    var graph = graphs[tabIndex];
+    final graph = graphs[tabIndex];
     if (graph.graphSpots.isEmpty) return -1;
     return graph.graphSpots.indexWhere((item) => item.x == spot.x && item.y == spot.y);
   }
 
   UserDisc? findDiscItemBySpotData(ScatterSpot spot, int tabIndex) {
-    var speed = spot.y;
-    var fade_plus_turn = spot.x;
-    var discBag = discBags[tabIndex];
-    var discs = discBag.userDiscs ?? [];
+    final speed = spot.y;
+    final fade_plus_turn = spot.x;
+    final discBag = discBags[tabIndex];
+    final discs = discBag.userDiscs ?? [];
     if (discs.isEmpty) return UserDisc();
     return discs.where((item) => item.speed?.nullToDouble == speed && item.turn_plus_fade == fade_plus_turn).toList().firstOrNull;
   }

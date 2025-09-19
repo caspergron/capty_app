@@ -27,16 +27,16 @@ class ImageService {
   }
 
   Future<ui.Image> fileToUiImage(File image) async {
-    var imageBytes = await image.readAsBytes();
-    var uiImage = await decodeImageFromList(imageBytes);
+    final imageBytes = await image.readAsBytes();
+    final uiImage = await decodeImageFromList(imageBytes);
     return uiImage;
   }
 
   Future<DocFile> getClippedCircleImage(File fileImage) async {
-    var cropped = await sl<ImageCroppers>().cropImage(image: fileImage, cropType: 'circle_clip');
+    final cropped = await sl<ImageCroppers>().cropImage(image: fileImage, cropType: 'circle_clip');
     if (cropped == null) return DocFile();
-    var compressed = await sl<FileCompressor>().compressFileImage(image: cropped);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([compressed]);
+    final compressed = await sl<FileCompressor>().compressFileImage(image: cropped);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([compressed]);
     return docFiles.isEmpty ? DocFile() : docFiles.first;
   }
 }

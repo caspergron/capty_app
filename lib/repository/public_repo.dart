@@ -41,36 +41,36 @@ import 'package:app/utils/api_url.dart';
 
 class PublicRepository {
   Future<List<Country>> fetchCountries() async {
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.countries);
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.countries);
     if (apiResponse.status != 200) return [];
-    var countryApi = CountryApi.fromJson(apiResponse.response);
-    var countries = countryApi.countries ?? [];
+    final countryApi = CountryApi.fromJson(apiResponse.response);
+    final countries = countryApi.countries ?? [];
     if (countries.isEmpty) return [];
-    var validCountries = countries.where((item) => item.currency?.id != null).toList();
+    final validCountries = countries.where((item) => item.currency?.id != null).toList();
     if (validCountries.isEmpty) return [];
     validCountries.sort((item1, item2) => item1.name!.compareTo(item2.name!));
     return validCountries;
   }
 
   Future<List<Currency>> fetchCurrencies() async {
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.currencies);
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.currencies);
     if (apiResponse.status != 200) return [];
-    var currenciesApi = CurrencyApi.fromJson(apiResponse.response);
+    final currenciesApi = CurrencyApi.fromJson(apiResponse.response);
     return currenciesApi.currencies.haveList ? currenciesApi.currencies! : [];
   }
 
   Future<List<Language>> fetchLanguages() async {
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.languages);
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: ApiUrl.public.languages);
     if (apiResponse.status != 200) return [];
-    var languageApi = LanguageApi.fromJson(apiResponse.response);
+    final languageApi = LanguageApi.fromJson(apiResponse.response);
     return languageApi.languages.haveList ? languageApi.languages! : [];
   }
 
   Future<Map<String, dynamic>?> fetchTranslations(Language language) async {
-    var endpoint = '${ApiUrl.public.translations}${language.code ?? 'en'}';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.public.translations}${language.code ?? 'en'}';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
-    var translations = apiResponse.response['data'];
+    final translations = apiResponse.response['data'];
     if (translations == null) return null;
     await initializeDateFormatting(language.code);
     Formatters.registerTimeAgoLocales(language.code ?? 'en');
@@ -84,18 +84,18 @@ class PublicRepository {
   }
 
   Future<List<Club>> findClubs(Coordinates coordinates, {int distance = 50}) async {
-    var userId = UserPreferences.user.id;
-    // var params = '?latitude=56.3876239&longitude=9.7604105&user_id=$userId&distance=$distance';
-    var params = '?latitude=${coordinates.lat}&longitude=${coordinates.lng}&user_id=$userId&distance=$distance';
-    var endpoint = '${ApiUrl.public.findClub}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final userId = UserPreferences.user.id;
+    // final params = '?latitude=56.3876239&longitude=9.7604105&user_id=$userId&distance=$distance';
+    final params = '?latitude=${coordinates.lat}&longitude=${coordinates.lng}&user_id=$userId&distance=$distance';
+    final endpoint = '${ApiUrl.public.findClub}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var clubsApi = ClubsApi.fromJson(apiResponse.response);
+    final clubsApi = ClubsApi.fromJson(apiResponse.response);
     return clubsApi.clubs.haveList ? clubsApi.clubs! : [];
   }
 
   void _updateStatesForLanguages() {
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<SignInViewModel>(context, listen: false).updateUi();
     Provider.of<OtpViewModel>(context, listen: false).updateUi();
     Provider.of<SetProfileViewModel>(context, listen: false).updateUi();
@@ -108,37 +108,37 @@ class PublicRepository {
   }
 
   Future<bool> addInWaitlist(Map<String, dynamic> body) async {
-    var endpoint = ApiUrl.public.addInWaitlist;
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final endpoint = ApiUrl.public.addInWaitlist;
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status == 200) return true;
     FlushPopup.onInfo(message: 'we_already_have_your_request'.recast);
     return false;
   }
 
   Future<bool> storeAppLogError(Map<String, dynamic> body) async {
-    var endpoint = ApiUrl.public.logError;
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final endpoint = ApiUrl.public.logError;
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     return apiResponse.status == 200;
   }
 
   Future<AppStatistics?> fetchAppStatistics() async {
-    var endpoint = ApiUrl.public.appStatistics;
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = ApiUrl.public.appStatistics;
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return AppStatistics.fromJson(apiResponse.response['data']);
   }
 
   Future<List<MarketplaceCategory>> fetchSalesAdsByCountry(String params) async {
-    var endpoint = '${ApiUrl.public.marketplaceDiscsByCountry}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.public.marketplaceDiscsByCountry}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
+    final marketplaceApi = MarketplaceApi.fromJson(apiResponse.response);
     return marketplaceApi.categories.haveList ? marketplaceApi.categories! : [];
   }
 
   Future<SalesAd?> fetchMarketplaceDetails(String params) async {
-    var endpoint = '${ApiUrl.public.marketplaceDetails}$params';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.public.marketplaceDetails}$params';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return null;
     return SalesAd.fromJson(apiResponse.response['data']);
   }
@@ -160,10 +160,10 @@ class PublicRepository {
   }
 
   Future<List<Tag>> fetchDiscTypes() async {
-    var endpoint = '${ApiUrl.user.tagList}?is_vertical=1';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.tagList}?is_vertical=1';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var tagsApi = TagsApi.fromJson(apiResponse.response);
+    final tagsApi = TagsApi.fromJson(apiResponse.response);
     return tagsApi.tags.haveList ? tagsApi.tags! : [];
   }
 }

@@ -26,7 +26,7 @@ class AnimatedRadio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var decoration2 = BoxDecoration(shape: BoxShape.circle, color: color);
+    final decoration2 = BoxDecoration(shape: BoxShape.circle, color: color);
     return InkWell(
       onTap: onChanged,
       child: Row(
@@ -52,5 +52,5 @@ class AnimatedRadio extends StatelessWidget {
     );
   }
 }
-// var icon = value ? Assets.svg1.radio_on : Assets.svg1.radio_off;
+// final icon = value ? Assets.svg1.radio_on : Assets.svg1.radio_off;
 // FadeAnimation(fadeKey: '$label', duration: _DURATION, child: SvgImage(image: icon, height: size, color: color)),

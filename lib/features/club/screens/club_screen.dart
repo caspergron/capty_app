@@ -57,8 +57,8 @@ class _ClubScreenState extends State<ClubScreen> {
 
   @override
   void initState() {
-    var club = widget.club;
-    var isHome = widget.isHome;
+    final club = widget.club;
+    final isHome = widget.isHome;
     sl<AppAnalytics>().screenView('club-screen');
     WidgetsBinding.instance.addPostFrameCallback((c) => isHome ? _viewModel.initViewModelHome() : _viewModel.initViewModelClub(club));
     super.initState();
@@ -79,8 +79,8 @@ class _ClubScreenState extends State<ClubScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var club = _modelData.club;
-    var clubs = _modelData.clubs;
+    final club = _modelData.club;
+    final clubs = _modelData.clubs;
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: AppDrawer(),
@@ -131,7 +131,7 @@ class _ClubScreenState extends State<ClubScreen> {
   Widget _screenView(BuildContext context) {
     if (_modelData.loader.initial) return const SizedBox.shrink();
     if (_modelData.clubs.isEmpty || _modelData.club.id == null) return _NoClubView();
-    var club = _modelData.club;
+    final club = _modelData.club;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -227,7 +227,7 @@ class _ClubScreenState extends State<ClubScreen> {
   }*/
 
   List<Widget> get _upcomingEventsSection {
-    var club = _modelData.club;
+    final club = _modelData.club;
     return [
       Text('$_SPACE20${'upcoming_events'.recast}', style: TextStyles.text18_600.copyWith(color: dark)),
       const SizedBox(height: 08),
@@ -254,7 +254,7 @@ class _ClubScreenState extends State<ClubScreen> {
   }
 
   Widget get _floatingButton {
-    var isOneClub = _modelData.clubs.length < 2;
+    final isOneClub = _modelData.clubs.length < 2;
     return FloatingActionButton(
       mini: true,
       backgroundColor: mediumBlue,
@@ -270,7 +270,7 @@ class _ClubScreenState extends State<ClubScreen> {
   // void _onSchedule() => scheduleEventDialog(club: _modelData.club, onSchedule: _viewModel.onScheduleEvent);
 
   void _goToMarketplace() {
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     LandingScreen.landingKey.currentState?.changeTab(4);
     Provider.of<LandingViewModel>(context, listen: false).updateView(4);
   }
@@ -279,7 +279,7 @@ class _ClubScreenState extends State<ClubScreen> {
 class _NoClubView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var style = TextStyles.text20_500.copyWith(color: primary, fontWeight: w600);
+    final style = TextStyles.text20_500.copyWith(color: primary, fontWeight: w600);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),

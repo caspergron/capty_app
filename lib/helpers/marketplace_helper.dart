@@ -8,7 +8,7 @@ class MarketplaceHelper {
     if (tag.id == null) {
       return '&page=$pageNumber$locationParams$filterParams'.trim();
     } else if (tag.name.toKey == 'country'.toKey) {
-      var countryId = UserPreferences.user.countryId;
+      final countryId = UserPreferences.user.countryId;
       return '&page=$pageNumber&sort_by=${tag.name.toKey}&country_id=$countryId$locationParams$filterParams'.trim();
     } else if (tag.name?.toKey == 'all'.toKey) {
       return '&page=$pageNumber$locationParams$filterParams'.trim();

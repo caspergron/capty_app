@@ -27,7 +27,7 @@ Future<void> eventDetailsDialog({
   Function(Map<String, dynamic>)? onJoin,
   Function(Map<String, dynamic>)? onShare,
 }) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Event Details Dialog',
@@ -73,7 +73,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var time = Formatters.formatDate(TIME_FORMAT_1, '$currentDate');
+    final time = Formatters.formatDate(TIME_FORMAT_1, '$currentDate');
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,7 +190,7 @@ class _DialogViewState extends State<_DialogView> {
 
   void _onComment() {
     if (_comment.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_comment'.recast);
-    // var data = {'price': widget.price, 'sold_info': _soldInfo, 'channel': _channel.text};
+    // final data = {'price': widget.price, 'sold_info': _soldInfo, 'channel': _channel.text};
     if (widget.onComment != null) widget.onComment!({});
     backToPrevious();
   }

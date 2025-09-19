@@ -32,8 +32,8 @@ class SuggestionMessageList extends StatelessWidget {
   }
 
   Widget _messageItemCard(BuildContext context, int index) {
-    var item = messages[index];
-    var myself = item.user?.id == sender.id;
+    final item = messages[index];
+    final myself = item.user?.id == sender.id;
     return Container(
       alignment: myself ? Alignment.centerRight : Alignment.centerLeft,
       margin: EdgeInsets.only(bottom: index == messages.length - 1 ? 0 : 10),

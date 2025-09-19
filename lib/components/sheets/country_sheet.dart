@@ -25,9 +25,9 @@ import 'package:app/widgets/exception/no_country_found.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 
 Future<void> countriesSheet({required Country country, required Function(Country) onChanged}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = _BottomSheetView(country, onChanged);
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = _BottomSheetView(country, onChanged);
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -73,7 +73,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       height: 70.height,
       width: SizeConfig.width,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +134,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   Widget _screenView(BuildContext context) {
     if (_loader) return const SizedBox.shrink();
     if (AppPreferences.countries.isEmpty) return NoCountryFound();
-    var countries = Country.countries_by_name(AppPreferences.countries, _search.text);
+    final countries = Country.countries_by_name(AppPreferences.countries, _search.text);
     return ListView(
       shrinkWrap: true,
       controller: ScrollController(),

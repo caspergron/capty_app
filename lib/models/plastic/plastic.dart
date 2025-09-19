@@ -33,7 +33,7 @@ class Plastic {
   static List<Plastic> plastics_by_name(List<Plastic> plastics, String key) {
     if (plastics.isEmpty) return [];
     if (key.isEmpty) return plastics;
-    var filteredPlastics = plastics.where((item) => item.name.toKey.contains(key.toKey)).toList();
+    final filteredPlastics = plastics.where((item) => item.name.toKey.contains(key.toKey)).toList();
     if (filteredPlastics.isEmpty) return [];
     filteredPlastics.sort((item1, item2) => item1.name.toKey.compareTo(item2.name.toKey));
     return filteredPlastics;

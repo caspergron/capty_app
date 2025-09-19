@@ -53,17 +53,17 @@ class ProfileViewModel with ChangeNotifier {
   Future<void> _fetchTournamentInfo() async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<UserRepository>().fetchPlayerTournamentInfo();
+    final response = await sl<UserRepository>().fetchPlayerTournamentInfo();
     if (response.isNotEmpty) upcomingTournaments = response;
     loader = Loader(initial: false, common: false);
     notifyListeners();
   }
 
   Future<void> _fetchSalesAdDiscs() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '&page=1$locationParams';
-    var response = await sl<MarketplaceRepository>().fetchSalesAdDiscs(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '&page=1$locationParams';
+    final response = await sl<MarketplaceRepository>().fetchSalesAdDiscs(params);
     salesAdDiscs.clear();
     if (response.isNotEmpty) salesAdDiscs = response;
     notifyListeners();
@@ -72,17 +72,17 @@ class ProfileViewModel with ChangeNotifier {
   Future<void> onUpdateProfileImage(File file) async {
     loader.common = true;
     notifyListeners();
-    var docFiles = await sl<FileHelper>().renderFilesInModel([file]);
-    var docFile = docFiles.first;
-    var imageName = basename(docFile.file!.path);
-    var base64 = 'data:image/${docFile.file?.path.fileExtension};base64,${docFile.base64}';
-    var body = {'type': 'image', 'section': 'user', 'alt_text': imageName, 'image': base64};
-    var response = await sl<UserRepository>().uploadBase64Media(body);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([file]);
+    final docFile = docFiles.first;
+    final imageName = basename(docFile.file!.path);
+    final base64 = 'data:image/${docFile.file?.path.fileExtension};base64,${docFile.base64}';
+    final body = {'type': 'image', 'section': 'user', 'alt_text': imageName, 'image': base64};
+    final response = await sl<UserRepository>().uploadBase64Media(body);
     if (response == null) return _stopLoader();
-    var userBody = {'media_id': response.id};
-    var userResponse = await sl<UserRepository>().updateProfileInfo(userBody);
+    final userBody = {'media_id': response.id};
+    final userResponse = await sl<UserRepository>().updateProfileInfo(userBody);
     if (userResponse == null) return _stopLoader();
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount());
     person = userResponse;
     UserPreferences.user = userResponse;
@@ -95,8 +95,8 @@ class ProfileViewModel with ChangeNotifier {
   Future<void> onUpdateProfile(Map<String, dynamic> params) async {
     loader.common = true;
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<UserRepository>().updateProfileInfo(params);
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<UserRepository>().updateProfileInfo(params);
     if (response == null) return _stopLoader();
     person = response;
     unawaited(Provider.of<HomeViewModel>(context, listen: false).fetchDashboardCount(isDelay: true));

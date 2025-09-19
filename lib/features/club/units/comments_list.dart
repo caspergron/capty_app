@@ -35,17 +35,17 @@ class CommentsList extends StatelessWidget {
   bool _isSameUser(int? userId1, int? userId2) => userId1 == null || userId2 == null ? true : userId1 == userId2;
 
   bool _isShowTime(int index) {
-    var message = messages[index];
+    final message = messages[index];
     if (message.createdAt == null) return false;
     if (index == messages.length - 1) return true;
     return !_isSameUser(message.userId, messages[index + 1].userId);
   }
 
   Widget _messageItemCard(BuildContext context, int index) {
-    var item = messages[index];
-    var isMe = item.userId == sender.id;
-    var isShowTime = _isShowTime(index);
-    // var isSameBot = index == 0 ? true : _isSameUser(item.userId, messages[index - 1].userId);
+    final item = messages[index];
+    final isMe = item.userId == sender.id;
+    final isShowTime = _isShowTime(index);
+    // final isSameBot = index == 0 ? true : _isSameUser(item.userId, messages[index - 1].userId);
     return Container(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       margin: EdgeInsets.only(bottom: index == messages.length - 1 ? 20 : (!isShowTime ? 6 : 16)),
@@ -68,24 +68,24 @@ class CommentsList extends StatelessWidget {
   }
 
   BoxDecoration _boxDecoration(int index, bool isMe) {
-    var radius = const Radius.circular(10);
-    var isNextSame = index != messages.length - 1 && _isSameUser(messages[index].id, messages[index + 1].id);
-    var left = isMe || (!isMe && isNextSame) ? radius : Radius.zero;
-    var right = !isMe || (isMe && isNextSame) ? radius : Radius.zero;
-    var borderRadius = BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: left, bottomRight: right);
+    const radius = Radius.circular(10);
+    final isNextSame = index != messages.length - 1 && _isSameUser(messages[index].id, messages[index + 1].id);
+    final left = isMe || (!isMe && isNextSame) ? radius : Radius.zero;
+    final right = !isMe || (isMe && isNextSame) ? radius : Radius.zero;
+    final borderRadius = BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: left, bottomRight: right);
     return BoxDecoration(color: isMe ? primary : offWhite2, borderRadius: borderRadius);
   }
 
   Widget _clubMemberInfo(User item) {
-    var icon = SvgImage(image: Assets.svg1.coach, height: 16, color: lightBlue);
-    var style = TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1);
-    var day = Formatters.formatDate(DATE_FORMAT_1, '$currentDate');
-    var time = Formatters.formatDate(TIME_FORMAT_1, '$currentDate');
+    final icon = SvgImage(image: Assets.svg1.coach, height: 16, color: lightBlue);
+    final style = TextStyles.text12_600.copyWith(color: lightBlue, height: 1.1);
+    final day = Formatters.formatDate(DATE_FORMAT_1, '$currentDate');
+    final time = Formatters.formatDate(TIME_FORMAT_1, '$currentDate');
     return Row(children: [icon, const SizedBox(width: 04), Text('Casper  $day, $time', style: style)]);
   }
 
   Widget _chatStatus(ClubComment item, int index) {
-    var style = TextStyles.text10_400.copyWith(color: lightBlue, fontWeight: w400);
+    final style = TextStyles.text10_400.copyWith(color: lightBlue, fontWeight: w400);
     if (item.createdAt == null) return Text('${'sending'.recast}...', style: style);
     if (!_isShowTime(index)) return const SizedBox.shrink();
     return Padding(padding: const EdgeInsets.only(top: 02), child: Text(Formatters.formatTime('${item.createdAt}'), style: style));
@@ -93,7 +93,7 @@ class CommentsList extends StatelessWidget {
 
   Widget _chatMessage(String? message, bool isMe) {
     if (message.toKey.isEmpty) return const SizedBox.shrink();
-    var style = TextStyles.text14_400.copyWith(color: isMe ? white : grey);
+    final style = TextStyles.text14_400.copyWith(color: isMe ? white : grey);
     return Text(message ?? '', textAlign: TextAlign.left, style: style);
   }
 }

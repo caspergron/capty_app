@@ -84,7 +84,7 @@ class Notification {
   }
 
   String get type_based_notify_icon {
-    var notifyKey = notificationType.toKey;
+    final notifyKey = notificationType.toKey;
     if (notifyKey == SEND_MESSAGE.toKey || notifyKey == SEND_MESSAGE_1_DAY.toKey || notifyKey == SEND_MESSAGE_3_DAY.toKey) {
       return Assets.svg1.comment;
     } else if (notifyKey == RECEIVE_FRIEND_REQUEST.toKey || notifyKey == ACCEPT_FRIEND_REQUEST.toKey) {

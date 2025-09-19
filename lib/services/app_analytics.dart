@@ -8,7 +8,7 @@ import 'package:app/models/user/user.dart';
 import 'package:app/preferences/user_preferences.dart';
 
 class AppAnalytics {
-  var analytics = FirebaseAnalytics.instance;
+  final analytics = FirebaseAnalytics.instance;
 
   User get _user => UserPreferences.user;
   bool get _isProd => foundation.kReleaseMode;

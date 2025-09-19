@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+
 import 'package:app/constants/data_constants.dart';
 import 'package:app/di.dart';
 import 'package:app/extensions/string_ext.dart';
@@ -21,7 +23,6 @@ import 'package:app/repository/marketplace_repo.dart';
 import 'package:app/repository/user_repo.dart';
 import 'package:app/services/api_status.dart';
 import 'package:app/services/app_analytics.dart';
-import 'package:flutter/cupertino.dart';
 
 class MarketplaceViewModel with ChangeNotifier {
   var loader = DEFAULT_LOADER;
@@ -65,13 +66,13 @@ class MarketplaceViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchClubTournamentsInfo() async {
-    var response = await sl<MarketplaceRepository>().fetchClubTournamentInfo();
+    final response = await sl<MarketplaceRepository>().fetchClubTournamentInfo();
     if (response != null) clubTournament = response;
     notifyListeners();
   }
 
   Future<void> fetchTags() async {
-    var tagResponse = await sl<MarketplaceRepository>().fetchMarketplaceTags();
+    final tagResponse = await sl<MarketplaceRepository>().fetchMarketplaceTags();
     if (tagResponse.isNotEmpty) tags = tagResponse;
     if (tags.isNotEmpty) tag = tags.first;
     notifyListeners();
@@ -104,16 +105,16 @@ class MarketplaceViewModel with ChangeNotifier {
   }
 
   Future<void> fetchFavouriteDiscs({bool isInit = false, bool isLoader = false, bool isPaginate = false, int index = 0}) async {
-    var invalidApiCall = favCategories.isNotEmpty && favCategories[index].is_page_loader;
+    final invalidApiCall = favCategories.isNotEmpty && favCategories[index].is_page_loader;
     if (invalidApiCall) return;
     loader.common = isLoader;
     if (favCategories.isNotEmpty) favCategories[index].paginate?.pageLoader = isPaginate;
     notifyListeners();
     final coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var pageNumber = favCategories.isNotEmpty && isPaginate ? favCategories[index].paginate?.page ?? 1 : 1;
-    var params = '$pageNumber$locationParams';
-    var response = await sl<MarketplaceRepository>().fetchMarketplaceFavourites(params);
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final pageNumber = favCategories.isNotEmpty && isPaginate ? favCategories[index].paginate?.page ?? 1 : 1;
+    final params = '$pageNumber$locationParams';
+    final response = await sl<MarketplaceRepository>().fetchMarketplaceFavourites(params);
     if (isLoader) favCategories.clear();
     if (response.isEmpty) return isInit ? notifyListeners() : _turnOffLoaders(index: index);
     pageNumber == 1 ? favCategories = response : _updateFavouritesData(response);
@@ -125,13 +126,13 @@ class MarketplaceViewModel with ChangeNotifier {
     for (final entry in favCategories.asMap().entries) {
       final catIndex = entry.key;
       final catItem = entry.value;
-      var newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
+      final newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
       if (newIndex >= 0) {
-        var newItem = responseList[newIndex];
+        final newItem = responseList[newIndex];
         favCategories[catIndex].salesAds ??= [];
         favCategories[catIndex].salesAds!.addAll(newItem.discs);
         favCategories[catIndex].pagination = newItem.pagination;
-        var newLength = newItem.discs.length;
+        final newLength = newItem.discs.length;
         favCategories[catIndex].paginate?.length = newLength;
         if (newLength >= LENGTH_10) favCategories[catIndex].paginate?.page = (favCategories[catIndex].paginate?.page ?? 0) + 1;
       }
@@ -140,7 +141,7 @@ class MarketplaceViewModel with ChangeNotifier {
 
   Future<void> _favouriteDiscsPaginationCheck() async {
     if (favCategories.isEmpty) return;
-    for (var entry in favCategories.asMap().entries) {
+    for (final entry in favCategories.asMap().entries) {
       final index = entry.key;
       final category = entry.value;
       final scrollController = category.scrollControl;
@@ -159,8 +160,8 @@ class MarketplaceViewModel with ChangeNotifier {
   Future<void> onSetAsFavourite(SalesAd item) async {
     loader.common = true;
     notifyListeners();
-    var body = {'sales_ad_id': item.id};
-    var response = await sl<MarketplaceRepository>().setMarketplaceDiscAsFavourite(body);
+    final body = {'sales_ad_id': item.id};
+    final response = await sl<MarketplaceRepository>().setMarketplaceDiscAsFavourite(body);
     if (!response) return _stopLoader();
     unawaited(fetchFavouriteDiscs());
     updateFavStatusInMarketplaceData(item: item, isFav: true);
@@ -170,7 +171,7 @@ class MarketplaceViewModel with ChangeNotifier {
   Future<void> onRemoveFromFavourite(SalesAd item) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<MarketplaceRepository>().removeMarketplaceDiscFromFavourite(item.id!);
+    final response = await sl<MarketplaceRepository>().removeMarketplaceDiscFromFavourite(item.id!);
     if (!response) return _stopLoader();
     updateFavStatusInFavouriteData(item: item);
     updateFavStatusInMarketplaceData(item: item);
@@ -178,15 +179,15 @@ class MarketplaceViewModel with ChangeNotifier {
   }
 
   Future<void> generateFilterUrl({bool isLoader = false, bool isPaginate = false, int index = 0}) async {
-    var invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
+    final invalidApiCall = categories.isNotEmpty && categories[index].is_page_loader;
     if (invalidApiCall) return;
     loader.common = isLoader;
     if (categories.isNotEmpty) categories[index].paginate?.pageLoader = isPaginate;
     notifyListeners();
     var params = '';
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
     if (searchKey.isNotEmpty) {
       params = '&page=$pageNumber$locationParams&search=$searchKey'.trim();
       unawaited(_fetchMarketplaceDiscs(isLoader: isLoader, isPaginate: isPaginate, index: index, params: params));
@@ -198,8 +199,8 @@ class MarketplaceViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchMarketplaceDiscs({bool isLoader = false, bool isPaginate = false, String params = '', int index = 0}) async {
-    var pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
-    var response = await sl<MarketplaceRepository>().fetchMarketplaceDiscs(params: params);
+    final pageNumber = categories.isNotEmpty && isPaginate ? categories[index].paginate?.page ?? 1 : 1;
+    final response = await sl<MarketplaceRepository>().fetchMarketplaceDiscs(params: params);
     if (isLoader) categories.clear();
     if (response.isEmpty) return _turnOffLoaders(index: index);
     pageNumber == 1 ? categories = response : _updateMarketplaceData(response);
@@ -213,13 +214,13 @@ class MarketplaceViewModel with ChangeNotifier {
     for (final entry in categories.asMap().entries) {
       final catIndex = entry.key;
       final catItem = entry.value;
-      var newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
+      final newIndex = responseList.indexWhere((element) => element.name.toKey == catItem.name.toKey);
       if (newIndex >= 0) {
-        var newItem = responseList[newIndex];
+        final newItem = responseList[newIndex];
         categories[catIndex].salesAds ??= [];
         categories[catIndex].salesAds!.addAll(newItem.discs);
         categories[catIndex].pagination = newItem.pagination;
-        var newLength = newItem.discs.length;
+        final newLength = newItem.discs.length;
         categories[catIndex].paginate?.length = newLength;
         if (newLength >= LENGTH_10) categories[catIndex].paginate?.page = (categories[catIndex].paginate?.page ?? 0) + 1;
       }
@@ -247,7 +248,7 @@ class MarketplaceViewModel with ChangeNotifier {
 
   Future<void> _marketplacePaginationCheck() async {
     if (categories.isEmpty) return;
-    for (var entry in categories.asMap().entries) {
+    for (final entry in categories.asMap().entries) {
       final index = entry.key;
       final category = entry.value;
       final scrollController = category.scrollControl;
@@ -298,7 +299,7 @@ class MarketplaceViewModel with ChangeNotifier {
   Future<void> onShareSalesAd() async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<MarketplaceRepository>().fetchShareSalesAdLink();
+    final response = await sl<MarketplaceRepository>().fetchShareSalesAdLink();
     if (response != null) unawaited(shareSalesAdDialog(url: response));
     loader.common = false;
     notifyListeners();
@@ -307,8 +308,8 @@ class MarketplaceViewModel with ChangeNotifier {
   Future<void> onUpdatePrice(String price, SalesAd marketplace, int index) async {
     loader.common = true;
     notifyListeners();
-    var body = {'price': price, 'currency_id': UserPreferences.currency.id};
-    var response = await sl<MarketplaceRepository>().updateSalesAdDisc(marketplace.id!, body);
+    final body = {'price': price, 'currency_id': UserPreferences.currency.id};
+    final response = await sl<MarketplaceRepository>().updateSalesAdDisc(marketplace.id!, body);
     if (response != null) salesAdDiscs[index] = response;
     if (response != null) ToastPopup.onInfo(message: 'price_updated_successfully'.recast);
     loader.common = false;
@@ -318,7 +319,7 @@ class MarketplaceViewModel with ChangeNotifier {
   Future<void> onMarkAsSold(Map<String, dynamic> params, SalesAd salesAd, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<MarketplaceRepository>().updateSalesAdDisc(salesAd.id!, params);
+    final response = await sl<MarketplaceRepository>().updateSalesAdDisc(salesAd.id!, params);
     if (response == null) return _stopLoader();
     _removeSalesAdFromMarketplace(salesAd);
     await fetchSalesAdDiscs();
@@ -330,7 +331,7 @@ class MarketplaceViewModel with ChangeNotifier {
   Future<void> onRemoveSalesAd(SalesAd salesAd, int index) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<MarketplaceRepository>().deleteSalesAdDisc(salesAd.id!);
+    final response = await sl<MarketplaceRepository>().deleteSalesAdDisc(salesAd.id!);
     if (!response) return _stopLoader();
     _removeSalesAdFromMarketplace(salesAd);
     await fetchSalesAdDiscs();
@@ -339,9 +340,9 @@ class MarketplaceViewModel with ChangeNotifier {
   }
 
   Future<int?> _fetchMediaId(DocFile docFile) async {
-    var base64 = 'data:image/jpeg;base64,${docFile.base64}';
-    var mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
-    var response = await sl<UserRepository>().uploadBase64Media(mediaBody);
+    final base64 = 'data:image/jpeg;base64,${docFile.base64}';
+    final mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
+    final response = await sl<UserRepository>().uploadBase64Media(mediaBody);
     return response?.id;
   }
 
@@ -351,9 +352,9 @@ class MarketplaceViewModel with ChangeNotifier {
     var mediaId = null as int?;
     mediaId = docFile == null ? item.userDisc?.media?.id : await _fetchMediaId(docFile);
     if (mediaId == null) return _stopLoader();
-    var salesAdId = item.id!;
+    final salesAdId = item.id!;
     body.addAll({'media_id': mediaId});
-    var response = await sl<MarketplaceRepository>().updateSalesAdDisc(salesAdId, body);
+    final response = await sl<MarketplaceRepository>().updateSalesAdDisc(salesAdId, body);
     if (response != null) salesAdDiscs[index] = response;
     _stopLoader();
   }
@@ -361,8 +362,8 @@ class MarketplaceViewModel with ChangeNotifier {
   void _removeSalesAdFromMarketplace(SalesAd salesAdItem) {
     if (categories.isEmpty) return;
     categories.asMap().forEach((index, category) {
-      var discsList = category.discs;
-      var adIndex = discsList.indexWhere((element) => element.id == salesAdItem.id);
+      final discsList = category.discs;
+      final adIndex = discsList.indexWhere((element) => element.id == salesAdItem.id);
       if (adIndex >= 0) categories[index].salesAds?.removeAt(adIndex);
     });
     notifyListeners();
@@ -370,10 +371,10 @@ class MarketplaceViewModel with ChangeNotifier {
 
   void updateFavStatusInMarketplaceData({required SalesAd item, bool isFav = false}) {
     if (categories.isEmpty) return;
-    var isFavorite = isFav ? 1 : 0;
+    final isFavorite = isFav ? 1 : 0;
     categories.asMap().forEach((index, category) {
-      var discsList = category.discs;
-      var adIndex = discsList.indexWhere((element) => element.id == item.id);
+      final discsList = category.discs;
+      final adIndex = discsList.indexWhere((element) => element.id == item.id);
       if (adIndex >= 0) categories[index].salesAds?[adIndex].isFavorite = isFavorite;
     });
     notifyListeners();
@@ -382,8 +383,8 @@ class MarketplaceViewModel with ChangeNotifier {
   void updateFavStatusInFavouriteData({required SalesAd item}) {
     if (favCategories.isEmpty) return;
     favCategories.asMap().forEach((index, category) {
-      var discsList = category.discs;
-      var adIndex = discsList.indexWhere((element) => element.id == item.id);
+      final discsList = category.discs;
+      final adIndex = discsList.indexWhere((element) => element.id == item.id);
       if (adIndex >= 0) favCategories[index].salesAds?.removeAt(adIndex);
     });
     favCategories.removeWhere((element) => element.discs.isEmpty);

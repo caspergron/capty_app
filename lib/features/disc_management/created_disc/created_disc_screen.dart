@@ -91,7 +91,7 @@ class _CreatedDiscScreenState extends State<CreatedDiscScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var userDisc = widget.disc;
+    final userDisc = widget.disc;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -148,8 +148,8 @@ class _CreatedDiscScreenState extends State<CreatedDiscScreen> {
   }
 
   Widget get _discInfo {
-    var name = widget.disc.name ?? 'n/a'.recast;
-    var subLabel = '${widget.disc.brand?.name ?? 'n/a'.recast} . ${widget.disc.type ?? 'n/a'.recast}';
+    final name = widget.disc.name ?? 'n/a'.recast;
+    final subLabel = '${widget.disc.brand?.name ?? 'n/a'.recast} . ${widget.disc.type ?? 'n/a'.recast}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 06),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(12)),

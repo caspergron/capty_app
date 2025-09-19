@@ -75,7 +75,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   List<Widget> _screenView(BuildContext context) {
-    var icon = Assets.svg1.close_2;
+    final icon = Assets.svg1.close_2;
     return [
       Positioned.fill(child: MapAddressPicker(coordinates: _modelData.centerLocation, onMoveCamera: _onCameraMove)),
       Positioned(left: 16, top: SizeConfig.statusBar + 12, child: const BackMenu()),
@@ -93,7 +93,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               hintText: 'Search address',
               suffixIcon: _search.text.isEmpty ? null : SuffixMenu(icon: icon, isFocus: _focusNode.hasFocus, onTap: _onClose),
               onChanged: (val) {
-                var coordinates = Coordinates(lat: _viewModel.centerLocation.lat, lng: _viewModel.centerLocation.lng);
+                final coordinates = Coordinates(lat: _viewModel.centerLocation.lat, lng: _viewModel.centerLocation.lng);
                 val.length >= 4 ? _viewModel.fetchAddressPredictions(val, coordinates) : _viewModel.suggestions.clear();
                 setState(() {});
               },
@@ -122,7 +122,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Future<void> _onCameraMove(Coordinates coordinates) async {
     if (_viewModel.centerLocation.lat == coordinates.lat && _viewModel.centerLocation.lng == coordinates.lng) return;
     setState(() => _viewModel.centerLocation = coordinates);
-    var response = await _viewModel.fetchAddressInfoByCoordinates(coordinates);
+    final response = await _viewModel.fetchAddressInfoByCoordinates(coordinates);
     _search.text = '';
     if (response == null) {
       if (_isFirst) return setState(() => _isFirst = false);
@@ -141,13 +141,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   Future<void> _onPlaceItem(int index) async {
-    var placeId = _viewModel.suggestions[index]['place_id'];
+    final placeId = _viewModel.suggestions[index]['place_id'];
     // FocusScope.of(context).unfocus();
-    var response = await _viewModel.fetchAddressInfoByPlaceId(placeId);
+    final response = await _viewModel.fetchAddressInfoByPlaceId(placeId);
     _search.text = '';
     // if (response == null) return;
     if (response == null) return FlushPopup.onInfo(message: 'place_information_not_found'.recast);
-    var coordinates = response['coordinates'] as Coordinates;
+    final coordinates = response['coordinates'] as Coordinates;
     _viewModel.centerLocation = coordinates;
     _search.text = response['address'];
     FocusScope.of(context).unfocus();
@@ -183,10 +183,10 @@ class _GooglePlacesList extends StatelessWidget {
   }
 
   Widget _placeListItem(BuildContext context, int index) {
-    var item = suggestions[index];
-    var style = TextStyles.text14_400.copyWith(color: primary, height: 1);
-    var label = Text(item['description'], maxLines: 2, overflow: TextOverflow.ellipsis, style: style);
-    var icon = const Icon(Icons.location_on, size: 20, color: Colors.grey);
+    final item = suggestions[index];
+    final style = TextStyles.text14_400.copyWith(color: primary, height: 1);
+    final label = Text(item['description'], maxLines: 2, overflow: TextOverflow.ellipsis, style: style);
+    const icon = Icon(Icons.location_on, size: 20, color: Colors.grey);
     return InkWell(
       onTap: () => onTap == null ? null : onTap!(index),
       child: Container(

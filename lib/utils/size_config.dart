@@ -14,7 +14,7 @@ class SizeConfig {
   static bool bNotch = false;
 
   static void initMediaQuery(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
+    final mediaQuery = MediaQuery.of(context);
     statusBar = mediaQuery.padding.top;
     bottom = mediaQuery.viewPadding.bottom;
     bNotch = mediaQuery.viewPadding.bottom > 0;

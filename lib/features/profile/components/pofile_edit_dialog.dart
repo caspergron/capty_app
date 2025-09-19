@@ -20,7 +20,7 @@ import 'package:app/widgets/core/input_field.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> editProfileDialog({required User person, Function(Map<String, dynamic>)? onEdit}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Edit Profile Dialog',
@@ -42,7 +42,7 @@ class _DialogView extends StatefulWidget {
 }
 
 class _DialogViewState extends State<_DialogView> {
-  // var _isDiscUsername = false;
+  // final _isDiscUsername = false;
   var _isPGDANumber = false;
   // var _selectedHand = DataModel();
   var _name = TextEditingController();
@@ -59,7 +59,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   void _setInitialStates() {
-    var user = UserPreferences.user;
+    final user = UserPreferences.user;
     _name.text = user.name ?? '';
     _discUsername.text = user.uDiscUsername ?? '';
     _pgdaNumber.text = user.pdgaNumber ?? '';
@@ -171,8 +171,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   /*Widget _handListItemCard(BuildContext context, int index) {
-    var item = HANDS_LIST[index];
-    var selected = _selectedHand.value == item.value;
+    final item = HANDS_LIST[index];
+    final selected = _selectedHand.value == item.value;
     return InkWell(
       onTap: () => setState(() => _selectedHand = item),
       child: Row(
@@ -187,14 +187,14 @@ class _DialogViewState extends State<_DialogView> {
   }*/
 
   void _onSaveProfile() {
-    var invalidName = sl<Validators>().fullName(_name.text);
+    final invalidName = sl<Validators>().fullName(_name.text);
     if (invalidName != null) return FlushPopup.onWarning(message: invalidName);
-    // var invalidUDiscUsername = _isDiscUsername && _discUsername.text.isEmpty;
+    // final invalidUDiscUsername = _isDiscUsername && _discUsername.text.isEmpty;
     // if (invalidUDiscUsername) return FlushPopup.onWarning(message: 'please_write_your_udisc_username'.recast);
-    var invalidPGDANumber = _isPGDANumber && _pgdaNumber.text.isEmpty;
+    final invalidPGDANumber = _isPGDANumber && _pgdaNumber.text.isEmpty;
     if (invalidPGDANumber) return FlushPopup.onWarning(message: 'please_write_your_pdga_number'.recast);
     // if (_selectedHand.value.isEmpty) return FlushPopup.onWarning(message: 'please_select_an_option_of_your_hand'.recast);
-    var body = {
+    final body = {
       'name': _name.text,
       // if (_isDiscUsername) 'udisc_username': _discUsername.text,
       if (_isPGDANumber) 'pdga_number': _pgdaNumber.text,

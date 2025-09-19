@@ -34,7 +34,7 @@ class SearchDiscScreen extends StatefulWidget {
 
 class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerProviderStateMixin {
   var _focusNode = FocusNode();
-  var _search = TextEditingController();
+  final _search = TextEditingController();
   // late TabController _tabController;
   var _viewModel = SearchDiscViewModel();
   var _modelData = SearchDiscViewModel();
@@ -86,8 +86,8 @@ class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerPr
   }
 
   Widget get _searchDiscView {
-    var padding = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
-    var label = widget.index == 0 ? 'search_for_the_disc_you_want_to_add_to_your_bag' : 'search_for_the_disc_you_want_to_add_to_your_bag';
+    final padding = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final label = widget.index == 0 ? 'search_for_the_disc_you_want_to_add_to_your_bag' : 'search_for_the_disc_you_want_to_add_to_your_bag';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -120,8 +120,8 @@ class _SearchDiscScreenState extends State<SearchDiscScreen> with SingleTickerPr
   }
 
   void _onDiscItem(ParentDisc disc) {
-    var index = widget.index;
-    var userDisc = disc.parent_disc_to_user_disc;
+    final index = widget.index;
+    final userDisc = disc.parent_disc_to_user_disc;
     index == 0 ? Routes.user.add_disc(disc: disc).push() : Routes.user.create_sales_ad(tabIndex: index, disc: userDisc).push();
   }
 }

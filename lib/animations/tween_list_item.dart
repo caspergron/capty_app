@@ -14,7 +14,7 @@ class TweenListItem extends StatelessWidget {
       tween: Tween<double>(begin: 0, end: 1),
       duration: Duration(milliseconds: 700 + (index * 100)),
       builder: (context, value, builderChild) {
-        var offset = twinAnim == TwinAnim.right_to_left ? Offset(30 * (1 - value), 0) : Offset(0, 30 * (1 - value));
+        final offset = twinAnim == TwinAnim.right_to_left ? Offset(30 * (1 - value), 0) : Offset(0, 30 * (1 - value));
         return Opacity(opacity: value, child: Transform.translate(offset: offset, child: builderChild));
       },
       child: child,

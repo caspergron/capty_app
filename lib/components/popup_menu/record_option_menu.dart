@@ -22,14 +22,14 @@ class RecordOptionMenu extends StatelessWidget {
       onSelected: onSelect,
       iconColor: grey,
       itemBuilder: (context) => List.generate(RECORD_MENU_LIST.length, (index) {
-        var menu = RECORD_MENU_LIST[index];
+        final menu = RECORD_MENU_LIST[index];
         return PopupMenuItem(value: index, height: 34, padding: const EdgeInsets.only(left: 20), child: _itemInfo(menu));
       }).toList(),
     );
   }
 
   Widget _itemInfo(DataModel menu) {
-    var isRed = menu.value == DELETE.value;
+    final isRed = menu.value == DELETE.value;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

@@ -48,16 +48,16 @@ class SettingsViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchAllPreferences() async {
-    var response = await sl<PreferencesRepository>().fetchAllPreferences();
+    final response = await sl<PreferencesRepository>().fetchAllPreferences();
     if (response != null) settings = response;
     notifyListeners();
   }
 
   void _setInitialData() {
-    var user = sl<StorageService>().user;
-    var currencies = AppPreferences.currencies;
-    var code = user.currency?.code ?? UserPreferences.currencyCode;
-    var index = currencies.indexWhere((item) => item.code.toKey == code.toKey);
+    final user = sl<StorageService>().user;
+    final currencies = AppPreferences.currencies;
+    final code = user.currency?.code ?? UserPreferences.currencyCode;
+    final index = currencies.indexWhere((item) => item.code.toKey == code.toKey);
     if (index < 0) return;
     currency = currencies[index];
     user.currency = currency;
@@ -78,9 +78,9 @@ class SettingsViewModel with ChangeNotifier {
   Future<void> onCurrency(Currency item) async {
     loader.common = true;
     notifyListeners();
-    var user = sl<StorageService>().user;
-    var body = {'currency_id': item.id};
-    var response = await sl<PreferencesRepository>().updateCurrency(body);
+    final user = sl<StorageService>().user;
+    final body = {'currency_id': item.id};
+    final response = await sl<PreferencesRepository>().updateCurrency(body);
     loader.common = false;
     if (response == null) return notifyListeners();
     currency = item;
@@ -93,7 +93,7 @@ class SettingsViewModel with ChangeNotifier {
   }
 
   Future<void> onLocation(bool value) async {
-    // var isLocation = await sl<Locations>().fetchLocationPermission();
+    // final isLocation = await sl<Locations>().fetchLocationPermission();
     // settings.enableLocation = value;
     // notifyListeners();
   }
@@ -101,8 +101,8 @@ class SettingsViewModel with ChangeNotifier {
   Future<void> onShareLeaderboard(bool value) async {
     loader.common = true;
     notifyListeners();
-    var body = {'share_leaderboard': value ? 1 : 0};
-    var response = await sl<UserRepository>().updateLeaderboardSharing(body);
+    final body = {'share_leaderboard': value ? 1 : 0};
+    final response = await sl<UserRepository>().updateLeaderboardSharing(body);
     if (response != null) FlushPopup.onInfo(message: '${'leaderboard_sharing_is'.recast} ${(value ? 'turned_on' : 'turned_off').recast}');
     loader.common = false;
     notifyListeners();
@@ -116,7 +116,7 @@ class SettingsViewModel with ChangeNotifier {
   Future<void> onDeleteAccount() async {
     unawaited(defaultLoaderSheet(label: 'deleting_account'));
     await Future.delayed(const Duration(milliseconds: 1000));
-    var response = await sl<UserRepository>().deleteAccount();
+    final response = await sl<UserRepository>().deleteAccount();
     if (!response) {
       backToPrevious();
       FlushPopup.onWarning(message: 'server_error_please_contact_with_capty'.recast);

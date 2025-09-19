@@ -14,12 +14,12 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
-var _SETTINGS = DataModel(icon: Assets.svg1.repair, label: 'club_settings');
-// var _MAINTENANCE = DataModel(icon: Assets.svg1.repair, label: 'club_maintenance');
-var _SCHEDULE_EVENT = DataModel(icon: Assets.svg1.calendar_dots, label: 'schedule_event');
+final _SETTINGS = DataModel(icon: Assets.svg1.repair, label: 'club_settings');
+// final _MAINTENANCE = DataModel(icon: Assets.svg1.repair, label: 'club_maintenance');
+final _SCHEDULE_EVENT = DataModel(icon: Assets.svg1.calendar_dots, label: 'schedule_event');
 
 Future<void> clubOptionsDialog({Function()? onSchedule, Function()? onSettings}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('club-options-popup');
   await showGeneralDialog(
     context: context,

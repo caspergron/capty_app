@@ -225,10 +225,10 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
       setState(() => _modelData.step = 2);
     } else {
       if (_socialLink.text.isNotEmpty) {
-        var invalidLink = sl<Validators>().validateSocialLink(_socialLink.text);
+        final invalidLink = sl<Validators>().validateSocialLink(_socialLink.text);
         if (invalidLink != null) return FlushPopup.onWarning(message: invalidLink);
       }
-      var body = {
+      final body = {
         'name': _name.text,
         'description': _description.text,
         'social_link': _socialLink.text,
@@ -239,7 +239,7 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
   }
 
   Widget get _noCourseFound {
-    var style = TextStyles.text12_400.copyWith(color: primary);
+    final style = TextStyles.text12_400.copyWith(color: primary);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 11),
@@ -249,8 +249,8 @@ class _CreateClubScreenState extends State<CreateClubScreen> {
   }
 
   Widget get _clubExistIn10Km {
-    var clubName = _modelData.clubs.first.name ?? '';
-    var style = TextStyles.text12_400.copyWith(color: primary);
+    final clubName = _modelData.clubs.first.name ?? '';
+    final style = TextStyles.text12_400.copyWith(color: primary);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 11),

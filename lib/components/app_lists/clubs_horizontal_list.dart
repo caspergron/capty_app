@@ -52,8 +52,8 @@ import 'package:app/widgets/library/svg_image.dart';*/
   }
 
   Widget _clubItemCard(BuildContext context, int index) {
-    var item = clubs[index];
-    var gap = Dimensions.screen_padding;
+    final item = clubs[index];
+    final gap = Dimensions.screen_padding;
     return InkWell(
       onTap: Routes.user.club(club: item).push,
       child: TweenListItem(
@@ -150,7 +150,7 @@ import 'package:app/widgets/library/svg_image.dart';*/
   }
 
   Widget _noClubFound(BuildContext context) {
-    var label = 'sorry_we_cant_show_you_the_nearest_events'.recast;
+    final label = 'sorry_we_cant_show_you_the_nearest_events'.recast;
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(left: Dimensions.screen_padding, right: Dimensions.screen_padding, bottom: 12),

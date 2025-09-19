@@ -15,7 +15,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> joinAdministratorDialog({Function()? onProceed}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('join-administrator-popup');
   await showGeneralDialog(
     context: context,

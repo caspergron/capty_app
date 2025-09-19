@@ -14,7 +14,7 @@ class Favourite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var icon = status ? Assets.svg2.heart : Assets.svg1.heart;
+    final icon = status ? Assets.svg2.heart : Assets.svg1.heart;
     return GestureDetector(onTap: onTap, child: SvgImage(image: icon, height: height, color: color));
   }
 }

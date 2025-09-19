@@ -40,7 +40,7 @@ class BuddiesViewModel with ChangeNotifier {
     if (paginate.pageLoader) return;
     paginate.pageLoader = isPaginate;
     notifyListeners();
-    var response = await sl<ChatRepository>().fetchChats();
+    final response = await sl<ChatRepository>().fetchChats();
     paginate.length = response.length;
     if (paginate.page == 1) messageFeeds.clear();
     if (paginate.length >= LENGTH_20) paginate.page++;
@@ -58,7 +58,7 @@ class BuddiesViewModel with ChangeNotifier {
 
   void removeMessage(int receiverId) {
     if (messageFeeds.isEmpty) return;
-    var index = messageFeeds.indexWhere((item) => item.senderId == receiverId);
+    final index = messageFeeds.indexWhere((item) => item.senderId == receiverId);
     if (index < 0) return;
     messageFeeds.removeAt(index);
     notifyListeners();
@@ -67,8 +67,8 @@ class BuddiesViewModel with ChangeNotifier {
   void setLastMessage(ChatMessage message) {
     if (messageFeeds.isEmpty) return;
     if (message.chatStatus == null) return;
-    var meAsSender = message.senderId == UserPreferences.user.id;
-    var index = messageFeeds.indexWhere((item) => meAsSender ? item.receiverId == message.receiverId : item.senderId == message.senderId);
+    final meAsSender = message.senderId == UserPreferences.user.id;
+    final index = messageFeeds.indexWhere((item) => meAsSender ? item.receiverId == message.receiverId : item.senderId == message.senderId);
     if (index < 0) return;
     messageFeeds[index].message = message.message;
     messageFeeds[index].sendTime = message.sendTime;
@@ -77,14 +77,14 @@ class BuddiesViewModel with ChangeNotifier {
     messageFeeds[index].updatedAt = message.updatedAt;
     messageFeeds.sort((item1, item2) => item2.sendTime.dateToKey.compareTo(item1.sendTime.dateToKey));
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<HomeViewModel>(context, listen: false).updateUi();
   }
 
   void setReceivedMessage(ChatMessage message) {
     if (messageFeeds.isEmpty) return;
     if (message.chatStatus == null) return;
-    var index = messageFeeds.indexWhere((item) => item.endUser?.id == message.endUser?.id);
+    final index = messageFeeds.indexWhere((item) => item.endUser?.id == message.endUser?.id);
     if (index < 0) return;
     messageFeeds[index].message = message.message;
     messageFeeds[index].sendTime = message.sendTime;
@@ -93,12 +93,12 @@ class BuddiesViewModel with ChangeNotifier {
     messageFeeds[index].updatedAt = message.updatedAt;
     messageFeeds.sort((item1, item2) => item2.sendTime.dateToKey.compareTo(item1.sendTime.dateToKey));
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<HomeViewModel>(context, listen: false).updateUi();
   }
 
   void setReadStatus(ChatMessage message) {
-    var index = messageFeeds.indexWhere((item) => item.endUser?.id == message.endUser?.id);
+    final index = messageFeeds.indexWhere((item) => item.endUser?.id == message.endUser?.id);
     if (index < 0) return;
     messageFeeds[index].readTime = message.sendTime;
     messageFeeds[index].chatStatus = 'received';

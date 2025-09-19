@@ -3,7 +3,7 @@ import 'package:app/models/common/media.dart';
 import 'package:app/models/public/currency.dart';
 import 'package:app/models/public/language.dart';
 
-var _DEFAULT_COUNTRY = Country();
+final _DEFAULT_COUNTRY = Country();
 
 class Country {
   int? id;

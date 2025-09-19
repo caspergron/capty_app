@@ -50,13 +50,13 @@ class MarketplaceDiscList extends StatelessWidget {
   }
 
   Widget _discItemCard(BuildContext context, int index) {
-    var item = discs[index];
-    var gap = Dimensions.screen_padding;
-    var userDisc = item.userDisc;
-    var distanceLabel = '${item.distance_number.formatInt} ${'km'.recast}';
-    var flightDataStyle = TextStyles.text13_600.copyWith(color: lightBlue, height: 1);
-    var isMyDisc = UserPreferences.user.id == item.sellerInfo?.id;
-    var showFavourite = !isMyDisc && sl<AuthService>().authStatus && onFav != null;
+    final item = discs[index];
+    final gap = Dimensions.screen_padding;
+    final userDisc = item.userDisc;
+    final distanceLabel = '${item.distance_number.formatInt} ${'km'.recast}';
+    final flightDataStyle = TextStyles.text13_600.copyWith(color: lightBlue, height: 1);
+    final isMyDisc = UserPreferences.user.id == item.sellerInfo?.id;
+    final showFavourite = !isMyDisc && sl<AuthService>().authStatus && onFav != null;
     return InkWell(
       onTap: () => onTap == null ? null : onTap!(item),
       child: TweenListItem(

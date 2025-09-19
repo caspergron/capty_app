@@ -189,7 +189,7 @@ class _AiDiscSuggestionScreenState extends State<AiDiscSuggestionScreen> {
   }
 
   Widget get suggestionStep_4 {
-    var plasticLabel = 'do_you_prefer_premium_plastics_or_base_plastic'.recast;
+    final plasticLabel = 'do_you_prefer_premium_plastics_or_base_plastic'.recast;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -263,10 +263,10 @@ class _SelectableList extends StatelessWidget {
   }
 
   Widget _selectableListItem(BuildContext context, int index) {
-    var item = listItems[index];
-    var selected = item.valueInt == 1;
-    var color = selected ? white : lightBlue;
-    var totalSelected = listItems.where((item) => item.valueInt == 1).toList().length;
+    final item = listItems[index];
+    final selected = item.valueInt == 1;
+    final color = selected ? white : lightBlue;
+    final totalSelected = listItems.where((item) => item.valueInt == 1).toList().length;
     return InkWell(
       onTap: onSelect == null || (totalSelected == total && !selected && total != 1) ? null : () => onSelect!(item, index),
       child: Container(

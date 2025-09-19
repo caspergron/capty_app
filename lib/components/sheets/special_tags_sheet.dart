@@ -25,9 +25,9 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 
 Future<void> specialTagsSheet({required List<Tag> selectedTags, required Function(List<Tag>) onChanged}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = _BottomSheetView(selectedTags, onChanged);
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = _BottomSheetView(selectedTags, onChanged);
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -74,7 +74,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       height: 75.height,
       width: SizeConfig.width,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +135,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   Widget _screenView(BuildContext context) {
     if (_loader) return const SizedBox.shrink();
     if (AppPreferences.specialTags.isEmpty) return _NoBrandFound();
-    var tagList = Tag.tag_list_by_display_name(AppPreferences.specialTags, _search.text);
+    final tagList = Tag.tag_list_by_display_name(AppPreferences.specialTags, _search.text);
     return ListView(
       shrinkWrap: true,
       controller: ScrollController(),
@@ -157,7 +157,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _onSelectTag(Tag item) {
-    var index = _selectedTags.isEmpty ? -1 : _selectedTags.indexWhere((element) => element.id == item.id);
+    final index = _selectedTags.isEmpty ? -1 : _selectedTags.indexWhere((element) => element.id == item.id);
     index < 0 ? _selectedTags.add(item) : _selectedTags.removeAt(index);
     setState(() {});
   }
@@ -166,7 +166,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
 class _NoBrandFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var description = 'we_could_not_find_any_tags_right_now_please_try_again_later'.recast;
+    final description = 'we_could_not_find_any_tags_right_now_please_try_again_later'.recast;
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(

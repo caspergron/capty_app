@@ -38,8 +38,8 @@ class SuggestionDetailsScreen extends StatefulWidget {
 class _SuggestionDetailsScreenState extends State<SuggestionDetailsScreen> {
   var _viewModel = SuggestionDetailsViewModel();
   var _modelData = SuggestionDetailsViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
-  var _focusNode = FocusNode();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -89,10 +89,10 @@ class _SuggestionDetailsScreenState extends State<SuggestionDetailsScreen> {
   void _onPostFeedback() => postFeedbackSheet(suggestion: _modelData.feature, onPost: _viewModel.onPostFeedback);
 
   Widget _screenView(BuildContext context) {
-    var user = UserPreferences.user;
-    var comments = _modelData.feature.comments ?? [];
-    var totalVote = _modelData.feature.votes ?? 0;
-    var voteIcon = VoteIcon(totalVote: totalVote, onTap: _viewModel.onVote);
+    final user = UserPreferences.user;
+    final comments = _modelData.feature.comments ?? [];
+    final totalVote = _modelData.feature.votes ?? 0;
+    final voteIcon = VoteIcon(totalVote: totalVote, onTap: _viewModel.onVote);
     return ListView(
       clipBehavior: Clip.antiAlias,
       controller: _viewModel.scrollControl,
@@ -112,8 +112,8 @@ class _SuggestionDetailsScreenState extends State<SuggestionDetailsScreen> {
   }
 
   Widget get _suggestionInformationView {
-    var feature = _modelData.feature;
-    var user = feature.user;
+    final feature = _modelData.feature;
+    final user = feature.user;
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,

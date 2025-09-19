@@ -65,10 +65,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   Widget get _screenView {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var notifications = _modelData.notifications;
+    final notifications = _modelData.notifications;
     if (notifications.isEmpty) return _NoNotification();
-    var readNotifications = notifications.where((item) => item.is_read == true).toList();
-    var unreadNotifications = notifications.where((item) => item.is_read == false).toList();
+    final readNotifications = notifications.where((item) => item.is_read == true).toList();
+    final unreadNotifications = notifications.where((item) => item.is_read == false).toList();
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,

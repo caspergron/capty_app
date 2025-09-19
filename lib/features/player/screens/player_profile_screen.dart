@@ -62,7 +62,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var firstName = _modelData.player.first_name;
+    final firstName = _modelData.player.first_name;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -82,11 +82,11 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
   Widget _screenView(BuildContext context) {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var radius = const Radius.circular(12);
-    var borderSide = const BorderSide(color: primary, width: 2);
-    var borderAll = Border.all(color: primary, width: 2);
-    var player = _modelData.player;
-    var isRatingSection = player.is_pdga_or_total_club;
+    const radius = Radius.circular(12);
+    const borderSide = BorderSide(color: primary, width: 2);
+    final borderAll = Border.all(color: primary, width: 2);
+    final player = _modelData.player;
+    final isRatingSection = player.is_pdga_or_total_club;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -105,8 +105,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                 margin: EdgeInsets.symmetric(horizontal: 12.width),
                 decoration: BoxDecoration(
                   image: DecorationImage(image: AssetImage(Assets.png_image.winner_cup_2), fit: BoxFit.fill),
-                  borderRadius: BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: radius, bottomRight: radius),
-                  border: Border(left: borderSide, right: borderSide, top: borderSide, bottom: borderSide),
+                  borderRadius: const BorderRadius.only(topLeft: radius, topRight: radius, bottomLeft: radius, bottomRight: radius),
+                  border: const Border(left: borderSide, right: borderSide, top: borderSide, bottom: borderSide),
                 ),
                 child: SvgImage(image: Assets.svg3.shield, height: 40.height, color: primary),
               ),
@@ -121,7 +121,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 12.width),
                     padding: const EdgeInsets.symmetric(vertical: 04, horizontal: 12),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: skyBlue,
                       borderRadius: BorderRadius.only(bottomLeft: radius, bottomRight: radius),
                       border: Border(left: borderSide, right: borderSide, bottom: borderSide),

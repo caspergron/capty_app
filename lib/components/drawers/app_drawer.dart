@@ -25,7 +25,7 @@ import 'package:app/widgets/library/svg_image.dart';
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var authStatus = sl<AuthService>().authStatus;
+    final authStatus = sl<AuthService>().authStatus;
     return Drawer(
       elevation: 0,
       width: 70.width,
@@ -65,7 +65,7 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget get _userProfileInfo {
-    var user = UserPreferences.user;
+    final user = UserPreferences.user;
     return Row(
       children: [
         CircleImage(
@@ -111,7 +111,7 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _screenView(BuildContext context) {
-    var authStatus = sl<AuthService>().authStatus;
+    final authStatus = sl<AuthService>().authStatus;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -168,8 +168,8 @@ class _DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = TextStyles.text14_500.copyWith(color: color, fontSize: 14, fontWeight: w400, height: 1.3);
-    var textWidget = Text(label, maxLines: 1, overflow: TextOverflow.fade, style: style);
+    final style = TextStyles.text14_500.copyWith(color: color, fontSize: 14, fontWeight: w400, height: 1.3);
+    final textWidget = Text(label, maxLines: 1, overflow: TextOverflow.fade, style: style);
     return InkWell(
       onTap: onTap == null ? null : _onItemTap,
       child: Container(

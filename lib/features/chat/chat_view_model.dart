@@ -43,7 +43,7 @@ class ChatViewModel with ChangeNotifier {
 
   void initViewModel(ChatBuddy buddy) {
     receiver = buddy;
-    var user = UserPreferences.user;
+    final user = UserPreferences.user;
     sender = ChatBuddy(id: user.id, name: user.name);
     notifyListeners();
     _fetchOnlineStatus();
@@ -68,25 +68,25 @@ class ChatViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchOnlineStatus() async {
-    var response = await sl<ChatRepository>().checkOnlineStatus(receiver.id!);
+    final response = await sl<ChatRepository>().checkOnlineStatus(receiver.id!);
     receiver.isOnline = response;
     notifyListeners();
   }
 
   Future<void> _fetchMoreDiscsBySeller() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '${receiver.id!}$locationParams';
-    var response = await sl<MarketplaceRepository>().fetchMoreMarketplaceByUser(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '${receiver.id!}$locationParams';
+    final response = await sl<MarketplaceRepository>().fetchMoreMarketplaceByUser(params);
     if (response.isNotEmpty) discList = response;
     notifyListeners();
   }
 
   Future<void> _storeDiscInfoInConversation() async {
-    var salesAdId = receiver.salesAd?.id;
+    final salesAdId = receiver.salesAd?.id;
     if (salesAdId == null) return _fetchAllMessages(isLoad: true);
-    var body = {'buyer_id': sender.id, 'seller_id': receiver.id, 'sales_ad_id': salesAdId};
-    var isExist = await sl<ChatRepository>().checkDiscExistInChats(body);
+    final body = {'buyer_id': sender.id, 'seller_id': receiver.id, 'sales_ad_id': salesAdId};
+    final isExist = await sl<ChatRepository>().checkDiscExistInChats(body);
     if (isExist) receiver.salesAd = null;
     // await sl<ChatRepository>().storeDiscInConversation(body);
     unawaited(_fetchAllMessages(isLoad: true));
@@ -97,8 +97,8 @@ class ChatViewModel with ChangeNotifier {
     paginate.pageLoader = isPaginate;
     loader.common = isLoad;
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<ChatRepository>().fetchConversations(buddy: receiver, page: paginate.page);
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<ChatRepository>().fetchConversations(buddy: receiver, page: paginate.page);
     paginate.length = response.length;
     if (paginate.page == 1) messages.clear();
     if (paginate.length >= LENGTH_20) paginate.page++;
@@ -111,23 +111,23 @@ class ChatViewModel with ChangeNotifier {
   }
 
   void _onCheckPagination() {
-    // var maxPosition = scrollControl.position.pixels == scrollControl.position.minScrollExtent;
+    // final maxPosition = scrollControl.position.pixels == scrollControl.position.minScrollExtent;
     // if (maxPosition && paginate.length >= 20) _fetchAllMessages(isPaginate: true);
   }
 
   Future<void> scrollDown() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    var duration = const Duration(milliseconds: 500);
+    const duration = Duration(milliseconds: 500);
     if (!scrollControl.hasClients) return;
     await scrollControl.animateTo(scrollControl.position.maxScrollExtent, duration: duration, curve: Curves.linear);
   }
 
   Future<void> imageFromCamera() async {
-    var imageFile = await sl<ImagePickers>().imageFromCamera();
+    final imageFile = await sl<ImagePickers>().imageFromCamera();
     if (imageFile == null) return;
     imageLoader = 1;
     notifyListeners();
-    var modifiedImage = await sl<FileHelper>().renderFilesInModel([imageFile]);
+    final modifiedImage = await sl<FileHelper>().renderFilesInModel([imageFile]);
     if (modifiedImage.haveList) images.insertAll(0, modifiedImage);
     isUploadType = false;
     imageLoader = 0;
@@ -135,11 +135,11 @@ class ChatViewModel with ChangeNotifier {
   }
 
   Future<void> imageFromGallery() async {
-    var imageList = await sl<ImagePickers>().multiImageFromGallery(limit: 5);
+    final imageList = await sl<ImagePickers>().multiImageFromGallery(limit: 5);
     if (imageList.isEmpty) return;
     imageLoader = imageList.length;
     notifyListeners();
-    var modifiedFiles = await sl<FileHelper>().renderFilesInModel(imageList);
+    final modifiedFiles = await sl<FileHelper>().renderFilesInModel(imageList);
     if (modifiedFiles.haveList) images.insertAll(0, modifiedFiles);
     isUploadType = false;
     imageLoader = 0;
@@ -159,10 +159,10 @@ class ChatViewModel with ChangeNotifier {
   Future<void> onDeleteMessages() async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<ChatRepository>().deleteAllConversations(receiver);
+    final response = await sl<ChatRepository>().deleteAllConversations(receiver);
     if (!response) loader.common = false;
     if (!response) return notifyListeners();
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<BuddiesViewModel>(context, listen: false).removeMessage(receiver.id!);
     messages.clear();
     backToPrevious();
@@ -171,11 +171,11 @@ class ChatViewModel with ChangeNotifier {
   }
 
   Future<void> addMessage() async {
-    var dateMillisecond = currentDate.millisecondsSinceEpoch;
-    var contents = <ChatContent>[];
+    final dateMillisecond = currentDate.millisecondsSinceEpoch;
+    final contents = <ChatContent>[];
     if (images.haveList) images.forEach((v) => contents.add(ChatContent(doc: v, type: 'image/png', path: v.file?.path)));
     if (documents.haveList) documents.forEach((v) => contents.add(ChatContent(doc: v, type: 'application/pdf', path: v.file?.path)));
-    var messageInfos = _newMessageInfo(dateMillisecond, contents);
+    final messageInfos = _newMessageInfo(dateMillisecond, contents);
     messages.add(messageInfos['message']);
     receiver.salesAd = null;
     notifyListeners();
@@ -183,19 +183,19 @@ class ChatViewModel with ChangeNotifier {
     images.clear();
     documents.clear();
     unawaited(scrollDown());
-    var response = await sl<ChatRepository>().sendChatMessage(messageInfos['body'], contents, messageInfos['message']);
-    var index = messages.indexWhere((item) => item.dateMilliSecond == dateMillisecond);
+    final response = await sl<ChatRepository>().sendChatMessage(messageInfos['body'], contents, messageInfos['message']);
+    final index = messages.indexWhere((item) => item.dateMilliSecond == dateMillisecond);
     if (index < 0) return;
     response != null ? messages[index] = response : messages[index].chatStatus = 'error';
-    // var context = navigatorKey.currentState!.context;
+    // final context = navigatorKey.currentState!.context;
     // if (response != null) Provider.of<NotificationsViewModel>(context, listen: false).setLastMessage(messages[index]);
     notifyListeners();
   }
 
   Map<String, dynamic> _newMessageInfo(int dateMS, List<ChatContent> contents) {
     // 'time_millisecond': '$dateMS'
-    var salesAdId = receiver.salesAd?.id;
-    var messageType = receiver.salesAd != null ? 'sales_ad' : (contents.haveList ? 'mixed' : 'text');
+    final salesAdId = receiver.salesAd?.id;
+    final messageType = receiver.salesAd != null ? 'sales_ad' : (contents.haveList ? 'mixed' : 'text');
     Map<String, dynamic> body = {
       'receiver_id': '${receiver.id}',
       'msg': chatMessage.text,
@@ -204,7 +204,7 @@ class ChatViewModel with ChangeNotifier {
       if (messageType.toKey == 'sales_ad'.toKey) 'seller_id': receiver.id,
       if (messageType.toKey == 'sales_ad'.toKey) 'sales_ad_id': salesAdId
     };
-    var message = ChatMessage(
+    final message = ChatMessage(
       id: messages.length,
       senderId: sender.id,
       receiverId: receiver.id,
@@ -231,21 +231,21 @@ class ChatViewModel with ChangeNotifier {
 
 /*Future<Uint8List?> _modifyPickedImage(XFile image) async {
     io.File pickedFile = io.File(image.path);
-    var compressedImage = await sl<FileCompressor>().compressImageFile(io.File(pickedFile.path));
+    final compressedImage = await sl<FileCompressor>().compressImageFile(io.File(pickedFile.path));
     if (compressedImage == null) return null;
-    var croppedImage = await sl<ImageCroppers>().cropImage(image: compressedImage);
+    final croppedImage = await sl<ImageCroppers>().cropImage(image: compressedImage);
     if (croppedImage == null) return null;
-    var file = io.File(croppedImage.path);
-    var unit8Image = await sl<ImageService>().fileToUnit8List(file);
+    final file = io.File(croppedImage.path);
+    final unit8Image = await sl<ImageService>().fileToUnit8List(file);
     return unit8Image;
   }*/
 
 /*Future<void> uploadFile() async {
-    var fileList = await sl<FilePickers>().pickMultipleFile();
+    final fileList = await sl<FilePickers>().pickMultipleFile();
     if (fileList.isEmpty) return;
     fileLoader = fileList.length;
     notifyListeners();
-    var modifiedFiles = await sl<FileHelper>().renderFilesInModel(fileList);
+    final modifiedFiles = await sl<FileHelper>().renderFilesInModel(fileList);
     if (modifiedFiles.haveList) documents.insertAll(0, modifiedFiles);
     isUploadType = false;
     fileLoader = 0;

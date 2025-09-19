@@ -15,7 +15,7 @@ class BackMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var icon = SvgImage(image: Assets.svg1.arrow_left, color: iconColor, height: iconSize);
+    final icon = SvgImage(image: Assets.svg1.arrow_left, color: iconColor, height: iconSize);
     return InkWell(
       onTap: onTap ?? backToPrevious,
       child: Container(width: size, height: size, alignment: Alignment.center, child: icon),

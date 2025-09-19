@@ -28,7 +28,7 @@ class SellerSettingsViewModel with ChangeNotifier {
   }
 
   Future<void> fetchAllAddresses() async {
-    var response = await sl<AddressRepository>().fetchAllAddresses();
+    final response = await sl<AddressRepository>().fetchAllAddresses();
     if (response.isNotEmpty) addresses = response;
     loader = Loader(initial: false, common: false);
     notifyListeners();
@@ -37,8 +37,8 @@ class SellerSettingsViewModel with ChangeNotifier {
   Future<void> deleteAddress(Address addressItem) async {
     loader.common = true;
     notifyListeners();
-    var index = addresses.indexWhere((element) => element.id == addressItem.id);
-    var response = await sl<AddressRepository>().deleteAddress(addressItem);
+    final index = addresses.indexWhere((element) => element.id == addressItem.id);
+    final response = await sl<AddressRepository>().deleteAddress(addressItem);
     if (response) addresses.removeAt(index);
     loader = Loader(initial: false, common: false);
     notifyListeners();
@@ -47,15 +47,15 @@ class SellerSettingsViewModel with ChangeNotifier {
   void updateAddressItem({required Address addressItem, required bool isAdd}) {
     if (isAdd) addresses.add(addressItem);
     if (isAdd) return notifyListeners();
-    var index = addresses.indexWhere((element) => element.id == addressItem.id);
+    final index = addresses.indexWhere((element) => element.id == addressItem.id);
     if (index >= 0) addresses[index] = addressItem;
     notifyListeners();
   }
 
   Future<void> fetchShippingInfo() async {
-    var userId = UserPreferences.user.id;
+    final userId = UserPreferences.user.id;
     if (userId == null) return;
-    var response = await sl<AddressRepository>().fetchShippingInfo(userId);
+    final response = await sl<AddressRepository>().fetchShippingInfo(userId);
     if (response != null) isShipping = response;
     notifyListeners();
   }
@@ -63,7 +63,7 @@ class SellerSettingsViewModel with ChangeNotifier {
   Future<void> onUpdateShippingInfo(bool value) async {
     loader.common = true;
     notifyListeners();
-    var response = await sl<AddressRepository>().updateShippingInfo(value);
+    final response = await sl<AddressRepository>().updateShippingInfo(value);
     if (response != null) isShipping = response;
     loader.common = false;
     notifyListeners();

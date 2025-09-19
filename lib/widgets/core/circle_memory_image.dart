@@ -32,9 +32,9 @@ class CircleMemoryImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = BorderRadius.circular(radius);
-    var border = Border.all(width: borderWidth, color: borderColor);
-    var decoration = BoxDecoration(color: backgroundColor, borderRadius: borderRadius);
+    final borderRadius = BorderRadius.circular(radius);
+    final border = Border.all(width: borderWidth, color: borderColor);
+    final decoration = BoxDecoration(color: backgroundColor, borderRadius: borderRadius);
     return InkWell(
       onTap: onTap,
       child: Material(

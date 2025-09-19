@@ -24,7 +24,7 @@ class Validators {
 
   String? phone(String data, Country country) {
     if (data.isEmpty) return 'please_write_your_phone_number'.recast;
-    var isValid = data.length >= (country.minLength ?? 10) && data.length <= (country.maxLength ?? 10);
+    final isValid = data.length >= (country.minLength ?? 10) && data.length <= (country.maxLength ?? 10);
     if (!isValid) return '${'phone_number_must_be_at_least'.recast} ${country.minLength ?? 10} ${'digit'.recast}';
     return null;
   }
@@ -41,16 +41,16 @@ class Validators {
   }
 
   String? validateSocialLink(String data) {
-    var message1 = 'please_write_the_social_link_link_of_your_club';
-    var message2 = 'please_write_a_valid_url_for_your_club';
+    const message1 = 'please_write_the_social_link_link_of_your_club';
+    const message2 = 'please_write_a_valid_url_for_your_club';
     if (data.isEmpty) return message1.recast;
     if (!sl<RegExps>().urlRegExp.hasMatch(data)) return message2.recast;
     return null;
   }
 
   String? validateUrl(String data, String label) {
-    var message1 = 'please_write_the_${label}_link_of_your_club';
-    var message2 = 'please_write_a_valid_url_for_$label';
+    final message1 = 'please_write_the_${label}_link_of_your_club';
+    final message2 = 'please_write_a_valid_url_for_$label';
     if (data.isEmpty) return message1.recast;
     if (!sl<RegExps>().urlRegExp.hasMatch(data)) return message2.recast;
     return null;

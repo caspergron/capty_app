@@ -40,21 +40,21 @@ class StackImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var items = List.from(imageList);
-    var images = (source == 'network' ? imageList : assetImages).sublist(0, min(itemCount, items.length));
-    var widgetList = images
+    final items = List.from(imageList);
+    final images = (source == 'network' ? imageList : assetImages).sublist(0, min(itemCount, items.length));
+    final widgetList = images
         .asMap()
         .map((index, value) => MapEntry(index, Padding(padding: EdgeInsets.only(left: 0.7 * boxSize * index), child: _imageItem(value))))
         .values
         .toList();
-    var count = totalCount - widgetList.length;
-    var counterBox = Padding(padding: EdgeInsets.only(left: 0.7 * boxSize * widgetList.length), child: _totalCountBox(count));
+    final count = totalCount - widgetList.length;
+    final counterBox = Padding(padding: EdgeInsets.only(left: 0.7 * boxSize * widgetList.length), child: _totalCountBox(count));
     if (showTotalCount && totalCount - widgetList.length > 0) widgetList.add(counterBox);
     return FittedBox(child: Stack(clipBehavior: Clip.none, children: [...widgetList]));
   }
 
   Widget _totalCountBox(int count) {
-    var border = Border.all(color: borderColor, width: borderWidth);
+    final border = Border.all(color: borderColor, width: borderWidth);
     return Container(
       height: boxSize,
       width: boxSize,

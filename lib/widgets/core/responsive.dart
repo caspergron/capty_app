@@ -5,7 +5,7 @@
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      var screenSize = constraints.maxWidth;
+      final screenSize = constraints.maxWidth;
       if (screenSize <= 375) {
         return mobile;
       } else if (screenSize > 375 && screenSize < 601) {

@@ -13,7 +13,7 @@ class DropdownItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = '$DROPDOWN_SPACE${label ?? ''}';
+    final title = '$DROPDOWN_SPACE${label ?? ''}';
     return Text(
       title,
       textAlign: TextAlign.start,

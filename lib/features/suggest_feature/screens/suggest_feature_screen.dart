@@ -35,10 +35,10 @@ class SuggestFeatureScreen extends StatefulWidget {
 class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
   var _viewModel = SuggestFeatureViewModel();
   var _modelData = SuggestFeatureViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
-  var _title = TextEditingController();
-  var _feature = TextEditingController();
-  var _focusNodes = [FocusNode(), FocusNode()];
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _title = TextEditingController();
+  final _feature = TextEditingController();
+  final _focusNodes = [FocusNode(), FocusNode()];
 
   @override
   void initState() {
@@ -81,7 +81,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var features = _modelData.suggestedFeatures;
+    final features = _modelData.suggestedFeatures;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -148,7 +148,7 @@ class _SuggestFeatureScreenState extends State<SuggestFeatureScreen> {
   Future<void> _onSendSuggestion() async {
     if (_title.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_feature_title'.recast);
     if (_feature.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_feature_suggestion'.recast);
-    var response = await _viewModel.onSendSuggestion(title: _title.text, feature: _feature.text);
+    final response = await _viewModel.onSendSuggestion(title: _title.text, feature: _feature.text);
     if (response) _clearStates();
   }
 }
@@ -171,9 +171,9 @@ class _SuggestFeaturesList extends StatelessWidget {
   }
 
   Widget _suggestedFeatureItemCard(BuildContext context, int index) {
-    var item = features[index];
-    var user = item.user;
-    var totalItem = features.length;
+    final item = features[index];
+    final user = item.user;
+    final totalItem = features.length;
     return InkWell(
       onTap: () => Routes.user.suggestion_details(feature: item).push(),
       child: Container(

@@ -32,8 +32,8 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 
 Future<void> joiningClubsSheet() async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
   await showModalBottomSheet(
     context: context,
     showDragHandle: false,
@@ -67,10 +67,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   Future<void> _findNearbyClubs() async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
+    final coordinates = await sl<Locations>().fetchLocationPermission();
     if (!coordinates.is_coordinate) _onDisabledLocation(true);
     if (!coordinates.is_coordinate) return setState(() => _loader = Loader(initial: false, common: false));
-    var response = await sl<PublicRepository>().findClubs(coordinates);
+    final response = await sl<PublicRepository>().findClubs(coordinates);
     if (response.isNotEmpty) _clubs = response;
     setState(() => _loader = Loader(initial: false, common: false));
   }
@@ -92,13 +92,13 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       height: 90.height,
       width: double.infinity,
-      decoration: BoxDecoration(color: skyBlue, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: skyBlue, borderRadius: SHEET_RADIUS),
       child: Stack(children: [_screenView(context), if (_loader.loader) const PositionedLoader()]),
     );
   }
 
   Widget _screenView(BuildContext context) {
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,10 +181,10 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   Future<void> _onSearch() async {
     minimizeKeyboard();
     if (_search.text.isEmpty) return;
-    var coordinates = await sl<Locations>().fetchLocationPermission();
+    final coordinates = await sl<Locations>().fetchLocationPermission();
     setState(() => _loader.common = true);
-    var body = {'name': _search.text, 'latitude': coordinates.lat ?? 0, 'longitude': coordinates.lng ?? 0};
-    var response = await sl<ClubRepository>().searchClubs(body);
+    final body = {'name': _search.text, 'latitude': coordinates.lat ?? 0, 'longitude': coordinates.lng ?? 0};
+    final response = await sl<ClubRepository>().searchClubs(body);
     _searchedClubs.clear();
     if (response.isNotEmpty) _searchedClubs = response;
     _state = 'true';
@@ -193,7 +193,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _onDisabledLocation(bool isLoader) {
-    // var message = 'we_can_not_find_any_clubs_for_you_because_your_location_is_turned_off'.recast;
+    // final message = 'we_can_not_find_any_clubs_for_you_because_your_location_is_turned_off'.recast;
     // FlushPopup.onInfo(message: message);
     return setState(() => isLoader ? _loader.common = false : _state = 'true');
   }
@@ -201,8 +201,8 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   Future<void> _onJoinClub(Club item, int index) async {
     if (item.is_member) return;
     setState(() => _loader.common = true);
-    var body = {'club_id': item.id};
-    var response = await sl<ClubRepository>().joinClub(body);
+    final body = {'club_id': item.id};
+    final response = await sl<ClubRepository>().joinClub(body);
     if (!response) return setState(() => _loader.common = false);
     _updateViewModels();
     _updateLocalState(item, true);
@@ -212,8 +212,8 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   Future<void> _onLeftClub(Club item, int index) async {
     if (!item.is_member) return;
     setState(() => _loader.common = true);
-    var body = {'club_id': item.id};
-    var response = await sl<ClubRepository>().leaveClub(body);
+    final body = {'club_id': item.id};
+    final response = await sl<ClubRepository>().leaveClub(body);
     if (!response) return setState(() => _loader.common = false);
     _updateViewModels();
     _updateLocalState(item, false);
@@ -221,15 +221,15 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _updateLocalState(Club item, bool value) {
-    var clubIndex = _clubs.isEmpty ? -1 : _clubs.indexWhere((club) => club.id == item.id);
-    var searchedIndex = _searchedClubs.isEmpty ? -1 : _searchedClubs.indexWhere((club) => club.id == item.id);
+    final clubIndex = _clubs.isEmpty ? -1 : _clubs.indexWhere((club) => club.id == item.id);
+    final searchedIndex = _searchedClubs.isEmpty ? -1 : _searchedClubs.indexWhere((club) => club.id == item.id);
     if (clubIndex >= 0) {
-      var totalMember = _clubs[clubIndex].totalMember.nullToInt;
+      final totalMember = _clubs[clubIndex].totalMember.nullToInt;
       _clubs[clubIndex].isMember = value;
       _clubs[clubIndex].totalMember = value ? (totalMember + 1) : (totalMember < 1 ? 0 : totalMember - 1);
     }
     if (searchedIndex >= 0) {
-      var totalMember = _searchedClubs[searchedIndex].totalMember.nullToInt;
+      final totalMember = _searchedClubs[searchedIndex].totalMember.nullToInt;
       _searchedClubs[searchedIndex].isMember = value;
       _searchedClubs[searchedIndex].totalMember = value ? (totalMember + 1) : (totalMember < 1 ? 0 : totalMember - 1);
     }
@@ -237,20 +237,20 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   void _updateViewModels() {
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     sl<UserRepository>().fetchProfileInfo();
     Provider.of<HomeViewModel>(context, listen: false).fetchDefaultClubInfo();
     Provider.of<ClubViewModel>(context, listen: false).fetchUserClubs(true);
   }
 
   Widget get _searchSuffix {
-    var radius = const Radius.circular(06);
-    var borderRadius = BorderRadius.only(topRight: radius, bottomRight: radius);
+    const radius = Radius.circular(06);
+    const borderRadius = BorderRadius.only(topRight: radius, bottomRight: radius);
     return Container(
       width: 48,
       height: 44,
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: primary, borderRadius: borderRadius),
+      decoration: const BoxDecoration(color: primary, borderRadius: borderRadius),
       child: SvgImage(image: Assets.svg1.search_2, color: lightBlue, height: 22),
     );
   }

@@ -36,13 +36,13 @@ class TournamentDiscList extends StatelessWidget {
   }
 
   SliverGridDelegateWithFixedCrossAxisCount get _gridDelegate {
-    var screenWidth = SizeConfig.width;
-    var crossAxisCount = 2;
-    var spacing = 6.0;
-    var totalSpacing = (crossAxisCount - 1) * spacing;
-    var usableWidth = (screenWidth - totalSpacing) / crossAxisCount;
-    var itemHeight = 220;
-    var aspectRatio = usableWidth / itemHeight;
+    final screenWidth = SizeConfig.width;
+    const crossAxisCount = 2;
+    const spacing = 6.0;
+    const totalSpacing = (crossAxisCount - 1) * spacing;
+    final usableWidth = (screenWidth - totalSpacing) / crossAxisCount;
+    const itemHeight = 220;
+    final aspectRatio = usableWidth / itemHeight;
     return SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: crossAxisCount,
       childAspectRatio: aspectRatio,
@@ -53,7 +53,7 @@ class TournamentDiscList extends StatelessWidget {
   }
 
   Widget _discItemCard(BuildContext context, int index) {
-    var item = discs[index];
+    final item = discs[index];
     return InkWell(
       onTap: onItem == null ? null : () => onItem!(item, index),
       child: TweenListItem(

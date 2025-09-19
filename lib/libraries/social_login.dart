@@ -9,7 +9,7 @@ class SocialLogin {
 
   Future<GoogleSignInAccount?> googleSignIn() async {
     try {
-      var googleData = await _googleSignIn.signIn();
+      final googleData = await _googleSignIn.signIn();
       return googleData;
     } catch (error) {
       if (kDebugMode) print('sign in error: $error');
@@ -28,7 +28,7 @@ class SocialLogin {
 
   Future<AuthorizationCredentialAppleID?> appleSignIn() async {
     try {
-      var appleData = await SignInWithApple.getAppleIDCredential(scopes: scopes);
+      final appleData = await SignInWithApple.getAppleIDCredential(scopes: scopes);
       return appleData;
     } catch (e) {
       if (kDebugMode) print(e);

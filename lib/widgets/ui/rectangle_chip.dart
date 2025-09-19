@@ -13,7 +13,7 @@ class RectangleChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selected = selectedItem.value == item.value;
+    final selected = selectedItem.value == item.value;
     return InkWell(
       onTap: onTap,
       child: Container(

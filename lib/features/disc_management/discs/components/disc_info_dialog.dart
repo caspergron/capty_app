@@ -27,9 +27,9 @@ Future<void> discInfoDialog({
   Function()? onDetails,
   Function()? onDelete,
 }) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(disc, isMySelf, onSell, onDetails, onDelete));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(disc, isMySelf, onSell, onDetails, onDelete));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Disc Info Dialog',
@@ -59,7 +59,7 @@ class _DialogView extends StatelessWidget {
   }
 
   Widget _screenView(BuildContext context) {
-    var isDescription = disc.description != null;
+    final isDescription = disc.description != null;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,8 +200,8 @@ class _DicInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style1 = TextStyles.text14_600.copyWith(color: lightBlue);
-    var style2 = TextStyles.text16_700.copyWith(color: lightBlue);
+    final style1 = TextStyles.text14_600.copyWith(color: lightBlue);
+    final style2 = TextStyles.text16_700.copyWith(color: lightBlue);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 04),
       child: Column(

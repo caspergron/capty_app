@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/animations/fade_animation.dart';
 import 'package:app/animations/tween_list_item.dart';
 import 'package:app/components/app_lists/label_wrap_list.dart';
@@ -44,9 +49,6 @@ import 'package:app/widgets/ui/character_counter.dart';
 import 'package:app/widgets/ui/icon_box.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class CreateSalesAdScreen extends StatefulWidget {
   final int tabIndex;
@@ -75,7 +77,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
   }
 
   void _setInitialStates() {
-    var userDisc = widget.userDisc;
+    final userDisc = widget.userDisc;
     _comment.text = userDisc.description ?? '';
     _weight.text = userDisc.weight == null ? '' : '${userDisc.weight!.toInt()}';
   }
@@ -89,7 +91,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var loader = _modelData.loader.loader;
+    final loader = _modelData.loader.loader;
     return PopScopeNavigator(
       canPop: false,
       onPop: _onBack,
@@ -169,11 +171,11 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
   }
 
   List<Widget> get _stepOneView {
-    var userDisc = widget.userDisc;
-    var isPlastics = _modelData.plastics.isNotEmpty;
-    var intIndex = _modelData.usedValue.toInt();
-    var conditionIndex = intIndex > 10 ? 10 : intIndex;
-    var specialTagLabels = _modelData.specialTags.isEmpty ? <String>[] : _modelData.specialTags.map((e) => e.displayName ?? '').toList();
+    final userDisc = widget.userDisc;
+    final isPlastics = _modelData.plastics.isNotEmpty;
+    final intIndex = _modelData.usedValue.toInt();
+    final conditionIndex = intIndex > 10 ? 10 : intIndex;
+    final specialTagLabels = _modelData.specialTags.isEmpty ? <String>[] : _modelData.specialTags.map((e) => e.displayName ?? '').toList();
     return [
       Container(
         width: double.infinity,
@@ -406,11 +408,11 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
   }
 
   List<Widget> get _stepTwoView {
-    var userDisc = widget.userDisc;
-    var weight = _weight.text;
-    var price = _price.text.isEmpty ? 'n/a'.recast : '${_price.text} ${UserPreferences.currencyCode}';
-    var intIndex = _modelData.usedValue.toInt();
-    var conditionIndex = intIndex > 10 ? 10 : intIndex;
+    final userDisc = widget.userDisc;
+    final weight = _weight.text;
+    final price = _price.text.isEmpty ? 'n/a'.recast : '${_price.text} ${UserPreferences.currencyCode}';
+    final intIndex = _modelData.usedValue.toInt();
+    final conditionIndex = intIndex > 10 ? 10 : intIndex;
     return [
       Row(
         children: [
@@ -464,8 +466,8 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
   }
 
   Widget _detailsInfo({String label = '', String value = ''}) {
-    var title = Text(label, style: TextStyles.text13_600.copyWith(color: primary.colorOpacity(0.6)));
-    var subtitle = Text(value, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyles.text14_600.copyWith(color: primary));
+    final title = Text(label, style: TextStyles.text13_600.copyWith(color: primary.colorOpacity(0.6)));
+    final subtitle = Text(value, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyles.text14_600.copyWith(color: primary));
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [title, const SizedBox(height: 04), subtitle]);
   }
 
@@ -475,7 +477,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
   }
 
   void _onNext() {
-    var userDisc = widget.userDisc;
+    final userDisc = widget.userDisc;
     Map<String, dynamic> params = {
       'speed': userDisc.speed ?? 1,
       'glide': userDisc.glide ?? 0,
@@ -488,10 +490,10 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
     if (_modelData.step == 2) _viewModel.onCreateSalesAd(params, widget.userDisc.media?.id);
     if (_modelData.step == 2) return;
     if (_modelData.step == 1) {
-      var isHomeAddress = _modelData.address.id != null && _modelData.address.is_home;
+      final isHomeAddress = _modelData.address.id != null && _modelData.address.is_home;
       if (!isHomeAddress) return unawaited(addHomeAddressDialog());
       if (_price.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_the_price_of_your_disc'.recast);
-      var invalidImage = _modelData.discFile.file == null && widget.userDisc.media?.id == null;
+      final invalidImage = _modelData.discFile.file == null && widget.userDisc.media?.id == null;
       if (invalidImage) return FlushPopup.onWarning(message: 'please_add_your_disc_image'.recast);
     }
     setState(() => _modelData.step++);
@@ -499,7 +501,7 @@ class _CreateSalesAdScreenState extends State<CreateSalesAdScreen> {
 
   Future<void> _onImage(File fileImage) async {
     setState(() => _modelData.loader.common = true);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
     if (docFiles.isEmpty) return setState(() => _modelData.loader.common = false);
     _modelData.discFile = docFiles.first;
     if (_modelData.discFile.unit8List == null) return setState(() => _modelData.loader.common = false);

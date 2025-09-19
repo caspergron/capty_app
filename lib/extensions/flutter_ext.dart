@@ -27,10 +27,10 @@ extension ParseColor on Color {
 }
 
 Color get generateRandomColor {
-  var random = Random();
-  var red = random.nextInt(156);
-  var green = random.nextInt(156);
-  var blue = random.nextInt(156);
+  final random = Random();
+  final red = random.nextInt(156);
+  final green = random.nextInt(156);
+  final blue = random.nextInt(156);
   return Color.fromARGB(255, red, green, blue);
 }
 

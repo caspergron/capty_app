@@ -1,10 +1,10 @@
 class Deeplink {
   /*DeeplinkType executeDeeplinkRoute() {
-    var deeplink = _getDeeplinkType();
+    final deeplink = _getDeeplinkType();
     sl<LocalStorage>().removeData(key: DEEPLINK);
     if (deeplink == DeeplinkType.none) return DeeplinkType.none;
-    var authStatus = sl<AuthService>().authStatus;
-    var trackingId = sl<StorageService>().orderTrackingId;
+    final authStatus = sl<AuthService>().authStatus;
+    final trackingId = sl<StorageService>().orderTrackingId;
     if (deeplink == DeeplinkType.invitation) {
       mixingInvitationDialog();
       return DeeplinkType.invitation;
@@ -20,12 +20,12 @@ class Deeplink {
   }*/
 
   /*DeeplinkType _getDeeplinkType() {
-    var deeplink = sl<StorageService>().deeplink;
+    final deeplink = sl<StorageService>().deeplink;
     if (deeplink == null || deeplink.isEmpty) return DeeplinkType.none;
     Uri uri = Uri.parse(deeplink);
     List<String> segments = uri.pathSegments;
     if (segments.isEmpty) return DeeplinkType.none;
-    var path = segments.last.toKey;
+    final path = segments.last.toKey;
     if (path.contains('InvitedBag'.toKey)) {
       return DeeplinkType.invitation;
     } else if (path.contains('GiftCoupon'.toKey)) {

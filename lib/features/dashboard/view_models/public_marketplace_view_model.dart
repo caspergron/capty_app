@@ -30,11 +30,11 @@ class PublicMarketplaceViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchMarketplaceDiscsByCountry(int countryId) async {
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    // var params = '&page=1&sort_by=country&country_id=$countryId';
-    var params = '&page=1&sort_by=country&country_id=$countryId$locationParams'.trim();
-    var response = await sl<PublicRepository>().fetchSalesAdsByCountry(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    // final params = '&page=1&sort_by=country&country_id=$countryId';
+    final params = '&page=1&sort_by=country&country_id=$countryId$locationParams'.trim();
+    final response = await sl<PublicRepository>().fetchSalesAdsByCountry(params);
     if (response.isNotEmpty) categories = response;
     loader = Loader(initial: false, common: false);
     notifyListeners();
@@ -43,10 +43,10 @@ class PublicMarketplaceViewModel with ChangeNotifier {
   Future<void> fetchMarketplaceDiscDetails(SalesAd salesAd) async {
     loader.common = true;
     notifyListeners();
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '${salesAd.id!}$locationParams'.trim();
-    var response = await sl<PublicRepository>().fetchMarketplaceDetails(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '${salesAd.id!}$locationParams'.trim();
+    final response = await sl<PublicRepository>().fetchMarketplaceDetails(params);
     if (response != null) unawaited(publicSalesAdInfoDialog(disc: response));
     loader = Loader(initial: false, common: false);
     notifyListeners();

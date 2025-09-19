@@ -23,9 +23,9 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/nav_button_box.dart';
 
 Future<void> defaultCountriesSheet({required DefaultCountry? country, required Function(DefaultCountry) onChanged}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = _BottomSheetView(country, onChanged);
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = _BottomSheetView(country, onChanged);
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -64,7 +64,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
     return Container(
       height: 70.height,
       width: SizeConfig.width,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +122,7 @@ class _BottomSheetViewState extends State<_BottomSheetView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var countries = DefaultCountry.countries_by_name(_search.text);
+    final countries = DefaultCountry.countries_by_name(_search.text);
     if (countries.isEmpty) return _NoCountryFound();
     return ListView(
       shrinkWrap: true,
@@ -167,11 +167,11 @@ class _DefaultCountriesList extends StatelessWidget {
   }
 
   Widget _countryItemCard(BuildContext context, int index) {
-    var item = countries[index];
-    var length = countries.length;
-    var selected = selectedItem != null && selectedItem!.id == item.id;
-    var checkIcon = SvgImage(image: Assets.svg1.tick, color: lightBlue, height: 18);
-    var border = const Border(bottom: BorderSide(color: lightBlue, width: 0.5));
+    final item = countries[index];
+    final length = countries.length;
+    final selected = selectedItem != null && selectedItem!.id == item.id;
+    final checkIcon = SvgImage(image: Assets.svg1.tick, color: lightBlue, height: 18);
+    const border = Border(bottom: BorderSide(color: lightBlue, width: 0.5));
     return InkWell(
       onTap: () => onChanged(item),
       child: Container(

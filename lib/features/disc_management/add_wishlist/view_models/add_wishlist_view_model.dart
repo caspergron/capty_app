@@ -40,9 +40,9 @@ class AddWishlistViewModel with ChangeNotifier {
 
   Future<void> _fetchSearchDisc(String pattern) async {
     final currentRequest = ++_searchCounter;
-    var body = {'query': pattern};
+    final body = {'query': pattern};
     try {
-      var response = await sl<DiscRepository>().searchDiscByName(body: body, isWishlistSearch: true);
+      final response = await sl<DiscRepository>().searchDiscByName(body: body, isWishlistSearch: true);
       if (currentRequest != _searchCounter) return;
       discList.clear();
       if (response.isNotEmpty) discList.addAll(response);
@@ -61,9 +61,9 @@ class AddWishlistViewModel with ChangeNotifier {
   Future<void> onAddedToWishlist(ParentDisc item, int index) async {
     loader = true;
     notifyListeners();
-    var body = {'disc_id': item.id};
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<DiscRepository>().addToWishlist(body);
+    final body = {'disc_id': item.id};
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<DiscRepository>().addToWishlist(body);
     loader = false;
     if (response == null) return notifyListeners();
     unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
@@ -76,10 +76,10 @@ class AddWishlistViewModel with ChangeNotifier {
 
   Future<void> onUpdateAndAddWishList(Wishlist wishlistItem) async {
     unawaited(addedToWishlistDialog());
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());
     await Future.delayed(const Duration(milliseconds: 1500));
-    var index = discList.indexWhere((element) => element.id == wishlistItem.disc?.id);
+    final index = discList.indexWhere((element) => element.id == wishlistItem.disc?.id);
     if (index >= 0) discList[index].wishlistId = 1;
     notifyListeners();
     backToPrevious();
@@ -88,8 +88,8 @@ class AddWishlistViewModel with ChangeNotifier {
   Future<void> onRemoveFromWishlist(int wishlistId, int index) async {
     loader = true;
     notifyListeners();
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<DiscRepository>().removeFromWishlist(wishlistId);
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<DiscRepository>().removeFromWishlist(wishlistId);
     loader = false;
     if (!response) return notifyListeners();
     unawaited(Provider.of<DiscsViewModel>(context, listen: false).fetchWishlistDiscs());

@@ -31,8 +31,8 @@ class ClubMembersList extends StatelessWidget {
   }
 
   Widget _friendItemCard(BuildContext context, int index) {
-    var item = members[index];
-    var isLast = index == members.length - 1;
+    final item = members[index];
+    final isLast = index == members.length - 1;
     return TweenListItem(
       index: index,
       child: Container(

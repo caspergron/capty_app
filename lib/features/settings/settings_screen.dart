@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/dialogs/delete_account_dialog.dart';
 import 'package:app/components/loaders/screen_loader.dart';
 import 'package:app/components/menus/back_menu.dart';
@@ -18,8 +22,6 @@ import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/core/flutter_switch.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/label_placeholder.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -29,7 +31,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   var _viewModel = SettingsViewModel();
   var _modelData = SettingsViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -71,10 +73,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var user = UserPreferences.user;
-    var language = AppPreferences.language;
-    // var currency = _modelData.currency;
-    // var measurement = _modelData.measurement;
+    final user = UserPreferences.user;
+    final language = AppPreferences.language;
+    // final currency = _modelData.currency;
+    // final measurement = _modelData.measurement;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -172,8 +174,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget get _deleteButton {
-    var icon = SvgImage(image: Assets.svg1.trash, height: 20, color: lightBlue);
-    var label = Text('delete'.recast.toUpper, style: TextStyles.text14_600.copyWith(color: white, height: 1));
+    final icon = SvgImage(image: Assets.svg1.trash, height: 20, color: lightBlue);
+    final label = Text('delete'.recast.toUpper, style: TextStyles.text14_600.copyWith(color: white, height: 1));
     return Container(
       height: 44,
       width: double.infinity,

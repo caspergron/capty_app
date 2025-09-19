@@ -14,10 +14,10 @@ const _INITIALIZATION_SETTINGS = InitializationSettings(android: _ANDROID_INITIA
 
 const _ANDROID_CHANNEL = AndroidNotificationChannel(_ID, _NAME, enableLights: true, importance: Importance.high, description: _DESCRIPTION);
 
-// var _id = _ANDROID_CHANNEL.id;
-// var _name = _ANDROID_CHANNEL.name;
-// var _desc = _ANDROID_CHANNEL.description;
-// var _ANDROID_DETAILS = AndroidNotificationDetails(_id, _name, showWhen: false, priority: Priority.high, importance: Importance.high, channelDescription: _desc);
+// final _id = _ANDROID_CHANNEL.id;
+// final _name = _ANDROID_CHANNEL.name;
+// final _desc = _ANDROID_CHANNEL.description;
+// final _ANDROID_DETAILS = AndroidNotificationDetails(_id, _name, showWhen: false, priority: Priority.high, importance: Importance.high, channelDescription: _desc);
 
 class CloudNotification {
   final _localNotification = FlutterLocalNotificationsPlugin();
@@ -42,19 +42,19 @@ class CloudNotification {
   }
 
   void _firebaseOnMessage(RemoteMessage message) {
-    var notification = message.notification;
-    var androidNotification = message.notification?.android;
-    var appleNotification = message.notification?.apple;
-    var haveNotification = notification != null && (androidNotification != null || appleNotification != null);
+    final notification = message.notification;
+    final androidNotification = message.notification?.android;
+    final appleNotification = message.notification?.apple;
+    final haveNotification = notification != null && (androidNotification != null || appleNotification != null);
     // if (haveNotification) _showNotification(message: message);
     if (haveNotification) foregroundNotificationActions(message);
   }
 
   void _firebaseOnMessageOpenedApp(RemoteMessage message) {
-    var notification = message.notification;
-    var androidNotification = message.notification?.android;
-    var appleNotification = message.notification?.apple;
-    var haveNotification = notification != null && (androidNotification != null || appleNotification != null);
+    final notification = message.notification;
+    final androidNotification = message.notification?.android;
+    final appleNotification = message.notification?.apple;
+    final haveNotification = notification != null && (androidNotification != null || appleNotification != null);
     if (haveNotification) _backgroundNotificationActions(message);
   }
 
@@ -63,7 +63,7 @@ class CloudNotification {
   Future<dynamic> _backgroundNotificationActions(RemoteMessage message) async {}
 
   /*Future<void> _showNotification({required RemoteMessage message}) async {
-    var desc = '';
+    final desc = '';
     await _localNotification.show(
       message.notification.hashCode,
       message.notification?.title ?? 'Capty Disc Golf App',
@@ -73,7 +73,7 @@ class CloudNotification {
   }*/
 
   Future<void> getAndroidNotificationPermission() async {
-    var notificationStatus =
+    final notificationStatus =
         await _localNotification.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.areNotificationsEnabled();
     if (notificationStatus == null || !notificationStatus) {
       await _localNotification

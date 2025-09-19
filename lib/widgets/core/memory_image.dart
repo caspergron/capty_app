@@ -30,7 +30,7 @@ class ImageMemory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var b_Radius = BorderRadius.circular(radius ?? 0);
+    final b_Radius = BorderRadius.circular(radius ?? 0);
     return InkWell(onTap: onTap, child: ClipRRect(borderRadius: b_Radius, child: imagePath == null ? _errorWidget : _memoryImage(context)));
   }
 

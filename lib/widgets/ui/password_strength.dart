@@ -33,18 +33,18 @@ class PasswordStrength extends StatelessWidget {
   }
 
   Widget _strengthCard(BuildContext context, bool status) {
-    var margin = const EdgeInsets.only(right: 4);
-    var color = status ? success : grey;
-    var radius = BorderRadius.circular(2);
+    const margin = EdgeInsets.only(right: 4);
+    final color = status ? success : grey;
+    final radius = BorderRadius.circular(2);
     return Container(height: 2, width: 20, margin: margin, decoration: BoxDecoration(color: color, borderRadius: radius));
   }
 
   List<bool> get _strength_list {
-    var uppercase = password.contains(sl<RegExps>().uppercase);
-    var lowercase = password.contains(sl<RegExps>().lowercase);
-    var specialCharacter = password.contains(sl<RegExps>().specialCharacter);
-    var numberAndPasswordLength = password.contains(sl<RegExps>().number) && password.length >= 6;
-    var statusList = [uppercase, lowercase, specialCharacter, numberAndPasswordLength];
+    final uppercase = password.contains(sl<RegExps>().uppercase);
+    final lowercase = password.contains(sl<RegExps>().lowercase);
+    final specialCharacter = password.contains(sl<RegExps>().specialCharacter);
+    final numberAndPasswordLength = password.contains(sl<RegExps>().number) && password.length >= 6;
+    final statusList = [uppercase, lowercase, specialCharacter, numberAndPasswordLength];
     statusList.sort((strengthA, strengthB) => strengthB ? 1 : -1);
     return statusList;
   }

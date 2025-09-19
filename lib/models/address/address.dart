@@ -80,20 +80,20 @@ class Address {
   String get address_label_icon => label.toKey == 'home'.toKey ? Assets.svg1.home : Assets.svg1.map_pin;
 
   String get formatted_address {
-    var addressItems = [addressLine1, city, zipCode];
-    var addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
+    final addressItems = [addressLine1, city, zipCode];
+    final addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
     return addressParts.isEmpty ? 'N/A' : addressParts.join(', ');
   }
 
   String get formatted_state_country {
-    var addressItems = [state, country?.name];
-    var addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
+    final addressItems = [state, country?.name];
+    final addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
     return addressParts.isEmpty ? 'N/A' : addressParts.join(', ');
   }
 
   String get formatted_city_state_country {
-    var addressItems = [city, zipCode, state, country?.name];
-    var addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
+    final addressItems = [city, zipCode, state, country?.name];
+    final addressParts = addressItems.where((item) => item != null && item.isNotEmpty).toList();
     return addressParts.isEmpty ? 'N/A' : addressParts.join(', ');
   }
 }

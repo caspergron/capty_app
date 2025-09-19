@@ -18,9 +18,9 @@ class Launchers {
   }
 
   Future<void> launchEmailApp({required String email}) async {
-    var mail = Uri.encodeComponent(email);
-    var subject = Uri.encodeComponent('');
-    var body = Uri.encodeComponent('');
+    final mail = Uri.encodeComponent(email);
+    final subject = Uri.encodeComponent('');
+    final body = Uri.encodeComponent('');
     Uri uri = Uri.parse('mailto:$mail?subject=$subject&body=$body');
     if (await launchUrl(uri)) {
       if (kDebugMode) print('email app opened');

@@ -22,7 +22,7 @@ class SuggestFeatureViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchSuggestedFeatures() async {
-    var response = await sl<PreferencesRepository>().fetchSuggestedFeaturesList();
+    final response = await sl<PreferencesRepository>().fetchSuggestedFeaturesList();
     if (response.isNotEmpty) suggestedFeatures = response;
     loader = false;
     notifyListeners();
@@ -33,8 +33,8 @@ class SuggestFeatureViewModel with ChangeNotifier {
     if (item.is_voted) return FlushPopup.onWarning(message: 'you_already_vote_on_this_feature'.recast);
     loader = true;
     notifyListeners();
-    var body = {'feature_id': item.id};
-    var response = await sl<PreferencesRepository>().voteOnAFeature(body);
+    final body = {'feature_id': item.id};
+    final response = await sl<PreferencesRepository>().voteOnAFeature(body);
     if (response != null) updateVote(response);
     loader = false;
     notifyListeners();
@@ -43,8 +43,8 @@ class SuggestFeatureViewModel with ChangeNotifier {
   Future<bool> onSendSuggestion({required String title, required String feature}) async {
     loader = true;
     notifyListeners();
-    var body = {'title': title, 'description': feature};
-    var response = await sl<PreferencesRepository>().createSuggestFeature(body);
+    final body = {'title': title, 'description': feature};
+    final response = await sl<PreferencesRepository>().createSuggestFeature(body);
     if (response != null) suggestedFeatures.add(response);
     suggestedFeatures.sort((item1, item2) => item2.totalVotes.nullToInt.compareTo(item1.totalVotes.nullToInt));
     loader = false;
@@ -53,7 +53,7 @@ class SuggestFeatureViewModel with ChangeNotifier {
   }
 
   void updateVote(Feature feature) {
-    var index = suggestedFeatures.indexWhere((item) => item.id == feature.id);
+    final index = suggestedFeatures.indexWhere((item) => item.id == feature.id);
     if (index < 0) return;
     suggestedFeatures[index] = feature;
     suggestedFeatures.sort((item1, item2) => item2.totalVotes.nullToInt.compareTo(item1.totalVotes.nullToInt));

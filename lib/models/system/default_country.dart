@@ -19,9 +19,9 @@ class DefaultCountry {
   }
 
   static List<DefaultCountry> countries_by_name(String key) {
-    var searchKey = key.toKey;
-    var dbCodes = AppPreferences.countries.isEmpty ? [] : AppPreferences.countries.map((item) => item.code.toKey).toList();
-    var updatedCountries = dbCodes.isEmpty ? COUNTRY_LIST : COUNTRY_LIST.where((item) => !dbCodes.contains(item.code.toKey)).toList();
+    final searchKey = key.toKey;
+    final dbCodes = AppPreferences.countries.isEmpty ? [] : AppPreferences.countries.map((item) => item.code.toKey).toList();
+    final updatedCountries = dbCodes.isEmpty ? COUNTRY_LIST : COUNTRY_LIST.where((item) => !dbCodes.contains(item.code.toKey)).toList();
     if (searchKey.isEmpty || updatedCountries.isEmpty) return updatedCountries;
     return updatedCountries.where((item) => item.name.toKey.startsWith(searchKey.toKey)).toList();
   }

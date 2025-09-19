@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 import 'package:app/components/buttons/elevate_button.dart';
 import 'package:app/components/buttons/outline_button.dart';
 import 'package:app/constants/app_keys.dart';
@@ -20,12 +22,11 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/icon_box.dart';
-import 'package:flutter/material.dart';
 
 Future<void> courseSettingsDialog({required Club club, Function()? onConnect, Function(Club)? onUpdate}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('course-settings-popup');
-  var child = Align(child: _DialogView(club, onConnect, onUpdate));
+  final child = Align(child: _DialogView(club, onConnect, onUpdate));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Course Settings Dialog',
@@ -132,9 +133,9 @@ class _CoursesList extends StatelessWidget {
   }
 
   Widget _courseItemCard(BuildContext context, int index) {
-    var item = courses[index];
-    var isLast = index == courses.length - 1;
-    var isHome = homeCourse.id != null && homeCourse.id == item.id;
+    final item = courses[index];
+    final isLast = index == courses.length - 1;
+    final isHome = homeCourse.id != null && homeCourse.id == item.id;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 04),

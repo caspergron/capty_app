@@ -73,7 +73,7 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var key = '${_modelData.lineBars.length}';
+    final key = '${_modelData.lineBars.length}';
     return Padding(
       padding: const EdgeInsets.only(left: 08, right: 16),
       child: Column(
@@ -101,8 +101,8 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
   }
 
   LineChartBarData _lineChartBarData(LineBar lineBar) {
-    // var colors = [lineBar.color.colorOpacity(0.3), transparent];
-    // var gradient = LinearGradient(colors: colors, begin: Alignment.topCenter, end: Alignment.bottomCenter);
+    // final colors = [lineBar.color.colorOpacity(0.3), transparent];
+    // final gradient = LinearGradient(colors: colors, begin: Alignment.topCenter, end: Alignment.bottomCenter);
     return LineChartBarData(
       barWidth: 2.5,
       isCurved: true,
@@ -116,24 +116,24 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
   }
 
   FlBorderData get _borderData {
-    var border = const BorderSide(color: primary, width: 0.4);
-    var topBorder = const BorderSide(color: primary, width: 0.8);
-    return FlBorderData(show: true, border: Border(bottom: border, left: border, top: topBorder));
+    const border = BorderSide(color: primary, width: 0.4);
+    const topBorder = BorderSide(color: primary, width: 0.8);
+    return FlBorderData(show: true, border: const Border(bottom: border, left: border, top: topBorder));
   }
 
   FlTitlesData get _titlesData {
-    var axisTile = const AxisTitles();
-    var left = AxisTitles(sideTitles: _leftTitles);
-    // var bottom = AxisTitles(sideTitles: _bottomTitles);
+    const axisTile = AxisTitles();
+    final left = AxisTitles(sideTitles: _leftTitles);
+    // final bottom = AxisTitles(sideTitles: _bottomTitles);
     return FlTitlesData(leftTitles: left, bottomTitles: axisTile, topTitles: axisTile, rightTitles: axisTile);
   }
 
   SideTitles get _leftTitles => SideTitles(getTitlesWidget: _leftTitleWidgets, showTitles: true, interval: 1, reservedSize: 40);
 
   Widget _leftTitleWidgets(double value, TitleMeta meta) {
-    var leftValue = value / 1;
-    var label = leftValue > 1 ? '${leftValue.formatDouble} m' : '${leftValue.formatDouble} m';
-    var style = TextStyles.text12_600.copyWith(color: primary);
+    final leftValue = value / 1;
+    final label = leftValue > 1 ? '${leftValue.formatDouble} m' : '${leftValue.formatDouble} m';
+    final style = TextStyles.text12_600.copyWith(color: primary);
     return Text(label, textAlign: TextAlign.center, style: style);
   }
 
@@ -148,9 +148,9 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
         getTooltipItems: (chartList) {
           List<LineTooltipItem> tooltips = [];
           for (int index = 0; index < chartList.length; index++) {
-            var spot = chartList[index];
-            var style = const TextStyle(color: white, fontWeight: w600);
-            var lineItem = LineTooltipItem('${spot.y.ceil()}', style);
+            final spot = chartList[index];
+            final style = const TextStyle(color: white, fontWeight: w600);
+            final lineItem = LineTooltipItem('${spot.y.ceil()}', style);
             tooltips.add(lineItem);
           }
           return tooltips;
@@ -165,10 +165,10 @@ class _FlightPathScreenState extends State<FlightPathScreen> {
   }*/
 
   /*Widget _bottomTitleWidgets(double value, TitleMeta meta) {
-    var chartDate = */ /*!charts.haveList ? '$currentDate' : charts[value.toInt()].date ?? */ /* '$currentDate';
-    var formattedDate = Formatters.formatDate(*/ /*bufferTime.value > 365 ? DATE_FORMAT_15 : */ /* DATE_FORMAT_2, chartDate);
-    var style = TextStyles.text12_600.copyWith(color: primary);
-    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 10);
+    final chartDate = */ /*!charts.haveList ? '$currentDate' : charts[value.toInt()].date ?? */ /* '$currentDate';
+    final formattedDate = Formatters.formatDate(*/ /*bufferTime.value > 365 ? DATE_FORMAT_15 : */ /* DATE_FORMAT_2, chartDate);
+    final style = TextStyles.text12_600.copyWith(color: primary);
+    final slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 10);
     return SideTitleWidget(meta: meta, fitInside: slideData, space: 4, child: Text(formattedDate ?? '', style: style));
   }*/
 }

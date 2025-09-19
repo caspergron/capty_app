@@ -22,9 +22,9 @@ import 'package:app/widgets/library/svg_image.dart';
 import 'package:app/widgets/ui/character_counter.dart';
 
 Future<void> addDiscBagDialog({DiscBag? discBag, Function(Map<String, dynamic>)? onSave}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(discBag, onSave));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(discBag, onSave));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Edit Disc Dialog',
@@ -48,7 +48,7 @@ class _DialogViewState extends State<_DialogView> {
   var _loader = false;
   var _name = TextEditingController();
   var _description = TextEditingController();
-  var _focusNodes = [FocusNode(), FocusNode()];
+  final _focusNodes = [FocusNode(), FocusNode()];
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class _DialogViewState extends State<_DialogView> {
 
   @override
   Widget build(BuildContext context) {
-    var stackList = [_screenView(context), if (_loader) const PositionedLoader()];
+    final stackList = [_screenView(context), if (_loader) const PositionedLoader()];
     return Container(
       width: Dimensions.dialog_width,
       padding: EdgeInsets.symmetric(horizontal: Dimensions.dialog_padding, vertical: Dimensions.dialog_padding),
@@ -71,7 +71,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var label = widget.discBag?.id == null ? 'add_bag'.recast : 'update_bag'.recast;
+    final label = widget.discBag?.id == null ? 'add_bag'.recast : 'update_bag'.recast;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +132,7 @@ class _DialogViewState extends State<_DialogView> {
 
   void _onSave() {
     if (_name.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_bag_name'.recast);
-    var body = {'name': _name.text, 'description': _description.text};
+    final body = {'name': _name.text, 'description': _description.text};
     if (widget.onSave != null) widget.onSave!(body);
     backToPrevious();
   }

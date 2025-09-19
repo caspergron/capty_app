@@ -31,7 +31,7 @@ class AddFriendViewModel with ChangeNotifier {
   Future<bool> onAddFriend(String query) async {
     loader = true;
     notifyListeners();
-    var response = await sl<FriendRepository>().searchForFriend(query);
+    final response = await sl<FriendRepository>().searchForFriend(query);
     if (response != null) {
       unawaited(addFriendDialog(friend: response, onAdd: () => sendFriendRequest(response), onCancel: () => cancelFriendRequest(response)));
     }
@@ -43,8 +43,8 @@ class AddFriendViewModel with ChangeNotifier {
   Future<void> sendFriendRequest(FriendInfo friendInfo) async {
     loader = true;
     notifyListeners();
-    var body = {'request_to': friendInfo.id};
-    var response = await sl<FriendRepository>().sendFriendRequest(body);
+    final body = {'request_to': friendInfo.id};
+    final response = await sl<FriendRepository>().sendFriendRequest(body);
     if (response != null) sl<AppAnalytics>().logEvent(name: 'invite_friend', parameters: response.analyticParams);
     loader = false;
     notifyListeners();
@@ -53,7 +53,7 @@ class AddFriendViewModel with ChangeNotifier {
   Future<void> cancelFriendRequest(FriendInfo friendInfo) async {
     loader = true;
     notifyListeners();
-    var response = await sl<FriendRepository>().rejectFriendRequest(friendInfo.friendId!);
+    final response = await sl<FriendRepository>().rejectFriendRequest(friendInfo.friendId!);
     if (response) FlushPopup.onInfo(message: 'request_cancelled'.recast);
     loader = false;
     notifyListeners();

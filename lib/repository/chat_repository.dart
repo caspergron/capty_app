@@ -15,15 +15,15 @@ import 'package:app/utils/api_url.dart';
 
 class ChatRepository {
   Future<bool> setOnlineStatus({required bool status}) async {
-    var body = {'status': status};
-    var endpoint = ApiUrl.user.setOnlineStatus;
-    var apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
+    final body = {'status': status};
+    final endpoint = ApiUrl.user.setOnlineStatus;
+    final apiResponse = await sl<ApiInterceptor>().putRequest(endpoint: endpoint, body: body);
     return apiResponse.status == 200;
   }
 
   Future<bool> checkOnlineStatus(int receiverId) async {
-    var endpoint = '${ApiUrl.user.checkOnlineStatus}$receiverId';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.checkOnlineStatus}$receiverId';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return false;
     if (apiResponse.response['data'] == null) return false;
     if (apiResponse.response['data']['is_online'] == null) return false;
@@ -31,8 +31,8 @@ class ChatRepository {
   }
 
   Future<bool> checkDiscExistInChats(Map<String, dynamic> body) async {
-    var endpoint = ApiUrl.user.isExistDiscInChat;
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final endpoint = ApiUrl.user.isExistDiscInChat;
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return false;
     if (apiResponse.response['data'] == null) return false;
     if (apiResponse.response['data']['is_exist'] == null) return false;
@@ -40,70 +40,70 @@ class ChatRepository {
   }
 
   Future<bool> storeDiscInConversation(Map<String, dynamic> body) async {
-    var endpoint = ApiUrl.user.storeDiscInConversation;
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final endpoint = ApiUrl.user.storeDiscInConversation;
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     return apiResponse.status == 200;
   }
 
   Future<List<ChatMessage>> fetchChats({int page = 1}) async {
-    var endpoint = ApiUrl.user.chats;
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = ApiUrl.user.chats;
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var chatsApi = ChatsApi.fromJson(apiResponse.response);
-    var chats = chatsApi.chats ?? [];
+    final chatsApi = ChatsApi.fromJson(apiResponse.response);
+    final chats = chatsApi.chats ?? [];
     return chats;
   }
 
   Future<List<ChatMessage>> fetchConversations({required ChatBuddy buddy, int page = 1}) async {
-    var endpoint = '${ApiUrl.user.conversations}?user_id=${buddy.id}';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.conversations}?user_id=${buddy.id}';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var messagesApi = ConversationApi.fromJson(apiResponse.response['data']);
-    var messages = messagesApi.messages ?? [];
+    final messagesApi = ConversationApi.fromJson(apiResponse.response['data']);
+    final messages = messagesApi.messages ?? [];
     if (messages.isEmpty) return [];
     messages.sort((item1, item2) => (item1.id ?? 0).compareTo(item2.id ?? 0));
     return messages;
   }
 
   Future<ChatMessage?> sendChatMessage(Map<String, dynamic> body, List<ChatContent> contents, ChatMessage chat) async {
-    var endpoint = ApiUrl.user.sendMessage;
-    var apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
+    final endpoint = ApiUrl.user.sendMessage;
+    final apiResponse = await sl<ApiInterceptor>().postRequest(endpoint: endpoint, body: body);
     if (apiResponse.status != 200) return null;
-    var chatMessage = ChatMessage.fromJson(apiResponse.response['data']);
+    final chatMessage = ChatMessage.fromJson(apiResponse.response['data']);
     chatMessage.chatStatus = 'sent';
     chatMessage.dateMilliSecond = chat.dateMilliSecond;
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<BuddiesViewModel>(context, listen: false).setLastMessage(chatMessage);
     return chatMessage;
   }
 
   Future<bool> deleteAllConversations(ChatBuddy buddy) async {
-    var endpoint = '${ApiUrl.user.deleteConversation}?user_id=${buddy.id}';
-    var apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.deleteConversation}?user_id=${buddy.id}';
+    final apiResponse = await sl<ApiInterceptor>().deleteRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return false;
     ToastPopup.onToast(message: 'conversations_deleted_successfully'.recast);
     return true;
   }
 
 /*Future<List<ChatMessage>> fetchMessages({int page = 1}) async {
-    var endpoint = ApiUrl.user.messages;
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = ApiUrl.user.messages;
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var messagesApi = ConversationApi.fromJson(apiResponse.response['data']);
+    final messagesApi = ConversationApi.fromJson(apiResponse.response['data']);
     // if (messagesApi.messages.haveList) return [];
     return messagesApi.messages.haveList ? messagesApi.messages! : [];
 }*/
 
 /*Future<List<ChatMessage>> searchInConversations({required String searchKey}) async {
-    var endpoint = '${ApiUrl.user.searchInChat}?keyword=$searchKey';
-    var apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
+    final endpoint = '${ApiUrl.user.searchInChat}?keyword=$searchKey';
+    final apiResponse = await sl<ApiInterceptor>().getRequest(endpoint: endpoint);
     if (apiResponse.status != 200) return [];
-    var messagesApi = ConversationApi.fromJson(apiResponse.response['data']);
+    final messagesApi = ConversationApi.fromJson(apiResponse.response['data']);
     return messagesApi.messages.haveList ? messagesApi.messages! : [];
 }*/
 
 /*List<ChatMessage> _modifyMessage(List<ChatMessage> messages) {
-    var userId = UserPreferences.user.id;
+    final userId = UserPreferences.user.id;
     messages.forEach((item) {});
     return messages;
 }*/

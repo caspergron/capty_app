@@ -13,13 +13,13 @@ class Formatters {
   // NumberFormat.currency(locale: 'eu', customPattern: '\u00a4 #,##.#').format(123456); // EUR 12.34.56,00
 
   static String formatDecimalNumber(String value) {
-    var formatter = NumberFormat.decimalPattern();
+    final formatter = NumberFormat.decimalPattern();
     return formatter.format(value.stringToInt);
   }
 
   static String formatDate(String format, String? date) {
     if (date == null || date == '') return '';
-    var formatter = DateFormat(format, AppPreferences.language.code);
+    final formatter = DateFormat(format, AppPreferences.language.code);
     return formatter.format(date.parseDate);
   }
 

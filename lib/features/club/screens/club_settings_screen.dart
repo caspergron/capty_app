@@ -75,9 +75,9 @@ class _ClubSettingsScreenState extends State<ClubSettingsScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var courses = _modelData.club.courses ?? [];
-    var socialLink = _modelData.club.socialLink;
-    var titleStyle = TextStyles.text14_600.copyWith(color: primary, height: 1, fontSize: 15);
+    final courses = _modelData.club.courses ?? [];
+    final socialLink = _modelData.club.socialLink;
+    final titleStyle = TextStyles.text14_600.copyWith(color: primary, height: 1, fontSize: 15);
     return ListView(
       clipBehavior: Clip.antiAlias,
       physics: const BouncingScrollPhysics(),

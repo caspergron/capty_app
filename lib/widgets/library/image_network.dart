@@ -37,7 +37,7 @@ class ImageNetwork extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = BorderRadius.circular(radius);
+    final borderRadius = BorderRadius.circular(radius);
     return ClipRRect(borderRadius: borderRadius, child: image == null ? _errorWidget() : _networkImage(context));
   }
 

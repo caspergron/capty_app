@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:app/components/app_lists/marketplace_disc_list.dart';
 import 'package:app/models/marketplace/marketplace_category.dart';
 import 'package:app/models/marketplace/sales_ad.dart';
 import 'package:app/themes/colors.dart';
 import 'package:app/themes/text_styles.dart';
 import 'package:app/utils/dimensions.dart';
-import 'package:flutter/material.dart';
 
 class MarketplaceCategoryList extends StatelessWidget {
   final List<MarketplaceCategory> categories;
@@ -32,10 +33,10 @@ class MarketplaceCategoryList extends StatelessWidget {
   }
 
   Widget _marketplaceItemCard(BuildContext context, int index) {
-    var item = categories[index];
+    final item = categories[index];
     if (item.discs.isEmpty) return const SizedBox.shrink();
-    var gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
-    var style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
+    final gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
     /*if (kDebugMode) {
       final ids = item.discs.map((e) => e.id).toList();
       print(ids);

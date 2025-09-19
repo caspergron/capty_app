@@ -41,11 +41,11 @@ class NearbyCoursesList extends StatelessWidget {
   }
 
   Widget _courseItemCard(BuildContext context, int index) {
-    var item = courses[index];
-    var isLast = index == courses.length - 1;
+    final item = courses[index];
+    final isLast = index == courses.length - 1;
     if (kDebugMode) print(item.toJson());
-    var isConnect = selectedCourses.isNotEmpty && selectedCourses.any((element) => element.id == item.id);
-    var isHome = homeCourse.id != null && homeCourse.id == item.id;
+    final isConnect = selectedCourses.isNotEmpty && selectedCourses.any((element) => element.id == item.id);
+    final isHome = homeCourse.id != null && homeCourse.id == item.id;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 04),

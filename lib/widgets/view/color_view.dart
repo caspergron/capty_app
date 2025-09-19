@@ -13,7 +13,7 @@ class ColorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var decoration = BoxDecoration(color: color, borderRadius: BorderRadius.circular(4));
+    final decoration = BoxDecoration(color: color, borderRadius: BorderRadius.circular(4));
     return InkWell(
       onTap: () => onColor == null ? null : colorPickerDialog(color: color, onChanged: (v) => onColor!(v)),
       child: AnimatedContainer(width: 60, height: 60, duration: DURATION_700, decoration: decoration),

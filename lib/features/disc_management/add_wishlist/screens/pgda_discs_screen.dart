@@ -68,10 +68,10 @@ class _PgdaDiscsScreenState extends State<PgdaDiscsScreen> {
 
   Widget _screenView(BuildContext context) {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var subLabel = 'no_pdga_discs_are_available_now_please_try_again_later';
+    const subLabel = 'no_pdga_discs_are_available_now_please_try_again_later';
     if (_modelData.categories.isEmpty) return NoDiscFound(height: 15.height, description: subLabel);
-    var label = 'browse_in_all_pgda_approved_discs'.recast;
-    var gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final label = 'browse_in_all_pgda_approved_discs'.recast;
+    final gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -95,8 +95,8 @@ class _PgdaDiscsScreenState extends State<PgdaDiscsScreen> {
   }
 
   void _onWishlist(ParentDisc item, int index) {
-    var added = item.is_wishListed;
-    var wishlist = Wishlist(id: item.wishlistId, disc: item);
+    final added = item.is_wishListed;
+    final wishlist = Wishlist(id: item.wishlistId, disc: item);
     addToWishlistDialog(
       wishlist: wishlist,
       added: added,

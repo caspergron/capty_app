@@ -30,10 +30,10 @@ class MenuHorizontalList extends StatelessWidget {
   }
 
   Widget _menuItemCard(BuildContext context, int index) {
-    var item = menuItems[index];
-    var selected = menu.id != null && menu.id == item.id;
-    var gap = Dimensions.screen_padding;
-    var border = !selected ? null : Border.all(color: primary);
+    final item = menuItems[index];
+    final selected = menu.id != null && menu.id == item.id;
+    final gap = Dimensions.screen_padding;
+    final border = !selected ? null : Border.all(color: primary);
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(item),
       child: TweenListItem(

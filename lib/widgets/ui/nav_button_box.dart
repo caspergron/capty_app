@@ -14,7 +14,7 @@ class NavButtonBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // if (child == null) return const SizedBox.shrink();
-    var top = child == null ? 0.0 : 16.0;
+    final top = child == null ? 0.0 : 16.0;
     return Opacity(
       opacity: loader ? 0.55 : 1,
       child: AnimatedContainer(

@@ -21,7 +21,7 @@ import 'package:app/widgets/library/svg_image.dart';
 
 const _DURATION = Duration(seconds: 1);
 const _STRAIT_LINE = FlLine(color: primary, strokeWidth: 0.8);
-var _DOT_PAINTER = FlDotCirclePainter(radius: 8, color: primary);
+final _DOT_PAINTER = FlDotCirclePainter(radius: 8, color: primary);
 
 class GridPathScreen extends StatefulWidget {
   final int index;
@@ -36,7 +36,7 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
   var _tabIndex = 0;
   var _viewModel = GridPathViewModel();
   var _modelData = GridPathViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late TabController _tabController;
 
   @override
@@ -64,9 +64,9 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    var bagName = widget.bags[_tabIndex].bag_menu_display_name;
-    var label1 = '${'grid_view_of'.recast} $bagName';
-    var label2 = 'grid_view_of_your_discs'.recast;
+    final bagName = widget.bags[_tabIndex].bag_menu_display_name;
+    final label1 = '${'grid_view_of'.recast} $bagName';
+    final label2 = 'grid_view_of_your_discs'.recast;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -86,7 +86,7 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
   }
 
   Widget _screenView(BuildContext context) {
-    var padding = const EdgeInsets.only(left: 08, right: 16);
+    const padding = EdgeInsets.only(left: 08, right: 16);
     return Column(
       children: [
         if (widget.bags.length > 1) const SizedBox(height: 10),
@@ -117,8 +117,8 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
                   controller: _tabController,
                   physics: widget.bags.length < 2 ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
                   children: List.generate(_modelData.graphs.length, (i) {
-                    var graph = _modelData.graphs[i];
-                    var key = ValueKey<List<ScatterSpot>>(graph.graphSpots);
+                    final graph = _modelData.graphs[i];
+                    final key = ValueKey<List<ScatterSpot>>(graph.graphSpots);
                     if (graph.graphSpots.isEmpty) return _NoGraphDataFound();
                     return ScatterChart(key: key, _scatterChartData(i), duration: _DURATION);
                   }).toList(),
@@ -132,7 +132,7 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
   }
 
   ScatterChartData _scatterChartData(int index) {
-    var graph = _modelData.graphs[index];
+    final graph = _modelData.graphs[index];
     return ScatterChartData(
       minX: -5,
       minY: 0,
@@ -149,11 +149,11 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
   }
 
   FlTitlesData get _titlesData {
-    var style = TextStyles.text16_600.copyWith(color: primary, fontWeight: w500, fontSize: 20);
-    var bottomLabel = Text('${'stability'.recast} (${'turn'.recast} + ${'fade'.recast})', style: style);
-    var top = AxisTitles(sideTitles: _topTitles, axisNameWidget: bottomLabel, axisNameSize: 26);
-    var left = AxisTitles(sideTitles: _leftTitles, axisNameWidget: Text('speed'.recast, style: style), axisNameSize: 26);
-    // var bottom = AxisTitles(sideTitles: _bottomTitles, axisNameWidget: bottomLabel, axisNameSize: 26);
+    final style = TextStyles.text16_600.copyWith(color: primary, fontWeight: w500, fontSize: 20);
+    final bottomLabel = Text('${'stability'.recast} (${'turn'.recast} + ${'fade'.recast})', style: style);
+    final top = AxisTitles(sideTitles: _topTitles, axisNameWidget: bottomLabel, axisNameSize: 26);
+    final left = AxisTitles(sideTitles: _leftTitles, axisNameWidget: Text('speed'.recast, style: style), axisNameSize: 26);
+    // final bottom = AxisTitles(sideTitles: _bottomTitles, axisNameWidget: bottomLabel, axisNameSize: 26);
     return FlTitlesData(topTitles: top, leftTitles: left, bottomTitles: const AxisTitles(), rightTitles: const AxisTitles());
   }
 
@@ -162,23 +162,23 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
   // SideTitles get _bottomTitles => SideTitles(getTitlesWidget: _bottomTitleWidgets, showTitles: true, interval: 1, reservedSize: 24);
 
   Widget _topTitleWidgets(double value, TitleMeta meta) {
-    var graph = _modelData.graphs[_tabIndex];
+    final graph = _modelData.graphs[_tabIndex];
     final maxX = graph.maxX > 6 ? graph.maxX : 6;
     final reversedValue = maxX + (-5) - value;
-    var style = TextStyles.text13_600.copyWith(color: primary);
-    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
+    final style = TextStyles.text13_600.copyWith(color: primary);
+    const slideData = SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
     return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(reversedValue.formatDouble, style: style));
   }
 
   Widget _leftTitleWidgets(double value, TitleMeta meta) {
-    var style = TextStyles.text13_600.copyWith(color: primary);
-    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: -20, parentAxisSize: 10, distanceFromEdge: -30);
+    final style = TextStyles.text13_600.copyWith(color: primary);
+    const slideData = SideTitleFitInsideData(enabled: true, axisPosition: -20, parentAxisSize: 10, distanceFromEdge: -30);
     return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(value.formatDouble, style: style));
   }
 
   /*Widget _bottomTitleWidgets(double value, TitleMeta meta) {
-    var style = TextStyles.text13_600.copyWith(color: primary);
-    var slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
+    final style = TextStyles.text13_600.copyWith(color: primary);
+    final slideData = const SideTitleFitInsideData(enabled: true, axisPosition: 10, parentAxisSize: 10, distanceFromEdge: 0);
     return SideTitleWidget(meta: meta, fitInside: slideData, child: Text(value.formatDouble, style: style));
   }*/
 
@@ -189,9 +189,9 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
       touchTooltipData: ScatterTouchTooltipData(
         tooltipPadding: const EdgeInsets.symmetric(horizontal: 06, vertical: 04),
         getTooltipItems: (scatterSpot) {
-          var style = const TextStyle(color: white, fontWeight: w600, height: 1);
-          var scatterSpotIndex = _modelData.findScattedIndex(scatterSpot, index);
-          var disc = scatterSpotIndex < 0 ? UserDisc() : _modelData.discBags[index].userDiscs?[scatterSpotIndex] ?? UserDisc();
+          const style = TextStyle(color: white, fontWeight: w600, height: 1);
+          final scatterSpotIndex = _modelData.findScattedIndex(scatterSpot, index);
+          final disc = scatterSpotIndex < 0 ? UserDisc() : _modelData.discBags[index].userDiscs?[scatterSpotIndex] ?? UserDisc();
           return ScatterTooltipItem(disc.name ?? '', textStyle: style);
         },
       ),
@@ -203,7 +203,7 @@ class _GridPathScreenState extends State<GridPathScreen> with SingleTickerProvid
 class _NoGraphDataFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var desc = 'we_could_not_find_any_discs_right_now_please_try_again_later';
+    const desc = 'we_could_not_find_any_discs_right_now_please_try_again_later';
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(

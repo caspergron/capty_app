@@ -16,8 +16,8 @@ class ChatSuggestionsList extends StatelessWidget {
   }
 
   Widget _suggestionItemCard(int index) {
-    var suggestion = suggestions[index];
-    var border = Border.all(color: lightBlue, width: 0.5);
+    final suggestion = suggestions[index];
+    final border = Border.all(color: lightBlue, width: 0.5);
     return InkWell(
       onTap: () => onTap(suggestion),
       child: Container(

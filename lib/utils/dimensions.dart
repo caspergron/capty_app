@@ -12,28 +12,28 @@ abstract class Dimensions {
 }
 
 /// Radius
-var _RADIUS_16 = const Radius.circular(16);
-var SHEET_RADIUS = BorderRadius.only(topLeft: _RADIUS_16, topRight: _RADIUS_16);
-var DIALOG_RADIUS = BorderRadius.circular(12);
-var DROPDOWN_RADIUS = BorderRadius.circular(08);
+const _RADIUS_16 = Radius.circular(16);
+const SHEET_RADIUS = BorderRadius.only(topLeft: _RADIUS_16, topRight: _RADIUS_16);
+final DIALOG_RADIUS = BorderRadius.circular(12);
+final DROPDOWN_RADIUS = BorderRadius.circular(08);
 
 /// SHAPE
-var DIALOG_SHAPE = RoundedRectangleBorder(borderRadius: DIALOG_RADIUS);
-var BOTTOM_SHEET_SHAPE = RoundedRectangleBorder(borderRadius: SHEET_RADIUS);
-var TOAST_SHAPE = RoundedRectangleBorder(borderRadius: BorderRadius.circular(4));
+final DIALOG_SHAPE = RoundedRectangleBorder(borderRadius: DIALOG_RADIUS);
+const BOTTOM_SHEET_SHAPE = RoundedRectangleBorder(borderRadius: SHEET_RADIUS);
+final TOAST_SHAPE = RoundedRectangleBorder(borderRadius: BorderRadius.circular(4));
 
 /// Durations
-var DIALOG_DURATION = const Duration(milliseconds: 700);
-var POP_DURATION = const Duration(milliseconds: 300);
-var DURATION_1000 = const Duration(milliseconds: 1000);
-var DURATION_700 = const Duration(milliseconds: 700);
+const DIALOG_DURATION = Duration(milliseconds: 700);
+const POP_DURATION = Duration(milliseconds: 300);
+const DURATION_1000 = Duration(milliseconds: 1000);
+const DURATION_700 = Duration(milliseconds: 700);
 
 /// Sizes
-var ACTION_GAP = const SizedBox(width: 08);
-var ACTION_SIZE = const SizedBox(width: 20);
+const ACTION_GAP = SizedBox(width: 08);
+const ACTION_SIZE = SizedBox(width: 20);
 
-var DIALOG_PADDING = 24.0;
-var BOTTOM_GAP = (SizeConfig.bottom < 1 ? 0.0 : SizeConfig.bottom) + (Platform.isIOS ? 0 : 12);
-var BOTTOM_GAP_NAV = Platform.isIOS ? (SizeConfig.bottom < 1 ? 8.0 : SizeConfig.bottom - 14) : SizeConfig.bottom + 08;
+const DIALOG_PADDING = 24.0;
+final BOTTOM_GAP = (SizeConfig.bottom < 1 ? 0.0 : SizeConfig.bottom) + (Platform.isIOS ? 0 : 12);
+final BOTTOM_GAP_NAV = Platform.isIOS ? (SizeConfig.bottom < 1 ? 8.0 : SizeConfig.bottom - 14) : SizeConfig.bottom + 08;
 
 const DROPDOWN_ICON_PADDING = EdgeInsets.only(right: 12);

@@ -18,11 +18,11 @@ class Pusher {
   final _pusher = PusherChannelsFlutter.getInstance();
 
   Future<void> onDisposePusher() async {
-    var user = sl<StorageService>().user;
-    var channel = 'message.${user.id}';
+    final user = sl<StorageService>().user;
+    final channel = 'message.${user.id}';
     try {
-      var state = _pusher.connectionState;
-      var isConnected = state.toUpper == 'CONNECTED';
+      final state = _pusher.connectionState;
+      final isConnected = state.toUpper == 'CONNECTED';
       if (user.id != null && isConnected) await _pusher.unsubscribe(channelName: channel);
       if (isConnected) await _pusher.disconnect();
     } catch (e) {
@@ -31,7 +31,7 @@ class Pusher {
   }
 
   Future<void> onInitPusher() async {
-    var channel = '$PUSHER_CHANNEL${sl<StorageService>().user.id}';
+    final channel = '$PUSHER_CHANNEL${sl<StorageService>().user.id}';
     try {
       await _pusher.init(
         apiKey: PUSHER_APP_KEY,
@@ -64,10 +64,10 @@ class Pusher {
   }
 
   void _onEvent(PusherEvent event) {
-    var context = navigatorKey.currentState?.context;
+    final context = navigatorKey.currentState?.context;
     // if (kDebugMode) print('onEvent: ${event.data}');
     if (context == null || event.data == null || event.data == {}) return;
-    var chatMessage = ChatMessage.fromJson(json.decode(event.data));
+    final chatMessage = ChatMessage.fromJson(json.decode(event.data));
     if (chatMessage.message == null) return;
     chatMessage.chatStatus = 'received';
     Provider.of<ChatViewModel>(context, listen: false).setReceivedMessage(chatMessage);

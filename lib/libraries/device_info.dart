@@ -15,21 +15,21 @@ class DeviceInfo {
   Future<PackageInfo> get getPackageInfo => PackageInfo.fromPlatform();
 
   Future<String> get appVersion async {
-    var packageInfo = await getPackageInfo;
+    final packageInfo = await getPackageInfo;
     return packageInfo.version;
   }
 
   Future<String> get appBuildVersionCode async {
-    var packageInfo = await getPackageInfo;
+    final packageInfo = await getPackageInfo;
     return packageInfo.buildNumber;
   }
 
   Future<String> get deviceVersion async {
     if (Platform.isIOS) {
-      var iosInfo = await _deviceInfo.iosInfo;
+      final iosInfo = await _deviceInfo.iosInfo;
       return iosInfo.systemVersion;
     } else if (Platform.isAndroid) {
-      var androidInfo = await _deviceInfo.androidInfo;
+      final androidInfo = await _deviceInfo.androidInfo;
       // return androidInfo.model;
       return androidInfo.type;
     } else {
@@ -57,8 +57,8 @@ class DeviceInfo {
 
   Future<String> get deviceIpAddress async {
     String ipAddress = '';
-    for (var interface in await NetworkInterface.list()) {
-      for (var address in interface.addresses) {
+    for (final interface in await NetworkInterface.list()) {
+      for (final address in interface.addresses) {
         ipAddress = address.address;
       }
     }

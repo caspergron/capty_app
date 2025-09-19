@@ -33,24 +33,24 @@ class PlayerProfileViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchPlayerProfileInfo(int userId) async {
-    var response = await sl<PlayerRepository>().fetchPlayerProfileInfo(userId);
+    final response = await sl<PlayerRepository>().fetchPlayerProfileInfo(userId);
     if (response != null) player = response;
     notifyListeners();
   }
 
   Future<void> _fetchPlayerTournamentInfo(int userId) async {
     upcomingTournaments.clear();
-    var response = await sl<PlayerRepository>().fetchPlayerTournamentInfo(userId);
+    final response = await sl<PlayerRepository>().fetchPlayerTournamentInfo(userId);
     if (response.isNotEmpty) upcomingTournaments = response;
     notifyListeners();
   }
 
   Future<void> _fetchSalesAdDiscs(int userId) async {
     salesAdDiscs.clear();
-    var coordinates = await sl<Locations>().fetchLocationPermission();
-    var locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
-    var params = '$userId&size=$LENGTH_20$locationParams';
-    var response = await sl<PlayerRepository>().fetchSalesAdDiscs(params);
+    final coordinates = await sl<Locations>().fetchLocationPermission();
+    final locationParams = '&latitude=${coordinates.lat}&longitude=${coordinates.lng}';
+    final params = '$userId&size=$LENGTH_20$locationParams';
+    final response = await sl<PlayerRepository>().fetchSalesAdDiscs(params);
     if (response.isNotEmpty) salesAdDiscs = response;
     loader = Loader(initial: false, common: false);
     notifyListeners();

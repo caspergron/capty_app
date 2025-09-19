@@ -30,9 +30,9 @@ Future<void> addToWishlistDialog({
   Function()? onAdd,
   Function()? onRemove,
 }) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(wishlist, added, isEdit, onEdit, onAdd, onRemove));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(wishlist, added, isEdit, onEdit, onAdd, onRemove));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Add To Wishlist Dialog',
@@ -63,12 +63,12 @@ class _DialogView extends StatelessWidget {
   }
 
   Widget _screenView(BuildContext context) {
-    var disc = wishlist.disc;
-    var userDisc = wishlist.userDisc;
-    var parentDisc = wishlist.disc;
-    var isDescription = userDisc?.description != null || disc?.description != null;
-    var description = userDisc?.description ?? disc?.description ?? '';
-    var isLongDescription = description.length > 450;
+    final disc = wishlist.disc;
+    final userDisc = wishlist.userDisc;
+    final parentDisc = wishlist.disc;
+    final isDescription = userDisc?.description != null || disc?.description != null;
+    final description = userDisc?.description ?? disc?.description ?? '';
+    final isLongDescription = description.length > 450;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,8 +243,8 @@ class _DicInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style1 = TextStyles.text14_600.copyWith(color: lightBlue);
-    var style2 = TextStyles.text16_700.copyWith(color: lightBlue);
+    final style1 = TextStyles.text14_600.copyWith(color: lightBlue);
+    final style2 = TextStyles.text16_700.copyWith(color: lightBlue);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 04),
       child: Column(

@@ -51,9 +51,9 @@ class UserDiscHorizontalList extends StatelessWidget {
   }
 
   Widget _discItemCard(BuildContext context, int index) {
-    var item = discs[index];
-    var gap = Dimensions.screen_padding;
-    var discFeatures = [item.speed ?? 0, item.glide ?? 0, item.turn ?? 0, item.fade ?? 0];
+    final item = discs[index];
+    final gap = Dimensions.screen_padding;
+    final discFeatures = [item.speed ?? 0, item.glide ?? 0, item.turn ?? 0, item.fade ?? 0];
     return InkWell(
       onTap: onTap == null ? null : () => onTap!(item),
       child: TweenListItem(
@@ -121,10 +121,10 @@ class UserDiscHorizontalList extends StatelessWidget {
   }
 
   Widget _numberListItem(List<double> items, int index) {
-    var item = items[index];
-    var isFirst = index == 0;
-    var isLast = index == items.length - 1;
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final item = items[index];
+    final isFirst = index == 0;
+    final isLast = index == items.length - 1;
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

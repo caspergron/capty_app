@@ -16,7 +16,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> defaultLoaderSheet({String label = ''}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   await showModalBottomSheet(
     context: context,
     isDismissible: false,
@@ -40,7 +40,7 @@ class _BottomSheetView extends StatelessWidget {
     return Container(
       width: SizeConfig.width,
       height: SizeConfig.height,
-      decoration: BoxDecoration(color: orange, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: orange, borderRadius: SHEET_RADIUS),
       child: _screenView,
     );
   }

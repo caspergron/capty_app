@@ -18,7 +18,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> appUpdateDialog({required Upgrader upgrader}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('app-update-popup');
   await showGeneralDialog(
     context: context,

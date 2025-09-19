@@ -33,7 +33,7 @@ class SetProfileViewModel with ChangeNotifier {
   var emailCheck = ''; // loader, failed, success
 
   void initViewModel(Map<String, dynamic> params) {
-    var countryItem = params['country'] as Country;
+    final countryItem = params['country'] as Country;
     country = countryItem.id == null ? AppPreferences.countries.first : countryItem;
     notifyListeners();
     if (params.containsKey('email') && params['email'].toString().isNotEmpty) checkUniqueEmail(params['email']);
@@ -78,21 +78,21 @@ class SetProfileViewModel with ChangeNotifier {
     if (phone.length < 6) return;
     phoneCheck = 'loader';
     notifyListeners();
-    var body = {'field': 'phone', 'value': '${country.phonePrefix}$phone'};
-    var response = await sl<AuthRepository>().checkUniqueUser(body);
+    final body = {'field': 'phone', 'value': '${country.phonePrefix}$phone'};
+    final response = await sl<AuthRepository>().checkUniqueUser(body);
     phoneCheck = response ? 'success' : 'failed';
     notifyListeners();
   }
 
   Future<void> checkUniqueEmail(String email) async {
     if (email.isEmpty) return;
-    var parts = email.split('@');
-    var isValidEmail = parts.length == 2 && parts[0].isNotEmpty && parts[1].contains('.');
+    final parts = email.split('@');
+    final isValidEmail = parts.length == 2 && parts[0].isNotEmpty && parts[1].contains('.');
     if (!isValidEmail) return;
     emailCheck = 'loader';
     notifyListeners();
-    var body = {'field': 'email', 'value': email};
-    var response = await sl<AuthRepository>().checkUniqueUser(body);
+    final body = {'field': 'email', 'value': email};
+    final response = await sl<AuthRepository>().checkUniqueUser(body);
     emailCheck = response ? 'success' : 'failed';
     notifyListeners();
   }
@@ -100,11 +100,11 @@ class SetProfileViewModel with ChangeNotifier {
   Future<void> onAllowLocation(Map<String, dynamic> data) async {
     loader = true;
     notifyListeners();
-    var coordinates = await sl<Locations>().fetchLocationPermission();
+    final coordinates = await sl<Locations>().fetchLocationPermission();
     if (!coordinates.is_coordinate) loader = false;
     if (!coordinates.is_coordinate) unawaited(Routes.auth.set_profile_4(data: data).push());
     if (!coordinates.is_coordinate) return notifyListeners();
-    var response = await sl<PublicRepository>().findClubs(coordinates);
+    final response = await sl<PublicRepository>().findClubs(coordinates);
     clubs.clear();
     if (response.isNotEmpty) clubs = response.sublist(0, response.length > 3 ? 3 : response.length);
     clubs.isEmpty ? unawaited(Routes.auth.set_profile_4(data: data).push()) : unawaited(Routes.auth.set_profile_3(data: data).push());
@@ -113,11 +113,11 @@ class SetProfileViewModel with ChangeNotifier {
   }
 
   void onClubAction(Club item, int index) {
-    var isMember = clubs[index].is_member;
-    var totalMember = clubs[index].totalMember.nullToInt;
+    final isMember = clubs[index].is_member;
+    final totalMember = clubs[index].totalMember.nullToInt;
     clubs[index].totalMember = isMember ? totalMember - 1 : totalMember + 1;
     clubs[index].isMember = item.is_member ? false : true;
-    var totalJoined = clubs.where((item) => item.is_member).toList().length;
+    final totalJoined = clubs.where((item) => item.is_member).toList().length;
     if (totalJoined > 0) isNoClub = false;
     if (totalJoined > 0) isNotMember = false;
     notifyListeners();
@@ -146,17 +146,17 @@ class SetProfileViewModel with ChangeNotifier {
   Future<void> onUpdateImage(File file) async {
     loader = true;
     notifyListeners();
-    var docFiles = await sl<FileHelper>().renderFilesInModel([file]);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([file]);
     if (docFiles.isNotEmpty) avatar = docFiles.first;
     loader = false;
     notifyListeners();
   }
 
   Future<int?> _uploadProfileAvatar() async {
-    var imageName = basename(avatar.file!.path);
-    var base64 = 'data:image/${avatar.file?.path.fileExtension};base64,${avatar.base64}';
-    var body = {'type': 'image', 'section': 'user', 'alt_text': imageName, 'image': base64};
-    var response = await sl<UserRepository>().uploadBase64Media(body);
+    final imageName = basename(avatar.file!.path);
+    final base64 = 'data:image/${avatar.file?.path.fileExtension};base64,${avatar.base64}';
+    final body = {'type': 'image', 'section': 'user', 'alt_text': imageName, 'image': base64};
+    final response = await sl<UserRepository>().uploadBase64Media(body);
     return response == null ? null : response.id;
   }
 
@@ -169,10 +169,10 @@ class SetProfileViewModel with ChangeNotifier {
       if (mediaId == null) loader = false;
       if (mediaId == null) return;
     }
-    var clubItems = clubs.isEmpty ? <Club>[] : clubs.where((item) => item.is_member).toList();
-    var clubIds = clubItems.isEmpty ? <int>[] : clubItems.map((item) => item.id.nullToInt).toList();
-    var pdgaNo = params['pgda_number'] as String;
-    var body = {
+    final clubItems = clubs.isEmpty ? <Club>[] : clubs.where((item) => item.is_member).toList();
+    final clubIds = clubItems.isEmpty ? <int>[] : clubItems.map((item) => item.id.nullToInt).toList();
+    final pdgaNo = params['pgda_number'] as String;
+    final body = {
       'name': params['name'],
       'email': params['email'],
       'phone': '${country.phonePrefix}${params['phone']}',
@@ -186,7 +186,7 @@ class SetProfileViewModel with ChangeNotifier {
       'is_club_member': clubIds.isEmpty ? isNotMember : false,
       'club_id': clubIds,
     };
-    var response = await sl<AuthRepository>().createAccount(body);
+    final response = await sl<AuthRepository>().createAccount(body);
     if (response != null) unawaited(Routes.auth.signed_up(user: response.user!).pushAndRemove());
     loader = false;
     notifyListeners();

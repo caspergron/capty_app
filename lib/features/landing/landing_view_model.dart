@@ -33,7 +33,7 @@ class LandingViewModel with ChangeNotifier {
   void initViewModel(int pageIndex, RemoteMessage? message) {
     if (pageIndex >= 0) updateView(pageIndex);
     if (message != null) _notificationActions(message);
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     Provider.of<BuddiesViewModel>(context, listen: false).fetchMessageFeeds();
     Provider.of<NotificationsViewModel>(context, listen: false).fetchNotifications();
     if (ApiStatus.instance.landing) return;
@@ -53,7 +53,7 @@ class LandingViewModel with ChangeNotifier {
 
   void _checkAppOpenCount() {
     if (ApiStatus.instance.releasePopup) return;
-    var count = sl<StorageService>().appOpenCount;
+    final count = sl<StorageService>().appOpenCount;
     if (count + 1 < 11) liveAppDialog();
     sl<StorageService>().setAppOpenCount(count + 1);
   }
@@ -66,7 +66,7 @@ class LandingViewModel with ChangeNotifier {
   }
 
   void onSpinner() {
-    var isOpen = expansion == 1;
+    final isOpen = expansion == 1;
     expansion = isOpen ? 0 : 1;
     notifyListeners();
   }
@@ -101,20 +101,20 @@ class LandingViewModel with ChangeNotifier {
   }
 
   void _notificationActions(RemoteMessage message) {
-    // var eventType = message.eventType ?? '';
+    // final eventType = message.eventType ?? '';
     if (!sl<AuthService>().authStatus) return;
-    var isType = message.data.containsKey('type') && message.data['type'] != null;
+    final isType = message.data.containsKey('type') && message.data['type'] != null;
     if (!isType) return;
-    var type = message.data['type'].toString();
+    final type = message.data['type'].toString();
     if (type.toKey == SEND_MESSAGE.toKey || type.toKey == SEND_MESSAGE_1_DAY.toKey || type.toKey == SEND_MESSAGE_3_DAY.toKey) {
-      var chatMessage = ChatMessage.fromJson(jsonDecode(message.data['data_payload']));
+      final chatMessage = ChatMessage.fromJson(jsonDecode(message.data['data_payload']));
       Routes.user.chat(buddy: chatMessage.chat_buddy).push();
     } else if (type.toKey == RECEIVE_FRIEND_REQUEST.toKey) {
       Routes.user.friends(index: 1).push();
     } else if (type.toKey == ACCEPT_FRIEND_REQUEST.toKey) {
       Routes.user.friends().push();
     } else if (type.toKey == PDGA_RATING.toKey) {
-      var isClub = jsonDecode(message.data['data_payload']) as int?;
+      final isClub = jsonDecode(message.data['data_payload']) as int?;
       if (isClub == null || isClub == 0) return;
       Routes.user.leaderboard().push();
     } else {

@@ -20,7 +20,7 @@ import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> zoomImageDialog({required SalesAd salesAd}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('zoom-image-popup');
   await showGeneralDialog(
     context: context,
@@ -85,7 +85,7 @@ class _DialogView extends StatelessWidget {
   }
 
   Widget get _marketplaceDiscImage {
-    var userDisc = salesAd.userDisc;
+    final userDisc = salesAd.userDisc;
     return CircleImage(
       borderWidth: 0.4,
       radius: 38.width,

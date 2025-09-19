@@ -75,7 +75,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
   }
 
   void _setInitialStates() {
-    var disc = widget.disc;
+    final disc = widget.disc;
     _speed.text = '${disc.speed ?? ''}';
     _glide.text = '${disc.glide ?? ''}';
     _turn.text = '${disc.turn ?? ''}';
@@ -107,7 +107,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var loader = _modelData.loader.loader;
+    final loader = _modelData.loader.loader;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -160,9 +160,9 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
     if (_turn.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_turn'.recast);
     if (_fade.text.isEmpty) return FlushPopup.onWarning(message: 'please_write_your_disc_fade'.recast);
     if (_modelData.discBag.id == null) return FlushPopup.onWarning(message: 'please_select_a_bag_for_your_disc'.recast);
-    var invalidImage = _modelData.selectedRadio == 'image' && _modelData.discFile.unit8List == null;
+    final invalidImage = _modelData.selectedRadio == 'image' && _modelData.discFile.unit8List == null;
     if (invalidImage) return FlushPopup.onWarning(message: 'please_pick_a_color_of_your_disc_image_or_add_your_disc_image'.recast);
-    var params = {
+    final params = {
       'speed': _speed.text,
       'glide': _glide.text,
       'turn': _turn.text,
@@ -174,8 +174,8 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var disc = _modelData.disc;
-    var isDiscBags = _modelData.discBags.isNotEmpty;
+    final disc = _modelData.disc;
+    final isDiscBags = _modelData.discBags.isNotEmpty;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -441,7 +441,7 @@ class _AddDiscScreenState extends State<AddDiscScreen> {
 
   Future<void> _onImage(File fileImage) async {
     setState(() => _modelData.loader.common = true);
-    var docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
+    final docFiles = await sl<FileHelper>().renderFilesInModel([fileImage]);
     if (docFiles.isEmpty) return setState(() => _modelData.loader.common = false);
     _modelData.discFile = docFiles.first;
     if (_modelData.discFile.unit8List == null) return setState(() => _modelData.loader.common = false);

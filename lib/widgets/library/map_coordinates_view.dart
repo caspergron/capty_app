@@ -57,12 +57,12 @@ class _MapCoordinatesViewState extends State<MapCoordinatesView> {
       onMapCreated: _onMapCreated,
       onCameraMove: (position) {
         // Only update coordinates, don't add marker on camera move
-        var coordinates = Coordinates(lat: position.target.latitude, lng: position.target.longitude);
+        final coordinates = Coordinates(lat: position.target.latitude, lng: position.target.longitude);
         setState(() => _coordinates = coordinates);
       },
       onCameraIdle: () async {
         // Only add marker when camera stops moving (user interaction ends)
-        var latLog = LatLng(_coordinates.lat!, _coordinates.lng!);
+        final latLog = LatLng(_coordinates.lat!, _coordinates.lng!);
         await _addMarker(latLog);
       },
       initialCameraPosition: CameraPosition(target: LatLng(_coordinates.lat!, _coordinates.lng!), zoom: 12),
@@ -79,18 +79,18 @@ class _MapCoordinatesViewState extends State<MapCoordinatesView> {
   }
 
   Future<void> _addMarker(LatLng position) async {
-    var markerIcon = await sl<ImageService>().getBytesFromAsset(path: Assets.png_image.map_pin, size: const Size(35, 40));
+    final markerIcon = await sl<ImageService>().getBytesFromAsset(path: Assets.png_image.map_pin, size: const Size(35, 40));
     _markers.clear();
-    var id = const MarkerId('selected_location');
-    var info = InfoWindow(title: 'pinned_location'.recast);
+    const id = MarkerId('selected_location');
+    final info = InfoWindow(title: 'pinned_location'.recast);
     _markers.add(Marker(markerId: id, position: position, icon: BitmapDescriptor.bytes(markerIcon), infoWindow: info));
     setState(() {});
   }
 
   Future<void> _setCoordinates() async {
     if (_coordinates.lat == null || _coordinates.lng == null) return;
-    var latLng = LatLng(_coordinates.lat!, _coordinates.lng!);
-    var position = CameraPosition(target: latLng, zoom: ZOOM);
+    final latLng = LatLng(_coordinates.lat!, _coordinates.lng!);
+    final position = CameraPosition(target: latLng, zoom: ZOOM);
     final GoogleMapController mapController = await _controller.future;
     await mapController.animateCamera(CameraUpdate.newCameraPosition(position));
   }

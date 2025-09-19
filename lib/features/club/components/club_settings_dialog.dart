@@ -28,9 +28,9 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> clubSettingsDialog({List<Club> clubs = const [], Function(List<Club>)? onLeave, Function()? onJoin}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('club-settings-popup');
-  var child = Align(child: _DialogView(clubs, onLeave, onJoin));
+  final child = Align(child: _DialogView(clubs, onLeave, onJoin));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Club Created Dialog',
@@ -119,8 +119,8 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _clubItemCard(BuildContext context, int index) {
-    var item = widget.clubs[index];
-    var isLast = index == widget.clubs.length - 1;
+    final item = widget.clubs[index];
+    final isLast = index == widget.clubs.length - 1;
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: isLast ? 0 : 10),
@@ -191,8 +191,8 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _onLeftClub(Club item, int index) async {
     setState(() => _loader = true);
-    var body = {'club_id': item.id};
-    var response = await sl<ClubRepository>().leaveClub(body);
+    final body = {'club_id': item.id};
+    final response = await sl<ClubRepository>().leaveClub(body);
     if (!response) return setState(() => _loader = false);
     _clubs.removeAt(index);
     setState(() => _loader = false);
@@ -201,10 +201,10 @@ class _DialogViewState extends State<_DialogView> {
 
   Future<void> _onDefaultClub(Club item, int index) async {
     setState(() => _loader = true);
-    var body = {'club_id': item.id};
-    var response = await sl<ClubRepository>().markAsDefaultClub(body);
+    final body = {'club_id': item.id};
+    final response = await sl<ClubRepository>().markAsDefaultClub(body);
     if (response == null) return setState(() => _loader = false);
-    var context = navigatorKey.currentState!.context;
+    final context = navigatorKey.currentState!.context;
     _clubs.forEach((item) => item.isDefault = false);
     _clubs[index] = response;
     unawaited(sl<UserRepository>().fetchProfileInfo());

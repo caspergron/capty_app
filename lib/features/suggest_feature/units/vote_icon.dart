@@ -13,7 +13,7 @@ class VoteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var icon = SvgImage(image: Assets.svg1.arrow_up, color: white, height: 15);
+    final icon = SvgImage(image: Assets.svg1.arrow_up, color: white, height: 15);
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -24,7 +24,7 @@ class VoteIcon extends StatelessWidget {
   }
 
   Widget get _voteCountView {
-    var style = TextStyles.text12_400.copyWith(color: orange, fontWeight: w900, letterSpacing: 0, height: 1);
+    final style = TextStyles.text12_400.copyWith(color: orange, fontWeight: w900, letterSpacing: 0, height: 1);
     return Container(
       padding: const EdgeInsets.all(4),
       alignment: Alignment.center,

@@ -85,7 +85,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
   }
 
   Widget _screenView(BuildContext context) {
-    var label = _tabIndex == 0 ? _modelData.clubMenu.label.recast : _modelData.friendMenu.label.recast;
+    final label = _tabIndex == 0 ? _modelData.clubMenu.label.recast : _modelData.friendMenu.label.recast;
     final menuValue = _tabIndex == 0 ? _modelData.clubMenu.value : _modelData.friendMenu.value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,8 +127,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
 
   Widget _yourClubView(BuildContext context) {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var topPlayers = _modelData.clubLeaderboard.topPlayers;
-    var otherPlayers = _modelData.clubLeaderboard.otherPlayers;
+    final topPlayers = _modelData.clubLeaderboard.topPlayers;
+    final otherPlayers = _modelData.clubLeaderboard.otherPlayers;
     if (otherPlayers.isEmpty && topPlayers.isEmpty) return _noMemberFound;
     return ListView(
       shrinkWrap: true,
@@ -154,8 +154,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
 
   Widget _yourFriendView(BuildContext context) {
     if (_modelData.loader.initial) return const SizedBox.shrink();
-    var topPlayers = _modelData.friendLeaderboard.topPlayers;
-    var otherPlayers = _modelData.friendLeaderboard.otherPlayers;
+    final topPlayers = _modelData.friendLeaderboard.topPlayers;
+    final otherPlayers = _modelData.friendLeaderboard.otherPlayers;
     if (otherPlayers.isEmpty && topPlayers.isEmpty) return _noMemberFound;
     return ListView(
       shrinkWrap: true,
@@ -181,7 +181,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
   }
 
   Widget get _noMemberFound {
-    var descStyle = TextStyles.text14_400.copyWith(color: primary, letterSpacing: 0.42);
+    final descStyle = TextStyles.text14_400.copyWith(color: primary, letterSpacing: 0.42);
     return FadeAnimation(
       fadeKey: 'no_member_found',
       child: Container(
@@ -245,11 +245,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
   }
 
   void _onShareApp() {
-    var name = UserPreferences.user.name ?? '';
-    var line1 = '${name.allFirstLetterCapital} ${'has_joined_the_app_capty'.recast}';
-    var line2 = 'please_follow_this_link_so_that_you_can_compare_ratings_and_buy_sell_and_swap_discs_among_eachother'.recast;
-    var message = '$line1. $line2\n$DEEPLINK_WELCOME';
-    var params = ShareParams(title: 'capty_disc_golf_app'.recast, text: message, previewThumbnail: XFile(Assets.app.capty));
+    final name = UserPreferences.user.name ?? '';
+    final line1 = '${name.allFirstLetterCapital} ${'has_joined_the_app_capty'.recast}';
+    final line2 = 'please_follow_this_link_so_that_you_can_compare_ratings_and_buy_sell_and_swap_discs_among_eachother'.recast;
+    final message = '$line1. $line2\n$DEEPLINK_WELCOME';
+    final params = ShareParams(title: 'capty_disc_golf_app'.recast, text: message, previewThumbnail: XFile(Assets.app.capty));
     sl<ShareModule>().shareUrl(params: params);
   }
 }

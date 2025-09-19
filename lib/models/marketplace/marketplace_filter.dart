@@ -59,9 +59,9 @@ class MarketplaceFilter {
   }
 
   /*bool get is_validated {
-    var invalidFlight1 = (speed.start == 1 && speed.end == 15) && (glide.start == 0 && glide.end == 7);
-    var invalidFlight2 = (turn.start == -5 && turn.end == 1) && (fade.start == 0 && fade.end == 5);
-    var isInvalid = invalidFlight1 && invalidFlight2 && types.isEmpty && brands.isEmpty && tags.isEmpty;
+    final invalidFlight1 = (speed.start == 1 && speed.end == 15) && (glide.start == 0 && glide.end == 7);
+    final invalidFlight2 = (turn.start == -5 && turn.end == 1) && (fade.start == 0 && fade.end == 5);
+    final isInvalid = invalidFlight1 && invalidFlight2 && types.isEmpty && brands.isEmpty && tags.isEmpty;
     return !isInvalid;
   }*/
 }

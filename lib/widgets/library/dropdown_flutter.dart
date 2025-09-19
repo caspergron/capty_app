@@ -43,10 +43,10 @@ class DropdownFlutter<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = BorderRadius.circular(radius);
-    var decoration = BoxDecoration(color: background, borderRadius: borderRadius);
-    var style = TextStyles.text12_600.copyWith(color: color.colorOpacity(0.5), fontWeight: w400);
-    var textWidget = Text('$DROPDOWN_SPACE$hint', maxLines: 1, overflow: TextOverflow.ellipsis, style: style);
+    final borderRadius = BorderRadius.circular(radius);
+    final decoration = BoxDecoration(color: background, borderRadius: borderRadius);
+    final style = TextStyles.text12_600.copyWith(color: color.colorOpacity(0.5), fontWeight: w400);
+    final textWidget = Text('$DROPDOWN_SPACE$hint', maxLines: 1, overflow: TextOverflow.ellipsis, style: style);
     return Container(
       height: height,
       width: SizeConfig.width,
@@ -92,14 +92,14 @@ class DropdownFlutter<T> extends StatelessWidget {
   }
 
   Widget get _suffixIcon {
-    var icon = SvgImage(image: Assets.svg1.caret_down_1, height: 20, color: color.colorOpacity(value == null ? 0.7 : 1));
+    final icon = SvgImage(image: Assets.svg1.caret_down_1, height: 20, color: color.colorOpacity(value == null ? 0.7 : 1));
     return Padding(padding: const EdgeInsets.only(right: 14), child: icon);
   }
 
   Widget _dropdownHint(BuildContext context, Color textColor) {
-    var title = '$DROPDOWN_SPACE${hintLabel ?? hint}';
-    var color = background == primary ? lightBlue : textColor.colorOpacity(hintLabel == null ? 0.8 : 1);
-    var style = TextStyles.text12_600.copyWith(color: color, fontSize: fontSize, fontWeight: w400);
+    final title = '$DROPDOWN_SPACE${hintLabel ?? hint}';
+    final color = background == primary ? lightBlue : textColor.colorOpacity(hintLabel == null ? 0.8 : 1);
+    final style = TextStyles.text12_600.copyWith(color: color, fontSize: fontSize, fontWeight: w400);
     return Text(title, textAlign: TextAlign.start, maxLines: 1, overflow: TextOverflow.ellipsis, style: style);
   }
 }

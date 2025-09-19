@@ -162,7 +162,7 @@ class _RecommendedDiscScreenState extends State<RecommendedDiscScreen> {
   }
 
   Widget get _discInformation {
-    var style = TextStyles.text14_400.copyWith(color: primary);
+    final style = TextStyles.text14_400.copyWith(color: primary);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 06),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(12)),
@@ -186,8 +186,8 @@ class _DicInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style1 = TextStyles.text14_600.copyWith(color: lightBlue);
-    var style2 = TextStyles.text16_700.copyWith(color: lightBlue);
+    final style1 = TextStyles.text14_600.copyWith(color: lightBlue);
+    final style2 = TextStyles.text16_700.copyWith(color: lightBlue);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 04),
       child: Column(
@@ -216,8 +216,8 @@ class _RecommendedInfoList extends StatelessWidget {
   }
 
   Widget _selectableListItem(BuildContext context, int index) {
-    var item = listItems[index];
-    var color = lightBlue;
+    final item = listItems[index];
+    const color = lightBlue;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.zero,

@@ -55,7 +55,7 @@ class AddDiscViewModel with ChangeNotifier {
   }
 
   Future<void> _fetchPlasticsByDiscBrandId() async {
-    var response = await sl<DiscRepository>().plasticsByDiscBrandId(disc.discBrandId!);
+    final response = await sl<DiscRepository>().plasticsByDiscBrandId(disc.discBrandId!);
     if (response.isNotEmpty) plastics = response;
     // if (plastics.isNotEmpty) plastic = plastics.first;
     notifyListeners();
@@ -64,7 +64,7 @@ class AddDiscViewModel with ChangeNotifier {
   Future<void> _fetchAllDiscBags() async {
     final context = navigatorKey.currentState!.context;
     final bag = Provider.of<DiscsViewModel>(context, listen: false).discBag;
-    var response = await sl<DiscBagRepository>().fetchDiscBags(needDisc: false);
+    final response = await sl<DiscBagRepository>().fetchDiscBags(needDisc: false);
     if (response.isNotEmpty) discBags = response;
     final findIndex = discBags.isEmpty ? -1 : discBags.indexWhere((element) => element.id == bag.id);
     if (findIndex >= 0) discBag = discBags[findIndex];
@@ -89,17 +89,17 @@ class AddDiscViewModel with ChangeNotifier {
     loader.common = true;
     notifyListeners();
     var mediaId = null as int?;
-    var isMediaUpload = selectedRadio == 'image';
+    final isMediaUpload = selectedRadio == 'image';
     if (isMediaUpload) {
-      var base64 = 'data:image/jpeg;base64,${discFile.base64}';
-      var mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
-      var mediaResponse = await sl<UserRepository>().uploadBase64Media(mediaBody);
+      final base64 = 'data:image/jpeg;base64,${discFile.base64}';
+      final mediaBody = {'section': 'disc', 'alt_texts': 'user_disc', 'type': 'image', 'image': base64};
+      final mediaResponse = await sl<UserRepository>().uploadBase64Media(mediaBody);
       if (mediaResponse == null) loader.common = false;
       if (mediaResponse == null) return notifyListeners();
       mediaId = mediaResponse.id;
     }
-    var colorValue = color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
-    var body = {
+    final colorValue = color.toARGB32().toRadixString(16).padLeft(8, '0').substring(2);
+    final body = {
       'disc_id': disc.id,
       'bag_id': discBag.id,
       'disc_plastic_id': plastic.id,
@@ -107,8 +107,8 @@ class AddDiscViewModel with ChangeNotifier {
       'media_id': isMediaUpload ? mediaId : null,
     };
     body.addAll(params);
-    var context = navigatorKey.currentState!.context;
-    var response = await sl<DiscRepository>().createUserDisc(body);
+    final context = navigatorKey.currentState!.context;
+    final response = await sl<DiscRepository>().createUserDisc(body);
     loader.common = false;
     if (response == null) return notifyListeners();
     sl<AppAnalytics>().logEvent(name: 'added_disc', parameters: response.analyticParams);

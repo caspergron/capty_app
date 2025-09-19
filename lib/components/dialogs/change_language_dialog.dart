@@ -17,7 +17,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> changeLanguageDialog({required Country country, Function(Language)? onProceed}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('change-language-popup');
   await showGeneralDialog(
     context: context,

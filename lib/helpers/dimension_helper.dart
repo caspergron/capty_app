@@ -4,9 +4,9 @@ import 'package:app/utils/size_config.dart';
 
 class DimensionHelper {
   double dimensionSizer(Dimension dimension) {
-    var context = navigatorKey.currentState?.context;
+    final context = navigatorKey.currentState?.context;
     if (context == null) return dimension.mobile;
-    var screenWidth = SizeConfig.width;
+    final screenWidth = SizeConfig.width;
     if (screenWidth < 1) return dimension.mobile;
     if (screenWidth <= 375) {
       return dimension.small ?? dimension.small ?? dimension.mobile;

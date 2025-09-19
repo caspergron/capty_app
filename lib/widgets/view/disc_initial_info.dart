@@ -13,8 +13,8 @@ class DiscInitialInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var titleStyle = TextStyles.text12_600.copyWith(color: dark);
-    var valueStyle = TextStyles.text12_600.copyWith(color: dark, fontWeight: w400);
+    final titleStyle = TextStyles.text12_600.copyWith(color: dark);
+    final valueStyle = TextStyles.text12_600.copyWith(color: dark, fontWeight: w400);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 08),

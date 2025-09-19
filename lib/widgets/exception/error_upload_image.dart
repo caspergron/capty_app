@@ -30,9 +30,9 @@ class ErrorUploadImage extends StatelessWidget {
   }
 
   Widget get _uploadView {
-    var borderRadius = BorderRadius.circular(4);
-    var icon = SvgImage(image: Assets.svg1.upload, height: 16, color: color);
-    var style = TextStyles.text10_400.copyWith(color: color, fontSize: 10.5);
+    final borderRadius = BorderRadius.circular(4);
+    final icon = SvgImage(image: Assets.svg1.upload, height: 16, color: color);
+    final style = TextStyles.text10_400.copyWith(color: color, fontSize: 10.5);
     return Container(
       width: double.infinity,
       height: double.infinity,

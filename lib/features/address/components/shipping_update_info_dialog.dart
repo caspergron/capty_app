@@ -15,7 +15,7 @@ import 'package:app/utils/transitions.dart';
 import 'package:app/widgets/core/pop_scope_navigator.dart';
 
 Future<void> shippingUpdateInfoDialog({bool isShipping = false, Function()? onProceed}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('shipping-update-info-popup');
   await showGeneralDialog(
     context: context,

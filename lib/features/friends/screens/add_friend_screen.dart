@@ -85,15 +85,15 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
   }
 
   Future<void> _onAddFriend() async {
-    var isEmpty = _pgdaNUmber.text.isEmpty && _phone.text.isEmpty;
+    final isEmpty = _pgdaNUmber.text.isEmpty && _phone.text.isEmpty;
     if (isEmpty) return FlushPopup.onWarning(message: 'please_write_the_pgda_number_or_phone_number_of_your_friend'.recast);
     if (_phone.text.isNotEmpty) {
       if (_modelData.country.id == null) return FlushPopup.onWarning(message: 'please_select_the_country_of_your_friend'.recast);
-      var invalidPhone = sl<Validators>().phone(_phone.text, _modelData.country);
+      final invalidPhone = sl<Validators>().phone(_phone.text, _modelData.country);
       if (invalidPhone != null) return FlushPopup.onWarning(message: invalidPhone);
     }
-    var query = _pgdaNUmber.text.isEmpty ? '${_modelData.country.phonePrefix}${_phone.text}' : _pgdaNUmber.text;
-    var response = await _viewModel.onAddFriend(query);
+    final query = _pgdaNUmber.text.isEmpty ? '${_modelData.country.phonePrefix}${_phone.text}' : _pgdaNUmber.text;
+    final response = await _viewModel.onAddFriend(query);
     if (response) _clearStates();
   }
 

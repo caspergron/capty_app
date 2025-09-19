@@ -29,9 +29,9 @@ List<DataModel> _SOLD_INFO_LIST = [
 ];
 
 Future<void> soldInfoDialog({required SalesAd marketplace, Function(Map<String, dynamic>)? onSave}) async {
-  var context = navigatorKey.currentState!.context;
-  var padding = MediaQuery.of(context).viewInsets;
-  var child = Align(child: _DialogView(marketplace, onSave));
+  final context = navigatorKey.currentState!.context;
+  final padding = MediaQuery.of(context).viewInsets;
+  final child = Align(child: _DialogView(marketplace, onSave));
   await showGeneralDialog(
     context: context,
     barrierLabel: 'Sold Info Dialog',
@@ -73,7 +73,7 @@ class _DialogViewState extends State<_DialogView> {
   }
 
   Widget _screenView(BuildContext context) {
-    var isInputField = _soldInfo.value == 'other channel';
+    final isInputField = _soldInfo.value == 'other channel';
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,18 +130,18 @@ class _DialogViewState extends State<_DialogView> {
 
   void _onSave() {
     if (_soldInfo.value.isEmpty) return FlushPopup.onWarning(message: 'please_select_an_option'.recast);
-    var invalidChannelInfo = _soldInfo.value == 'other channel' && _channel.text.isEmpty;
+    final invalidChannelInfo = _soldInfo.value == 'other channel' && _channel.text.isEmpty;
     if (invalidChannelInfo) return FlushPopup.onWarning(message: 'please_write_something_about_your_channel'.recast);
-    var isOtherChannel = _soldInfo.value == 'other channel';
-    var data = {'is_sold': true, 'sold_through': _soldInfo.value, if (isOtherChannel) 'sold_through_details': _channel.text};
+    final isOtherChannel = _soldInfo.value == 'other channel';
+    final data = {'is_sold': true, 'sold_through': _soldInfo.value, if (isOtherChannel) 'sold_through_details': _channel.text};
     if (widget.onSave != null) widget.onSave!(data);
     backToPrevious();
   }
 
   Widget _soldInfoItemCard(BuildContext context, int index) {
-    var item = _SOLD_INFO_LIST[index];
-    var selected = _soldInfo.value.isNotEmpty && _soldInfo.value == item.value;
-    var style = TextStyles.text14_400.copyWith(color: lightBlue, fontSize: 15);
+    final item = _SOLD_INFO_LIST[index];
+    final selected = _soldInfo.value.isNotEmpty && _soldInfo.value == item.value;
+    final style = TextStyles.text14_400.copyWith(color: lightBlue, fontSize: 15);
     return InkWell(
       onTap: () => setState(() => _soldInfo = item),
       child: Container(

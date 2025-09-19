@@ -17,7 +17,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/lottie_animation.dart';
 
 Future<void> successWaitlistDialog({required String name}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('success-waitlist-popup');
   await showGeneralDialog(
     context: context,

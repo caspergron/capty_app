@@ -15,11 +15,11 @@ class SheetHeader1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
+    final decoration = BoxDecoration(color: mediumBlue, borderRadius: BorderRadius.circular(2));
     return Container(
       width: double.infinity,
       padding: EdgeInsets.zero,
-      decoration: BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
+      decoration: const BoxDecoration(color: primary, borderRadius: SHEET_RADIUS),
       child: Column(
         children: [
           const SizedBox(height: 06),

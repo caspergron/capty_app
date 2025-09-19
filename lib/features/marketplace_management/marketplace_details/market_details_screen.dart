@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+
 import 'package:app/components/app_lists/disc_speciality_list.dart';
 import 'package:app/components/app_lists/marketplace_disc_list.dart';
 import 'package:app/components/buttons/elevate_button.dart';
@@ -25,8 +29,6 @@ import 'package:app/utils/dimensions.dart';
 import 'package:app/utils/size_config.dart';
 import 'package:app/widgets/library/circle_image.dart';
 import 'package:app/widgets/library/svg_image.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MarketDetailsScreen extends StatefulWidget {
   final bool isDelay;
@@ -40,7 +42,7 @@ class MarketDetailsScreen extends StatefulWidget {
 class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
   var _viewModel = MarketDetailsViewModel();
   var _modelData = MarketDetailsViewModel();
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -81,13 +83,13 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
   }
 
   Widget _screenView(BuildContext context) {
-    var marketplace = _modelData.marketplace;
+    final marketplace = _modelData.marketplace;
     if (marketplace.id == null) return const SizedBox.shrink();
-    var userDisc = marketplace.userDisc;
-    var specialities = marketplace.specialityDiscs ?? [];
-    var weight = userDisc?.weight == null ? 'n/a'.recast : '${userDisc?.weight.formatDouble} ${'gram'.recast}';
-    var isDescription = marketplace.notes.toKey.isNotEmpty;
-    var MeAsSeller = UserPreferences.user.id == widget.salesAd.sellerInfo?.id;
+    final userDisc = marketplace.userDisc;
+    final specialities = marketplace.specialityDiscs ?? [];
+    final weight = userDisc?.weight == null ? 'n/a'.recast : '${userDisc?.weight.formatDouble} ${'gram'.recast}';
+    final isDescription = marketplace.notes.toKey.isNotEmpty;
+    final MeAsSeller = UserPreferences.user.id == widget.salesAd.sellerInfo?.id;
     return ListView(
       shrinkWrap: true,
       clipBehavior: Clip.antiAlias,
@@ -255,15 +257,15 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
   }
 
   void _onContactSeller() {
-    var chatBuddy = _modelData.marketplace.chat_buddy;
-    var params = {'seller_id': chatBuddy.id, 'seller_name': chatBuddy.name, 'image': chatBuddy.media?.url};
+    final chatBuddy = _modelData.marketplace.chat_buddy;
+    final params = {'seller_id': chatBuddy.id, 'seller_name': chatBuddy.name, 'image': chatBuddy.media?.url};
     sl<AppAnalytics>().logEvent(name: 'contact_seller_view', parameters: params);
     Routes.user.chat(buddy: chatBuddy).push();
   }
 
   Widget get _discBasicInfo {
-    var name = _modelData.marketplace.userDisc?.name ?? '';
-    var price = '${_modelData.marketplace.price.formatDouble} ${_modelData.marketplace.currency_code}';
+    final name = _modelData.marketplace.userDisc?.name ?? '';
+    final price = '${_modelData.marketplace.price.formatDouble} ${_modelData.marketplace.currency_code}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 02),
       decoration: BoxDecoration(color: skyBlue, border: Border.all(color: primary), borderRadius: BorderRadius.circular(06)),
@@ -278,11 +280,11 @@ class _MarketDetailsScreenState extends State<MarketDetailsScreen> {
   }
 
   Widget get _sellerClubAndTournamentInfo {
-    var clubTournament = _modelData.clubTournament;
-    var seller = _modelData.marketplace.sellerInfo;
-    var address = _modelData.marketplace.address;
-    var friendInfoLabel = '${seller?.full_name ?? ''} ${'is_a_friend_of_you'.recast}.';
-    var shippingLabel = _modelData.isShipping ? 'this_seller_offers_shipping'.recast : 'this_seller_does_not_offers_shipping'.recast;
+    final clubTournament = _modelData.clubTournament;
+    final seller = _modelData.marketplace.sellerInfo;
+    final address = _modelData.marketplace.address;
+    final friendInfoLabel = '${seller?.full_name ?? ''} ${'is_a_friend_of_you'.recast}.';
+    final shippingLabel = _modelData.isShipping ? 'this_seller_offers_shipping'.recast : 'this_seller_does_not_offers_shipping'.recast;
     return Container(
       width: double.infinity,
       clipBehavior: Clip.antiAlias,
@@ -466,7 +468,7 @@ class _DiscInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style = TextStyles.text13_600.copyWith(color: lightBlue, fontWeight: w300);
+    final style = TextStyles.text13_600.copyWith(color: lightBlue, fontWeight: w300);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -496,8 +498,8 @@ class _DiscFlightInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var style1 = TextStyles.text14_600.copyWith(color: lightBlue);
-    var style2 = TextStyles.text16_700.copyWith(color: lightBlue);
+    final style1 = TextStyles.text14_600.copyWith(color: lightBlue);
+    final style2 = TextStyles.text16_700.copyWith(color: lightBlue);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 04),
       child: Column(

@@ -63,10 +63,10 @@ class DiscBagsList extends StatelessWidget {
   }
 
   Widget _menuItemCard(BuildContext context, int index, bool isHighlighted) {
-    var gap = Dimensions.screen_padding;
-    var item = discBags[index];
-    var selected = discBag.id != null && discBag.id == item.id;
-    var invalidDelete = item.id == 1000001 || item.id == 1000002 || !item.is_delete;
+    final gap = Dimensions.screen_padding;
+    final item = discBags[index];
+    final selected = discBag.id != null && discBag.id == item.id;
+    final invalidDelete = item.id == 1000001 || item.id == 1000002 || !item.is_delete;
     return InkWell(
       onTap: () => _onItem(index),
       child: TweenListItem(
@@ -107,7 +107,7 @@ class DiscBagsList extends StatelessWidget {
   }
 
   void _onItem(int index) {
-    var item = discBags[index];
+    final item = discBags[index];
     if (item.id == 1000001) {
       // if (onAll == null) return;
       // onAll!();

@@ -73,8 +73,8 @@ class _SetProfileScreen1State extends State<SetProfileScreen1> {
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = const BorderRadius.only(topLeft: Radius.circular(60));
-    var decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
+    const borderRadius = BorderRadius.only(topLeft: Radius.circular(60));
+    const decoration = BoxDecoration(color: primary, borderRadius: borderRadius);
     return Scaffold(
       backgroundColor: skyBlue,
       body: Container(
@@ -232,21 +232,21 @@ class _SetProfileScreen1State extends State<SetProfileScreen1> {
 
   void _onNext() {
     minimizeKeyboard();
-    var invalidName = widget.data['medium'] == 2 ? sl<Validators>().name(_name.text) : sl<Validators>().fullName(_name.text);
+    final invalidName = widget.data['medium'] == 2 ? sl<Validators>().name(_name.text) : sl<Validators>().fullName(_name.text);
     if (invalidName != null) return FlushPopup.onWarning(message: invalidName);
-    var invalidEmail = sl<Validators>().email(_email.text);
+    final invalidEmail = sl<Validators>().email(_email.text);
     if (invalidEmail != null) return FlushPopup.onWarning(message: invalidEmail);
-    var isUniqueEmail = _modelData.emailCheck.toKey == 'success'.toKey;
+    final isUniqueEmail = _modelData.emailCheck.toKey == 'success'.toKey;
     if (!isUniqueEmail) return FlushPopup.onWarning(message: 'this_email_already_exist_please_try_with_another_email'.recast);
     if (widget.data['medium'] != 0) {
-      var invalidPhone = sl<Validators>().phone(_phone.text, _modelData.country);
+      final invalidPhone = sl<Validators>().phone(_phone.text, _modelData.country);
       if (invalidPhone != null) return FlushPopup.onWarning(message: invalidPhone);
-      var isUnique = _modelData.phoneCheck.toKey == 'success'.toKey;
+      final isUnique = _modelData.phoneCheck.toKey == 'success'.toKey;
       if (!isUnique) return FlushPopup.onWarning(message: 'this_phone_number_already_exist_please_try_with_another_phone_number'.recast);
     }
-    var invalidPGDANumber = _modelData.isPGDANumber && _pgdaNumber.text.isEmpty;
+    final invalidPGDANumber = _modelData.isPGDANumber && _pgdaNumber.text.isEmpty;
     if (invalidPGDANumber) return FlushPopup.onWarning(message: 'please_write_your_pdga_number'.recast);
-    var parameters = {
+    final parameters = {
       'country': _modelData.country,
       'phone': _phone.text,
       'medium': widget.data['medium'],
@@ -256,9 +256,9 @@ class _SetProfileScreen1State extends State<SetProfileScreen1> {
       'pgda_number': _pgdaNumber.text.trim(),
     };
     Routes.auth.set_profile_2(data: parameters).push();
-    /*var invalidClubName = _modelData.isClubName && _clubName.text.isEmpty;
+    /*final invalidClubName = _modelData.isClubName && _clubName.text.isEmpty;
     if (invalidClubName) return FlushPopup.onWarning(message: 'please_write_your_club_name'.recast);
-    var invalidUDiscUsername = _modelData.isDiscUsername && _discUsername.text.isEmpty;
+    final invalidUDiscUsername = _modelData.isDiscUsername && _discUsername.text.isEmpty;
     if (invalidUDiscUsername) return FlushPopup.onWarning(message: 'please_write_your_udisc_username'.recast);*/
   }
 }

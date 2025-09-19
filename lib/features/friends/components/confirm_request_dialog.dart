@@ -17,7 +17,7 @@ import 'package:app/widgets/core/pop_scope_navigator.dart';
 import 'package:app/widgets/library/svg_image.dart';
 
 Future<void> confirmRequestDialog({Function()? onConfirm, Function()? onReject}) async {
-  var context = navigatorKey.currentState!.context;
+  final context = navigatorKey.currentState!.context;
   // sl<AppAnalytics>().screenView('confirm-request-popup');
   await showGeneralDialog(
     context: context,

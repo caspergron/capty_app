@@ -35,10 +35,10 @@ class UserDiscCategoryList extends StatelessWidget {
   }
 
   Widget _userDiscCategoryItemCard(BuildContext context, int index) {
-    var item = categories[index];
+    final item = categories[index];
     if (item.discs.isEmpty) return const SizedBox.shrink();
-    var gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
-    var style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
+    final gap = EdgeInsets.symmetric(horizontal: Dimensions.screen_padding);
+    final style = TextStyles.text18_700.copyWith(color: primary, letterSpacing: 0.54);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -13,7 +13,7 @@ class FileCompressor {
     List<File> images = [];
     if (!files.haveList) return images;
     for (File item in files) {
-      var image = await _compressFileImage(image: item, maxMB: maxMB);
+      final image = await _compressFileImage(image: item, maxMB: maxMB);
       if (image != null) images.add(image);
     }
     return images;
@@ -34,7 +34,7 @@ class FileCompressor {
   Future<File?> _compressByQuality({required File image, required String targetPath, int maxMB = 4}) async {
     var imageFile = File(''); // must be less than 4mb or maxMB
     for (int quality = 0; quality <= 100; quality = quality + 10) {
-      var compressed = await FlutterImageCompress.compressAndGetFile(image.absolute.path, targetPath, quality: 100 - quality);
+      final compressed = await FlutterImageCompress.compressAndGetFile(image.absolute.path, targetPath, quality: 100 - quality);
       if (compressed != null && await compressed.length() <= (1024 * 1024) * maxMB) {
         imageFile = File(compressed.path);
         break;
@@ -55,7 +55,7 @@ class FileCompressor {
 
     var imageFile = File(''); // must be less than 4mb or maxMB
     for (int quality = 0; quality <= 100; quality = quality + 10) {
-      var compressed = await FlutterImageCompress.compressAndGetFile(image.absolute.path, targetPath, quality: 100 - quality);
+      final compressed = await FlutterImageCompress.compressAndGetFile(image.absolute.path, targetPath, quality: 100 - quality);
       if (compressed != null && await compressed.length() <= (1024 * 1024) * maxMB) {
         imageFile = File(compressed.path);
         break;
@@ -84,7 +84,7 @@ class FileCompressor {
     if (originalInKB <= (1024 * maxMB)) return byteList;
     Uint8List? convertedList;
     for (int quality = 0; quality <= 100; quality = quality + 10) {
-      var compressed = await FlutterImageCompress.compressWithList(byteList, quality: 100 - quality);
+      final compressed = await FlutterImageCompress.compressWithList(byteList, quality: 100 - quality);
       if (compressed.isNotEmpty && compressed.length <= (1024 * 1024) * maxMB) {
         convertedList = compressed;
         break;
